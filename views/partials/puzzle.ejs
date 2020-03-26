@@ -4,4 +4,11 @@
   <p class="card-text text-left"><%= puzzle.type.rules %></p>
 </div>
 <svg id="mainGrid" class="col-xs-12 text-center"></svg>
+<script src="../../js/<%= puzzle.type.puzzleJs %>"></script>
+<script>
+  function showPuzzle() {
+    var puzzle = new <%= puzzle.type.puzzleObj %>("<%= puzzle.type.code %>");
+    puzzle.render(Snap("#mainGrid"));
+  }
+</script>
 <% } %>
