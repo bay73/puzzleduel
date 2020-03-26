@@ -1,6 +1,8 @@
+<%- include ('./partials/navbar') %>
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-8 m-auto">
+      <%- include ('./partials/messages') %>
       <% if(typeof puzzle != 'undefined'){ %> 
         <div class="card">
           <h1 class="card-header">Daily puzzle</h1>
