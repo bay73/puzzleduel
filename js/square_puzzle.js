@@ -56,7 +56,7 @@ squarePuzzle.prototype.createBoard = function() {
   for (var y = 0; y < this.rows; y++) {
     this.cells[y] = new Array(this.cols);
     for (var x = 0; x < this.cols; x++) {
-      this.cells[y][x] = {col: x, row: y, value: "white", togglers: this.togglers};
+      this.cells[y][x] = {puzzle: this, col: x, row: y, valueIndex:0, value: "white", togglers: this.togglers};
     }
   }
 }
@@ -65,9 +65,11 @@ squarePuzzle.prototype.start = function() {
   data = {
     'a1': '1_1',
     'b2': '3_3',
+    'b6': '7',
     'c3': '1_1_3',
     'd4': '1_1_3',
     'e5': '1_1_3',
+    'f2': '5'
   }
   for (const [key, value] of Object.entries(data)) {
     var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
@@ -75,6 +77,11 @@ squarePuzzle.prototype.start = function() {
     this.cells[y][x].value = value;
     this.cells[y][x].togglers = [];
     this.syncCell(this.cells[y][x]);
+  }
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      this.attachController(this.cells[y][x]);
+    }
   }
 }
 
@@ -93,4 +100,18 @@ squarePuzzle.prototype.preloadImages = function(imageList) {
 
 squarePuzzle.prototype.imageUrl = function(imageName) {
   return "images/"+imageName+".png";
+}
+
+squarePuzzle.prototype.toggleCell = function(cell) {
+  cell.valueIndex++;
+  if (cell.valueIndex >= cell.togglers.length) cell.valueIndex = 0;
+  cell.value = cell.togglers[cell.valueIndex];
+  cell.puzzle.syncCell(cell);
+}
+
+squarePuzzle.prototype.attachController = function(cell) {
+  if (cell.togglers.length > 1) {
+    toggleCell = this.toggleCell;
+    cell.element.click(() => toggleCell(cell));
+  }
 }
