@@ -4,11 +4,25 @@
   <p class="card-text text-left"><%= puzzle.type.rules %></p>
 </div>
 <svg id="mainGrid" class="col-xs-12 text-center"></svg>
+<div class="card-body">
+  <button id="startBtn" type="button" class="btn btn-primary" onclick="startPuzzle()">Start</button>
+  <button id="checkBtn" type="button" class="btn btn-primary" disabled onClick="checkPuzzle()">Check</button>
+</div>
 <script src="../../js/<%= puzzle.type.puzzleJs %>"></script>
 <script>
   function showPuzzle() {
-    var puzzle = new <%= puzzle.type.puzzleObj %>("<%= puzzle.type.code %>");
+    puzzle = new <%= puzzle.type.puzzleObj %>("<%= puzzle.type.code %>", "<%= puzzle.id %>");
     puzzle.render(Snap("#mainGrid"));
+  }
+
+  function startPuzzle() {
+    $("#checkBtn").prop('disabled', false);
+    $("#startBtn").html('Restart');
+    puzzle.start();
+  }
+
+  function checkPuzzle() {
+    $("#checkBtn").prop('disabled', false);
   }
 </script>
 <% } %>
