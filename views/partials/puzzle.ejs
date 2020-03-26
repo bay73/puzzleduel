@@ -1,0 +1,7 @@
+<% if(typeof puzzle != 'undefined'){ %> 
+<div class="card-body">  
+  <h2 class="card-text text-left"><%= puzzle.type.name %></h2>
+  <p class="card-text text-left"><%= puzzle.type.rules %></p>
+</div>
+<svg id="mainGrid" class="col-xs-12 text-center"></svg>
+<% } %>

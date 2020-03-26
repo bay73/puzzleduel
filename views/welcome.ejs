@@ -1,6 +1,12 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-8 m-auto">
+      <% if(typeof puzzle != 'undefined'){ %> 
+        <div class="card">
+          <h1 class="card-header">Daily puzzle</h1>
+          <%- include ('./partials/puzzle') %>
+        </div>
+      <% } %>
       <div class="card card-body">
         <p> Hello!!</p>
       </div>
