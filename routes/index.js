@@ -6,7 +6,6 @@ const PuzzleType = require('../models/PuzzleType');
 // Welcome Page
 router.get('/', (req, res) => { 
   PuzzleType.findOne({ code: 'tapa_classic' }).then(type => {
-      console.log('type',type);
     if(type) {
       var puzzle = {
         type: type
