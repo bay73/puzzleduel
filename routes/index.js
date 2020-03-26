@@ -1,19 +1,22 @@
 const express = require('express');
 const router = express.Router();
+// PuzzleType model
+const PuzzleType = require('../models/PuzzleType');
 
 // Welcome Page
-router.get('/', (req, res) => 
-  res.render('welcome', {
-    user: req.user,
-    puzzle: {
-      type: {
-        code: "tapa_classic",
-        name: "Tapa",
-        rules: "Shade some empty cells black to create a single connected wall. Numbers in a cell indicate the length of consecutive shaded blocks in the neighboring cells. If there is more than one number in a cell, then there must be at least one white (unshaded) cell between the black cell groups.",
-        puzzleJs: "square_puzzle.js",
-        puzzleObj: "squarePuzzle"
+router.get('/', (req, res) => { 
+  PuzzleType.findOne({ code: 'tapa_classic' }).then(type => {
+      console.log('type',type);
+    if(type) {
+      var puzzle = {
+        type: type
       }
     }
-  }));
+    res.render('welcome', {
+      user: req.user,
+      puzzle: puzzle
+    });
+  });
+});
 
 module.exports = router;
