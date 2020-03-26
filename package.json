@@ -1,0 +1,29 @@
+{
+  "name": "puzzleduel",
+  "version": "1.0.0",
+  "description": "Source code for web-site to solve puzzles online.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bay73/puzzleduel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bay73/puzzleduel/issues"
+  },
+  "homepage": "https://github.com/bay73/puzzleduel#readme",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
