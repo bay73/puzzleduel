@@ -14,8 +14,19 @@ router.get('/:puzzleid', (req, res) => {
         if(type) {
           returnObj.type = type.toObject();
         }
-        res.json(returnObj)
+        res.json(returnObj);
       });
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+
+// Read puzzle header
+router.get('/:puzzleid/start', (req, res) => {
+  Puzzle.findOne({code: req.params.puzzleid}, 'data').then(puzzle => {
+    if (puzzle) {
+      res.json(puzzle.toObject());
     } else {
       res.sendStatus(404);
     }
