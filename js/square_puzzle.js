@@ -1,10 +1,9 @@
 // Default puzzle with square grid.
-var squarePuzzle = function(typeCode, id) {
+var squarePuzzle = function(typeCode, id, dimension) {
   this.id = id;
   this.typeCode = typeCode;
   this.initImages();
-  this.rows = 7
-  this.cols = 7;
+  this.parseDimension(dimension);
   this.createBoard();
 }
 
@@ -144,4 +143,9 @@ squarePuzzle.prototype.initImages = function() {
   this.preloadImages(this.togglers);
 }
 
+squarePuzzle.prototype.parseDimension = function(dimension) {
+  var dimensions = dimension.split("x");
+  this.rows = dimensions[1];
+  this.cols = dimensions[0];
+}
 

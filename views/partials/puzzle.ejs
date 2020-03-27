@@ -11,7 +11,7 @@
 <script src="../../js/<%= puzzle.type.puzzleJs %>"></script>
 <script>
   function showPuzzle() {
-    puzzle = new <%= puzzle.type.puzzleObj %>("<%= puzzle.type.code %>", "<%= puzzle.id %>");
+    puzzle = new <%= puzzle.type.puzzleObj %>("<%= puzzle.type.code %>", "<%= puzzle.id %>", "<%= puzzle.dimension %>");
     puzzle.render(Snap("#mainGrid"));
   }
 
