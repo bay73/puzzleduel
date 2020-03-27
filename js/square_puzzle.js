@@ -49,15 +49,12 @@ squarePuzzle.prototype.render = function(snap) {
 
 squarePuzzle.prototype.start = function() {
   // Read clues from server and start the puzzle solving.
-  data = {
-    'a1': '1_1',
-    'b2': '3_3',
-    'b6': '7',
-    'c3': '1_1_3',
-    'd4': '1_1_3',
-    'e5': '1_1_3',
-    'f2': '5'
-  };
+  $.getJSON("/puzzles/" + this.id + "/start")
+    .done(data => this.showClues(data))
+    .fail((jqxhr, textStatus, error) => showError(error)); 
+}
+
+squarePuzzle.prototype.showClues = function(data) {
   // Parse clues.
   for (const [key, value] of Object.entries(data)) {
     var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
