@@ -7,10 +7,10 @@ const PuzzleType = require('../models/PuzzleType');
 
 // Read puzzle header
 router.get('/:puzzleid', (req, res) => {
-  Puzzle.findOne({code: req.params.puzzleid}, "-data").then(puzzle => {
+  Puzzle.findOne({code: req.params.puzzleid}, "-_id -data -code").then(puzzle => {
     if (puzzle) {
       var returnObj = puzzle.toObject();
-      PuzzleType.findOne({ code: returnObj.type }, "-puzzleJs -puzzleObj").then(type => {
+      PuzzleType.findOne({ code: returnObj.type }, "-_id -code -puzzleJs -puzzleObj").then(type => {
         if(type) {
           returnObj.type = type.toObject();
         }
@@ -26,7 +26,7 @@ router.get('/:puzzleid', (req, res) => {
 router.get('/:puzzleid/start', (req, res) => {
   Puzzle.findOne({code: req.params.puzzleid}, 'data').then(puzzle => {
     if (puzzle) {
-      res.json(puzzle.toObject());
+      res.json(JSON.parse(puzzle.data));
     } else {
       res.sendStatus(404);
     }
