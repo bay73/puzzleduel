@@ -2,9 +2,9 @@
 var squarePuzzle = function(typeCode, id) {
   this.id = id;
   this.typeCode = typeCode;
+  this.initImages();
   this.rows = 7
   this.cols = 7;
-  this.initImages();
   this.createBoard();
 }
 
@@ -70,7 +70,7 @@ squarePuzzle.prototype.start = function() {
     'd4': '1_1_3',
     'e5': '1_1_3',
     'f2': '5'
-  }
+  };
   for (const [key, value] of Object.entries(data)) {
     var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
     var y = parseInt(key.substring(1)) - 1;
