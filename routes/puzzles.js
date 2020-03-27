@@ -22,11 +22,22 @@ router.get('/:puzzleid', (req, res) => {
   });
 });
 
-// Read puzzle header
+// Read puzzle data
 router.get('/:puzzleid/start', (req, res) => {
   Puzzle.findOne({code: req.params.puzzleid}, 'data').then(puzzle => {
     if (puzzle) {
       res.json(JSON.parse(puzzle.data));
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+
+// Check puzzle solution
+router.post('/:puzzleid/check', (req, res) => {
+  Puzzle.findOne({code: req.params.puzzleid}).then(puzzle => {
+    if (puzzle) {
+      res.json({status: "Wrong", errors: ["a7", "b7"]});
     } else {
       res.sendStatus(404);
     }
