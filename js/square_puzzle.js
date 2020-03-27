@@ -7,6 +7,30 @@ var squarePuzzle = function(typeCode, id, dimension) {
   this.createBoard();
 }
 
+squarePuzzle.prototype.start = function() {
+  // Read clues from server and start the puzzle solving.
+  $.getJSON("/puzzles/" + this.id + "/start")
+    .done(data => this.showClues(data))
+    .fail((jqxhr, textStatus, error) => showError(error)); 
+}
+
+squarePuzzle.prototype.check = function() {
+  var data = {};
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (!this.cells[y][x].isClue) {
+        var coord = String.fromCharCode('a'.charCodeAt(0) + x) + y.toString();
+        data[coord] = this.cells[y][x].value;
+      }
+    }
+  }
+  // Read clues from server and start the puzzle solving.
+  $.post("/puzzles/" + this.id + "/check", data)
+    .done(response => this.showResult(response))
+    .fail((jqxhr, textStatus, error) => showError(error)); 
+}
+
+
 squarePuzzle.prototype.createBoard = function() {
   // Create 2D array of Cells
   this.cells = [];
@@ -47,13 +71,6 @@ squarePuzzle.prototype.render = function(snap) {
   this.snap.node.setAttribute("height", this.snap.getBBox().height + 20);
 }
 
-squarePuzzle.prototype.start = function() {
-  // Read clues from server and start the puzzle solving.
-  $.getJSON("/puzzles/" + this.id + "/start")
-    .done(data => this.showClues(data))
-    .fail((jqxhr, textStatus, error) => showError(error)); 
-}
-
 squarePuzzle.prototype.showClues = function(data) {
   // Parse clues.
   for (const [key, value] of Object.entries(data)) {
@@ -69,6 +86,19 @@ squarePuzzle.prototype.showClues = function(data) {
       }
       this.cells[y][x].syncCell();
     }
+  }
+}
+
+squarePuzzle.prototype.showResult = function(result) {
+  if (result.status == 'OK') {
+    showMessage("Congratulations! Puzzle solved correctly!", 3000);
+  } else {
+    showError("Sorry, there is a mistake. Try again.", 3000);
+    result.errors.forEach(coord => {
+      var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
+      var y = parseInt(coord.substring(1)) - 1;
+      this.cells[y][x].markError();
+    });
   }
 }
 
@@ -119,6 +149,16 @@ squarePuzzleCell.prototype.renderCell = function() {
     strokeWidth: 1
   });
   this.element = this.puzzle.snap.image(this.puzzle.imageUrl(this.value), x, y, this.cellSize, this.cellSize);
+}
+
+squarePuzzleCell.prototype.markError = function() {
+  this.cellSize = this.puzzle.cellSize;
+  var x = this.puzzle.leftGap + this.col*this.cellSize;
+  var y = this.puzzle.topGap + this.row*this.cellSize;
+  var errorElem = this.puzzle.snap.rect(x, y, this.cellSize, this.cellSize);
+  errorElem.attr({fill: "#f00", opacity: 0.5});
+  setInterval(() => errorElem.animate({fill: "#fff"}, 200, ()=> errorElem.animate({fill: "#f00"}, 200)), 400);
+  setTimeout(() => errorElem.remove(), 3000);
 }
 
 squarePuzzleCell.prototype.syncCell = function() {
