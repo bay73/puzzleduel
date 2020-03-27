@@ -8,6 +8,7 @@ var squarePuzzle = function(typeCode, id, dimension) {
 }
 
 squarePuzzle.prototype.createBoard = function() {
+  // Create 2D array of Cells
   this.cells = [];
   for (var y = 0; y < this.rows; y++) {
     this.cells[y] = new Array(this.cols);
@@ -18,6 +19,7 @@ squarePuzzle.prototype.createBoard = function() {
 }
 
 squarePuzzle.prototype.findCellSize = function() {
+  // Find cell size based on size of the window.
   var size = this.snap.node.clientWidth;
   // Temporary add some random gaps
   // TODO: compute using vertical size of the screen
@@ -28,6 +30,7 @@ squarePuzzle.prototype.findCellSize = function() {
 }
  
 squarePuzzle.prototype.render = function(snap) {
+  // Draw puzzle grid
   this.snap = snap;
   this.findCellSize();
   var board = this.snap.rect(this.leftGap, this.topGap, this.cols * this.cellSize, this.rows * this.cellSize);
@@ -45,6 +48,7 @@ squarePuzzle.prototype.render = function(snap) {
 }
 
 squarePuzzle.prototype.start = function() {
+  // Read clues from server and start the puzzle solving.
   data = {
     'a1': '1_1',
     'b2': '3_3',
@@ -54,11 +58,13 @@ squarePuzzle.prototype.start = function() {
     'e5': '1_1_3',
     'f2': '5'
   };
+  // Parse clues.
   for (const [key, value] of Object.entries(data)) {
     var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
     var y = parseInt(key.substring(1)) - 1;
     this.cells[y][x].setClue(value);
   }
+  // All non-clue cells are general togglable.
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
       if (!this.cells[y][x].isClue) {
@@ -70,14 +76,17 @@ squarePuzzle.prototype.start = function() {
 }
 
 squarePuzzle.prototype.preloadImages = function(imageList) {
+  // Preload images to prevent delays when solving.
   imageList.forEach(name => new Image().src = this.imageUrl(name));
 }
 
 squarePuzzle.prototype.imageUrl = function(imageName) {
+  // Url for image with the given name.
   return "images/"+imageName+".png";
 }
 
 var squarePuzzleCell = function(puzzle, col, row) {
+  // Element of the grid.
   this.puzzle = puzzle;
   this.col = col;
   this.row = row;
@@ -88,11 +97,13 @@ var squarePuzzleCell = function(puzzle, col, row) {
 }
 
 squarePuzzleCell.prototype.setClue = function(value) {
+  // Mark cell as a clue.
   this.isClue = true;
   this.value = value;
 }
 
 squarePuzzleCell.prototype.setRegular = function(togglers) {
+  // Mark cell as a regular.
   this.togglers = togglers;
   this.valueIndex = 0;
   this.value = this.togglers[this.valueIndex];
@@ -100,6 +111,7 @@ squarePuzzleCell.prototype.setRegular = function(togglers) {
 }
 
 squarePuzzleCell.prototype.renderCell = function() {
+  // Draw cell inthe canvas.
   this.cellSize = this.puzzle.cellSize;
   var x = this.puzzle.leftGap + this.col*this.cellSize;
   var y = this.puzzle.topGap + this.row*this.cellSize;
@@ -113,12 +125,14 @@ squarePuzzleCell.prototype.renderCell = function() {
 }
 
 squarePuzzleCell.prototype.syncCell = function() {
+  // Sync cell image.
   if (this.element != undefined) {
     this.element.attr({href: this.puzzle.imageUrl(this.value)});
   }
 }
 
 squarePuzzleCell.prototype.toggleCell = function() {
+  // Process click in the cell.
   this.valueIndex++;
   if (this.valueIndex >= this.togglers.length) this.valueIndex = 0;
   this.value = this.togglers[this.valueIndex];
@@ -126,6 +140,7 @@ squarePuzzleCell.prototype.toggleCell = function() {
 }
 
 squarePuzzleCell.prototype.attachController = function() {
+  // Attach events to the cell.
   if (this.togglers.length > 1 && this.element != undefined) {
     var cell = this;
     this.element.click(() => cell.toggleCell());
@@ -133,6 +148,7 @@ squarePuzzleCell.prototype.attachController = function() {
 }
 
 squarePuzzle.prototype.initImages = function() {
+  // Images used for the given puzzle type.
   this.clues = [];
   this.togglers = [];
   if(this.typeCode == "tapa_classic") {
@@ -144,6 +160,7 @@ squarePuzzle.prototype.initImages = function() {
 }
 
 squarePuzzle.prototype.parseDimension = function(dimension) {
+  // Parse dimension string to values.
   var dimensions = dimension.split("x");
   this.rows = dimensions[1];
   this.cols = dimensions[0];
