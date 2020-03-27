@@ -85,15 +85,6 @@ squarePuzzle.prototype.start = function() {
   }
 }
 
-squarePuzzle.prototype.initImages = function() {
-  if(this.typeCode == "tapa_classic") {
-    this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "1_1", "1_2", "1_3", "1_4", "1_5", "2_2", "2_3", "2_4", "3_3", "1_1_1", "1_1_2", "1_1_3", "1_2_2", "1_1_1_1"];
-    this.togglers = ["white", "black", "x"];
-  }
-  this.preloadImages(this.clues);
-  this.preloadImages(this.togglers);
-}
-
 squarePuzzle.prototype.preloadImages = function(imageList) {
   imageList.forEach(name => new Image().src = this.imageUrl(name));
 }
@@ -115,3 +106,14 @@ squarePuzzle.prototype.attachController = function(cell) {
     cell.element.click(() => toggleCell(cell));
   }
 }
+
+squarePuzzle.prototype.initImages = function() {
+  if(this.typeCode == "tapa_classic") {
+    this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "1_1", "1_2", "1_3", "1_4", "1_5", "2_2", "2_3", "2_4", "3_3", "1_1_1", "1_1_2", "1_1_3", "1_2_2", "1_1_1_1"];
+    this.togglers = ["white", "black", "x"];
+  }
+  this.preloadImages(this.clues);
+  this.preloadImages(this.togglers);
+}
+
+
