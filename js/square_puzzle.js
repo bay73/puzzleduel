@@ -8,6 +8,16 @@ var squarePuzzle = function(typeCode, id) {
   this.createBoard();
 }
 
+squarePuzzle.prototype.createBoard = function() {
+  this.cells = [];
+  for (var y = 0; y < this.rows; y++) {
+    this.cells[y] = new Array(this.cols);
+    for (var x = 0; x < this.cols; x++) {
+      this.cells[y][x] = new squarePuzzleCell(this, x, y);
+    }
+  }
+}
+
 squarePuzzle.prototype.findCellSize = function() {
   var size = this.snap.node.clientWidth;
   // Temporary add some random gaps
@@ -29,36 +39,10 @@ squarePuzzle.prototype.render = function(snap) {
   });
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
-      this.renderCell(this.cells[y][x]);
+      this.cells[y][x].renderCell();
     }
   }
   this.snap.node.setAttribute("height", this.snap.getBBox().height + 20);
-}
-
-squarePuzzle.prototype.renderCell = function(cell) {
-  var x = this.leftGap + cell.col*this.cellSize;
-  var y = this.topGap + cell.row*this.cellSize;
-  cell.rect = this.snap.rect(x, y, this.cellSize, this.cellSize);
-  cell.rect.attr({
-    fill: "none",
-    stroke: "#000",
-    strokeWidth: 1
-  });
-  cell.element = this.snap.image(this.imageUrl(cell.value), x, y, this.cellSize, this.cellSize);
-}
-
-squarePuzzle.prototype.syncCell = function(cell) {
-  cell.element.attr({href: this.imageUrl(cell.value)});
-}
-
-squarePuzzle.prototype.createBoard = function() {
-  this.cells = [];
-  for (var y = 0; y < this.rows; y++) {
-    this.cells[y] = new Array(this.cols);
-    for (var x = 0; x < this.cols; x++) {
-      this.cells[y][x] = {puzzle: this, col: x, row: y, valueIndex:0, value: "white", togglers: this.togglers};
-    }
-  }
 }
 
 squarePuzzle.prototype.start = function() {
@@ -74,13 +58,14 @@ squarePuzzle.prototype.start = function() {
   for (const [key, value] of Object.entries(data)) {
     var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
     var y = parseInt(key.substring(1)) - 1;
-    this.cells[y][x].value = value;
-    this.cells[y][x].togglers = [];
-    this.syncCell(this.cells[y][x]);
+    this.cells[y][x].setClue(value);
   }
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
-      this.attachController(this.cells[y][x]);
+      if (!this.cells[y][x].isClue) {
+        this.cells[y][x].setRegular(this.togglers);
+      }
+      this.cells[y][x].syncCell();
     }
   }
 }
@@ -93,21 +78,64 @@ squarePuzzle.prototype.imageUrl = function(imageName) {
   return "images/"+imageName+".png";
 }
 
-squarePuzzle.prototype.toggleCell = function(cell) {
-  cell.valueIndex++;
-  if (cell.valueIndex >= cell.togglers.length) cell.valueIndex = 0;
-  cell.value = cell.togglers[cell.valueIndex];
-  cell.puzzle.syncCell(cell);
+var squarePuzzleCell = function(puzzle, col, row) {
+  this.puzzle = puzzle;
+  this.col = col;
+  this.row = row;
+  this.isClue = false;
+  this.value = "white";
+  this.togglers = []
+  this.cellSize = this.puzzle.cellSize;
 }
 
-squarePuzzle.prototype.attachController = function(cell) {
-  if (cell.togglers.length > 1) {
-    toggleCell = this.toggleCell;
-    cell.element.click(() => toggleCell(cell));
+squarePuzzleCell.prototype.setClue = function(value) {
+  this.isClue = true;
+  this.value = value;
+}
+
+squarePuzzleCell.prototype.setRegular = function(togglers) {
+  this.togglers = togglers;
+  this.valueIndex = 0;
+  this.value = this.togglers[this.valueIndex];
+  this.attachController();
+}
+
+squarePuzzleCell.prototype.renderCell = function() {
+  this.cellSize = this.puzzle.cellSize;
+  var x = this.puzzle.leftGap + this.col*this.cellSize;
+  var y = this.puzzle.topGap + this.row*this.cellSize;
+  this.rect = this.puzzle.snap.rect(x, y, this.cellSize, this.cellSize);
+  this.rect.attr({
+    fill: "none",
+    stroke: "#000",
+    strokeWidth: 1
+  });
+  this.element = this.puzzle.snap.image(this.puzzle.imageUrl(this.value), x, y, this.cellSize, this.cellSize);
+}
+
+squarePuzzleCell.prototype.syncCell = function() {
+  if (this.element != undefined) {
+    this.element.attr({href: this.puzzle.imageUrl(this.value)});
+  }
+}
+
+squarePuzzleCell.prototype.toggleCell = function() {
+  this.valueIndex++;
+  if (this.valueIndex >= this.togglers.length) this.valueIndex = 0;
+  this.value = this.togglers[this.valueIndex];
+  this.syncCell();
+}
+
+squarePuzzleCell.prototype.attachController = function() {
+  if (this.togglers.length > 1 && this.element != undefined) {
+    var cell = this;
+    this.element.click(() => cell.toggleCell());
   }
 }
 
 squarePuzzle.prototype.initImages = function() {
+  this.clues = [];
+  this.togglers = [];
   if(this.typeCode == "tapa_classic") {
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "1_1", "1_2", "1_3", "1_4", "1_5", "2_2", "2_3", "2_4", "3_3", "1_1_1", "1_1_2", "1_1_3", "1_2_2", "1_1_1_1"];
     this.togglers = ["white", "black", "x"];
