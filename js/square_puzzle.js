@@ -196,6 +196,7 @@ squarePuzzleCell.prototype.attachController = function() {
   // Attach events to the cell.
   if (this.togglers.length > 1 && this.element != undefined) {
     var cell = this;
+    this.element.unclick();
     this.element.click(() => cell.toggleCell());
   }
 }
