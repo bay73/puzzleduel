@@ -12,7 +12,7 @@ squarePuzzle.prototype.start = function() {
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/start")
     .done(data => this.showClues(data))
-    .fail((jqxhr, textStatus, error) => showError(error)); 
+    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
 }
 
 squarePuzzle.prototype.check = function() {
@@ -29,7 +29,7 @@ squarePuzzle.prototype.check = function() {
   // Read clues from server and start the puzzle solving.
   $.post("/puzzles/" + this.id + "/check", data)
     .done(response => this.showResult(response))
-    .fail((jqxhr, textStatus, error) => showError(error)); 
+    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
 }
 
 
