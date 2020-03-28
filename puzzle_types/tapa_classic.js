@@ -35,7 +35,7 @@ Checker.prototype.check = function(dimension, clues, data){
   if (res.status != "OK") {
     return res;
   }
-  return {status: "OK"};
+  return this.checkClues(cells);
 }
 
 Checker.prototype.parseDimension = function(dimension) {
@@ -97,6 +97,53 @@ Checker.prototype.checkAllBlackFilled = function(cells){
     }
   }
   return true;
+}
+
+Checker.prototype.checkClues = function(cells) {
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (cells[y][x].clue){
+        if (!this.checkClue(cells, cells[y][x])) {
+          return {status: "The clue is not correct" , errors: [cells[y][x].coord()]};
+        }
+      }
+    }
+  }
+  return {status: "OK"};
+}
+
+Checker.prototype.checkClue = function(cells, clueCell) {
+  var neighbour = [{y:1,x:0}, {y:1,x:1}, {y:0,x:1}, {y:-1,x:1}, {y:-1,x:0}, {y:-1,x:-1}, {y:0,x:-1}, {y:1,x:-1}]
+  var painted = [];
+  var paintedCount = -1;
+  var prevCell = null;
+  var firstCell = null;
+  for (var i=0;i<8;i++) {
+    if (clueCell.row + neighbour[i].y >=0 && clueCell.row + neighbour[i].y < this.rows
+        && clueCell.col + neighbour[i].x >=0 && clueCell.col + neighbour[i].x < this.cols) {
+      var cell = cells[clueCell.row + neighbour[i].y][clueCell.col + neighbour[i].x];
+    } else {
+      var cell = null;
+    }
+    if (cell && !firstCell) {
+      firstCell = cell;
+    }
+    if (cell && cell.value == 'black') {
+      if (prevCell && prevCell.value == 'black') {
+        painted[paintedCount]++;
+      } else {
+        paintedCount++;
+        painted[paintedCount] = 1;
+      }
+    }
+    prevCell = cell;
+  }
+  if (prevCell && prevCell.value == 'black' && firstCell && firstCell.value == 'black') {
+    painted[0]+=painted[paintedCount];
+    painted.pop();
+  }
+  painted.sort();
+  return (clueCell.clue == painted.join("_"))
 }
 
 Cell = function(checker, row, col){
