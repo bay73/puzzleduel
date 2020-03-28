@@ -29,10 +29,19 @@
 </div>
 <% } %>
 </div>
+<style>
+  .message-overlap {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
+</style>
 <script>
   function showError(error, timeout){
     $("#alerts").append(
-      "<div id='errorMessage' class='alert alert-danger alert-dismissible fade show' role='alert'>" +
+      "<div id='errorMessage' class='message-overlap alert alert-danger alert-dismissible fade show' role='alert'>" +
       error +
       "  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
       "    <span aria-hidden='true'>&times;</span>" +
@@ -44,7 +53,7 @@
   }
   function showMessage(message, timeout){
     $("#alerts").append(
-      "<div id='successMessage' class='alert alert-success alert-dismissible fade show' role='alert'>" +
+      "<div id='successMessage' class='message-overlap alert alert-success alert-dismissible fade show' role='alert'>" +
        message +
       "  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
       "    <span aria-hidden='true'>&times;</span>" +
