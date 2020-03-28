@@ -91,14 +91,16 @@ squarePuzzle.prototype.showClues = function(data) {
 
 squarePuzzle.prototype.showResult = function(result) {
   if (result.status == 'OK') {
-    showMessage("Congratulations! Puzzle solved correctly!", 5000);
+    showMessage("Congratulations! Puzzle solved correctly!");
   } else {
     showError("Sorry, there is a mistake. " + result.status + ". Try again.", 5000);
-    result.errors.forEach(coord => {
-      var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
-      var y = parseInt(coord.substring(1)) - 1;
-      this.cells[y][x].markError();
-    });
+    if (result.errors) {
+      result.errors.forEach(coord => {
+        var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
+        var y = parseInt(coord.substring(1)) - 1;
+        this.cells[y][x].markError();
+      });
+    }
   }
 }
 
