@@ -8,6 +8,7 @@ var squarePuzzle = function(typeCode, id, dimension) {
 }
 
 squarePuzzle.prototype.start = function() {
+  this.removeMessages();
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/start")
     .done(data => this.showClues(data))
@@ -24,6 +25,7 @@ squarePuzzle.prototype.check = function() {
       }
     }
   }
+  this.removeMessages();
   // Read clues from server and start the puzzle solving.
   $.post("/puzzles/" + this.id + "/check", data)
     .done(response => this.showResult(response))
@@ -90,10 +92,11 @@ squarePuzzle.prototype.showClues = function(data) {
 }
 
 squarePuzzle.prototype.showResult = function(result) {
+  this.removeMessages();
   if (result.status == 'OK') {
-    showMessage("Congratulations! Puzzle solved correctly!");
+    this.message = showMessage("Congratulations! Puzzle solved correctly!");
   } else {
-    showError("Sorry, there is a mistake. " + result.status + ". Try again.", 5000);
+    this.message = showError("Sorry, there is a mistake. " + result.status + ". Try again.", 10000);
     if (result.errors) {
       result.errors.forEach(coord => {
         var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
@@ -101,6 +104,13 @@ squarePuzzle.prototype.showResult = function(result) {
         this.cells[y][x].markError();
       });
     }
+  }
+}
+
+squarePuzzle.prototype.removeMessages = function() {
+  if (this.message) {
+    this.message.remove();
+    this.message = null;
   }
 }
 

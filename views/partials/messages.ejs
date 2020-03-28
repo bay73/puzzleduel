@@ -50,6 +50,7 @@
     if (timeout) {
       setTimeout(() => $('#errorMessage').remove(), timeout);
     }
+    return $('#errorMessage');
   }
   function showMessage(message, timeout){
     $("#alerts").append(
@@ -62,5 +63,6 @@
     if (timeout) {
       setTimeout(() => $('#successMessage').remove(), timeout);
     }
+    return $('#successMessage');
   }
 </script>
