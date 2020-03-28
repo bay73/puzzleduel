@@ -46,13 +46,11 @@ squarePuzzle.prototype.createBoard = function() {
 
 squarePuzzle.prototype.findCellSize = function() {
   // Find cell size based on size of the window.
-  var size = this.snap.node.clientWidth;
-  // Temporary add some random gaps
-  // TODO: compute using vertical size of the screen
-  this.leftGap = 50;
-  this.topGap = 5;
-  hSize = size - 2 * this.leftGap;
-  this.cellSize = hSize / this.cols;
+  var hSizeLimit = this.snap.node.clientWidth*0.97;
+  var vSizeLimit = window.innerHeight*0.6;
+  this.cellSize = Math.min(hSizeLimit / this.cols, vSizeLimit / this.rows);
+  this.leftGap = (this.snap.node.clientWidth - this.cellSize * this.cols)/2;
+  this.topGap = 1;
 }
  
 squarePuzzle.prototype.render = function(snap) {
@@ -70,7 +68,7 @@ squarePuzzle.prototype.render = function(snap) {
       this.cells[y][x].renderCell();
     }
   }
-  this.snap.node.setAttribute("height", this.snap.getBBox().height + 20);
+  this.snap.node.setAttribute("height", this.snap.getBBox().height + 2);
 }
 
 squarePuzzle.prototype.showClues = function(data) {
