@@ -19,7 +19,7 @@ squarePuzzle.prototype.check = function() {
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
       if (!this.cells[y][x].isClue) {
-        var coord = String.fromCharCode('a'.charCodeAt(0) + x) + y.toString();
+        var coord = String.fromCharCode('a'.charCodeAt(0) + x) + (y+1).toString();
         data[coord] = this.cells[y][x].value;
       }
     }
