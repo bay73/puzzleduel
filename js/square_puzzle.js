@@ -93,7 +93,7 @@ squarePuzzle.prototype.showResult = function(result) {
   if (result.status == 'OK') {
     showMessage("Congratulations! Puzzle solved correctly!", 5000);
   } else {
-    showError("Sorry, there is a mistake. Try again.", 5000);
+    showError("Sorry, there is a mistake. " + result.status + ". Try again.", 5000);
     result.errors.forEach(coord => {
       var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
       var y = parseInt(coord.substring(1)) - 1;

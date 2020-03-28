@@ -45,7 +45,7 @@ Checker.prototype.check2x2 = function(cells) {
   for (var y = 0; y < this.rows - 1; y++) {
     for (var x = 0; x < this.cols - 1; x++) {
       if (cells[y][x].value == "black" && cells[y+1][x].value == "black" && cells[y][x+1].value == "black" && cells[y+1][x+1].value == "black"){
-        return {status: "Wrong", errors: [cells[y][x].coord(), cells[y+1][x].coord(), cells[y][x+1].coord(), cells[y+1][x+1].coord() ]};
+        return {status: "No 2x2 squares are allowed" , errors: [cells[y][x].coord(), cells[y+1][x].coord(), cells[y][x+1].coord(), cells[y+1][x+1].coord() ]};
       }
     }
   }
