@@ -27,6 +27,12 @@ const PuzzleSchema = new mongoose.Schema({
   },
 });
 
+PuzzleSchema.virtual('needLogging').get(function() {
+  var d = new Date();
+  d.setDate(d.getDate()-5);
+  return this.daily && this.daily > d
+});
+
 const Puzzle = mongoose.model('Puzzle', PuzzleSchema);
 
 module.exports = Puzzle;

@@ -4,6 +4,8 @@ const router = express.Router();
 const Puzzle = require('../models/Puzzle');
 // PuzzleType model
 const PuzzleType = require('../models/PuzzleType');
+// UserActionLog model
+const UserActionLog = require('../models/UserActionLog');
 
 const type_cheker = {};
 
@@ -28,8 +30,20 @@ router.get('/:puzzleid', (req, res) => {
 
 // Read puzzle data
 router.get('/:puzzleid/start', (req, res) => {
-  Puzzle.findOne({code: req.params.puzzleid}, 'data').then(puzzle => {
+  Puzzle.findOne({code: req.params.puzzleid}, 'data daily').then(puzzle => {
     if (puzzle) {
+      if (puzzle.needLogging) {
+        if (!req.user) {
+	  res.status(403).send('You should log in to solve this puzzle!');
+          return;
+        }
+        const newUserActionLog = new UserActionLog({
+          userId: req.user._id,
+          puzzleId: req.params.puzzleid,
+          action: "start"
+        });
+        newUserActionLog.save();
+      }
       res.json(JSON.parse(puzzle.data));
     } else {
       res.sendStatus(404);
@@ -42,7 +56,20 @@ router.post('/:puzzleid/check', (req, res) => {
   Puzzle.findOne({code: req.params.puzzleid}).then(puzzle => {
     if (puzzle) {
       var checker = type_cheker[puzzle.type]();
-      res.json(checker.check(puzzle.dimension, JSON.parse(puzzle.data), req.body));
+      var result = checker.check(puzzle.dimension, JSON.parse(puzzle.data), req.body);
+      if (puzzle.needLogging) {
+        if (!req.user) {
+	  res.status(403).send('You should log in to solve this puzzle!');
+          return;
+        }
+        const newUserActionLog = new UserActionLog({
+          userId: req.user._id,
+          puzzleId: req.params.puzzleid,
+          action: result.status == "OK" ? "solved" : "submitted"
+        });
+        newUserActionLog.save();
+      }
+      res.json(result);
     } else {
       res.sendStatus(404);
     }
