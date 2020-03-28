@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-md-12 col-lg-8 m-auto">
       <%- include ('./partials/messages') %>
-      <% if(typeof puzzle != 'undefined'){ %> 
+      <% if(puzzle){ %> 
         <div class="card">
           <h1 class="card-header">Daily puzzle</h1>
           <%- include ('./partials/puzzle') %>
