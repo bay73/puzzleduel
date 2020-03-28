@@ -31,6 +31,10 @@ Checker.prototype.check = function(dimension, clues, data){
   if (res.status != "OK") {
     return res;
   }
+  var res = this.checkConnected(cells);
+  if (res.status != "OK") {
+    return res;
+  }
   return {status: "OK"};
 }
 
@@ -50,6 +54,49 @@ Checker.prototype.check2x2 = function(cells) {
     }
   }
   return {status: "OK"};
+}
+
+Checker.prototype.checkConnected = function(cells) {
+  var first = this.findFirstBlack(cells);
+  if(first) {
+    this.fill(cells, first);
+    if (!this.checkAllBlackFilled(cells)) {
+      return {status: "Black area should be connected!"};
+    }
+  }
+  return {status: "OK"};
+}
+
+Checker.prototype.findFirstBlack = function(cells) {
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (cells[y][x].value == "black"){
+       return cells[y][x];
+      }
+    }
+  }
+  return null;
+}
+
+Checker.prototype.fill = function(cells, cell){
+  if (!cell.isFilled && cell.value == "black") {
+    cell.isFilled = true;
+    if (cell.row > 0) this.fill(cells, cells[cell.row - 1][cell.col]);
+    if (cell.col > 0) this.fill(cells, cells[cell.row][cell.col - 1]);
+    if (cell.row + 1 < this.rows) this.fill(cells, cells[cell.row + 1][cell.col]);
+    if (cell.col + 1 < this.cols) this.fill(cells, cells[cell.row][cell.col + 1]);
+  }
+}
+
+Checker.prototype.checkAllBlackFilled = function(cells){
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (cells[y][x].value == "black" && !cells[y][x].isFilled){
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 Cell = function(checker, row, col){
