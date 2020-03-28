@@ -5,6 +5,10 @@ const Puzzle = require('../models/Puzzle');
 // PuzzleType model
 const PuzzleType = require('../models/PuzzleType');
 
+const type_cheker = {};
+
+type_cheker["tapa_classic"] = require('../puzzle_types/tapa_classic')
+
 // Read puzzle header
 router.get('/:puzzleid', (req, res) => {
   Puzzle.findOne({code: req.params.puzzleid}, "-_id -data -code").then(puzzle => {
@@ -37,7 +41,8 @@ router.get('/:puzzleid/start', (req, res) => {
 router.post('/:puzzleid/check', (req, res) => {
   Puzzle.findOne({code: req.params.puzzleid}).then(puzzle => {
     if (puzzle) {
-      res.json({status: "Wrong", errors: ["a7", "b7"]});
+      var checker = type_cheker[puzzle.type]();
+      res.json(checker.check(puzzle.dimension, JSON.parse(puzzle.data), req.body));
     } else {
       res.sendStatus(404);
     }
