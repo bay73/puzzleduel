@@ -91,9 +91,9 @@ squarePuzzle.prototype.showClues = function(data) {
 
 squarePuzzle.prototype.showResult = function(result) {
   if (result.status == 'OK') {
-    showMessage("Congratulations! Puzzle solved correctly!", 3000);
+    showMessage("Congratulations! Puzzle solved correctly!", 5000);
   } else {
-    showError("Sorry, there is a mistake. Try again.", 3000);
+    showError("Sorry, there is a mistake. Try again.", 5000);
     result.errors.forEach(coord => {
       var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
       var y = parseInt(coord.substring(1)) - 1;
@@ -155,10 +155,14 @@ squarePuzzleCell.prototype.markError = function() {
   this.cellSize = this.puzzle.cellSize;
   var x = this.puzzle.leftGap + this.col*this.cellSize;
   var y = this.puzzle.topGap + this.row*this.cellSize;
-  var errorElem = this.puzzle.snap.rect(x, y, this.cellSize, this.cellSize);
-  errorElem.attr({fill: "#f00", opacity: 0.5});
-  setInterval(() => errorElem.animate({fill: "#fff"}, 200, ()=> errorElem.animate({fill: "#f00"}, 200)), 400);
-  setTimeout(() => errorElem.remove(), 3000);
+  var errorElem = this.puzzle.snap.circle(x + this.cellSize/2, y + this.cellSize/2, 0);
+  errorElem.attr({fill: "#f08", opacity: 0.5});
+  var radius = this.cellSize/3;
+  var errorInterval = setInterval(() => {
+      errorElem.attr({r: 0});
+      errorElem.animate({r: radius}, 200);
+    }, 400);
+  setTimeout(() => {errorElem.remove(); clearInterval(errorInterval);}, 5000);
 }
 
 squarePuzzleCell.prototype.syncCell = function() {
