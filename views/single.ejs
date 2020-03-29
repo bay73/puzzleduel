@@ -1,0 +1,18 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-lg-8 m-auto">
+      <%- include ('./partials/messages') %>
+      <% if(puzzle){ %> 
+        <div class="card">
+          <%- include ('./partials/puzzle') %>
+        </div>
+        <script>
+          $(document).ready(function () {
+            showPuzzle();
+          });
+        </script>
+      <% } %>
+    </div>
+  </div>
+</div>
