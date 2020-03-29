@@ -10,6 +10,7 @@ const UserActionLog = require('../models/UserActionLog');
 const type_cheker = {};
 
 type_cheker["tapa_classic"] = require('../puzzle_types/tapa_classic')
+type_cheker["yin_yang_classic"] = require('../puzzle_types/yin_yang_classic')
 
 // Read puzzle header
 router.get('/:puzzleid', (req, res) => {
