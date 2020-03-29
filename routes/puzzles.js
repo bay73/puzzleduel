@@ -60,13 +60,12 @@ router.get('/:puzzleid/start', (req, res) => {
 router.post('/:puzzleid/check', (req, res) => {
   Puzzle.findOne({code: req.params.puzzleid}).then(puzzle => {
     if (puzzle) {
-      var checker = type_cheker[puzzle.type]();
-      var result = checker.check(puzzle.dimension, JSON.parse(puzzle.data), req.body);
       if (puzzle.needLogging) {
         if (!req.user) {
 	  res.status(403).send('You should log in to solve this puzzle!');
           return;
         }
+        var result = type_cheker[puzzle.type].check(puzzle.dimension, JSON.parse(puzzle.data), req.body);
         const newUserActionLog = new UserActionLog({
           userId: req.user._id,
           puzzleId: req.params.puzzleid,

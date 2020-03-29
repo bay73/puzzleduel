@@ -70,6 +70,4 @@ checkConnected: function(cells, color) {
 }
 };
 
-module.exports = function() {
-  return Checker;
-};
+module.exports = Checker;

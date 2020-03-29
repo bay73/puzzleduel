@@ -95,6 +95,4 @@ checkTapaClue: function(clue, position, cells) {
 }
 };
 
-module.exports = function() {
-  return Checker;
-};
+module.exports = Checker;
