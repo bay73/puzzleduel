@@ -92,7 +92,7 @@ squarePuzzle.prototype.showClues = function(data) {
 squarePuzzle.prototype.showResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
-    this.message = showMessage("Congratulations! Puzzle solved correctly!");
+    this.message = showMessage("Congratulations! The puzzle has been solved correctly!");
   } else {
     this.message = showError("Sorry, there is a mistake. " + result.status + ". Try again.", 10000);
     if (result.errors) {
