@@ -34,8 +34,10 @@ router.get('/:puzzleid/start', (req, res) => {
   Puzzle.findOne({code: req.params.puzzleid}, 'data daily').then(puzzle => {
     if (puzzle) {
       if (puzzle.hidden) {
-        res.sendStatus(404);
-        return;
+        if (!req.user || req.user.role != 'test') {
+          res.sendStatus(404);
+          return;
+        }
       }
       if (puzzle.needLogging) {
         if (!req.user) {
