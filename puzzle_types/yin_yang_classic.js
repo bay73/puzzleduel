@@ -4,17 +4,17 @@ const Checker = {
 check:function(dimension, clues, data){
   // Create array
   var dim = util.parseDimension(dimension);
-  cells = util.create2DArray(dim.rows, dim.cols, "")
+  var cells = util.create2DArray(dim.rows, dim.cols, "")
 
   // Parse data.
-  for (const [key, value] of Object.entries(data)) {
+  for (var [key, value] of Object.entries(data)) {
     var pos = util.parseCoord(key);
     if (cells[pos.y]){
       cells[pos.y][pos.x] = value;
     }
   }
   // Parse clues.
-  for (const [key, value] of Object.entries(clues)) {
+  for (var [key, value] of Object.entries(clues)) {
     var pos = util.parseCoord(key);
     if (cells[pos.y]){
       cells[pos.y][pos.x] = value;
