@@ -30,6 +30,11 @@ const PuzzleSchema = new mongoose.Schema({
 PuzzleSchema.virtual('needLogging').get(function() {
   var d = new Date();
   d.setDate(d.getDate()-5);
+  return !this.daily || this.daily > d
+});
+
+PuzzleSchema.virtual('hidden').get(function() {
+  var d = new Date();
   return this.daily && this.daily > d
 });
 

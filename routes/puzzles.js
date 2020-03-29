@@ -33,6 +33,10 @@ router.get('/:puzzleid', (req, res) => {
 router.get('/:puzzleid/start', (req, res) => {
   Puzzle.findOne({code: req.params.puzzleid}, 'data daily').then(puzzle => {
     if (puzzle) {
+      if (puzzle.hidden) {
+        res.sendStatus(404);
+        return;
+      }
       if (puzzle.needLogging) {
         if (!req.user) {
 	  res.status(403).send('You should log in to solve this puzzle!');
