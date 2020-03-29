@@ -1,0 +1,29 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header">Daily puzzles</h1>
+        <div class="card-body">
+          <table class="table table-hover table-condensed">
+            <tbody>
+              <% puzzles.forEach(function(puzzle) { %>
+              <tr>
+                <td><%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %></td>
+                <td>
+                  <a href="/single/<%= puzzle.code %>">
+                    <%= puzzle.type %>
+                    <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+                  </a>
+                </td>
+                <td class="d-none d-sm-block"></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

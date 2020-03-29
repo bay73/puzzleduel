@@ -58,6 +58,7 @@ app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/puzzles', require('./routes/puzzles.js'));
 app.use('/single', require('./routes/single.js'));
+app.use('/archive', require('./routes/archive.js'));
 
 // Static content
 app.use('/images', express.static(__dirname + '/images'));
