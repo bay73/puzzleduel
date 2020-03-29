@@ -119,7 +119,7 @@ squarePuzzle.prototype.preloadImages = function(imageList) {
 
 squarePuzzle.prototype.imageUrl = function(imageName) {
   // Url for image with the given name.
-  return "images/"+imageName+".png";
+  return "../images/"+imageName+".png";
 }
 
 var squarePuzzleCell = function(puzzle, col, row) {

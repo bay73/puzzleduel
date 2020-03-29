@@ -5,8 +5,10 @@ const Puzzle = require('../models/Puzzle');
 // PuzzleType model
 const PuzzleType = require('../models/PuzzleType');
 
+
+router.get('/', (req, res) => res.redirect('/index/main'));
 // Welcome Page
-router.get('/', (req, res) => { 
+router.get('/index/main', (req, res) => { 
   var datetime = new Date();
   Puzzle.findOne({daily: datetime.toISOString().slice(0,10)}, "-data").then(puzzle => {
     if (puzzle) {
