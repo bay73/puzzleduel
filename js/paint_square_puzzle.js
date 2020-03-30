@@ -1,5 +1,5 @@
 // Default puzzle with square grid.
-var squarePuzzle = function(typeCode, id, dimension) {
+var innerCluePuzzle = function(typeCode, id, dimension) {
   this.id = id;
   this.typeCode = typeCode;
   this.initImages();
@@ -7,7 +7,7 @@ var squarePuzzle = function(typeCode, id, dimension) {
   this.createBoard();
 }
 
-squarePuzzle.prototype.start = function() {
+innerCluePuzzle.prototype.start = function() {
   this.removeMessages();
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/start")
@@ -15,7 +15,7 @@ squarePuzzle.prototype.start = function() {
     .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
 }
 
-squarePuzzle.prototype.check = function() {
+innerCluePuzzle.prototype.check = function() {
   var data = {};
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
@@ -33,7 +33,7 @@ squarePuzzle.prototype.check = function() {
 }
 
 
-squarePuzzle.prototype.createBoard = function() {
+innerCluePuzzle.prototype.createBoard = function() {
   // Create 2D array of Cells
   this.cells = [];
   for (var y = 0; y < this.rows; y++) {
@@ -44,7 +44,7 @@ squarePuzzle.prototype.createBoard = function() {
   }
 }
 
-squarePuzzle.prototype.findCellSize = function() {
+innerCluePuzzle.prototype.findCellSize = function() {
   // Find cell size based on size of the window.
   var hSizeLimit = this.snap.node.clientWidth*0.97;
   var vSizeLimit = window.innerHeight*0.6;
@@ -53,7 +53,7 @@ squarePuzzle.prototype.findCellSize = function() {
   this.topGap = 1;
 }
  
-squarePuzzle.prototype.render = function(snap) {
+innerCluePuzzle.prototype.render = function(snap) {
   // Draw puzzle grid
   this.snap = snap;
   this.findCellSize();
@@ -71,7 +71,7 @@ squarePuzzle.prototype.render = function(snap) {
   this.snap.node.setAttribute("height", this.snap.getBBox().height + 2);
 }
 
-squarePuzzle.prototype.showClues = function(data) {
+innerCluePuzzle.prototype.showClues = function(data) {
   // Parse clues.
   for (const [key, value] of Object.entries(data)) {
     var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
@@ -89,7 +89,7 @@ squarePuzzle.prototype.showClues = function(data) {
   }
 }
 
-squarePuzzle.prototype.showResult = function(result) {
+innerCluePuzzle.prototype.showResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
     this.message = showMessage("Congratulations! The puzzle has been solved correctly!");
@@ -105,19 +105,19 @@ squarePuzzle.prototype.showResult = function(result) {
   }
 }
 
-squarePuzzle.prototype.removeMessages = function() {
+innerCluePuzzle.prototype.removeMessages = function() {
   if (this.message) {
     this.message.remove();
     this.message = null;
   }
 }
 
-squarePuzzle.prototype.preloadImages = function(imageList) {
+innerCluePuzzle.prototype.preloadImages = function(imageList) {
   // Preload images to prevent delays when solving.
   imageList.forEach(name => new Image().src = this.imageUrl(name));
 }
 
-squarePuzzle.prototype.imageUrl = function(imageName) {
+innerCluePuzzle.prototype.imageUrl = function(imageName) {
   // Url for image with the given name.
   return "/images/"+imageName+".png";
 }
@@ -199,7 +199,7 @@ squarePuzzleCell.prototype.attachController = function() {
   }
 }
 
-squarePuzzle.prototype.initImages = function() {
+innerCluePuzzle.prototype.initImages = function() {
   // Images used for the given puzzle type.
   this.clues = [];
   this.togglers = [];
@@ -219,7 +219,7 @@ squarePuzzle.prototype.initImages = function() {
   this.preloadImages(this.togglers);
 }
 
-squarePuzzle.prototype.parseDimension = function(dimension) {
+innerCluePuzzle.prototype.parseDimension = function(dimension) {
   // Parse dimension string to values.
   var dimensions = dimension.split("x");
   this.rows = dimensions[1];
