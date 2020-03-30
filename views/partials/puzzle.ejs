@@ -1,7 +1,5 @@
 <% if(typeof puzzle != 'undefined'){ %> 
-<div class="card-body">  
-  <h2 class="card-text text-left"><%= puzzle.type.name %></h2>
-</div>
+<h2 class="card-body pt-0"><%= puzzle.type.name %></h2>
 <svg id="mainGrid" class="col-xs-12 text-center"></svg>
 <div class="card-body">
   <button id="startBtn" type="button" class="btn btn-primary" onclick="startPuzzle()">Start</button>
