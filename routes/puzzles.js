@@ -6,6 +6,8 @@ const Puzzle = require('../models/Puzzle');
 const PuzzleType = require('../models/PuzzleType');
 // UserActionLog model
 const UserActionLog = require('../models/UserActionLog');
+// UserSolvingTime model
+const UserSolvingTime = require('../models/UserSolvingTime');
 
 const type_cheker = {};
 
@@ -22,10 +24,40 @@ function logAction(user, puzzleId, action) {
   newUserActionLog.save();
 }
 
+async function writeSilvingTime(user, puzzleId) {
+  const time = await UserSolvingTime.findOne({userId: user._id, puzzleId: puzzleId});
+  if (time != null) {
+    return;
+  }
+  const logs = await UserActionLog.find({userId: user._id, puzzleId: puzzleId}).sort('date');
+  var startTime = null;
+  var solveTime = null;
+  var errCount = 0;
+  logs.forEach(log => {
+    if (!startTime && log.action == "start") {
+      startTime = log.date;
+    }
+    if (!solveTime && log.action == "solved") {
+      solveTime = log.date;
+    }
+    if (!solveTime && log.action == "submitted") {
+      errCount++;
+    }
+  });
+  const newUserSolvingTime = new UserSolvingTime({
+    userId: user._id,
+    userName: user.name,
+    puzzleId: puzzleId,
+    solvingTime: solveTime - startTime,
+    errCount: errCount
+  });
+  newUserSolvingTime.save();
+}
+
 // Read puzzle header
 router.get('/:puzzleid', async (req, res, next) => {
   try {
-    puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-_id -data -code");
+    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-_id -data -code");
     if (!puzzle) {
       res.sendStatus(404);
       return;
@@ -44,7 +76,7 @@ router.get('/:puzzleid', async (req, res, next) => {
 // Read puzzle data
 router.get('/:puzzleid/start', async (req, res, next) => {
   try {
-    puzzle = await Puzzle.findOne({code: req.params.puzzleid}, 'data daily');
+    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, 'data daily');
     if (!puzzle) {
       res.sendStatus(404);
       return;
@@ -71,7 +103,7 @@ router.get('/:puzzleid/start', async (req, res, next) => {
 // Check puzzle solution
 router.post('/:puzzleid/check', async (req, res, next) => {
   try {
-    puzzle = await Puzzle.findOne({code: req.params.puzzleid});
+    const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
     if (!puzzle) {
       res.sendStatus(404);
       return;
@@ -83,6 +115,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
       }
       var result = type_cheker[puzzle.type].check(puzzle.dimension, JSON.parse(puzzle.data), req.body);
       logAction(req.user, req.params.puzzleid, result.status == "OK" ? "solved" : "submitted");
+      writeSilvingTime(req.user, req.params.puzzleid);
     }
     res.json(result);
   } catch (e) {
