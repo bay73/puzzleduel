@@ -19,7 +19,7 @@ function timeToString(millis) {
     (secs + " s");
 }
 
-// Welcome Page
+// Puzzle list
 router.get('/', async (req, res, next) => { 
   try {
     const types = await PuzzleType.find({}, "code name");
@@ -50,6 +50,44 @@ router.get('/', async (req, res, next) => {
           dimension: puzzle.dimension,
           daily: puzzle.daily,
           time: timeToString(timesMap[puzzle.code])};
+      })
+    });
+  } catch (e) {
+    next(e) 
+  }
+});
+
+router.get('/:puzzleid/times', async (req, res, next) => {
+  try {
+    puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-data");
+    if (!puzzle) {
+      res.render('times', {
+        user: req.user,
+        puzzle: null,
+        times: []
+      });
+      return;
+    }
+    var puzzleType = puzzle.type;
+    const type = await PuzzleType.findOne({code: puzzle.type}, "name");
+    if (type) {
+      puzzleType = type.name;
+    }
+    const times = await UserSolvingTime.find({puzzleId: puzzle.code});
+    res.render('times', {
+      user: req.user,
+      puzzle: {
+        code: puzzle.code,
+        type: puzzleType,
+        dimension: puzzle.dimension,
+        daily: puzzle.daily,
+      },
+      times: times.map(time => {
+        return {
+          userName: time.userName,
+          time: timeToString(time.solvingTime),
+          errors: time.errCount
+        };
       })
     });
   } catch (e) {

@@ -1,0 +1,32 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <% if(puzzle) { %>
+        <h1 class="card-header">
+          <a href="/single/<%= puzzle.code %>">
+            <%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>: 
+            <%= puzzle.type %>
+            <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+          </a>
+        </h1>
+        <div class="card-body">
+          <table class="table table-hover table-condensed">
+            <tbody>
+              <% times.forEach(function(time) { %>
+              <tr>
+                <td><%= time.userName %></td>
+                <td><%= time.time %></td>
+                <td><%= time.errors==0 ? "" : (time.errors == 1 ? "1 error" : (time.errors + " errors")) %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
