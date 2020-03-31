@@ -17,7 +17,9 @@
                     <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
                   </a>
                 </td>
-                <td class="d-none d-sm-block"></td>
+                <td class="d-none d-sm-block">
+                  <%= puzzle.time %>
+                </td>
               </tr>
               <% }) %>
             </tbody>

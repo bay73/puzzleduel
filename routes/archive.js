@@ -4,7 +4,20 @@ const router = express.Router();
 const Puzzle = require('../models/Puzzle');
 // PuzzleType model
 const PuzzleType = require('../models/PuzzleType');
+// UserSolvingTime model
+const UserSolvingTime = require('../models/UserSolvingTime');
 
+function timeToString(millis) {
+  if (!millis) return "";
+  var secs = Math.round(millis/1000);
+  var mins = Math.trunc(secs/60);
+  var hours = Math.trunc(mins/60);
+  secs = secs - 60 * mins;
+  mins = mins - 60 * hours;
+  return (hours > 0 ? (hours + "h ") : "") +
+    ((hours > 0 || mins > 0) ? (mins + "m ") : "") +
+    (secs + " s");
+}
 
 // Welcome Page
 router.get('/', async (req, res, next) => { 
@@ -12,6 +25,17 @@ router.get('/', async (req, res, next) => {
     const types = await PuzzleType.find({}, "code name");
     var typeMap = {};
     types.forEach(type => typeMap[type.code] = type.name);
+    const times = await UserSolvingTime.aggregate([{
+      $match : { errCount : 0 }
+    }, {
+      $group: {
+        _id: "$puzzleId",
+        min: { $min: "$solvingTime" }
+      }
+    }]);
+    var timesMap = {};
+    times.forEach(time => timesMap[time._id] = time.min);
+
     var filter = {daily: {$lte: new Date()} };
     if (req.user && req.user.role == "test") {
       filter = {};
@@ -24,7 +48,8 @@ router.get('/', async (req, res, next) => {
           code: puzzle.code,
           type: typeMap[puzzle.type],
           dimension: puzzle.dimension,
-          daily: puzzle.daily};
+          daily: puzzle.daily,
+          time: timeToString(timesMap[puzzle.code])};
       })
     });
   } catch (e) {
