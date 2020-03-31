@@ -19,6 +19,16 @@ function timeToString(millis) {
     (secs + " s");
 }
 
+function showPuzzle(puzzle, user) {
+  if (!puzzle) return false;
+  if (!puzzle.daily || puzzle.daily > new Date()) {
+    if (!user || user.role != "test") {
+      return false;
+    }
+  }
+  return true;
+}
+
 // Puzzle list
 router.get('/', async (req, res, next) => { 
   try {
@@ -59,8 +69,13 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:puzzleid/times', async (req, res, next) => {
   try {
-    puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-data");
-    if (!puzzle) {
+    var date = Date.parse(req.params.puzzleid);
+    var filter = {code: req.params.puzzleid};
+    if (date) {
+      filter = {daily: date};
+    }
+    puzzle = await Puzzle.findOne(filter, "-data");
+    if (!showPuzzle(puzzle, req.user)) {
       res.render('times', {
         user: req.user,
         puzzle: null,
@@ -73,7 +88,7 @@ router.get('/:puzzleid/times', async (req, res, next) => {
     if (type) {
       puzzleType = type.name;
     }
-    const times = await UserSolvingTime.find({puzzleId: puzzle.code});
+    const times = await UserSolvingTime.find({puzzleId: puzzle.code}).sort("solvingTime");
     res.render('times', {
       user: req.user,
       puzzle: {
