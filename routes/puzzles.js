@@ -44,6 +44,10 @@ async function writeSilvingTime(user, puzzleId) {
       errCount++;
     }
   });
+  if (!solveTime) solveTime = new Date;
+  if (! startTime || solveTime < startTime) {
+    return;
+  }
   const newUserSolvingTime = new UserSolvingTime({
     userId: user._id,
     userName: user.name,
