@@ -44,7 +44,7 @@ async function writeSilvingTime(user, puzzleId) {
       errCount++;
     }
   });
-  if (!solveTime) solveTime = new Date;
+  if (!solveTime) solveTime = new Date();
   if (! startTime || solveTime < startTime) {
     return;
   }
@@ -119,7 +119,9 @@ router.post('/:puzzleid/check', async (req, res, next) => {
       }
       var result = type_cheker[puzzle.type].check(puzzle.dimension, JSON.parse(puzzle.data), req.body);
       logAction(req.user, req.params.puzzleid, result.status == "OK" ? "solved" : "submitted");
-      writeSilvingTime(req.user, req.params.puzzleid);
+      if (result.status == "OK") {
+        writeSilvingTime(req.user, req.params.puzzleid);
+      }
     }
     res.json(result);
   } catch (e) {
