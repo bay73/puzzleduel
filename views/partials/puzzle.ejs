@@ -1,9 +1,14 @@
 <% if(typeof puzzle != 'undefined'){ %> 
 <h2 class="card-body pt-0"><%= puzzle.type.name %></h2>
 <svg id="mainGrid" class="col-xs-12 text-center"></svg>
-<div class="card-body">
-  <button id="startBtn" type="button" class="btn btn-primary" onclick="startPuzzle()">Start</button>
-  <button id="checkBtn" type="button" class="btn btn-primary" disabled onClick="checkPuzzle()">Check</button>
+<div class="row card-body">
+  <div class="col-10 text-left">
+    <button id="startBtn" type="button" class="btn btn-primary" onclick="startPuzzle()">Start</button>
+    <button id="revertBtn" type="button" class="btn btn-primary" style="display: none" onClick="revertStep()">Revert</button>
+  </div>
+  <div class="col-2 text-right">
+    <button id="checkBtn" type="button" class="btn btn-primary" disabled onClick="checkPuzzle()">Check</button>
+  </div>
   <p class="card-text text-left pt-3"><%= puzzle.type.rules %></p>
 </div>
 <script src="../../js/<%= puzzle.type.puzzleJs %>"></script>
@@ -15,12 +20,17 @@
 
   function startPuzzle() {
     $("#checkBtn").prop('disabled', false);
+    $("#revertBtn").show();
     $("#startBtn").html('Restart');
     puzzle.start();
   }
 
   function checkPuzzle() {
     puzzle.check();
+  }
+
+  function revertStep() {
+    puzzle.revertStep();
   }
 </script>
 <% } %>

@@ -5,6 +5,7 @@ var innerCluePuzzle = function(typeCode, id, dimension) {
   this.initImages();
   this.parseDimension(dimension);
   this.createBoard();
+  this.steps = [];
 }
 
 innerCluePuzzle.prototype.start = function() {
@@ -32,6 +33,11 @@ innerCluePuzzle.prototype.check = function() {
     .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
 }
 
+innerCluePuzzle.prototype.revertStep = function() {
+  if (this.steps.length > 0) {
+    this.steps[this.steps.length-1].untoggleCell();
+  }
+}
 
 innerCluePuzzle.prototype.createBoard = function() {
   // Create 2D array of Cells
@@ -183,9 +189,18 @@ squarePuzzleCell.prototype.syncCell = function() {
 }
 
 squarePuzzleCell.prototype.toggleCell = function() {
+  this.puzzle.steps.push(this);
   // Process click in the cell.
   this.valueIndex++;
   if (this.valueIndex >= this.togglers.length) this.valueIndex = 0;
+  this.value = this.togglers[this.valueIndex];
+  this.syncCell();
+}
+
+squarePuzzleCell.prototype.untoggleCell = function() {
+  this.puzzle.steps.pop(this);
+  this.valueIndex--;
+  if (this.valueIndex < 0) this.valueIndex = this.togglers.length - 1;
   this.value = this.togglers[this.valueIndex];
   this.syncCell();
 }
