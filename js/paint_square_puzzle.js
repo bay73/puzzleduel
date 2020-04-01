@@ -27,7 +27,7 @@ innerCluePuzzle.prototype.check = function() {
     }
   }
   this.removeMessages();
-  // Read clues from server and start the puzzle solving.
+  // Read result from server and show.
   $.post("/puzzles/" + this.id + "/check", data)
     .done(response => this.showResult(response))
     .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
