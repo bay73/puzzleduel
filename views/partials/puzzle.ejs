@@ -10,6 +10,13 @@
     <button id="checkBtn" type="button" class="btn btn-primary" disabled onClick="checkPuzzle()">Check</button>
   </div>
   <p class="card-text text-left pt-3"><%= puzzle.type.rules %></p>
+  <p class="card-text text-left pt-3"><b>Game control</b>: 
+    <% if(puzzle.type.puzzleJs=="chooser_square_puzzle.js") { %>
+      Press the mouse button at the celected cell, then holding the button move the move to the right option and release the button.
+    <% } else { %>
+      Click the mouse button at the celected cell to change the filling of the cell.
+    <% } %>
+  </p>
 </div>
 <script src="../../js/<%= puzzle.type.puzzleJs %>"></script>
 <script>
