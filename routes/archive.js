@@ -67,7 +67,8 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:puzzleid/times', async (req, res, next) => {
+router.get(['/:puzzleid/scores','/:puzzleid/times'],
+  async (req, res, next) => {
   try {
     var date = Date.parse(req.params.puzzleid);
     var filter = {code: req.params.puzzleid};

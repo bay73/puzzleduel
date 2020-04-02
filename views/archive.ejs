@@ -18,7 +18,9 @@
                   </a>
                 </td>
                 <td class="d-none d-sm-block">
-                  <%= puzzle.time %>
+                  <a href="/archive/<%= puzzle.code %>/scores">
+                    <%= puzzle.time %>
+                  </a>
                 </td>
               </tr>
               <% }) %>
