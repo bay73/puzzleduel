@@ -13,66 +13,81 @@ router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
 
 // Register
-router.post('/register', (req, res) => {
-  const { name, email, password, password2 } = req.body;
-  let errors = [];
+router.post('/register', async (req, res, next) => {
+  try {
+    const { name, email, password, password2 } = req.body;
+    let errors = [];
 
-  if (!name || !email || !password || !password2) {
-    errors.push({ msg: 'Please enter all fields' });
-  }
+    if (!name || !email || !password || !password2) {
+      errors.push({ msg: 'Please enter all fields' });
+    }
 
-  if (password != password2) {
-    errors.push({ msg: 'Passwords do not match' });
-  }
+    if (password != password2) {
+      errors.push({ msg: 'Passwords do not match' });
+    }
 
-  if (password.length < 6) {
-    errors.push({ msg: 'Password must be at least 6 characters' });
-  }
+    if (password.length < 6) {
+      errors.push({ msg: 'Password must be at least 6 characters' });
+    }
 
-  if (errors.length > 0) {
-    res.render('register', {
-      errors,
+    if (errors.length > 0) {
+      res.render('register', {
+        errors,
+        name,
+        email,
+        password,
+        password2
+      });
+      return;
+    }
+    user = await User.findOne({ email: email });
+    if (user) {
+      errors.push({ msg: 'Email already exists' });
+      res.render('register', {
+        errors,
+        name,
+        email,
+        password,
+        password2
+      });
+      return;
+    }
+    user = await User.findOne({ name: name });
+    if (user) {
+      errors.push({ msg: 'Name already exists' });
+      res.render('register', {
+        errors,
+        name,
+        email,
+        password,
+        password2
+      });
+      return;
+    }
+    const newUser = new User({
       name,
       email,
-      password,
-      password2
+      password
     });
-  } else {
-    User.findOne({ email: email }).then(user => {
-      if (user) {
-        errors.push({ msg: 'Email already exists' });
-        res.render('register', {
-          errors,
-          name,
-          email,
-          password,
-          password2
-        });
-      } else {
-        const newUser = new User({
-          name,
-          email,
-          password
-        });
 
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-            newUser.password = hash;
-            newUser
-              .save()
-              .then(user => {
-                req.flash(
-                  'success_msg',
-                  'You are now registered and can log in'
-                );
-                res.redirect('/users/login');
-              })
-              .catch(err => console.log(err));
-          });
-        });
-      }
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(newUser.password, salt, (err, hash) => {
+        if (err) throw err;
+        newUser.password = hash;
+        newUser
+          .save()
+          .then(user => {
+            req.flash(
+              'success_msg',
+              'You are now registered and can log in'
+            );
+            res.redirect('/users/login');
+          })
+          .catch(err => console.log(err));
+      });
     });
+  } catch (e) {
+    next(e);
   }
 });
 
