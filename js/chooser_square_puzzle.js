@@ -272,9 +272,9 @@ onMouseDown: function(puzzle, event) {
     var center = cell.getCenter();
     puzzle.chooserElem = puzzle.snap.group();
     puzzle.chooserElem.cell = cell;
-    var chooserSize = puzzle.cellSize*1.3;
+    var chooserSize = puzzle.cellSize*1.2;
     var circle = puzzle.snap.circle(center.x, center.y, chooserSize);
-    circle.attr({fill: "#880", opacity: 0.4});
+    circle.attr({fill: "#880", opacity: 0.5});
     puzzle.chooserElem.append(circle);
     var angle = Math.PI * 2 / cell.togglers.length;
     var distance = 1. / (1. + Math.sin(angle/2));
@@ -290,7 +290,7 @@ createToggler: function(puzzle, center, angle, distance, size, index, value) {
     center.x + Math.sin(index*angle)*size*distance,
     center.y - Math.cos(index*angle)*size*distance,
     size*(1.-distance));
-  togglerCircle.attr({stroke: "#550", strokeWidth: 2, fill: "#880", opacity: 0.2});
+  togglerCircle.attr({stroke: "#550", strokeWidth: 2, fill: "#880", opacity: 0.3});
   puzzle.chooserElem.append(togglerCircle);
   var togglerImage = puzzle.snap.image(
     puzzle.imageUrl(value),
@@ -300,13 +300,13 @@ createToggler: function(puzzle, center, angle, distance, size, index, value) {
     size/2);
   togglerImage.valueIndex = index;
   puzzle.chooserElem.append(togglerImage);
-  togglerImage.node.addEventListener("mouseover", ()=> {togglerCircle.attr({opacity: 0.95});});
-  togglerImage.node.addEventListener("mouseout", ()=> {togglerCircle.attr({opacity: 0.2});});
+  togglerImage.node.addEventListener("mouseover", ()=> {togglerCircle.attr({opacity: 1});});
+  togglerImage.node.addEventListener("mouseout", ()=> {togglerCircle.attr({opacity: 0.3});});
   puzzle.snap.node.addEventListener("touchmove", (event)=> {
     if (chooserBuilder.eventElement(event)==togglerImage) {
-      togglerCircle.attr({opacity: 0.95});
+      togglerCircle.attr({opacity: 1});
     } else {
-      togglerCircle.attr({opacity: 0.2});
+      togglerCircle.attr({opacity: 0.3});
     }
   });
 },
