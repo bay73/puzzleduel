@@ -33,7 +33,7 @@ check:function(dimension, clues, data){
 },
 
 checkNo2x2: function(cells, color) {
-  var res = util.find2x2(cells, "black");
+  var res = util.find2x2(cells, ["black"]);
   if (res){
     return {status: "No 2x2 black squares are allowed", errors: res};
   }

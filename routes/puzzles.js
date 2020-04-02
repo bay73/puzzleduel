@@ -14,6 +14,7 @@ const type_cheker = {};
 type_cheker["tapa_classic"] = require('../puzzle_types/tapa_classic')
 type_cheker["yin_yang_classic"] = require('../puzzle_types/yin_yang_classic')
 type_cheker["minesweeper_classic"] = require('../puzzle_types/minesweeper_classic')
+type_cheker["fuzuli"] = require('../puzzle_types/fuzuli')
 
 function logAction(user, puzzleId, action) {
   const newUserActionLog = new UserActionLog({
@@ -96,7 +97,9 @@ router.get('/:puzzleid/start', async (req, res, next) => {
         res.status(403).send('You should log in to solve this puzzle!');
         return;
       }
-      logAction(req.user, req.params.puzzleid, "start");
+      if (req.role != "test") {
+        logAction(req.user, req.params.puzzleid, "start");
+      }
     }
     res.json(JSON.parse(puzzle.data));
   } catch (e) {
@@ -112,15 +115,17 @@ router.post('/:puzzleid/check', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
+    var result = type_cheker[puzzle.type].check(puzzle.dimension, JSON.parse(puzzle.data), req.body);
     if (puzzle.needLogging) {
       if (!req.user) {
         res.status(403).send('You should log in to solve this puzzle!');
         return;
       }
-      var result = type_cheker[puzzle.type].check(puzzle.dimension, JSON.parse(puzzle.data), req.body);
-      logAction(req.user, req.params.puzzleid, result.status == "OK" ? "solved" : "submitted");
-      if (result.status == "OK") {
-        writeSilvingTime(req.user, req.params.puzzleid);
+      if (req.role != "test") {
+        logAction(req.user, req.params.puzzleid, result.status == "OK" ? "solved" : "submitted");
+        if (result.status == "OK") {
+          writeSilvingTime(req.user, req.params.puzzleid);
+        }
       }
     }
     res.json(result);

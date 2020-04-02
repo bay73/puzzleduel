@@ -97,18 +97,80 @@ const Util = {
     return null;
   },
 
-  find2x2: function(cells, color) {
+  find2x2: function(cells, colors) {
     // Returns list of cells forming 2x2 square.
     // Returns null if no 2x2 squares of the given color.
     for (var y = 0; y < cells.rows - 1; y++) {
       for (var x = 0; x < cells.cols - 1; x++) {
-        if (cells[y][x] == color && cells[y+1][x] == color && cells[y][x+1] == color && cells[y+1][x+1] == color){
+        if (colors.includes(cells[y][x])
+            && colors.includes(cells[y+1][x])
+            && colors.includes(cells[y][x+1])
+            && colors.includes(cells[y+1][x+1])){
           return [Util.coord(x,y), Util.coord(x+1,y), Util.coord(x,y+1), Util.coord(x+1,y+1)];
         }
       }
     }
     return null;
+  },
+
+  checkOnceInRows: function(cells, colors) {
+    // Returns list of cells in row which is wring.
+    for (var y = 0; y < cells.rows; y++) {
+      var colorsPresent = [];
+      var repeat = false;
+      var cellList = [];
+      for (var x = 0; x < cells.cols; x++) {
+        cellList.push(Util.coord(x,y));
+        if (colors.includes(cells[y][x])) {
+          if (colorsPresent.includes(cells[y][x])) {
+            repeat = true;
+          } else {
+            colorsPresent.push(cells[y][x]);
+          }
+        }
+      }
+      var all = true;
+      for (var i=0;i<colors.length;i++) {
+        if (!colorsPresent.includes(colors[i])) {
+          all = false;
+        }
+      }
+      if (!all || repeat) {
+        return cellList;
+      }
+    }
+    return null;
+  },
+
+  checkOnceInColumns: function(cells, colors) {
+    // Returns list of cells in column which is wring.
+    for (var x = 0; x < cells.cols; x++) {
+      var colorsPresent = [];
+      var repeat = false;
+      var cellList = [];
+      for (var y = 0; y < cells.rows; y++) {
+        cellList.push(Util.coord(x,y));
+        if (colors.includes(cells[y][x])) {
+          if (colorsPresent.includes(cells[y][x])) {
+            repeat = true;
+          } else {
+            colorsPresent.push(cells[y][x]);
+          }
+        }
+      }
+      var all = true;
+      for (var i=0;i<colors.length;i++) {
+        if (!colorsPresent.includes(colors[i])) {
+          all = false;
+        }
+      }
+      if (!all || repeat) {
+        return cellList;
+      }
+    }
+    return null;
   }
+
 };
 
 module.exports = Util;
