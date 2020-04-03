@@ -324,6 +324,64 @@ onMouseUp: function(puzzle, event) {
 }
 }
 
+var classicSudokuPuzzle = function(typeCode, id, dimension) {
+  innerCluePuzzle.call(this, typeCode, id, dimension);
+}
 
+Object.setPrototypeOf(classicSudokuPuzzle.prototype, innerCluePuzzle.prototype);
 
+classicSudokuPuzzle.prototype.render = function(snap) {
+  // Draw puzzle grid
+  this.snap = snap;
+  this.findCellSize();
+  var board = this.snap.rect(this.leftGap, this.topGap, this.cols * this.cellSize, this.rows * this.cellSize);
+  board.attr({
+      fill: "#fff",
+      stroke: "#000",
+      strokeWidth: 5
+  });
+  if (this.rows == 9) {
+    for (var j = 0; j < 3; j++) {
+      for (var i = 0; i < 3; i++) {
+        var area = this.snap.rect(this.leftGap + i * 3 * this.cellSize, this.topGap + j * 3 * this.cellSize, 3 * this.cellSize, 3 * this.cellSize);
+        area.attr({
+          fill: "none",
+          stroke: "#000",
+          strokeWidth: 5
+        });
+      }
+    }
+  } else {
+    for (var j = 0; j < 3; j++) {
+      for (var i = 0; i < 2; i++) {
+        var area = this.snap.rect(this.leftGap + i * 3 * this.cellSize, this.topGap + j * 2 * this.cellSize, 3 * this.cellSize, 2 * this.cellSize);
+        area.attr({
+          fill: "none",
+          stroke: "#000",
+          strokeWidth: 5
+        });
+      }
+    }
+  }
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      this.cells[y][x].renderCell();
+    }
+  }
+  this.snap.node.setAttribute("height", this.snap.getBBox().height + this.topGap*2);
+  chooserBuilder.attachEvents(this.snap.node, this);
+}
+
+classicSudokuPuzzle.prototype.initImages = function() {
+  // Images used for the given puzzle type.
+  this.clues = [];
+  this.togglers = [];
+  this.togglers = ["white"];
+  for (var i=1;i<=parseInt(this.rows);i++) {
+    this.clues.push(i.toString());
+    this.togglers.push(i.toString());
+  }
+  this.preloadImages(this.clues);
+  this.preloadImages(this.togglers);
+}
 
