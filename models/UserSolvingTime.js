@@ -12,7 +12,8 @@ const UserSolvingTimeSchema = new mongoose.Schema({
   },
   puzzleId: {
     type: String,
-    required: true
+    required: true,
+    index: true
   },
   solvingTime: {
     type: Number,

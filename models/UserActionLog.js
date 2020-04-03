@@ -20,6 +20,8 @@ const UserActionLogSchema = new mongoose.Schema({
   }
 });
 
+UserActionLogSchema.index({userId: 1, puzzleId: 1})
+
 const UserActionLog = mongoose.model('UserActionLog', UserActionLogSchema);
 
 module.exports = UserActionLog;
