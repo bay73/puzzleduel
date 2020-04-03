@@ -276,6 +276,7 @@ onMouseDown: function(puzzle, event) {
     var circle = puzzle.snap.circle(center.x, center.y, chooserSize);
     circle.attr({fill: "#880", opacity: 0.5});
     puzzle.chooserElem.append(circle);
+    puzzle.chooserElem.main = circle;
     var angle = Math.PI * 2 / cell.togglers.length;
     var distance = 1. / (1. + Math.sin(angle/2));
     for (var i=0;i<cell.togglers.length;i++){
@@ -318,8 +319,10 @@ onMouseUp: function(puzzle, event) {
       puzzle.steps.push({cell: puzzle.chooserElem.cell, valueIndex: puzzle.chooserElem.cell.valueIndex});
       puzzle.chooserElem.cell.setValue(element.valueIndex);
     }
-    puzzle.chooserElem.remove();
-    puzzle.chooserElem = null;
+    if (element != puzzle.chooserElem.main) {
+      puzzle.chooserElem.remove();
+      puzzle.chooserElem = null;
+    }
   }
 }
 }
