@@ -239,7 +239,7 @@ innerCluePuzzle.prototype.parseDimension = function(dimension) {
 var chooserBuilder = {
 
 eventPosition: function(event) {
-  if (event instanceof TouchEvent) {
+  if (window.TouchEvent && event instanceof TouchEvent) {
     if(event.type == "touchend") {
       return {x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY};
     } else {
