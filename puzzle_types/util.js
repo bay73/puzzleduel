@@ -116,27 +116,13 @@ const Util = {
   checkOnceInRows: function(cells, colors) {
     // Returns list of cells in row which is wring.
     for (var y = 0; y < cells.rows; y++) {
-      var colorsPresent = [];
-      var repeat = false;
-      var cellList = [];
+      var positionsToCheck = [];
       for (var x = 0; x < cells.cols; x++) {
-        cellList.push(Util.coord(x,y));
-        if (colors.includes(cells[y][x])) {
-          if (colorsPresent.includes(cells[y][x])) {
-            repeat = true;
-          } else {
-            colorsPresent.push(cells[y][x]);
-          }
-        }
+        positionsToCheck.push({x:x, y:y});
       }
-      var all = true;
-      for (var i=0;i<colors.length;i++) {
-        if (!colorsPresent.includes(colors[i])) {
-          all = false;
-        }
-      }
-      if (!all || repeat) {
-        return cellList;
+      var result = Util.checkOnceInList(cells, positionsToCheck, colors);
+      if (result) {
+        return result;
       }
     }
     return null;
@@ -145,32 +131,46 @@ const Util = {
   checkOnceInColumns: function(cells, colors) {
     // Returns list of cells in column which is wring.
     for (var x = 0; x < cells.cols; x++) {
-      var colorsPresent = [];
-      var repeat = false;
-      var cellList = [];
+      var positionsToCheck = [];
       for (var y = 0; y < cells.rows; y++) {
-        cellList.push(Util.coord(x,y));
-        if (colors.includes(cells[y][x])) {
-          if (colorsPresent.includes(cells[y][x])) {
-            repeat = true;
-          } else {
-            colorsPresent.push(cells[y][x]);
-          }
-        }
+        positionsToCheck.push({x:x, y:y});
       }
-      var all = true;
-      for (var i=0;i<colors.length;i++) {
-        if (!colorsPresent.includes(colors[i])) {
-          all = false;
-        }
-      }
-      if (!all || repeat) {
-        return cellList;
+      var result = Util.checkOnceInList(cells, positionsToCheck, colors);
+      if (result) {
+        return result;
       }
     }
     return null;
-  }
+  },
 
+  checkOnceInList: function(cells, positionsToCheck, colorsToCheck) {
+    // Returns list of cells if something is wring
+    // or null if everything is Ok
+    var colorsPresent = [];
+    var repeat = false;
+    var cellList = [];
+    for (var i = 0; i < positionsToCheck.length; i++) {
+      cellList.push(Util.coord(positionsToCheck[i].x,positionsToCheck[i].y));
+      var color = cells[positionsToCheck[i].y][positionsToCheck[i].x];
+      if (colors.includes(color)) {
+        if (colorsPresent.includes(color)) {
+          repeat = true;
+        } else {
+          colorsPresent.push(color);
+        }
+      }
+    }
+    var all = true;
+    for (var i=0;i<colorsToCheck.length;i++) {
+      if (!colorsPresent.includes(colorsToCheck[i])) {
+        all = false;
+      }
+    }
+    if (!all || repeat) {
+      return cellList;
+    }
+    return null;
+  }
 };
 
 module.exports = Util;
