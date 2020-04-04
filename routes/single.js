@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const uniqid = require('uniqid');
 // Puzzle model
 const Puzzle = require('../models/Puzzle');
 // PuzzleType model
@@ -59,5 +60,38 @@ router.get('/:puzzleid/author', ensureAuthenticated, async (req, res, next) => {
     next(e);
   }
 });
+
+// Create new puzzle and show author page
+router.get('/:typeid/:dimension/new', ensureAuthenticated, async (req, res, next) => {
+  try {
+    if (!req.user) {
+      res.status(403).send('You should log in to add puzzles!');
+      return;
+    }
+    var type = await PuzzleType.findOne({ code: req.params.typeid });
+    if(!type) {
+      res.sendStatus(404);
+      return;
+    }
+    var puzzleid = uniqid();
+    var puzzle = new Puzzle({
+      code: puzzleid,
+      type: req.params.typeid,
+      dimension: req.params.dimension,
+      data: "{}",
+      author: req.user._id
+    });
+    await puzzle.save();
+    var puzzleObj = puzzle.toObject();
+    puzzleObj.type = type.toObject();
+    res.render('edit', {
+      user: req.user,
+      puzzle: puzzleObj
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
 
 module.exports = router;

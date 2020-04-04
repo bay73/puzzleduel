@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const PuzzleSchema = new mongoose.Schema({
   code: {
@@ -25,6 +26,10 @@ const PuzzleSchema = new mongoose.Schema({
     type: Date,
     required: false
   },
+  author: {
+    type: ObjectId,
+    required: false
+  }
 });
 
 PuzzleSchema.virtual('needLogging').get(function() {

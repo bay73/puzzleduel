@@ -20,8 +20,12 @@ innerCluePuzzle.prototype.edit = function() {
   this.removeMessages();
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/get")
-    .done(data => this.showClues(data))
+    .done(data => this.showForEdit(data))
     .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
+}
+
+innerCluePuzzle.prototype.showForEdit = function (data) {
+  this.showClues(data);
   var editTogglers = ["white"].concat(this.clues);
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
