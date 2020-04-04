@@ -71,4 +71,4 @@ app.use('/js', express.static(__dirname + '/js'));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+app.listen(PORT, console.log(`Server started on port ${PORT} at ` + new Date().toString()));

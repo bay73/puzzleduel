@@ -98,7 +98,7 @@ router.get('/:puzzleid/start', async (req, res, next) => {
         res.status(403).send('You should log in to solve this puzzle!');
         return;
       }
-      if (req.role != "test") {
+      if (req.user.role != "test") {
         logAction(req.user, req.params.puzzleid, "start");
       }
     }
@@ -122,7 +122,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
         res.status(403).send('You should log in to solve this puzzle!');
         return;
       }
-      if (req.role != "test") {
+      if (req.user.role != "test") {
         logAction(req.user, req.params.puzzleid, result.status == "OK" ? "solved" : "submitted");
         if (result.status == "OK") {
           writeSilvingTime(req.user, req.params.puzzleid);
