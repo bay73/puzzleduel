@@ -5,10 +5,12 @@ const uniqid = require('uniqid');
 const Puzzle = require('../models/Puzzle');
 // PuzzleType model
 const PuzzleType = require('../models/PuzzleType');
+// User model
+const User = require('../models/User');
 
 const { ensureAuthenticated } = require('../config/auth');
 
-// Welcome Page
+// Single puzzle page
 router.get('/:puzzleid', async (req, res, next) => {
   try {
     var puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-data");
@@ -18,9 +20,15 @@ router.get('/:puzzleid', async (req, res, next) => {
     }
     var puzzleObj = puzzle.toObject();
     var type = await PuzzleType.findOne({ code: puzzleObj.type });
-    console.log("type",type);
     if(type) {
       puzzleObj.type = type.toObject();
+    }
+    if (puzzleObj.author) {
+      var author = await User.findById(puzzleObj.author, "name");
+      if(type) {
+        puzzleObj.type = type.toObject();
+      }
+      puzzleObj.author = author.name;
     }
     res.render('single', {
       user: req.user,
