@@ -18,7 +18,7 @@
     <% } %>
   </p>
 </div>
-<script src="../../js/<%= puzzle.type.puzzleJs %>"></script>
+<script src="/js/<%= puzzle.type.puzzleJs %>"></script>
 <script>
   function showPuzzle() {
     puzzle = new <%= puzzle.type.puzzleObj %>("<%= puzzle.type.code %>", "<%= puzzle.code %>", "<%= puzzle.dimension %>");
