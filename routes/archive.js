@@ -7,6 +7,8 @@ const PuzzleType = require('../models/PuzzleType');
 // UserSolvingTime model
 const UserSolvingTime = require('../models/UserSolvingTime');
 
+const { ensureAuthenticated } = require('../config/auth');
+
 function timeToString(millis) {
   if (!millis) return "";
   var secs = Math.round(millis/1000);
@@ -59,7 +61,8 @@ router.get('/', async (req, res, next) => {
           type: typeMap[puzzle.type],
           dimension: puzzle.dimension,
           daily: puzzle.daily,
-          time: timeToString(timesMap[puzzle.code])};
+          time: timeToString(timesMap[puzzle.code])
+        };
       })
     });
   } catch (e) {
@@ -108,6 +111,35 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
     });
   } catch (e) {
     next(e) 
+  }
+});
+
+// Author puzzle list
+router.get('/author', ensureAuthenticated, async (req, res, next) => {
+  try {
+    if (!req.user) {
+      res.status(403).send('You should log in to see the list!');
+      return;
+    }
+    const types = await PuzzleType.find({}, "code name");
+    var typeMap = {};
+    types.forEach(type => typeMap[type.code] = type.name);
+    var filter = {author: req.user._id};
+    const puzzles = await Puzzle.find(filter, "code type dimension daily").sort({daily: -1});
+    res.render('author', {
+      user: req.user,
+      puzzles: puzzles.map(puzzle => {
+        return {
+          code: puzzle.code,
+          type: typeMap[puzzle.type],
+          dimension: puzzle.dimension,
+          daily: puzzle.daily,
+          published: puzzle.daily <= new Date()
+        };
+      })
+    });
+  } catch (e) {
+    next(e);
   }
 });
 
