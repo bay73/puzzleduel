@@ -25,6 +25,8 @@ const UserSolvingTimeSchema = new mongoose.Schema({
   }
 });
 
+UserSolvingTimeSchema.index({userId: 1, puzzleId: 1}, {unique: true})
+
 const UserSolvingTime = mongoose.model('UserSolvingTime', UserSolvingTimeSchema);
 
 module.exports = UserSolvingTime;

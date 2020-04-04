@@ -4,7 +4,9 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const PuzzleSchema = new mongoose.Schema({
   code: {
     type: String,
-    required: true
+    required: true,
+    index: true,
+    unique: true
   },
   type: {
     type: String,
@@ -24,7 +26,7 @@ const PuzzleSchema = new mongoose.Schema({
   },
   daily: {
     type: Date,
-    required: false
+    required: false,
   },
   author: {
     type: ObjectId,

@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const PuzzleTypeSchema = new mongoose.Schema({
   code: {
     type: String,
-    required: true
+    required: true,
+    index: true,
+    unique: true
   },
   name: {
     type: String,
