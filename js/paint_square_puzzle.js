@@ -17,7 +17,11 @@ innerCluePuzzle.prototype.start = function() {
 }
 
 innerCluePuzzle.prototype.edit = function() {
-  this.start();
+  this.removeMessages();
+  // Read clues from server and start the puzzle solving.
+  $.getJSON("/puzzles/" + this.id + "/get")
+    .done(data => this.showClues(data))
+    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
   var editTogglers = ["white"].concat(this.clues);
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {

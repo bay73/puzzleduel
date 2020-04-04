@@ -126,6 +126,8 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     types.forEach(type => typeMap[type.code] = type.name);
     var filter = {author: req.user._id};
     const puzzles = await Puzzle.find(filter, "code type dimension daily").sort({daily: -1});
+    var d = new Date();
+    d.setDate(d.getDate()+2);
     res.render('author', {
       user: req.user,
       puzzles: puzzles.map(puzzle => {
@@ -134,7 +136,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
           type: typeMap[puzzle.type],
           dimension: puzzle.dimension,
           daily: puzzle.daily,
-          published: puzzle.daily <= new Date()
+          published: puzzle.daily <= d
         };
       })
     });

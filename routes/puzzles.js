@@ -75,7 +75,7 @@ router.get('/:puzzleid', async (req, res, next) => {
     }
     res.json(returnObj);
   } catch (e) {
-    next(e) 
+    next(e);
   }
 });
 
@@ -104,7 +104,30 @@ router.get('/:puzzleid/start', async (req, res, next) => {
     }
     res.json(JSON.parse(puzzle.data));
   } catch (e) {
-    next(e) 
+    next(e);
+  }
+});
+
+// Read puzzle data
+router.get('/:puzzleid/get', async (req, res, next) => {
+  try {
+    if (!req.user) {
+      res.sendStatus(403);
+      return;
+    }
+    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, 'data daily author');
+    if (!puzzle) {
+      res.sendStatus(404);
+      return;
+    }
+    var puzzleObj = puzzle.toObject();
+    if (!puzzleObj.author || !puzzleObj.author.equals(req.user._id)) {
+      res.sendStatus(404);
+      return;
+    }
+    res.json(JSON.parse(puzzle.data));
+  } catch (e) {
+    next(e);
   }
 });
 
@@ -131,7 +154,42 @@ router.post('/:puzzleid/check', async (req, res, next) => {
     }
     res.json(result);
   } catch (e) {
-    next(e) 
+    next(e);
+  }
+});
+
+// Check puzzle solution
+router.post('/:puzzleid/edit', async (req, res, next) => {
+  try {
+    if (!req.user) {
+      res.sendStatus(403);
+      return;
+    }
+    const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
+    if (!puzzle) {
+      res.sendStatus(404);
+      return;
+    }
+    if (!puzzle) {
+      res.sendStatus(404);
+      return;
+    }
+    var puzzleObj = puzzle.toObject();
+    if (!puzzleObj.author || !puzzleObj.author.equals(req.user._id)) {
+      res.sendStatus(404);
+      return;
+    }
+    var d = new Date();
+    d.setDate(d.getDate()+2);
+    if (puzzleObj.daily <= d) {
+      res.status(403).send('Puzzle is already published, changes are not allowed!');
+      return;
+    }
+    puzzle.data = JSON.stringify(req.body);
+    await puzzle.save();
+    res.json({status: "OK"});
+  } catch (e) {
+    next(e);
   }
 });
 
