@@ -19,6 +19,7 @@ check:function(dimension, clues, data){
     var pos = util.parseCoord(key);
     if (cluecells[pos.y]){
       cluecells[pos.y][pos.x] = value;
+      cells[pos.y][pos.x] = "white";
     }
   }
   return Checker.checkMinesClues(cluecells, cells);
