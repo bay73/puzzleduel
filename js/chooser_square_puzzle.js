@@ -53,10 +53,10 @@ innerCluePuzzle.prototype.createBoard = function() {
 innerCluePuzzle.prototype.findCellSize = function() {
   // Find cell size based on size of the window.
   var hSizeLimit = this.snap.node.clientWidth*0.90;
-  var vSizeLimit = window.innerHeight*0.55;
+  var vSizeLimit = window.innerHeight*0.57;
   this.cellSize = Math.min(hSizeLimit / this.cols, vSizeLimit / this.rows);
   this.leftGap = (this.snap.node.clientWidth - this.cellSize * this.cols)/2;
-  this.topGap = 45;
+  this.topGap = 1;
 }
  
 innerCluePuzzle.prototype.render = function(snap) {
@@ -272,7 +272,7 @@ onMouseDown: function(puzzle, event) {
     var center = cell.getCenter();
     puzzle.chooserElem = puzzle.snap.group();
     puzzle.chooserElem.cell = cell;
-    var chooserSize = puzzle.cellSize*1.2;
+    var chooserSize = puzzle.cellSize*1.3;
     var circle = puzzle.snap.circle(center.x, center.y, chooserSize);
     circle.attr({fill: "#880", opacity: 0.5});
     puzzle.chooserElem.append(circle);
