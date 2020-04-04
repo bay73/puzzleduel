@@ -16,6 +16,18 @@ innerCluePuzzle.prototype.start = function() {
     .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
 }
 
+innerCluePuzzle.prototype.edit = function() {
+  this.start();
+  var editTogglers = ["white"].concat(this.clues);
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      var index = editTogglers.indexOf(this.cells[y][x].value);
+      this.cells[y][x].setRegular(editTogglers);
+      this.cells[y][x].setValue(index);
+    }
+  }
+}
+
 innerCluePuzzle.prototype.check = function() {
   var data = {};
   for (var y = 0; y < this.rows; y++) {
@@ -29,6 +41,23 @@ innerCluePuzzle.prototype.check = function() {
   this.removeMessages();
   // Read result from server and show.
   $.post("/puzzles/" + this.id + "/check", data)
+    .done(response => this.showResult(response))
+    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
+}
+
+innerCluePuzzle.prototype.save = function() {
+  var data = {};
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (this.cells[y][x].value != "white") {
+        var coord = String.fromCharCode('a'.charCodeAt(0) + x) + (y+1).toString();
+        data[coord] = this.cells[y][x].value;
+      }
+    }
+  }
+  this.removeMessages();
+  // Read result from server and show.
+  $.post("/puzzles/" + (this.id ? this.id: "0") + "/edit", data)
     .done(response => this.showResult(response))
     .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
 }
@@ -191,16 +220,18 @@ squarePuzzleCell.prototype.syncCell = function() {
 squarePuzzleCell.prototype.toggleCell = function() {
   this.puzzle.steps.push(this);
   // Process click in the cell.
-  this.valueIndex++;
-  if (this.valueIndex >= this.togglers.length) this.valueIndex = 0;
-  this.value = this.togglers[this.valueIndex];
-  this.syncCell();
+  this.setValue(this.valueIndex+1);
 }
 
 squarePuzzleCell.prototype.untoggleCell = function() {
   this.puzzle.steps.pop(this);
-  this.valueIndex--;
+  this.setValue(this.valueIndex-1);
+}
+
+squarePuzzleCell.prototype.setValue = function(valueIndex) {
+  this.valueIndex = valueIndex;
   if (this.valueIndex < 0) this.valueIndex = this.togglers.length - 1;
+  if (this.valueIndex >= this.togglers.length) this.valueIndex = 0;
   this.value = this.togglers[this.valueIndex];
   this.syncCell();
 }
