@@ -129,7 +129,7 @@ innerCluePuzzle.prototype.showResult = function(result) {
   if (result.status == 'OK') {
     this.message = showMessage("Congratulations! The puzzle has been solved correctly!");
   } else {
-    this.message = showError("Sorry, there is a mistake. " + result.status + ". Try again.", 10000);
+    this.message = showError("Sorry, there is a mistake. " + result.status + ". Try again.");
     if (result.errors) {
       result.errors.forEach(coord => {
         var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
