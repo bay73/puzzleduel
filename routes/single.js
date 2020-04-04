@@ -16,7 +16,8 @@ router.get('/:puzzleid', async (req, res, next) => {
       return;
     }
     var puzzleObj = puzzle.toObject();
-    var type = PuzzleType.findOne({ code: puzzleObj.type });
+    var type = await PuzzleType.findOne({ code: puzzleObj.type });
+    console.log("type",type);
     if(type) {
       puzzleObj.type = type.toObject();
     }
