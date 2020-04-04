@@ -1,9 +1,9 @@
 
 const ConnectedChecker = {
-  findFirst: function(cells, color) {
+  findFirst: function(cells, colors) {
     for (var y = 0; y < cells.rows; y++) {
       for (var x = 0; x < cells.cols; x++) {
-        if (cells[y][x] == color){
+        if (colors.includes(cells[y][x])){
          return {x:x, y:y};
         }
       }
@@ -11,20 +11,20 @@ const ConnectedChecker = {
     return null;
   },
 
-  fill: function(cells, filled, position, color){
-    if (!filled[position.y][position.x] && cells[position.y][position.x] == color) {
+  fill: function(cells, filled, position, colors){
+    if (!filled[position.y][position.x] && colors.includes(cells[position.y][position.x])) {
       filled[position.y][position.x] = true;
-      if (position.y > 0) this.fill(cells, filled, {x: position.x, y:position.y - 1}, color);
-      if (position.x > 0) this.fill(cells, filled, {x: position.x - 1, y:position.y}, color);
-      if (position.y + 1 < cells.rows) this.fill(cells, filled, {x: position.x, y:position.y + 1}, color);
-      if (position.x + 1 < cells.cols) this.fill(cells, filled, {x: position.x + 1, y:position.y}, color);
+      if (position.y > 0) this.fill(cells, filled, {x: position.x, y:position.y - 1}, colors);
+      if (position.x > 0) this.fill(cells, filled, {x: position.x - 1, y:position.y}, colors);
+      if (position.y + 1 < cells.rows) this.fill(cells, filled, {x: position.x, y:position.y + 1}, colors);
+      if (position.x + 1 < cells.cols) this.fill(cells, filled, {x: position.x + 1, y:position.y}, colors);
     }
   },
 
-  checkAllFilled: function(cells, filled, color){
+  checkAllFilled: function(cells, filled, colors){
     for (var y = 0; y < cells.rows; y++) {
       for (var x = 0; x < cells.cols; x++) {
-        if (cells[y][x] == color && !filled[y][x]){
+        if (colors.includes(cells[y][x]) && !filled[y][x]){
           return false;
         }
       }
@@ -73,15 +73,22 @@ const Util = {
   checkConnected: function(cells, color) {
     // Returns true if all cells of one color are orthogonally connected.
     // Returns false if not.
-    var first = ConnectedChecker.findFirst(cells, color);
+    var first = ConnectedChecker.findFirst(cells, [color]);
     if(first) {
       var filled = Util.create2DArray(cells.rows, cells.cols, false)
-      ConnectedChecker.fill(cells, filled, first, color);
-      if (!ConnectedChecker.checkAllFilled(cells, filled, color)) {
+      ConnectedChecker.fill(cells, filled, first, [color]);
+      if (!ConnectedChecker.checkAllFilled(cells, filled, [color])) {
         return false;
       }
     }
     return true;
+  },
+
+  findConnected: function(cells, first, colors) {
+    // Returns list of cells which of given colors are orthogonally connected.
+    var filled = Util.create2DArray(cells.rows, cells.cols, false)
+    ConnectedChecker.fill(cells, filled, first, colors);
+    return filled;
   },
 
   findWrongValue: function(cells, goodValues) {
