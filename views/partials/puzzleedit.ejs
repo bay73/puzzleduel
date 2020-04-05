@@ -6,7 +6,7 @@
     <button id="revertBtn" type="button" class="btn btn-primary">Revert</button>
   </div>
   <div class="col-4 text-right">
-    <button id="checkBtn" type="button" class="btn btn-primary">Save</button>
+    <button id="saveBtn" type="button" class="btn btn-primary">Save</button>
   </div>
 </div>
 <script src="/js/common.js"></script>
@@ -14,9 +14,8 @@
 <script>
   function showPuzzle() {
     var controls = {
-      startBtn: "#startBtn",
       revertBtn: "#revertBtn",
-      checkBtn: "#checkBtn"
+      saveBtn: "#saveBtn"
     };
     var puzzleData = {
       typeCode: "<%= puzzle.type.code %>",
