@@ -60,7 +60,23 @@ classicSudokuPuzzle.prototype.render = function(snap) {
         });
       }
     }
-  } else {
+  }
+  if (this.rows == 8) {
+    for (var j = 0; j < 4; j++) {
+      for (var i = 0; i < 2; i++) {
+        var area = this.snap.rect(
+          this.leftGap + i * 4 * this.cellSize,
+          this.topGap + j * 2 * this.cellSize,
+          4 * this.cellSize, 2 * this.cellSize);
+        area.attr({
+          fill: "none",
+          stroke: "#000",
+          strokeWidth: 5
+        });
+      }
+    }
+  }
+  if (this.rows == 6) {
     for (var j = 0; j < 3; j++) {
       for (var i = 0; i < 2; i++) {
         var area = this.snap.rect(
