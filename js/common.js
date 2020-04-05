@@ -89,7 +89,7 @@ commonPuzzle.prototype.save = function() {
   this.removeMessages();
   // Read result from server and show.
   $.post("/puzzles/" + (this.id ? this.id: "0") + "/edit", data)
-    .done(response => this.showResult(response))
+    .done(response => this.showSaveResult(response))
     .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
 }
 
@@ -225,6 +225,17 @@ commonPuzzle.prototype.showTime = function() {
   $(this.controls.timer).text(hours + mins + secs);
 }
 
+commonPuzzle.prototype.showSaveResult = function(result) {
+  this.removeMessages();
+  if (result.status == 'OK') {
+    this.stopTimer();
+    this.message = showMessage("The puzzle has been saved!");
+  } else {
+    this.message = showError("Error while saving. " + result.status + ".");
+    this.showErrorCells(result);
+  }
+}
+
 commonPuzzle.prototype.showResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
@@ -232,13 +243,17 @@ commonPuzzle.prototype.showResult = function(result) {
     this.message = showMessage("Congratulations! The puzzle has been solved correctly!");
   } else {
     this.message = showError("Sorry, there is a mistake. " + result.status + ". Try again.");
-    if (result.errors) {
-      result.errors.forEach(coord => {
-        var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
-        var y = parseInt(coord.substring(1)) - 1;
-        this.cells[y][x].markError();
-      });
-    }
+    this.showErrorCells(result);
+  }
+}
+
+commonPuzzle.prototype.showErrorCells = function(result) {
+  if (result.errors) {
+    result.errors.forEach(coord => {
+      var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
+      var y = parseInt(coord.substring(1)) - 1;
+      this.cells[y][x].markError();
+    });
   }
 }
 
