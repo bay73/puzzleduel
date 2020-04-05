@@ -1,6 +1,6 @@
 <% if(typeof puzzle != 'undefined'){ %> 
 <h2 class="card-body pt-0">Edit <%= puzzle.type.name %></h2>
-<svg id="mainGrid" class="col-xs-12 text-center"></svg>
+<svg id="mainGrid" class="col-xs-12 text-center" style="overflow: visible; z-index: 100;"></svg>
 <div class="row card-body">
   <div class="col-8 text-left">
     <button id="revertBtn" type="button" class="btn btn-primary">Revert</button>
