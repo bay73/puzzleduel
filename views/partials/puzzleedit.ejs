@@ -3,27 +3,29 @@
 <svg id="mainGrid" class="col-xs-12 text-center"></svg>
 <div class="row card-body">
   <div class="col-8 text-left">
-    <button id="revertBtn" type="button" class="btn btn-primary" onClick="revertStep()">Revert</button>
+    <button id="revertBtn" type="button" class="btn btn-primary">Revert</button>
   </div>
   <div class="col-4 text-right">
-    <button id="checkBtn" type="button" class="btn btn-primary" onClick="savePuzzle()">Save</button>
+    <button id="checkBtn" type="button" class="btn btn-primary">Save</button>
   </div>
 </div>
 <script src="/js/common.js"></script>
 <script src="/js/<%= puzzle.type.puzzleJs %>"></script>
 <script>
   function showPuzzle() {
-    puzzle = new <%= puzzle.type.puzzleObj %>("<%= puzzle.type.code %>", "<%= puzzle.code %>", "<%= puzzle.dimension %>");
+    var controls = {
+      startBtn: "#startBtn",
+      revertBtn: "#revertBtn",
+      checkBtn: "#checkBtn"
+    };
+    var puzzleData = {
+      typeCode: "<%= puzzle.type.code %>",
+      id: "<%= puzzle.code %>",
+      dimension: "<%= puzzle.dimension %>"
+    };
+    puzzle = new <%= puzzle.type.puzzleObj %>(puzzleData, controls);
     puzzle.render(Snap("#mainGrid"));
     puzzle.edit();
-  }
-
-  function savePuzzle() {
-    puzzle.save();
-  }
-
-  function revertStep() {
-    puzzle.revertStep();
   }
 </script>
 <% } %>

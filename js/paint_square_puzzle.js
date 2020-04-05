@@ -48,7 +48,7 @@ squarePuzzleCell.prototype.attachController = function() {
 }
 
 squarePuzzleCell.prototype.toggleCell = function() {
-  this.puzzle.steps.push({cell: this, valueIndex: this.valueIndex});
+  this.puzzle.addStep(this, this.valueIndex);
   // Process click in the cell.
   this.setValue(this.valueIndex+1);
 }

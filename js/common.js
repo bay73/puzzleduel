@@ -26,8 +26,8 @@ commonPuzzle.prototype.initImages = function() {
 
 commonPuzzle.prototype.start = function() {
   $(this.controls.startBtn).html('Restart');
-  $(this.controls.revertBtn).show();
-  $(this.controls.checkBtn).prop('disabled', false);
+  $(this.controls.revertBtn).show().prop('disabled', true);
+  $(this.controls.checkBtn).show().prop('disabled', true);
   this.removeMessages();
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/start")
@@ -66,6 +66,8 @@ commonPuzzle.prototype.collectData = function(needWhites, needClues) {
 
 commonPuzzle.prototype.edit = function() {
   this.removeMessages();
+  $(this.controls.revertBtn).show().prop('disabled', true);
+  $(this.controls.checkBtn).show().prop('disabled', true);
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/get")
     .done(data => this.showForEdit(data))
@@ -81,10 +83,20 @@ commonPuzzle.prototype.save = function() {
     .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
 }
 
+commonPuzzle.prototype.addStep = function(cell, oldValueIndex) {
+  this.steps.push({cell: cell, valueIndex: oldValueIndex});
+  $(this.controls.checkBtn).prop('disabled', false);
+  $(this.controls.revertBtn).prop('disabled', false);
+}
+
 commonPuzzle.prototype.revertStep = function() {
   if (this.steps.length > 0) {
     var step = this.steps.pop(this);
     step.cell.setValue(step.valueIndex);
+  }
+  if (this.steps.length == 0) {
+    $(this.controls.checkBtn).prop('disabled', true);
+    $(this.controls.revertBtn).prop('disabled', true);
   }
 }
 

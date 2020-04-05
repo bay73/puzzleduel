@@ -160,7 +160,7 @@ onMouseUp: function(puzzle, event) {
   if (puzzle.chooserElem) {
     var element = chooserBuilder.eventElement(event);
     if (element.valueIndex != undefined) {
-      puzzle.steps.push({cell: puzzle.chooserElem.cell, valueIndex: puzzle.chooserElem.cell.valueIndex});
+      puzzle.addStep(puzzle.chooserElem.cell, puzzle.chooserElem.cell.valueIndex);
       puzzle.chooserElem.cell.setValue(element.valueIndex);
     }
     if (element != puzzle.chooserElem.main) {
