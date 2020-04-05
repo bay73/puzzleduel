@@ -14,10 +14,11 @@ const type_cheker = {};
 type_cheker["tapa_classic"] = require('../puzzle_types/tapa_classic')
 type_cheker["yin_yang_classic"] = require('../puzzle_types/yin_yang_classic')
 type_cheker["minesweeper_classic"] = require('../puzzle_types/minesweeper_classic')
+type_cheker["nurikabe"] = require('../puzzle_types/nurikabe')
 type_cheker["fuzuli"] = require('../puzzle_types/fuzuli')
+type_cheker["sudoku_classic"] = require('../puzzle_types/sudoku_classic')
 type_cheker["sudoku_antiknight"] = require('../puzzle_types/sudoku_antiknight')
 type_cheker["sudoku_notouch"] = require('../puzzle_types/sudoku_notouch')
-type_cheker["nurikabe"] = require('../puzzle_types/nurikabe')
 
 function logAction(user, puzzleId, action) {
   const newUserActionLog = new UserActionLog({
