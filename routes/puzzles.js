@@ -29,7 +29,7 @@ function logAction(user, puzzleId, action) {
   newUserActionLog.save();
 }
 
-async function writeSilvingTime(user, puzzleId) {
+async function writeSilvingTime(user, puzzleId, hidden) {
   const time = await UserSolvingTime.findOne({userId: user._id, puzzleId: puzzleId});
   if (time != null) {
     return;
@@ -60,6 +60,9 @@ async function writeSilvingTime(user, puzzleId) {
     solvingTime: solveTime - startTime,
     errCount: errCount
   });
+  if (hidden) {
+    newUserSolvingTime.hidden = true;
+  }
   newUserSolvingTime.save();
 }
 
@@ -150,8 +153,9 @@ router.post('/:puzzleid/check', async (req, res, next) => {
       }
       if (req.user.role != "test") {
         logAction(req.user, req.params.puzzleid, result.status == "OK" ? "solved" : "submitted");
+        var hidden = puzzle.author.equals(req.user._id);
         if (result.status == "OK") {
-          writeSilvingTime(req.user, req.params.puzzleid);
+          writeSilvingTime(req.user, req.params.puzzleid, hidden);
         }
       }
     }

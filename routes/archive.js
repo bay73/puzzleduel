@@ -38,7 +38,13 @@ router.get('/', async (req, res, next) => {
     var typeMap = {};
     types.forEach(type => typeMap[type.code] = type.name);
     const times = await UserSolvingTime.aggregate([{
-      $match : { errCount : 0 }
+      $match : {
+        errCount : 0,
+        $or: [
+          {hidden: false},
+          {hidden: {$exists: false}}
+        ]
+      }
     }, {
       $group: {
         _id: "$puzzleId",
@@ -92,7 +98,13 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
     if (type) {
       puzzleType = type.name;
     }
-    const times = await UserSolvingTime.find({puzzleId: puzzle.code}).sort("solvingTime");
+    const times = await UserSolvingTime.find({
+      puzzleId: puzzle.code,
+      $or: [
+        {hidden: false},
+        {hidden: {$exists: false}}
+      ]
+    }).sort("solvingTime");
     res.render('times', {
       user: req.user,
       puzzle: {
