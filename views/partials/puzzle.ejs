@@ -8,6 +8,7 @@
     <button id="revertBtn" type="button" class="btn btn-primary">Revert</button>
   </div>
   <div class="col-4 text-right">
+    <span id="timer" class="align-top mr-2" style="font-family: Lucida Console; font-size: 130%;"></span>
     <button id="checkBtn" type="button" class="btn btn-primary">Check</button>
   </div>
   <p class="card-text text-left pt-3"><%= puzzle.type.rules %></p>
@@ -26,7 +27,8 @@
     var controls = {
       startBtn: "#startBtn",
       revertBtn: "#revertBtn",
-      checkBtn: "#checkBtn"
+      checkBtn: "#checkBtn",
+      timer: "#timer"
     };
     var puzzleData = {
       typeCode: "<%= puzzle.type.code %>",

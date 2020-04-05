@@ -164,11 +164,47 @@ commonPuzzle.prototype.showClues = function(data) {
       this.cells[y][x].syncCell();
     }
   }
+  this.startTimer();
+}
+
+commonPuzzle.prototype.startTimer = function() {
+  if (!this.controls.timer) {
+    return;
+  }
+  self = this;
+  this.startTime = new Date();
+  this.showTime();
+  this.timer = setInterval(() => self.showTime(),1000);
+}
+
+commonPuzzle.prototype.stopTimer = function() {
+  if (this.timer) {
+    clearInterval(this.timer);
+    this.timer = null;
+  }
+}
+
+commonPuzzle.prototype.showTime = function() {
+  var formatNumber = function(num){
+    if (num < 10) return '0' + num.toString();
+    return num.toString();
+  }
+  var currentTime = new Date();
+  var d = Math.round((currentTime.getTime() - this.startTime.getTime()) / 1000);
+  var mins = Math.floor(d / 60);
+  var secs = d - mins * 60;
+  var hours = Math.floor(mins / 60);
+  mins = mins - hours * 60;
+  hours = hours > 0?formatNumber(hours)+":":"";
+  mins = formatNumber(mins) + ":";
+  secs = formatNumber(secs);
+  $(this.controls.timer).text(hours + mins + secs);
 }
 
 commonPuzzle.prototype.showResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
+    this.stopTimer();
     this.message = showMessage("Congratulations! The puzzle has been solved correctly!");
   } else {
     this.message = showError("Sorry, there is a mistake. " + result.status + ". Try again.");
