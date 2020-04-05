@@ -38,7 +38,7 @@ commonPuzzle.prototype.start = function() {
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/start")
     .done(data => this.showClues(data))
-    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText));
+    .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.check = function() {
@@ -47,7 +47,7 @@ commonPuzzle.prototype.check = function() {
   // Read result from server and show.
   $.post("/puzzles/" + this.id + "/check", data)
     .done(response => this.showResult(response))
-    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
+    .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.collectData = function(needWhites, needClues) {
@@ -81,7 +81,7 @@ commonPuzzle.prototype.edit = function() {
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/get")
     .done(data => this.showForEdit(data))
-    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
+    .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.save = function() {
@@ -90,7 +90,7 @@ commonPuzzle.prototype.save = function() {
   // Read result from server and show.
   $.post("/puzzles/" + (this.id ? this.id: "0") + "/edit", data)
     .done(response => this.showResult(response))
-    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
+    .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.addStep = function(cell, oldValueIndex) {
