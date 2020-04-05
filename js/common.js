@@ -1,10 +1,11 @@
-commonPuzzle = function(typeCode, id, dimension) {
-  this.id = id;
-  this.typeCode = typeCode;
-  this.parseDimension(dimension);
+commonPuzzle = function(puzzleData, controls) {
+  this.id = puzzleData.id;
+  this.typeCode = puzzleData.typeCode;
+  this.parseDimension(puzzleData.dimension);
   this.initImages();
   this.createBoard();
   this.steps = [];
+  this.initControls(controls);
 }
 
 commonPuzzle.prototype.parseDimension = function(dimension) {
@@ -24,11 +25,14 @@ commonPuzzle.prototype.initImages = function() {
 }
 
 commonPuzzle.prototype.start = function() {
+  $(this.controls.startBtn).html('Restart');
+  $(this.controls.revertBtn).show();
+  $(this.controls.checkBtn).prop('disabled', false);
   this.removeMessages();
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/start")
     .done(data => this.showClues(data))
-    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText)); 
+    .fail((jqxhr, textStatus, error) => showError(jqxhr.responseText));
 }
 
 commonPuzzle.prototype.check = function() {
@@ -183,6 +187,14 @@ commonPuzzle.prototype.showForEdit = function (data) {
       this.cells[y][x].setValue(index);
     }
   }
+}
+
+commonPuzzle.prototype.initControls = function (controls) {
+  self = this;
+  this.controls = controls;
+  $(this.controls.startBtn).click(() => self.start());
+  $(this.controls.revertBtn).hide().click(() => self.revertStep());
+  $(this.controls.checkBtn).prop('disabled', true).click(() => self.check());
 }
 
 var squarePuzzleCell = function(puzzle, col, row) {

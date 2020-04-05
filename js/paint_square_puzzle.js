@@ -1,5 +1,5 @@
-var innerCluePuzzle = function(typeCode, id, dimension) {
-  commonPuzzle.call(this, typeCode, id, dimension);
+var innerCluePuzzle = function(puzzleData, controls) {
+  commonPuzzle.call(this, puzzleData, controls);
 }
 
 Object.setPrototypeOf(innerCluePuzzle.prototype, commonPuzzle.prototype);
