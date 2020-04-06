@@ -29,12 +29,13 @@
     </div>
   </div>
   <p class="card-text text-left pt-3"><%= puzzle.type.rules %></p>
-  <p class="card-text text-left pt-3"><b>Game control</b>: 
+  <p class="card-text text-left pt-3"><b>Grid control</b>:
     <% if(puzzle.type.puzzleJs=="chooser_square_puzzle.js") { %>
-      Press the mouse button at the celected cell, then holding the button move the move to the right option and release the button.
+      Click on the cell reveal the value chooser. Click on the selected value change the state of the cell.
     <% } else { %>
-      Click the mouse button at the celected cell to change the filling of the cell.
+      Click the mouse button at the selected cell to change the filling of the cell.
     <% } %>
+    More details about grid control are at the <a href='/help'>help page</a>.
   </p>
 </div>
 <script src="/js/common.js"></script>

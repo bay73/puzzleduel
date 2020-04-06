@@ -40,4 +40,15 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// Help Page
+router.get('/help', async (req, res, next) => {
+  try {
+    res.render('help', {
+      user: req.user,
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = router;
