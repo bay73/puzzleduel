@@ -28,14 +28,19 @@ innerCluePuzzle.prototype.initImages = function() {
   this.preloadImages(this.togglers);
 }
 
-// Extend cell class adding click controller
-squarePuzzleCell.prototype.setRegular = function(togglers) {
-  // Mark cell as a regular.
-  this.togglers = togglers;
-  this.isClue = false;
-  this.valueIndex = 0;
-  this.value = this.togglers[this.valueIndex];
-  this.attachController();
+innerCluePuzzle.prototype.showClues = function(data) {
+  commonPuzzle.prototype.showClues.call(this, data);
+  this.attachControllers();
+}
+
+innerCluePuzzle.prototype.attachControllers = function() {
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (!this.cells[y][x].isClue) {
+        this.cells[y][x].attachController();
+      }
+    }
+  }
 }
 
 squarePuzzleCell.prototype.attachController = function() {
@@ -48,8 +53,30 @@ squarePuzzleCell.prototype.attachController = function() {
 }
 
 squarePuzzleCell.prototype.toggleCell = function() {
-  this.puzzle.addStep(this, this.valueIndex);
-  // Process click in the cell.
-  this.setValue(this.valueIndex+1);
+  if (this.puzzle.pencilMarkMode) {
+    this.togglePencilMarks();
+  } else {
+    this.puzzle.addStep(this, this.valueIndex);
+    this.setValue(this.valueIndex+1);
+  }
+}
+
+squarePuzzleCell.prototype.togglePencilMarks = function() {
+  if (this.togglers.length == 3) {
+    if (!this.pencilMarks || this.pencilMarks.length == 0) {
+      this.pencilMarks = [1];
+    } else if (this.pencilMarks.includes(1)) {
+      this.pencilMarks = [2];
+    } else {
+      this.pencilMarks = [];
+    }
+  }
+  // TODO: Implement some logic for cases with four elements.
+  this.syncCell();
+  var cell = this;
+  for (var i=0;i<this.markElements.length;i++) {
+    this.markElements[i].unclick();
+    this.markElements[i].click(() => cell.toggleCell());
+  }
 }
 

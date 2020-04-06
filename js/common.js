@@ -408,6 +408,9 @@ squarePuzzleCell.prototype.syncCell = function() {
         var index = this.pencilMarks[i];
         var row = Math.floor((index - 1)/markRows);
         var col = (index - 1)%markRows;
+        if (this.togglers.length == 3 && index == 2) {
+          row = 1;
+        }
         var element = this.puzzle.snap.image(
           this.puzzle.imageUrl(this.togglers[this.pencilMarks[i]]),
           corner.x + col * this.cellSize/markRows, corner.y + row * this.cellSize/markRows,
@@ -432,7 +435,6 @@ squarePuzzleCell.prototype.setValue = function(valueIndex) {
 
 squarePuzzleCell.prototype.togglePencilMark = function(valueIndex) {
   if (!this.isClue && valueIndex != 0) {
-    this.value = null;
     if (!this.pencilMarks) {
       this.pencilMarks = [];
     }
