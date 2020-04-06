@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
@@ -39,7 +40,8 @@ app.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 100*24*60*60*1000
-    }
+    },
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
   })
 );
 
