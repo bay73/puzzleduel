@@ -34,6 +34,13 @@ commonPuzzle.prototype.start = function() {
   if (this.controls.checkBtn) { 
     $(this.controls.checkBtn).show().prop('disabled', true);
   }
+  if (this.controls.pencilMarkCtrl) {
+    $(this.controls.pencilMarkCtrl).show();
+  }
+  if (this.controls.pencilMarkCb) {
+    $(this.controls.pencilMarkCb).prop( "checked", false );
+  }
+  this.pencilMarkMode = false;
   this.removeMessages();
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/start")
@@ -222,7 +229,7 @@ commonPuzzle.prototype.showTime = function() {
   hours = hours > 0?formatNumber(hours)+":":"";
   mins = formatNumber(mins) + ":";
   secs = formatNumber(secs);
-  $(this.controls.timer).text(hours + mins + secs);
+  $(this.controls.timer).show().text(hours + mins + secs);
 }
 
 commonPuzzle.prototype.showSaveResult = function(result) {
@@ -291,6 +298,16 @@ commonPuzzle.prototype.initControls = function (controls) {
   if (this.controls.saveBtn) {
     $(this.controls.saveBtn).click(() => self.save());
   }
+  if (this.controls.pencilMarkCtrl) {
+    $(this.controls.pencilMarkCtrl).hide();
+  }
+  if (this.controls.pencilMarkCb) {
+    $(this.controls.pencilMarkCb).click(() => self.togglePencilMarkMode());
+  }
+}
+
+commonPuzzle.prototype.togglePencilMarkMode = function() {
+  this.pencilMarkMode = $(this.controls.pencilMarkCb).is(':checked');
 }
 
 var squarePuzzleCell = function(puzzle, col, row) {
@@ -302,12 +319,15 @@ var squarePuzzleCell = function(puzzle, col, row) {
   this.value = "white";
   this.togglers = []
   this.cellSize = this.puzzle.cellSize;
+  this.pencilMarks = null;
+  this.markElements = [];
 }
 
 squarePuzzleCell.prototype.setClue = function(value) {
   // Mark cell as a clue.
   this.isClue = true;
   this.value = value;
+  this.pencilMarks = null;
 }
 
 squarePuzzleCell.prototype.setRegular = function(togglers) {
@@ -316,6 +336,7 @@ squarePuzzleCell.prototype.setRegular = function(togglers) {
   this.isClue = false;
   this.valueIndex = 0;
   this.value = this.togglers[this.valueIndex];
+  this.pencilMarks = null;
 //this.attachController();
 }
 
@@ -367,16 +388,59 @@ squarePuzzleCell.prototype.getCorner = function() {
 squarePuzzleCell.prototype.syncCell = function() {
   // Sync cell image.
   if (this.element != undefined) {
-    this.element.attr({href: this.puzzle.imageUrl(this.value)});
+    for (var i=0;i<this.markElements.length;i++) {
+      this.markElements[i].remove();
+    }
+    this.markElements = [];
+    if (this.value) {
+      this.element.attr({href: this.puzzle.imageUrl(this.value)});
+    }
+    if (this.pencilMarks) {
+      var corner = this.getCorner();
+      var markRows = 4;
+      if (this.togglers.length <= 10) {
+        markRows = 3;
+      }
+      if (this.togglers.length <= 5) {
+        markRows = 2;
+      }
+      for (var i=0;i<this.pencilMarks.length;i++) {
+        var index = this.pencilMarks[i];
+        var row = Math.floor((index - 1)/markRows);
+        var col = (index - 1)%markRows;
+        var element = this.puzzle.snap.image(
+          this.puzzle.imageUrl(this.togglers[this.pencilMarks[i]]),
+          corner.x + col * this.cellSize/markRows, corner.y + row * this.cellSize/markRows,
+          this.cellSize/markRows, this.cellSize/markRows);
+        element.cell = this;
+        this.markElements.push(element);
+      }
+    }
   }
 }
 
 squarePuzzleCell.prototype.setValue = function(valueIndex) {
   if (!this.isClue) {
+    this.pencilMarks = null;
     this.valueIndex = valueIndex;
     if (this.valueIndex < 0) this.valueIndex = this.togglers.length - 1;
     if (this.valueIndex >= this.togglers.length) this.valueIndex = 0;
     this.value = this.togglers[this.valueIndex];
+  }
+  this.syncCell();
+}
+
+squarePuzzleCell.prototype.togglePencilMark = function(valueIndex) {
+  if (!this.isClue && valueIndex != 0) {
+    this.value = null;
+    if (!this.pencilMarks) {
+      this.pencilMarks = [];
+    }
+    if (this.pencilMarks.includes(valueIndex)) {
+      this.pencilMarks.splice(this.pencilMarks.indexOf(valueIndex),1);
+    } else {
+      this.pencilMarks.push(valueIndex);
+    }
   }
   this.syncCell();
 }

@@ -10,13 +10,23 @@
   </filter>
 </svg>
 <div class="row card-body">
-  <div class="col-8 text-left">
-    <button id="startBtn" type="button" class="btn btn-primary">Start</button>
-    <button id="revertBtn" type="button" class="btn btn-primary">Revert</button>
+  <div class="col-8">
+    <div class="d-flex flex-row flex-wrap">
+      <button id="startBtn" type="button" class="btn btn-primary">Start</button>
+      <button id="revertBtn" type="button" class="btn btn-primary ml-2" style="display: none;">Revert</button>
+      <div class="mt-1 ml-4" id="pencilMarkCtrl" style="display: none;">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="pencilMarkCb">
+          <label class="custom-control-label" for="pencilMarkCb">Pencil-marks</label>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="col-4 text-right">
-    <span id="timer" class="align-top mr-2" style="font-family: Lucida Console; font-size: 130%;"></span>
-    <button id="checkBtn" type="button" class="btn btn-primary">Check</button>
+  <div class="col-4">
+    <div class="d-flex flex-row-reverse flex-wrap">
+      <button id="checkBtn" type="button" class="btn btn-primary">Check</button>
+      <span id="timer" class="align-top mr-2" style="font-family: Lucida Console; font-size: 130%; display: none;"></span>
+    </div>
   </div>
   <p class="card-text text-left pt-3"><%= puzzle.type.rules %></p>
   <p class="card-text text-left pt-3"><b>Game control</b>: 
@@ -35,6 +45,8 @@
       startBtn: "#startBtn",
       revertBtn: "#revertBtn",
       checkBtn: "#checkBtn",
+      pencilMarkCtrl: "#pencilMarkCtrl",
+      pencilMarkCb: "#pencilMarkCb",
       timer: "#timer"
     };
     var puzzleData = {
@@ -44,21 +56,6 @@
     };
     puzzle = new <%= puzzle.type.puzzleObj %>(puzzleData, controls);
     puzzle.render(Snap("#mainGrid"));
-  }
-
-  function startPuzzle() {
-    $("#checkBtn").prop('disabled', false);
-    $("#revertBtn").show();
-    $("#startBtn").html('Restart');
-    puzzle.start();
-  }
-
-  function checkPuzzle() {
-    puzzle.check();
-  }
-
-  function revertStep() {
-    puzzle.revertStep();
   }
 </script>
 <% } %>
