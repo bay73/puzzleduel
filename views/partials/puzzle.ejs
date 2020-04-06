@@ -1,7 +1,14 @@
 <% if(typeof puzzle != 'undefined'){ %> 
 <h2 class="card-body pt-0 pb-0 mb-0"><%= puzzle.type.name %></h2>
 <p class="card-body text-right pb-0 pt-0 mb-0"><small>Author: <%= puzzle.author %></small></p>
-<svg id="mainGrid" class="col-xs-12 text-center" style="overflow: visible; z-index: 100;"></svg>
+<svg id="mainGrid" class="col-xs-12 text-center" style="overflow: visible; z-index: 100;">
+  <filter id="chooser">
+    <feColorMatrix type="matrix" values="-1 0 0 0 1
+                                         0 -1 0 0 1
+                                         0 0 -1 0 1
+                                         0 0 0 1 0"/>
+  </filter>
+</svg>
 <div class="row card-body">
   <div class="col-8 text-left">
     <button id="startBtn" type="button" class="btn btn-primary">Start</button>

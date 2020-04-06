@@ -134,7 +134,7 @@ onMouseDown: function(puzzle, event) {
     // 25 - distance between left border and svg, leftGap - between svg edge and grid.
     var chooserSize = Math.min(25 + puzzle.leftGap + puzzle.cellSize / 2, puzzle.cellSize * 1.6);
     var circle = puzzle.snap.circle(center.x, center.y, chooserSize);
-    circle.attr({fill: "#880", opacity: 0.5});
+    circle.attr({fill: "#750", opacity: 0.5});
     puzzle.chooserElem.append(circle);
     puzzle.chooserElem.main = circle;
     var angle = Math.PI * 2 / cell.togglers.length;
@@ -151,7 +151,7 @@ createToggler: function(puzzle, center, angle, distance, size, index, value) {
     center.x + Math.sin(index*angle)*size*distance,
     center.y - Math.cos(index*angle)*size*distance,
     size*(1.-distance));
-  togglerCircle.attr({stroke: "#550", strokeWidth: 2, fill: "#880", opacity: 0.3});
+  togglerCircle.attr({stroke: "#430", strokeWidth: 2, fill: "#750", opacity: 0.2});
   puzzle.chooserElem.append(togglerCircle);
   var togglerImage = puzzle.snap.image(
     puzzle.imageUrl(value),
@@ -159,6 +159,7 @@ createToggler: function(puzzle, center, angle, distance, size, index, value) {
     center.y - Math.cos(index*angle)*size*distance - size/4,
     size/2,
     size/2);
+  $(togglerImage.node).css("filter","url(#chooser)");
   togglerImage.valueIndex = index;
   puzzle.chooserElem.append(togglerImage);
   togglerImage.node.addEventListener("mouseover", ()=> {togglerCircle.attr({opacity: 1});});
