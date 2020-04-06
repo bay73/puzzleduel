@@ -52,7 +52,11 @@
     }
     return $('#errorMessage');
   }
-  function showMessage(message, timeout){
+  function showMessage(message, timeout, messageId){
+    if (messageId && localStorage.getItem("message"+messageId)) {
+      return null;
+    }
+    localStorage.setItem("message"+messageId,"closed");
     $("#alerts").append(
       "<div id='successMessage' class='message-overlap alert alert-success alert-dismissible fade show' role='alert'>" +
        message +
