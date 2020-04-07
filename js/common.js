@@ -121,7 +121,8 @@ commonPuzzle.prototype.render = function(snap) {
       this.cells[y][x].renderCell();
     }
   }
-  this.snap.node.setAttribute("height", this.snap.getBBox().height + 2);
+  var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  this.snap.node.setAttribute("height", this.snap.getBBox().height + (isSafari ? 45 : 2));
 }
 
 commonPuzzle.prototype.createBoard = function() {
