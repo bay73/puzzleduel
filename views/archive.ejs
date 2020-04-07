@@ -8,6 +8,9 @@
         <div class="card-body">
           <table class="table table-hover table-condensed">
             <tbody>
+              <tr>
+                <th>Date</th><th>Puzzle</th><th class="d-none d-sm-block">Best score</th>
+              </tr>
               <% puzzles.forEach(function(puzzle) { %>
               <tr>
                 <td><%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %></td>
@@ -28,7 +31,7 @@
           </table>
           <p class="card-text text-left pt-3">
             Click at the puzzle name to solve the selected puzzle.<br>
-            Click at the best soving time value to see the score table for the selected puzzle.
+            Click at the best solving time value to see the score table for the selected puzzle.
           </p>
         </div>
       </div>

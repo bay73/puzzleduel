@@ -8,12 +8,13 @@
                                          0 0 -1 0 1
                                          0 0 0 1 0"/>
   </filter>
+  Sorry, but your browser is not supported. Try to setup the new version.
 </svg>
 <div class="row card-body">
   <div class="col-8">
     <div class="d-flex flex-row flex-wrap">
       <button id="startBtn" type="button" class="btn btn-primary">Start</button>
-      <button id="revertBtn" type="button" class="btn btn-primary ml-2" style="display: none;">Revert</button>
+      <button id="revertBtn" type="button" class="btn btn-primary ml-2" style="display: none;">Undo</button>
       <div class="mt-1 ml-4" id="pencilMarkCtrl" style="display: none;">
         <div class="custom-control custom-switch">
           <input type="checkbox" class="custom-control-input" id="pencilMarkCb">
@@ -31,7 +32,7 @@
   <p class="card-text text-left pt-3"><%= puzzle.type.rules %></p>
   <p class="card-text text-left pt-3"><b>Grid control</b>:
     <% if(puzzle.type.puzzleJs=="chooser_square_puzzle.js") { %>
-      Click on the cell reveal the value chooser. Click on the selected value change the state of the cell.
+      Click on the cell reveals the value chooser. Click on the selected value changes the state of the cell.
     <% } else { %>
       Click the mouse button at the selected cell to change the filling of the cell.
     <% } %>
