@@ -132,7 +132,7 @@ onMouseDown: function(puzzle, event) {
     puzzle.chooserElem.cell = cell;
     // Chooser should fit to the screen when hit on th leftmost cell.
     // 25 - distance between left border and svg, leftGap - between svg edge and grid.
-    var chooserSize = Math.min(25 + puzzle.leftGap + puzzle.cellSize / 2, puzzle.cellSize * 1.6, 70 + puzzle.cellSize / 2 );
+    var chooserSize = Math.min(25 + puzzle.leftGap + puzzle.cellSize / 2, puzzle.cellSize * 1.6);
     var circle = puzzle.snap.circle(center.x, center.y, chooserSize);
     circle.attr({fill: "#750", opacity: 0.5});
     puzzle.chooserElem.append(circle);
