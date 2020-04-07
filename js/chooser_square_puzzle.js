@@ -26,6 +26,10 @@ innerCluePuzzle.prototype.initImages = function() {
   this.preloadImages(this.togglers);
 }
 
+innerCluePuzzle.prototype.outerCluePosition = function() {
+  return this.NONE;
+}
+
 classicSudokuPuzzle.prototype.initImages = function() {
   // Images used for the given puzzle type.
   this.clues = [];

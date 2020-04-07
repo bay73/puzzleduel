@@ -1,7 +1,11 @@
 commonPuzzle = function(puzzleData, controls) {
+  this.NONE = "0";
+  this.BOTTOM_RIGHT = "2";
+  this.FOUR_SIDES = "4";
   this.id = puzzleData.id;
   this.typeCode = puzzleData.typeCode;
   this.parseDimension(puzzleData.dimension);
+  this.cluePosition = this.outerCluePosition();
   this.initImages();
   this.createBoard();
   this.steps = [];
@@ -11,8 +15,8 @@ commonPuzzle = function(puzzleData, controls) {
 commonPuzzle.prototype.parseDimension = function(dimension) {
   // Parse dimension string to values.
   var dimensions = dimension.split("x");
-  this.rows = dimensions[1];
-  this.cols = dimensions[0];
+  this.rows = parseInt(dimensions[1]);
+  this.cols = parseInt(dimensions[0]);
 }
 
 commonPuzzle.prototype.initImages = function() {
@@ -62,6 +66,32 @@ commonPuzzle.prototype.collectData = function(needWhites, needClues) {
       if (collect) {
         var coord = String.fromCharCode('a'.charCodeAt(0) + x) + (y+1).toString();
         data[coord] = this.cells[y][x].value;
+      }
+    }
+  }
+  if (needClues) {
+    if (this.bottom) {
+      data["bottom"] = [];
+      for (var x = 0; x < this.cols; x++) {
+        data["bottom"].push(this.bottom[x].value);
+      }
+    }
+    if (this.top) {
+      data["top"] = [];
+      for (var x = 0; x < this.cols; x++) {
+        data["top"].push(this.top[x].value);
+      }
+    }
+    if (this.right) {
+      data["right"] = [];
+      for (var y = 0; y < this.rows; y++) {
+        data["right"].push(this.right[y].value);
+      }
+    }
+    if (this.left) {
+      data["left"] = [];
+      for (var y = 0; y < this.rows; y++) {
+        data["left"].push(this.left[y].value);
       }
     }
   }
@@ -116,11 +146,7 @@ commonPuzzle.prototype.render = function(snap) {
       stroke: "#000",
       strokeWidth: 5
   });
-  for (var y = 0; y < this.rows; y++) {
-    for (var x = 0; x < this.cols; x++) {
-      this.cells[y][x].renderCell();
-    }
-  }
+  this.allCells.forEach(cell=>cell.renderCell())
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   this.snap.node.setAttribute("height", this.snap.getBBox().height + this.cellSize / (isSafari ? 2 : 4));
 }
@@ -128,10 +154,36 @@ commonPuzzle.prototype.render = function(snap) {
 commonPuzzle.prototype.createBoard = function() {
   // Create 2D array of Cells
   this.cells = [];
+  this.allCells = [];
   for (var y = 0; y < this.rows; y++) {
     this.cells[y] = new Array(this.cols);
     for (var x = 0; x < this.cols; x++) {
       this.cells[y][x] = new squarePuzzleCell(this, x, y);
+      this.allCells.push(this.cells[y][x]);
+    }
+  }
+  if (this.cluePosition == this.BOTTOM_RIGHT) {
+    this.bottom = [];
+    for (var x = 0; x < this.cols; x++) {
+      this.bottom[x] = new squarePuzzleCell(this, x, this.rows);
+      this.allCells.push(this.bottom[x]);
+    }
+    this.right = [];
+    for (var y = 0; y < this.rows; y++) {
+      this.right[y] = new squarePuzzleCell(this, this.cols, y);
+      this.allCells.push(this.right[y]);
+    }
+  }
+  if (this.cluePosition == this.FOUR_SIDES) {
+    this.top = [];
+    for (var x = 0; x < this.cols; x++) {
+      this.top[x] = new squarePuzzleCell(this, x, -1);
+      this.allCells.push(this.top[x]);
+    }
+    this.left = [];
+    for (var y = 0; y < this.rows; y++) {
+      this.left[y] = new squarePuzzleCell(this, -1, y);
+      this.allCells.push(this.left[y]);
     }
   }
 }
@@ -140,9 +192,22 @@ commonPuzzle.prototype.findCellSize = function() {
   // Find cell size based on size of the window.
   var hSizeLimit = this.snap.node.clientWidth*0.90;
   var vSizeLimit = window.innerHeight*0.57;
-  this.cellSize = Math.min(hSizeLimit / this.cols, vSizeLimit / this.rows);
+  var cols = this.cols;
+  var rows = this.rows;
+  if (this.cluePosition == this.BOTTOM_RIGHT) {
+    cols++;
+    rows++;
+  } else if (this.cluePosition == this.FOUR_SIDES) {
+    cols = cols + 2;
+    rows = rows + 2;
+  }
+  this.cellSize = Math.min(hSizeLimit / cols, vSizeLimit / rows);
   this.leftGap = (this.snap.node.clientWidth - this.cellSize * this.cols)/2;
   this.topGap = 1;
+  if (this.cluePosition == this.FOUR_SIDES) {
+    this.topGap = this.topGap + this.cellSize;
+    this.leftGap = this.leftGap + this.cellSize;
+  }
 }
  
 commonPuzzle.prototype.preloadImages = function(imageList) {
@@ -158,19 +223,43 @@ commonPuzzle.prototype.imageUrl = function(imageName) {
 commonPuzzle.prototype.showClues = function(data) {
   // Parse clues.
   for (const [key, value] of Object.entries(data)) {
-    var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
-    var y = parseInt(key.substring(1)) - 1;
-    this.cells[y][x].setClue(value);
-  }
-  // All non-clue cells are general togglable.
-  for (var y = 0; y < this.rows; y++) {
-    for (var x = 0; x < this.cols; x++) {
-      if (!this.cells[y][x].isClue) {
-        this.cells[y][x].setRegular(this.togglers);
+    if (key=="bottom") {
+      if (this.bottom) {
+        for (var i=0;i<value.length;i++) {
+          this.bottom[i].setClue(value[i]);
+        }
       }
-      this.cells[y][x].syncCell();
+    } else if (key=="right") {
+      if (this.right) {
+        for (var i=0;i<value.length;i++) {
+          this.right[i].setClue(value[i]);
+        }
+      }
+    } else if (key=="top") {
+      if (this.top) {
+        for (var i=0;i<value.length;i++) {
+          this.top[i].setClue(value[i]);
+        }
+      }
+    } else if (key=="left") {
+      if (this.left) {
+        for (var i=0;i<value.length;i++) {
+          this.left[i].setClue(value[i]);
+        }
+      }
+    } else {
+      var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
+      var y = parseInt(key.substring(1)) - 1;
+      this.cells[y][x].setClue(value);
     }
   }
+  // All non-clue cells are general togglable.
+  this.allCells.forEach(cell=> {
+    if (!cell.isClue) {
+      cell.setRegular(this.togglers);
+    }
+    cell.syncCell();
+  });
   this.startTimer();
 }
 
@@ -250,13 +339,12 @@ commonPuzzle.prototype.removeMessages = function() {
 commonPuzzle.prototype.showForEdit = function (data) {
   this.showClues(data);
   var editTogglers = ["white"].concat(this.clues);
-  for (var y = 0; y < this.rows; y++) {
-    for (var x = 0; x < this.cols; x++) {
-      var index = editTogglers.indexOf(this.cells[y][x].value);
-      this.cells[y][x].setRegular(editTogglers);
-      this.cells[y][x].setValue(index);
-    }
-  }
+  // All non-clue cells are general togglable.
+  this.allCells.forEach(cell=> {
+    var index = editTogglers.indexOf(cell.value);
+    cell.setRegular(editTogglers);
+    cell.setValue(index);
+  });
 }
 
 commonPuzzle.prototype.initControls = function (controls) {

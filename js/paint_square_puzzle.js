@@ -4,6 +4,12 @@ var innerCluePuzzle = function(puzzleData, controls) {
 
 Object.setPrototypeOf(innerCluePuzzle.prototype, commonPuzzle.prototype);
 
+var outerCluePuzzle = function(puzzleData, controls) {
+  commonPuzzle.call(this, puzzleData, controls);
+}
+
+Object.setPrototypeOf(outerCluePuzzle.prototype, commonPuzzle.prototype);
+
 innerCluePuzzle.prototype.initImages = function() {
   // Images used for the given puzzle type.
   this.clues = [];
@@ -28,19 +34,50 @@ innerCluePuzzle.prototype.initImages = function() {
   this.preloadImages(this.togglers);
 }
 
+innerCluePuzzle.prototype.outerCluePosition = function() {
+  return this.NONE;
+}
+
+outerCluePuzzle.prototype.outerCluePosition = function() {
+  return this.BOTTOM_RIGHT;
+}
+
+outerCluePuzzle.prototype.initImages = function() {
+  // Images used for the given puzzle type.
+  this.clues = [];
+  this.togglers = [];
+  if(this.typeCode == "clouds") {
+    this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
+    this.togglers = ["white", "black", "cross"];
+  }
+  this.preloadImages(this.clues);
+  this.preloadImages(this.togglers);
+}
+
 innerCluePuzzle.prototype.showClues = function(data) {
   commonPuzzle.prototype.showClues.call(this, data);
   this.attachControllers();
 }
 
 innerCluePuzzle.prototype.attachControllers = function() {
-  for (var y = 0; y < this.rows; y++) {
-    for (var x = 0; x < this.cols; x++) {
-      if (!this.cells[y][x].isClue) {
-        this.cells[y][x].attachController();
-      }
+  this.allCells.forEach(cell => {
+    if (!cell.isClue) {
+      cell.attachController();
     }
-  }
+  });
+}
+
+outerCluePuzzle.prototype.showClues = function(data) {
+  commonPuzzle.prototype.showClues.call(this, data);
+  this.attachControllers();
+}
+
+outerCluePuzzle.prototype.attachControllers = function() {
+  this.allCells.forEach(cell => {
+    if (!cell.isClue) {
+      cell.attachController();
+    }
+  });
 }
 
 squarePuzzleCell.prototype.attachController = function() {
