@@ -59,6 +59,11 @@ innerCluePuzzle.prototype.showClues = function(data) {
   this.attachControllers();
 }
 
+innerCluePuzzle.prototype.showForEdit = function(data) {
+  commonPuzzle.prototype.showForEdit.call(this, data);
+  this.attachControllers();
+}
+
 innerCluePuzzle.prototype.attachControllers = function() {
   this.allCells.forEach(cell => {
     if (!cell.isClue) {
@@ -69,6 +74,11 @@ innerCluePuzzle.prototype.attachControllers = function() {
 
 outerCluePuzzle.prototype.showClues = function(data) {
   commonPuzzle.prototype.showClues.call(this, data);
+  this.attachControllers();
+}
+
+outerCluePuzzle.prototype.showForEdit = function(data) {
+  commonPuzzle.prototype.showForEdit.call(this, data);
   this.attachControllers();
 }
 
