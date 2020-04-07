@@ -405,6 +405,9 @@ squarePuzzleCell.prototype.renderCell = function() {
   this.element = this.puzzle.snap.image(
     this.puzzle.imageUrl(this.value), 
     corner.x, corner.y, this.cellSize, this.cellSize);
+  if (this.outsideGrid()) {
+    $(this.element.node).css("filter","url(#outerclue)");
+  }
   this.element.cell = this;
 }
 
@@ -427,14 +430,19 @@ squarePuzzleCell.prototype.getCenter = function() {
   return {
     x: corner.x + this.cellSize/2,
     y: corner.y + this.cellSize/2
-  }
+  };
 }
 
 squarePuzzleCell.prototype.getCorner = function() {
   return {
     x: this.puzzle.leftGap + this.col*this.cellSize,
     y: this.puzzle.topGap + this.row*this.cellSize
-  }
+  };
+}
+
+squarePuzzleCell.prototype.outsideGrid = function() {
+  return this.col < 0 || this.col >= this.puzzle.cols
+   || this.row < 0 || this.row >= this.puzzle.rows;
 }
 
 squarePuzzleCell.prototype.syncCell = function() {
