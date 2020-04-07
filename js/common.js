@@ -25,21 +25,12 @@ commonPuzzle.prototype.initImages = function() {
 }
 
 commonPuzzle.prototype.start = function() {
-  if (this.controls.startBtn) {
-    $(this.controls.startBtn).html('Restart');
-  }
-  if (this.controls.revertBtn) {
-    $(this.controls.revertBtn).show().prop('disabled', true);
-  }
-  if (this.controls.checkBtn) { 
-    $(this.controls.checkBtn).show().prop('disabled', true);
-  }
-  if (this.controls.pencilMarkCtrl) {
-    $(this.controls.pencilMarkCtrl).show();
-  }
-  if (this.controls.pencilMarkCb) {
-    $(this.controls.pencilMarkCb).prop( "checked", false );
-  }
+  $(this.controls.startBtn).html('Restart');
+  $(this.controls.revertBtn).show().prop('disabled', true);
+  $(this.controls.checkBtn).show().prop('disabled', true);
+  $(this.controls.pencilMarkCtrl).show();
+  $(this.controls.pencilMarkCb).prop( "checked", false );
+
   this.pencilMarkMode = false;
   this.removeMessages();
   // Read clues from server and start the puzzle solving.
@@ -79,12 +70,8 @@ commonPuzzle.prototype.collectData = function(needWhites, needClues) {
 
 commonPuzzle.prototype.edit = function() {
   this.removeMessages();
-  if (this.controls.revertBtn) {
-    $(this.controls.revertBtn).show().prop('disabled', true);
-  }
-  if (this.controls.saveBtn) {
-    $(this.controls.saveBtn).show().prop('disabled', true);
-  }
+  $(this.controls.revertBtn).show().prop('disabled', true);
+  $(this.controls.saveBtn).show().prop('disabled', true);
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/get")
     .done(data => this.showForEdit(data))
@@ -102,15 +89,9 @@ commonPuzzle.prototype.save = function() {
 
 commonPuzzle.prototype.addStep = function(cell, oldValueIndex) {
   this.steps.push({cell: cell, valueIndex: oldValueIndex});
-  if (this.controls.checkBtn) {
-    $(this.controls.checkBtn).prop('disabled', false);
-  }
-    if (this.controls.saveBtn) {
-      $(this.controls.saveBtn).prop('disabled', false);
-    }
-  if (this.controls.revertBtn) {
-    $(this.controls.revertBtn).prop('disabled', false);
-  }
+  $(this.controls.checkBtn).prop('disabled', false);
+  $(this.controls.saveBtn).prop('disabled', false);
+  $(this.controls.revertBtn).prop('disabled', false);
 }
 
 commonPuzzle.prototype.revertStep = function() {
@@ -119,15 +100,9 @@ commonPuzzle.prototype.revertStep = function() {
     step.cell.setValue(step.valueIndex);
   }
   if (this.steps.length == 0) {
-    if (this.controls.checkBtn) {
-      $(this.controls.checkBtn).prop('disabled', true);
-    }
-    if (this.controls.saveBtn) {
-      $(this.controls.saveBtn).prop('disabled', true);
-    }
-    if (this.controls.revertBtn) {
-      $(this.controls.revertBtn).prop('disabled', true);
-    }
+    $(this.controls.checkBtn).prop('disabled', true);
+    $(this.controls.saveBtn).prop('disabled', true);
+    $(this.controls.revertBtn).prop('disabled', true);
   }
 }
 
@@ -199,7 +174,7 @@ commonPuzzle.prototype.showClues = function(data) {
 }
 
 commonPuzzle.prototype.startTimer = function() {
-  if (!this.controls.timer) {
+  if (!this.controls.timer || this.timer) {
     return;
   }
   self = this;
@@ -286,24 +261,12 @@ commonPuzzle.prototype.showForEdit = function (data) {
 commonPuzzle.prototype.initControls = function (controls) {
   self = this;
   this.controls = controls;
-  if (this.controls.startBtn) {
-    $(this.controls.startBtn).click(() => self.start());
-  }
-  if (this.controls.revertBtn) {
-    $(this.controls.revertBtn).hide().click(() => self.revertStep());
-  }
-  if (this.controls.checkBtn) {
-    $(this.controls.checkBtn).prop('disabled', true).click(() => self.check());
-  }
-  if (this.controls.saveBtn) {
-    $(this.controls.saveBtn).click(() => self.save());
-  }
-  if (this.controls.pencilMarkCtrl) {
-    $(this.controls.pencilMarkCtrl).hide();
-  }
-  if (this.controls.pencilMarkCb) {
-    $(this.controls.pencilMarkCb).click(() => self.togglePencilMarkMode());
-  }
+  $(this.controls.startBtn).click(() => self.start());
+  $(this.controls.revertBtn).hide().click(() => self.revertStep());
+  $(this.controls.checkBtn).prop('disabled', true).click(() => self.check());
+  $(this.controls.saveBtn).click(() => self.save());
+  $(this.controls.pencilMarkCtrl).hide();
+  $(this.controls.pencilMarkCb).click(() => self.togglePencilMarkMode());
 }
 
 commonPuzzle.prototype.togglePencilMarkMode = function() {
