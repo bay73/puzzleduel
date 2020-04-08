@@ -6,6 +6,7 @@
       <% if(puzzle){ %> 
         <div class="card">
           <%- include ('./partials/puzzleedit') %>
+          <a class="text-right pb-2" href="/single/<%= puzzle.code %>">Open solving window</a>
         </div>
         <div class="card">
           <h3 class="card-body">Solving times</h3>
