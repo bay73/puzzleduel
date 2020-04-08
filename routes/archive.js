@@ -129,9 +129,8 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
 // Author puzzle list
 router.get('/author', ensureAuthenticated, async (req, res, next) => {
   try {
-    if (!req.user) {
-      res.status(403).send('You should log in to see the list!');
-      return;
+    if (!req.user || req.user.role != "author") {
+      res.sendStatus(404);
     }
     const types = await PuzzleType.find({}, "code name");
     var typeMap = {};

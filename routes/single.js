@@ -7,8 +7,22 @@ const Puzzle = require('../models/Puzzle');
 const PuzzleType = require('../models/PuzzleType');
 // User model
 const User = require('../models/User');
+// UserSolvingTime model
+const UserSolvingTime = require('../models/UserSolvingTime');
 
 const { ensureAuthenticated } = require('../config/auth');
+
+function timeToString(millis) {
+  if (!millis) return "";
+  var secs = Math.round(millis/1000);
+  var mins = Math.trunc(secs/60);
+  var hours = Math.trunc(mins/60);
+  secs = secs - 60 * mins;
+  mins = mins - 60 * hours;
+  return (hours > 0 ? (hours + "h ") : "") +
+    ((hours > 0 || mins > 0) ? (mins + "m ") : "") +
+    (secs + " s");
+}
 
 // Single puzzle page
 router.get('/:puzzleid', async (req, res, next) => {
@@ -43,7 +57,7 @@ router.get('/:puzzleid', async (req, res, next) => {
 router.get('/:puzzleid/author', ensureAuthenticated, async (req, res, next) => {
   try {
     if (!req.user) {
-      res.status(403).send('You should log in to see the list!');
+      res.sendStatus(404);
       return;
     }
     var puzzle = await Puzzle.findOne({code: req.params.puzzleid});
@@ -60,9 +74,17 @@ router.get('/:puzzleid/author', ensureAuthenticated, async (req, res, next) => {
     if(type) {
       puzzleObj.type = type.toObject();
     }
+    const times = await UserSolvingTime.find({puzzleId: puzzle.code}).sort("solvingTime");
     res.render('edit', {
       user: req.user,
-      puzzle: puzzleObj
+      puzzle: puzzleObj,
+      times: times.map(time => {
+        return {
+          userName: time.userName,
+          time: timeToString(time.solvingTime),
+          errors: time.errCount
+        };
+      })
     });
   } catch (e) {
     next(e);
@@ -72,9 +94,8 @@ router.get('/:puzzleid/author', ensureAuthenticated, async (req, res, next) => {
 // Create new puzzle and show author page
 router.get('/:typeid/:dimension/new', ensureAuthenticated, async (req, res, next) => {
   try {
-    if (!req.user) {
-      res.status(403).send('You should log in to add puzzles!');
-      return;
+    if (!req.user || req.user.role != "author") {
+      res.sendStatus(404);
     }
     var type = await PuzzleType.findOne({ code: req.params.typeid });
     if(!type) {

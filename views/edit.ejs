@@ -7,6 +7,22 @@
         <div class="card">
           <%- include ('./partials/puzzleedit') %>
         </div>
+        <div class="card">
+          <h3 class="card-body">Solving times</h3>
+          <div class="card-body">
+            <table class="table table-hover table-condensed">
+              <tbody>
+                <% times.forEach(function(time) { %>
+                <tr>
+                  <td><%= time.userName %></td>
+                  <td><%= time.time %></td>
+                  <td><%= time.errors==0 ? "" : (time.errors == 1 ? "1 error" : (time.errors + " errors")) %></td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
         <script>
           $(document).ready(function () {
             showPuzzle();
