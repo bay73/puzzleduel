@@ -17,6 +17,10 @@ const UserActionLogSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  data: {
+    type: String,
+    required: false
   }
 });
 

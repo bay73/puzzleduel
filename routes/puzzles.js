@@ -21,12 +21,15 @@ type_cheker["sudoku_classic"] = require('../puzzle_types/sudoku_classic')
 type_cheker["sudoku_antiknight"] = require('../puzzle_types/sudoku_antiknight')
 type_cheker["sudoku_notouch"] = require('../puzzle_types/sudoku_notouch')
 
-function logAction(user, puzzleId, action) {
+function logAction(user, puzzleId, action, data) {
   const newUserActionLog = new UserActionLog({
     userId: user._id,
     puzzleId: puzzleId,
     action: action
   });
+  if (data) {
+    newUserActionLog.data = data;
+  }
   newUserActionLog.save();
 }
 
@@ -153,7 +156,12 @@ router.post('/:puzzleid/check', async (req, res, next) => {
         return;
       }
       if (req.user.role != "test") {
-        logAction(req.user, req.params.puzzleid, result.status == "OK" ? "solved" : "submitted");
+        logAction(
+          req.user,
+          req.params.puzzleid,
+          result.status == "OK" ? "solved" : "submitted",
+          result.status == "OK" ? JSON.stringify(req.body) : null
+        );
         var hidden = puzzle.author.equals(req.user._id);
         if (result.status == "OK") {
           writeSilvingTime(req.user, req.params.puzzleid, hidden);
