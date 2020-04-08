@@ -10,6 +10,12 @@ var classicSudokuPuzzle = function(typeCode, id, dimension) {
 
 Object.setPrototypeOf(classicSudokuPuzzle.prototype, innerCluePuzzle.prototype);
 
+var outerCluePuzzle = function(puzzleData, controls) {
+  commonPuzzle.call(this, puzzleData, controls);
+}
+
+Object.setPrototypeOf(outerCluePuzzle.prototype, commonPuzzle.prototype);
+
 innerCluePuzzle.prototype.initImages = function() {
   // Images used for the given puzzle type.
   this.clues = [];
@@ -30,6 +36,28 @@ innerCluePuzzle.prototype.outerCluePosition = function() {
   return this.NONE;
 }
 
+outerCluePuzzle.prototype.initImages = function() {
+  // Images used for the given puzzle type.
+  this.clues = [];
+  this.togglers = [];
+  if(this.typeCode == "doubleblock") {
+    this.togglers = ["white"];
+    for (var i=1;i<=parseInt(this.rows) - 2;i++) {
+      this.togglers.push(i.toString());
+    }
+    this.togglers.push("cross");
+    for (var i=0;i<=15;i++) {
+      this.clues.push(i.toString());
+    }
+  }
+  this.preloadImages(this.clues);
+  this.preloadImages(this.togglers);
+}
+
+outerCluePuzzle.prototype.outerCluePosition = function() {
+  return this.BOTTOM_RIGHT;
+}
+
 classicSudokuPuzzle.prototype.initImages = function() {
   // Images used for the given puzzle type.
   this.clues = [];
@@ -44,6 +72,11 @@ classicSudokuPuzzle.prototype.initImages = function() {
 }
 
 innerCluePuzzle.prototype.render = function(snap) {
+  commonPuzzle.prototype.render.call(this, snap);
+  chooserBuilder.attachEvents(this.snap.node, this);
+}
+
+outerCluePuzzle.prototype.render = function(snap) {
   commonPuzzle.prototype.render.call(this, snap);
   chooserBuilder.attachEvents(this.snap.node, this);
 }
