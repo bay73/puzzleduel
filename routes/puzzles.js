@@ -196,15 +196,20 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    var d = new Date();
-    d.setDate(d.getDate()+2);
-    if (puzzleObj.daily <= d) {
+    if (puzzle.published) {
       res.status(403).send('Puzzle is already published, changes are not allowed!');
       return;
     }
-    puzzle.data = JSON.stringify(req.body);
-    await puzzle.save();
-    res.json({status: "OK"});
+    var newData = JSON.stringify(req.body);
+    if (puzzle.data != newData) {
+      puzzle.data = newData;
+      await puzzle.save();
+      await UserSolvingTime.deleteMany({puzzleId: puzzle.code});
+      await UserActionLog.deleteMany({puzzleId: puzzle.code});
+      res.json({status: "OK"});
+    } else {
+      res.json({status: "OK"});
+    }
   } catch (e) {
     next(e);
   }

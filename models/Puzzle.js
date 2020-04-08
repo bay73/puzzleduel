@@ -45,6 +45,12 @@ PuzzleSchema.virtual('hidden').get(function() {
   return this.daily && this.daily > d
 });
 
+PuzzleSchema.virtual('published').get(function() {
+  var d = new Date();
+  d.setDate(d.getDate()+2);
+  return this.daily && this.daily < d
+});
+
 const Puzzle = mongoose.model('Puzzle', PuzzleSchema);
 
 module.exports = Puzzle;
