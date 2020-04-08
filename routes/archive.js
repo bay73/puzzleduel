@@ -135,6 +135,13 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     const types = await PuzzleType.find({}, "code name");
     var typeMap = {};
     types.forEach(type => typeMap[type.code] = type.name);
+    const times = await UserSolvingTime.aggregate([{$group: {
+        _id: "$puzzleId",
+        min: { $min: "$solvingTime" }
+      }
+    }]);
+    var timesMap = {};
+    times.forEach(time => timesMap[time._id] = time.min);
     var filter = {author: req.user._id};
     const puzzles = await Puzzle.find(filter, "code type dimension daily").sort({daily: -1});
     res.render('author', {
@@ -145,6 +152,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
           type: typeMap[puzzle.type],
           dimension: puzzle.dimension,
           daily: puzzle.daily,
+          time: timeToString(timesMap[puzzle.code]),
           published: puzzle.published
         };
       })

@@ -4,7 +4,7 @@
     <div class="col-12 col-lg-10 m-auto">
       <%- include ('./partials/messages') %>
       <div class="card">
-        <h1 class="card-header">Daily puzzles</h1>
+        <h1 class="card-header">You puzzles</h1>
         <div class="card-body">
           <table class="table table-hover table-condensed">
             <tbody>
@@ -15,6 +15,11 @@
                   <a href="/single/<%= puzzle.code %>">
                     <%= puzzle.type %>
                     <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+                  </a>
+                </td>
+                <td>
+                  <a href="/archive/<%= puzzle.code %>/scores">
+                    <%= puzzle.time %>
                   </a>
                 </td>
                 <td><% if(!puzzle.published) { %>
