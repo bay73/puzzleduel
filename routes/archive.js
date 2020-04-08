@@ -146,6 +146,12 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     const puzzles = await Puzzle.find(filter, "code type dimension daily").sort({daily: -1});
     res.render('author', {
       user: req.user,
+      types: types.map(type => {
+        return {
+          code: type.code,
+          name: type.name
+        };
+      }),
       puzzles: puzzles.map(puzzle => {
         return {
           code: puzzle.code,

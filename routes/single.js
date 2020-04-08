@@ -115,7 +115,8 @@ router.get('/:typeid/:dimension/new', ensureAuthenticated, async (req, res, next
     puzzleObj.type = type.toObject();
     res.render('edit', {
       user: req.user,
-      puzzle: puzzleObj
+      puzzle: puzzleObj,
+      times: null
     });
   } catch (e) {
     next(e);
