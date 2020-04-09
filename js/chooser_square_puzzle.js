@@ -27,6 +27,7 @@ innerCluePuzzle.prototype.initImages = function() {
       this.togglers.push(i.toString());
     }
     this.togglers.push("cross");
+    this.togglers.push("white_circle");
   }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
@@ -46,6 +47,7 @@ outerCluePuzzle.prototype.initImages = function() {
       this.togglers.push(i.toString());
     }
     this.togglers.push("cross");
+    this.togglers.push("white_circle");
     for (var i=0;i<=15;i++) {
       this.clues.push(i.toString());
     }
