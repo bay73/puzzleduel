@@ -17,6 +17,7 @@ type_cheker["minesweeper_classic"] = require('../puzzle_types/minesweeper_classi
 type_cheker["nurikabe"] = require('../puzzle_types/nurikabe')
 type_cheker["clouds"] = require('../puzzle_types/clouds')
 type_cheker["snake_simple"] = require('../puzzle_types/snake_simple')
+type_cheker["paint_by_max"] = require('../puzzle_types/paint_by_max')
 type_cheker["fuzuli"] = require('../puzzle_types/fuzuli')
 type_cheker["doubleblock"] = require('../puzzle_types/doubleblock')
 type_cheker["sudoku_classic"] = require('../puzzle_types/sudoku_classic')
