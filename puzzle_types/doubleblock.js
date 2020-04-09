@@ -12,7 +12,11 @@ check:function(dimension, clues, data){
   for (var [key, value] of Object.entries(data)) {
     var pos = util.parseCoord(key);
     if (cells[pos.y]){
-      cells[pos.y][pos.x] = value;
+      if (isNaN(value)) {
+        cells[pos.y][pos.x] = "cross";
+      } else {
+        cells[pos.y][pos.x] = value;
+      }
     }
   }
   // Parse clues.
@@ -82,7 +86,7 @@ checkColumnClue: function(cells, clue, col) {
   var cellList = [];
   for (var y=0; y < cells.rows; y++) {
     cellList.push(util.coord(col, y));
-    if (cells[y][col]=="cross" || cells[y][col]=="white") {
+    if (cells[y][col]=="cross") {
       blackCount++;
     } else {
       if (blackCount==1) {
@@ -110,7 +114,7 @@ checkRowClue: function(cells, clue, row) {
   var cellList = [];
   for (var x=0; x < cells.cols; x++) {
     cellList.push(util.coord(x, row));
-    if (cells[row][x] == "cross" || cells[row][x] == "white") {
+    if (cells[row][x] == "cross") {
       blackCount++;
     } else {
       if (blackCount==1) {
