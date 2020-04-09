@@ -39,6 +39,9 @@ innerCluePuzzle.prototype.outerCluePosition = function() {
 }
 
 outerCluePuzzle.prototype.outerCluePosition = function() {
+  if(this.typeCode == "paint_by_max") {
+    return this.FOUR_SIDES;
+  }
   return this.BOTTOM_RIGHT;
 }
 
@@ -53,6 +56,10 @@ outerCluePuzzle.prototype.initImages = function() {
   if(this.typeCode == "snake_simple") {
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "black", "cross"];
     this.togglers = ["white", "black", "cross"];
+  }
+  if(this.typeCode == "paint_by_max") {
+    this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "13", "14", "15"];
+    this.togglers = ["white", "black", "grey"];
   }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
