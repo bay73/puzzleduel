@@ -162,7 +162,7 @@ commonPuzzle.prototype.createBoard = function() {
       this.allCells.push(this.cells[y][x]);
     }
   }
-  if (this.cluePosition == this.BOTTOM_RIGHT) {
+  if (this.cluePosition == this.BOTTOM_RIGHT || this.cluePosition == this.FOUR_SIDES) {
     this.bottom = [];
     for (var x = 0; x < this.cols; x++) {
       this.bottom[x] = new squarePuzzleCell(this, x, this.rows);
