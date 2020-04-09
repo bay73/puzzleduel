@@ -111,13 +111,7 @@ router.get('/:typeid/:dimension/new', ensureAuthenticated, async (req, res, next
       author: req.user._id
     });
     await puzzle.save();
-    var puzzleObj = puzzle.toObject();
-    puzzleObj.type = type.toObject();
-    res.render('edit', {
-      user: req.user,
-      puzzle: puzzleObj,
-      times: null
-    });
+    res.redirect("/single/" + puzzleid + "/author/");
   } catch (e) {
     next(e);
   }
