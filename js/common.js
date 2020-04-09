@@ -202,7 +202,7 @@ commonPuzzle.prototype.findCellSize = function() {
     rows = rows + 2;
   }
   this.cellSize = Math.min(hSizeLimit / cols, vSizeLimit / rows);
-  this.leftGap = (this.snap.node.clientWidth - this.cellSize * this.cols)/2;
+  this.leftGap = (this.snap.node.clientWidth - this.cellSize * cols)/2;
   this.topGap = 1;
   if (this.cluePosition == this.FOUR_SIDES) {
     this.topGap = this.topGap + this.cellSize;
