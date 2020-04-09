@@ -405,8 +405,15 @@ squarePuzzleCell.prototype.renderCell = function() {
   this.element = this.puzzle.snap.image(
     this.puzzle.imageUrl(this.value), 
     corner.x, corner.y, this.cellSize, this.cellSize);
-  if (this.outsideGrid()) {
-    $(this.element.node).css("filter","url(#outerclue)");
+  if (this.overGrid()) {
+    if (this.puzzle.useTopColor) {
+      $(this.element.node).css("filter","url(#topclue)");
+    } else {
+      $(this.element.node).css("filter","url(#bottomclue)");
+    }
+  }
+  if (this.belowGrid()) {
+    $(this.element.node).css("filter","url(#bottomclue)");
   }
   this.element.cell = this;
 }
@@ -440,9 +447,12 @@ squarePuzzleCell.prototype.getCorner = function() {
   };
 }
 
-squarePuzzleCell.prototype.outsideGrid = function() {
-  return this.col < 0 || this.col >= this.puzzle.cols
-   || this.row < 0 || this.row >= this.puzzle.rows;
+squarePuzzleCell.prototype.overGrid = function() {
+  return this.col < 0 || this.row < 0;
+}
+
+squarePuzzleCell.prototype.belowGrid = function() {
+  return this.col >= this.puzzle.cols || this.row >= this.puzzle.rows;
 }
 
 squarePuzzleCell.prototype.syncCell = function() {
