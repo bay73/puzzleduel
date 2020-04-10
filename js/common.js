@@ -147,6 +147,12 @@ commonPuzzle.prototype.render = function(snap) {
       strokeWidth: 5
   });
   this.allCells.forEach(cell=>cell.renderCell())
+  var edge = this.snap.rect(this.leftGap, this.topGap, this.cols * this.cellSize, this.rows * this.cellSize);
+  edge.attr({
+      fill: "none",
+      stroke: "#000",
+      strokeWidth: 5
+  });
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   this.snap.node.setAttribute("height", this.snap.getBBox().height + this.cellSize / (isSafari ? 2 : 4));
 }
@@ -396,12 +402,6 @@ squarePuzzleCell.prototype.renderCell = function() {
   // Draw cell in the canvas.
   this.cellSize = this.puzzle.cellSize;
   var corner = this.getCorner();
-  this.rect = this.puzzle.snap.rect(corner.x, corner.y, this.cellSize, this.cellSize);
-  this.rect.attr({
-    fill: "none",
-    stroke: "#000",
-    strokeWidth: 1
-  });
   this.element = this.puzzle.snap.image(
     this.puzzle.imageUrl(this.value), 
     corner.x, corner.y, this.cellSize, this.cellSize);
@@ -416,6 +416,12 @@ squarePuzzleCell.prototype.renderCell = function() {
     $(this.element.node).css("filter","url(#bottomclue)");
   }
   this.element.cell = this;
+  this.rect = this.puzzle.snap.rect(corner.x, corner.y, this.cellSize, this.cellSize);
+  this.rect.attr({
+    fill: "none",
+    stroke: "#000",
+    strokeWidth: 1
+  });
 }
 
 squarePuzzleCell.prototype.markError = function() {
