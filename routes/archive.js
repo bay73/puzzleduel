@@ -126,6 +126,11 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
   }
 });
 
+router.get('/scores', (req, res) => {
+  var d = new Date().toISOString().split('T')[0];
+  res.redirect('/archive/' + d + '/scores');
+});
+
 // Author puzzle list
 router.get('/author', ensureAuthenticated, async (req, res, next) => {
   try {
