@@ -85,51 +85,29 @@ outerCluePuzzle.prototype.render = function(snap) {
 
 classicSudokuPuzzle.prototype.render = function(snap) {
   innerCluePuzzle.prototype.render.call(this, snap);
-  if (this.rows == 9) {
-    for (var j = 0; j < 3; j++) {
-      for (var i = 0; i < 3; i++) {
-        var area = this.snap.rect(
-          this.leftGap + i * 3 * this.cellSize,
-          this.topGap + j * 3 * this.cellSize,
-          3 * this.cellSize, 3 * this.cellSize);
-        area.attr({
-          fill: "none",
-          stroke: "#000",
-          strokeWidth: 5
-        });
-      }
-    }
-  }
+  var sizeH = 3;
+  var sizeV = 3;
   if (this.rows == 8) {
-    for (var j = 0; j < 4; j++) {
-      for (var i = 0; i < 2; i++) {
-        var area = this.snap.rect(
-          this.leftGap + i * 4 * this.cellSize,
-          this.topGap + j * 2 * this.cellSize,
-          4 * this.cellSize, 2 * this.cellSize);
-        area.attr({
-          fill: "none",
-          stroke: "#000",
-          strokeWidth: 5
-        });
-      }
-    }
+    var sizeH = 4;
+    var sizeV = 2;
   }
   if (this.rows == 6) {
-    for (var j = 0; j < 3; j++) {
-      for (var i = 0; i < 2; i++) {
+    var sizeH = 3;
+    var sizeV = 2;
+  }
+  for (var j = 0; j < this.rows/sizeV; j++) {
+    for (var i = 0; i < this.cols/sizeH; i++) {
         var area = this.snap.rect(
-          this.leftGap + i * 3 * this.cellSize,
-          this.topGap + j * 2 * this.cellSize,
-          3 * this.cellSize, 2 * this.cellSize);
+          this.leftGap + i * sizeH * this.cellSize,
+          this.topGap + j * sizeV * this.cellSize,
+          sizeH * this.cellSize, sizeV * this.cellSize);
         area.attr({
           fill: "none",
-          stroke: "#000",
-          strokeWidth: 5
+          stroke: this.gridProperty.stroke,
+          strokeWidth: this.gridProperty.boldWidth
         });
       }
     }
-  }
 }
 
 // Class to build value chooser

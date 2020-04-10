@@ -140,18 +140,24 @@ commonPuzzle.prototype.render = function(snap) {
   // Draw puzzle grid
   this.snap = snap;
   this.findCellSize();
+  this.gridProperty = {
+    fill: "#fff",
+    stroke: "#000",
+    strokeWidth: 1,
+    boldWidth: this.cellSize < 48 ? 4: this.cellSize/12
+  }
   var board = this.snap.rect(this.leftGap, this.topGap, this.cols * this.cellSize, this.rows * this.cellSize);
   board.attr({
-      fill: "#fff",
-      stroke: "#000",
-      strokeWidth: 5
+      fill: this.gridProperty.fill,
+      stroke: this.gridProperty.stroke,
+      strokeWidth: this.gridProperty.boldWidth
   });
   this.allCells.forEach(cell=>cell.renderCell())
   var edge = this.snap.rect(this.leftGap, this.topGap, this.cols * this.cellSize, this.rows * this.cellSize);
   edge.attr({
       fill: "none",
-      stroke: "#000",
-      strokeWidth: 5
+      stroke: this.gridProperty.stroke,
+      strokeWidth: this.gridProperty.boldWidth
   });
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   this.snap.node.setAttribute("height", this.snap.getBBox().height + this.cellSize / (isSafari ? 2 : 4));
@@ -419,8 +425,8 @@ squarePuzzleCell.prototype.renderCell = function() {
   this.rect = this.puzzle.snap.rect(corner.x, corner.y, this.cellSize, this.cellSize);
   this.rect.attr({
     fill: "none",
-    stroke: "#000",
-    strokeWidth: 1
+    stroke: this.puzzle.gridProperty.stroke,
+    strokeWidth: this.puzzle.gridProperty.strokeWidth
   });
 }
 
