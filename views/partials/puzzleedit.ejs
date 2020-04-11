@@ -30,7 +30,7 @@
   </div>
 </div>
 <script src="/js/common.js"></script>
-<script src="/js/<%= puzzle.type.puzzleJs %>"></script>
+<script src="/js/<%= puzzle.type.puzzleJs=="path_square_puzzle.js"?"paint_square_puzzle.js":puzzle.type.puzzleJs %>"></script>
 <script>
   function showPuzzle() {
     var controls = {

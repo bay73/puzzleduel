@@ -30,6 +30,10 @@ innerCluePuzzle.prototype.initImages = function() {
     this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
     this.togglers = ["white", "black", "cross"];
   }
+  if(this.typeCode == "every_second_turn") {
+    this.clues = ["white_circle"];
+    this.togglers = ["white"];
+  }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
 }
