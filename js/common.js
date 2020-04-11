@@ -385,6 +385,7 @@ var squarePuzzleCell = function(puzzle, col, row) {
   this.cellSize = this.puzzle.cellSize;
   this.pencilMarks = null;
   this.markElements = [];
+  this.reset();
 }
 
 squarePuzzleCell.prototype.setClue = function(value) {
@@ -392,6 +393,7 @@ squarePuzzleCell.prototype.setClue = function(value) {
   this.isClue = true;
   this.value = value;
   this.pencilMarks = null;
+  this.reset();
 }
 
 squarePuzzleCell.prototype.setRegular = function(togglers) {
@@ -401,7 +403,10 @@ squarePuzzleCell.prototype.setRegular = function(togglers) {
   this.valueIndex = 0;
   this.value = this.togglers[this.valueIndex];
   this.pencilMarks = null;
-//this.attachController();
+  this.reset();
+}
+
+squarePuzzleCell.prototype.reset = function() {
 }
 
 squarePuzzleCell.prototype.renderCell = function() {
@@ -502,6 +507,10 @@ squarePuzzleCell.prototype.syncCell = function() {
       }
     }
   }
+  this.syncAdditional()
+}
+
+squarePuzzleCell.prototype.syncAdditional = function() {
 }
 
 squarePuzzleCell.prototype.setValue = function(valueIndex) {
