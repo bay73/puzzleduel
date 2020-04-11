@@ -137,6 +137,7 @@ attachEvents: function(puzzle) {
   puzzle.snap.node.addEventListener("touchstart", function(event){dragController.onMouseDown(puzzle, event)});
   puzzle.snap.node.addEventListener("mouseup", function(event){dragController.onMouseUp(puzzle, event)});
   puzzle.snap.node.addEventListener("touchend", function(event){dragController.onMouseUp(puzzle, event)});
+  puzzle.snap.node.addEventListener("touchcancel", function(event){dragController.onMouseUp(puzzle, event)});
 },
 
 transformPoint: function(node, position) {
@@ -148,6 +149,9 @@ transformPoint: function(node, position) {
 
 onMouseDown: function(puzzle, event) {
   event.preventDefault();
+  if (puzzle.dragData && puzzle.dragData.line) {
+    puzzle.dragData.line.remove();
+  }
   var cell = dragController.eventElement(puzzle, event);
   if (cell) {
     var dragData = {
@@ -167,6 +171,9 @@ onMouseMove: function(puzzle, event) {
   if (!puzzle.dragData) {
     return;
   }
+  if (puzzle.dragData.line) {
+    puzzle.dragData.line.remove();
+  }
   var cell = dragController.eventElement(puzzle, event);
   if (!cell) {
     return;
@@ -178,9 +185,6 @@ onMouseMove: function(puzzle, event) {
        (Math.abs(position.x - startCenter.x) > puzzle.cellSize*0.75 ||
         Math.abs(position.y - startCenter.y) > puzzle.cellSize*0.75);
   if (finishMove) {
-    if (puzzle.dragData.line) {
-      puzzle.dragData.line.remove();
-    }
     var row = puzzle.dragData.startCell.row;
     var col = puzzle.dragData.startCell.col;
     if (Math.abs(position.x - startCenter.x) > Math.abs(position.y - startCenter.y)) {
@@ -201,9 +205,6 @@ onMouseMove: function(puzzle, event) {
        (Math.abs(absolutePosition.x - puzzle.dragData.startPosition.x) > puzzle.cellSize*0.1 ||
         Math.abs(absolutePosition.y - puzzle.dragData.startPosition.y) > puzzle.cellSize*0.1);
     if (needLine) {
-      if (puzzle.dragData.line) {
-        puzzle.dragData.line.remove();
-      }
       var vertical = 0;
       var horizontal = 0;
       if (Math.abs(position.x - startCenter.x) > Math.abs(position.y - startCenter.y)) {
