@@ -23,6 +23,7 @@ type_cheker["doubleblock"] = require('../puzzle_types/doubleblock')
 type_cheker["sudoku_classic"] = require('../puzzle_types/sudoku_classic')
 type_cheker["sudoku_antiknight"] = require('../puzzle_types/sudoku_antiknight')
 type_cheker["sudoku_notouch"] = require('../puzzle_types/sudoku_notouch')
+type_cheker["every_second_turn"] = require('../puzzle_types/every_second_turn')
 
 function logAction(user, puzzleId, action, data) {
   const newUserActionLog = new UserActionLog({
