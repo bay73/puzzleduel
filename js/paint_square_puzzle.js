@@ -115,7 +115,7 @@ squarePuzzleCell.prototype.toggleCell = function() {
   if (this.puzzle.pencilMarkMode) {
     this.togglePencilMarks();
   } else {
-    this.puzzle.addStep(this, this.valueIndex);
+    this.puzzle.addStep(this, {index: this.valueIndex});
     this.setValue(this.valueIndex+1);
   }
 }

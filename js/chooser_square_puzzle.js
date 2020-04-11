@@ -110,6 +110,10 @@ classicSudokuPuzzle.prototype.render = function(snap) {
     }
 }
 
+squarePuzzleCell.prototype.revertTo(data) {
+  this.setValue(data.index);
+}
+
 // Class to build value chooser
 var chooserBuilder = {
 
@@ -197,7 +201,7 @@ onMouseUp: function(puzzle, event) {
       if (puzzle.pencilMarkMode) {
         puzzle.chooserElem.cell.togglePencilMark(element.valueIndex);
       } else {
-        puzzle.addStep(puzzle.chooserElem.cell, puzzle.chooserElem.cell.valueIndex);
+        puzzle.addStep(puzzle.chooserElem.cell, {index: puzzle.chooserElem.cell.valueIndex});
         puzzle.chooserElem.cell.setValue(element.valueIndex);
       }
     }

@@ -117,8 +117,8 @@ commonPuzzle.prototype.save = function() {
     .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
 }
 
-commonPuzzle.prototype.addStep = function(cell, oldValueIndex) {
-  this.steps.push({cell: cell, valueIndex: oldValueIndex});
+commonPuzzle.prototype.addStep = function(cell, data ) {
+  this.steps.push({cell: cell, data: data});
   $(this.controls.checkBtn).prop('disabled', false);
   $(this.controls.saveBtn).prop('disabled', false);
   $(this.controls.revertBtn).prop('disabled', false);
@@ -127,7 +127,7 @@ commonPuzzle.prototype.addStep = function(cell, oldValueIndex) {
 commonPuzzle.prototype.revertStep = function() {
   if (this.steps.length > 0) {
     var step = this.steps.pop(this);
-    step.cell.setValue(step.valueIndex);
+    step.cell.revertTo(step.data);
   }
   if (this.steps.length == 0) {
     $(this.controls.checkBtn).prop('disabled', true);
