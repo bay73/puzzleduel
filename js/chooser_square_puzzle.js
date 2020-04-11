@@ -110,7 +110,7 @@ classicSudokuPuzzle.prototype.render = function(snap) {
     }
 }
 
-squarePuzzleCell.prototype.revertTo(data) {
+squarePuzzleCell.prototype.revertTo = function(data) {
   this.setValue(data.index);
 }
 
