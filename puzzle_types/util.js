@@ -159,7 +159,7 @@ const Util = {
     for (var i = 0; i < positionsToCheck.length; i++) {
       cellList.push(Util.coord(positionsToCheck[i].x,positionsToCheck[i].y));
       var color = cells[positionsToCheck[i].y][positionsToCheck[i].x];
-      if (colors.includes(color)) {
+      if (colorsToCheck.includes(color)) {
         if (colorsPresent.includes(color)) {
           repeat = true;
         } else {

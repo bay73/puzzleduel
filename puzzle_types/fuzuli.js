@@ -20,7 +20,7 @@ check:function(dimension, clues, data){
       cells[pos.y][pos.x] = value;
     }
   }
-  colors = [];
+  var colors = [];
   for (var i=1;i<=parseInt(dim.rows) - 2;i++) {
     colors.push(i.toString());
   }

@@ -32,7 +32,7 @@ check:function(dimension, clues, data){
       }
     }
   }
-  colors = [];
+  var colors = [];
   for (var i=1;i<=parseInt(dim.rows) - 2;i++) {
     colors.push(i.toString());
   }
