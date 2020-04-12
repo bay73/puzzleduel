@@ -39,13 +39,17 @@ innerCluePuzzle.prototype.collectData = function(needWhites, needClues) {
 }
 
 squarePuzzleCell.prototype.getLineAttr = function(pencilMark) {
-  var width = pencilMark ? puzzle.cellSize/8 : puzzle.cellSize/4;
-  return {
+  var width = pencilMark ? this.puzzle.cellSize/16 : this.puzzle.cellSize/4;
+  var attr = {
     stroke: "#002B36",
     strokeWidth: width + "px",
     "stroke-linecap": "round",
     "stroke-opacity": 1
   };
+  if (pencilMark) {
+    attr["stroke-dasharray"]="1," + width*1.5;
+  }
+  return attr;
 }
 
 squarePuzzleCell.prototype.toggleLine = function(direction) {
