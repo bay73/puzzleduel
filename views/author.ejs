@@ -13,22 +13,26 @@
         <div class="collapse" id="newform">
           <div class="card card-body">
             <div class="form-inline">
-              <div class="form-group pr-4">
+              <div class="form-group pr-4 pb-2">
                 <select class="custom-select" id="type">
                   <% types.forEach(function(type) { %>
                   <option value="<%= type.code %>"><%= type.name %></option>
                   <% }) %>
                 </select>
               </div>
-              <div class="form-group pr-4">
-                <label class="col-form-label" for="rows">Rows</label>
+              <div class="form-group pr-4 pb-2">
+                <label class="col-form-label pr-1" for="rows">Rows</label>
                 <input type="number" min="2" max="15" value="9" class="form-control" id="rows">
               </div>
-              <div class="form-group pr-4">
-                <label class="col-form-label" for="cols">Columns</label>
+              <div class="form-group pr-4 pb-2">
+                <label class="col-form-label pr-1" for="cols">Columns</label>
                 <input type="number" min="2" max="15" value="9" class="form-control" id="cols">
               </div>
-              <div class="form-group pr-4">
+              <div class="form-group pr-4 pb-2">
+                <label class="col-form-label pr-1" for="cols">Letters</label>
+                <input class="form-control" width="5" id="letters">
+              </div>
+              <div class="form-group pr-4 pb-2">
                 <button type="submit" id="createPuzzle" class="btn btn-primary">Create</button>
               </div>
             </div>
@@ -37,7 +41,11 @@
         <script>
           $("#createPuzzle").click(function () {
             var type = $("#type").children("option:selected").val();
-            var url = "/single/" + type + "/" + $("#rows").val() + "x" + $("#cols").val() + "/new";
+            var dimension = $("#rows").val() + "x" + $("#cols").val();
+            if ($("#letters").val()) {
+              dimension = dimension + "-" + $("#letters").val();
+            }
+            var url = "/single/" + type + "/" + dimension + "/new";
             window.location = url;
           });
         </script>
