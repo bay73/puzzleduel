@@ -106,6 +106,11 @@ outerCluePuzzle.prototype.attachControllers = function() {
   });
 }
 
+
+squarePuzzleCell.prototype.revertTo = function(data) {
+  this.setValue(data.index);
+}
+
 squarePuzzleCell.prototype.attachController = function() {
   // Attach events to the cell.
   if (this.togglers.length > 1 && this.element != undefined) {
