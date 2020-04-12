@@ -37,6 +37,17 @@ innerCluePuzzle.prototype.outerCluePosition = function() {
   return this.NONE;
 }
 
+outerCluePuzzle.prototype.parseDimension = function(dimension) {
+  if (this.typeCode == "easy_as_abc") {
+    // Parse dimension string to values.
+    var part = dimension.split("-");
+    commonPuzzle.prototype.parseDimension.call(this, part[0]);
+    this.letters = part[1];
+  } else {
+    commonPuzzle.prototype.parseDimension.call(this, dimension);
+  }
+}
+
 outerCluePuzzle.prototype.initImages = function() {
   // Images used for the given puzzle type.
   this.clues = [];
@@ -52,12 +63,28 @@ outerCluePuzzle.prototype.initImages = function() {
       this.clues.push(i.toString());
     }
   }
+  if (this.typeCode == "easy_as_abc") {
+    this.togglers = ["white"];
+    if (this.letters) {
+      for (var i=0;i<this.letters.length;i++) {
+        var letter = this.letters.charAt(i);
+        this.togglers.push(letter);
+        this.clues.push(letter);
+      }
+    }
+    this.togglers.push("cross");
+    this.togglers.push("white_circle");
+  }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
 }
 
 outerCluePuzzle.prototype.outerCluePosition = function() {
-  return this.BOTTOM_RIGHT;
+  if (this.typeCode == "easy_as_abc") {
+    return this.FOUR_SIDES;
+  } else {
+    return this.BOTTOM_RIGHT;
+  }
 }
 
 classicSudokuPuzzle.prototype.initImages = function() {
