@@ -43,7 +43,7 @@ buildLine: function(v, h) {
   line[0] = {x:0, y:0 };
   var prev = {x:0, y:0};
   if (!h[prev.y][prev.x]) {
-    return {status: "The loop should path through all cells", errors: [util.coord(prev.x,prev.y)]};
+    return {status: "There should be single loop passing through all cells", errors: [util.coord(prev.x,prev.y)]};
   }
   length = 1;
   line[1] = {x:1, y:0 };
@@ -85,7 +85,7 @@ checAllFilled: function(cells, line) {
   for (var y=0;y<used.rows;y++) {
     for (var x=0;x<used.cols;x++) {
       if (!used[y][x]) {
-        return {status: "The line should pass through all cells", errors: [util.coord(x, y)]};
+        return {status: "There should be single loop passing through all cells", errors: [util.coord(x, y)]};
       }
     }
   }
