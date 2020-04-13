@@ -136,6 +136,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
   try {
     if (!req.user || req.user.role != "author") {
       res.sendStatus(404);
+      return;
     }
     const types = await PuzzleType.find({}, "code name");
     var typeMap = {};
