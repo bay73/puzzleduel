@@ -24,7 +24,7 @@
       <div class="navbar-right">    
         <ul class="nav navbar-nav">
           <% if(user) { %>
-          <li class="nav-item"><a class="nav-link" href="#"><span class="glyphicon glyphicon-user"></span> <%= user.name %></a></li>
+          <li class="nav-item"><a class="nav-link" href="/users/edit"><span class="glyphicon glyphicon-user"></span> <%= user.name %></a></li>
           <li class="nav-item"><a class="nav-link" href="/users/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
           <% } else { %>
           <li class="nav-item"><a class="nav-link" href="/users/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
