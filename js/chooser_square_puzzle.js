@@ -96,8 +96,21 @@ classicSudokuPuzzle.prototype.initImages = function() {
     this.clues.push(i.toString());
     this.togglers.push(i.toString());
   }
+  if (this.typeCode == "sudoku_x_sums") {
+    for (var i=parseInt(this.rows);i<=19;i++) {
+      this.clues.push(i.toString());
+    }
+  }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
+}
+
+classicSudokuPuzzle.prototype.outerCluePosition = function() {
+  if (this.typeCode == "sudoku_x_sums") {
+    return this.FOUR_SIDES;
+  } else {
+    return this.NONE;
+  }
 }
 
 innerCluePuzzle.prototype.render = function(snap) {
@@ -203,10 +216,10 @@ createToggler: function(puzzle, center, angle, distance, size, index, value) {
   puzzle.chooserElem.append(togglerCircle);
   var togglerImage = puzzle.snap.image(
     puzzle.imageUrl(value),
-    center.x + Math.sin(index*angle)*size*distance - size/4,
-    center.y - Math.cos(index*angle)*size*distance - size/4,
-    size/2,
-    size/2);
+    center.x + Math.sin(index*angle)*size*distance - size*(1.-distance),
+    center.y - Math.cos(index*angle)*size*distance - size*(1.-distance),
+    size*(1.-distance)*2,
+    size*(1.-distance)*2);
   $(togglerImage.node).css("filter","url(#chooser)");
   togglerImage.valueIndex = index;
   puzzle.chooserElem.append(togglerImage);
