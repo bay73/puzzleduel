@@ -68,8 +68,8 @@ app.use('/single', require('./routes/single.js'));
 app.use('/archive', require('./routes/archive.js'));
 
 // Static content
-app.use('/images', express.static(__dirname + '/images', { maxage: '30d' }));
-app.use('/js', express.static(__dirname + '/js', { maxage: '1d' }));
+app.use('/images', express.static(__dirname + '/images', { maxage: '3d' }));
+app.use('/js', express.static(__dirname + '/js', { maxage: '3h' }));
 
 const PORT = process.env.PORT || 5000;
 
