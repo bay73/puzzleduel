@@ -1,0 +1,72 @@
+<%- include ('./partials/navbar') %>
+<div class=container>
+  <div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card">
+        <h1 class="card-header text-center mb-3">Change user data
+        </h1>
+        <%- include ('./partials/messages') %>
+        <form class="card-body" action="/users/edit" method="POST">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="name"
+              id="name"
+              name="name"
+              class="form-control"
+              placeholder="Enter New Name"
+              value="<%= typeof user.name != 'undefined' ? name : '' %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">New email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter New Email"
+              value="<%= typeof user.email != 'undefined' ? email : '' %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">New Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter New Password"
+              value="<%= typeof password != 'undefined' ? password : '' %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password2">Confirm New Password</label>
+            <input
+              type="password"
+              id="password2"
+              name="password2"
+              class="form-control"
+              placeholder="Confirm New Password"
+              value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password2">Current Password</label>
+            <input
+              type="password"
+              id="oldpassword"
+              name="oldpassword"
+              class="form-control"
+              placeholder="Enter Current Password"
+              value="<%= typeof oldpassword != 'undefined' ? oldpassword : '' %>"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
