@@ -25,6 +25,7 @@ type_cheker["sudoku_classic"] = require('../puzzle_types/sudoku_classic')
 type_cheker["sudoku_antiknight"] = require('../puzzle_types/sudoku_antiknight')
 type_cheker["sudoku_notouch"] = require('../puzzle_types/sudoku_notouch')
 type_cheker["sudoku_x_sums"] = require('../puzzle_types/sudoku_x_sums')
+type_cheker["sudoku_skyscrapers"] = require('../puzzle_types/sudoku_skyscrapers')
 type_cheker["every_second_turn"] = require('../puzzle_types/every_second_turn')
 type_cheker["loop_minesweeper"] = require('../puzzle_types/loop_minesweeper')
 
