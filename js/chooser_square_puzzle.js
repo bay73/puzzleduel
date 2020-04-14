@@ -106,7 +106,7 @@ classicSudokuPuzzle.prototype.initImages = function() {
 }
 
 classicSudokuPuzzle.prototype.outerCluePosition = function() {
-  if (this.typeCode == "sudoku_x_sums") {
+  if (this.typeCode == "sudoku_x_sums" || this.typeCode == "sudoku_skyscrapers") {
     return this.FOUR_SIDES;
   } else {
     return this.NONE;
