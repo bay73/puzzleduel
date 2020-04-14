@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const uniqid = require('uniqid');
+var nodemailer = require('nodemailer');
+
 // Load User model
 const User = require('../models/User');
 
@@ -12,6 +15,15 @@ router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
 
 // Register Page
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
+
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'puzzleduel.club@gmail.com',
+    pass: process.env.EMAIL_PASS
+  }
+});
 
 async function hashWithSalt(password) {
   var salt = await bcrypt.genSalt(10);
@@ -161,6 +173,59 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
 
     req.flash('success_msg', 'You are succesfully changed the data');
     res.redirect('/users/edit');
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Reset password page
+router.get('/reset', forwardAuthenticated, (req, res) => {
+  res.render('reset_password');
+});
+
+// Reset password page
+router.post('/reset', async (req, res, next) => {
+  try {
+    const {email} = req.body;
+    let errors = [];
+
+    if (!email) {
+      errors.push({ msg: 'Please enter email' });
+    }
+    if (errors.length > 0) {
+      res.render('reset_password');
+      return;
+    }
+    
+    var token = uniqid();
+    var hash = await hashWithSalt(token);
+
+    user = await User.findOne({ email: email });
+
+    if (user) {
+      user.resetToken = hash;
+      var d = new Date();
+      // Token expire in 2 hours
+      d.setHours(d.getHours() + 2);
+      user.resetExpire = d;
+
+      var mailOptions = {
+        from: "PuzzleDuel<puzzleduel.club@gmail.com>",
+        to: email,
+        subject: "Reset password for www.PuzzleDuel.club",
+        text: "You or somebody else requested password reset for account " + email + " at web-site http://www.puzzleduel.club \n\n"
+        + "If this wasn't you just ignore ths email. \n"
+        + "If this was you then go to http://www.puzzleduel.club/users/reset/" + token + " and enter the new password. "
+        + "The link is valid for two hours. \n"
+      };
+
+      await user.save();
+
+      await transporter.sendMail(mailOptions);
+    }
+
+    req.flash('success_msg', 'Email with instructions to reset password is sent to the provided address');
+    res.redirect('/users/reset');
   } catch (e) {
     next(e);
   }
