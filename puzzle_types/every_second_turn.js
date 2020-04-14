@@ -27,11 +27,11 @@ check:function(dimension, clueData, data){
   if (lineRes.status != "OK") {
     return lineRes;
   }
-  var res = Checker.checAllFilled(v, lineRes.line);
+  var res = Checker.checkAllFilled(v, lineRes.line);
   if (res.status != "OK") {
     return res;
   }
-  var res = Checker.checClues(lineRes.line, clues);
+  var res = Checker.checkClues(lineRes.line, clues);
   if (res.status != "OK") {
     return res;
   }
@@ -77,7 +77,7 @@ buildLine: function(v, h) {
   }
   return {status: "OK", line: line};
 },
-checAllFilled: function(cells, line) {
+checkAllFilled: function(cells, line) {
   var used = util.create2DArray(cells.rows, cells.cols, false)
   for (var i=0;i<line.length;i++) {
     used[line[i].y][line[i].x] = true;
@@ -91,7 +91,7 @@ checAllFilled: function(cells, line) {
   }
   return {status: "OK"};
 },
-checClues: function(line, clues) {
+checkClues: function(line, clues) {
   var prevTurn = clues[line[0].y][line[0].x];
   var prev = 'h';
   for (var i=1;i<line.length-1;i++) {
