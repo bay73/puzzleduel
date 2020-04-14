@@ -29,12 +29,6 @@ commonPuzzle.prototype.initImages = function() {
 }
 
 commonPuzzle.prototype.start = function() {
-  $(this.controls.startBtn).html('Restart');
-  $(this.controls.revertBtn).show().prop('disabled', true);
-  $(this.controls.checkBtn).show().prop('disabled', true);
-  $(this.controls.pencilMarkCtrl).show();
-  $(this.controls.pencilMarkCb).prop( "checked", false );
-
   this.pencilMarkMode = false;
   this.removeMessages();
   // Read clues from server and start the puzzle solving.
@@ -273,6 +267,11 @@ commonPuzzle.prototype.showClues = function(data) {
     cell.syncCell();
   });
   this.startTimer();
+  $(this.controls.startBtn).html('Restart');
+  $(this.controls.revertBtn).show().prop('disabled', true);
+  $(this.controls.checkBtn).show().prop('disabled', true);
+  $(this.controls.pencilMarkCtrl).show();
+  $(this.controls.pencilMarkCb).prop( "checked", false );
 }
 
 commonPuzzle.prototype.startTimer = function() {

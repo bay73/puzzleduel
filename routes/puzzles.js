@@ -111,7 +111,8 @@ router.get('/:puzzleid/start', async (req, res, next) => {
     }
     if (puzzle.needLogging) {
       if (!req.user) {
-        res.status(403).send('You should log in to solve this puzzle!');
+        res.status(403).send('This puzzle is competitive and you should log in to solve it! ' +
+                             'Check our <a href="/archive">archive</a> to try puzzles without registration');
         return;
       }
       if (req.user.role != "test") {
