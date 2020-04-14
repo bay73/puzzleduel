@@ -67,6 +67,7 @@ router.get('/', async (req, res, next) => {
           type: typeMap[puzzle.type],
           dimension: puzzle.dimension,
           daily: puzzle.daily,
+          competitive: puzzle.needLogging,
           time: timeToString(timesMap[puzzle.code])
         };
       })
