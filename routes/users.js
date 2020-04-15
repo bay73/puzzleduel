@@ -27,7 +27,9 @@ async function hashWithSalt(password) {
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
 
 // Register Page
-router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
+router.get('/register', forwardAuthenticated, recaptcha.middleware.render, (req, res) => {
+  res.render('register', { captcha:res.recaptcha });
+});
 
 // Reset password page
 router.get('/reset', forwardAuthenticated, recaptcha.middleware.render, (req, res) => {
@@ -53,7 +55,7 @@ router.get('/edit', ensureAuthenticated, (req, res) => {
 });
 
 // Register
-router.post('/register', async (req, res, next) => {
+router.post('/register', recaptcha.middleware.verify, recaptcha.middleware.render, async (req, res, next) => {
   try {
     const { name, email, password, password2 } = req.body;
     let errors = [];
@@ -80,13 +82,18 @@ router.post('/register', async (req, res, next) => {
       errors.push({ msg: 'The user with this name already exists. Choose different name' });
     }
 
+    if (req.recaptcha.error) {
+      errors.push({ msg: 'Please confirm that you are not a robot' });
+    }
+
     if (errors.length > 0) {
       res.render('register', {
         errors,
         name,
         email,
         password,
-        password2
+        password2,
+        captcha:res.recaptcha
       });
       return;
     }

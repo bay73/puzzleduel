@@ -50,6 +50,18 @@
               value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
             />
           </div>
+          <style>
+           .g-recaptcha{
+              position:relative;
+              left: -2px;
+              top: -15px;
+            }
+          </style>
+          <div style="text-align: center;" class="form-group">
+            <div style="width: 154px;height: 40px;overflow: hidden;margin: 0 auto;border-radius: 3px;">
+              <%- typeof captcha != 'undefined' ? captcha : '' %>
+            </div>
+          </div>
           <button type="submit" class="btn btn-primary btn-block">
             Register
           </button>
