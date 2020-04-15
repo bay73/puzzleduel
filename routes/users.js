@@ -6,12 +6,22 @@ const uniqid = require('uniqid');
 const nodemailer = require('nodemailer');
 const Recaptcha = require('express-recaptcha').RecaptchaV2;
 
-var recaptcha = new Recaptcha('6Lcr5-kUAAAAAFUWp_nBJkXnoWWW0DbJR7CMxHmF', process.env.CAPTCHA_KEY);
+// Config recaptcha
+const recaptchaKeys = require('./../config/keys').recaptcha;
+var recaptcha = new Recaptcha(recaptchaKeys.siteKey, recaptchaKeys.secret);
+// Config email transporter
+const transporter = nodemailer.createTransport(require('./../config/keys').email);
 
 // Load User model
 const User = require('../models/User');
 
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+
+async function hashWithSalt(password) {
+  var salt = await bcrypt.genSalt(10);
+  var hash = await bcrypt.hash(password, salt);
+  return hash;
+}
 
 // Login Page
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
@@ -19,20 +29,28 @@ router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
 // Register Page
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
 
-
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'puzzleduel.club@gmail.com',
-    pass: process.env.EMAIL_PASS
-  }
+// Reset password page
+router.get('/reset', forwardAuthenticated, recaptcha.middleware.render, (req, res) => {
+  res.render('reset_password', { captcha:res.recaptcha });
 });
 
-async function hashWithSalt(password) {
-  var salt = await bcrypt.genSalt(10);
-  var hash = await bcrypt.hash(password, salt);
-  return hash;
-}
+// Reset password page
+router.get('/reset/:token', forwardAuthenticated, (req, res) => {
+  res.render('reset_password', {token: req.params.token});
+});
+
+// Edit Page
+router.get('/edit', ensureAuthenticated, (req, res) => {
+  if (!req.user) {
+    res.sendStatus(403);
+    return;
+  }
+  res.render('edit_user', {
+    user: req.user,
+    name: req.user.name,
+    email: req.user.email
+  });
+});
 
 // Register
 router.post('/register', async (req, res, next) => {
@@ -89,19 +107,6 @@ router.post('/register', async (req, res, next) => {
   } catch (e) {
     next(e);
   }
-});
-
-// Edit Page
-router.get('/edit', ensureAuthenticated, (req, res) => {
-  if (!req.user) {
-    res.sendStatus(403);
-    return;
-  }
-  res.render('edit_user', {
-    user: req.user,
-    name: req.user.name,
-    email: req.user.email
-  });
 });
 
 // Edit
@@ -183,12 +188,7 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
   }
 });
 
-// Reset password page
-router.get('/reset', forwardAuthenticated, recaptcha.middleware.render, (req, res) => {
-  res.render('reset_password', { captcha:res.recaptcha });
-});
-
-// Reset password page
+// Reset password
 router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, async (req, res, next) => {
   try {
     const {email, password, password2, token} = req.body;
@@ -288,8 +288,10 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
           from: "PuzzleDuel<puzzleduel.club@gmail.com>",
           to: email,
           subject: "Reset password for www.PuzzleDuel.club",
-          text: "You or somebody else recently requested to reset your password for account " + email + " at web site http://www.puzzleduel.club \n\n"
-          + "Click the following link http://www.puzzleduel.club/users/reset/" + newToken + " and enter the new password. "
+          text: "You or somebody else recently requested to reset your password for account " + email
+          + " at web site http://www.puzzleduel.club \n\n"
+          + "Click the following link http://www.puzzleduel.club/users/reset/" + newToken
+          + " and enter the new password. "
           + "The link is valid for the next two hours. \n\n"
           + "If you didn't request a password reset, please just ignore this email. \n\n"
           + "Write to puzzleduel.club@gmail.com if you have any questions. \n\n\n"
@@ -308,11 +310,6 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
   } catch (e) {
     next(e);
   }
-});
-
-// Reset password page
-router.get('/reset/:token', forwardAuthenticated, (req, res) => {
-  res.render('reset_password', {token: req.params.token});
 });
 
 // Login
