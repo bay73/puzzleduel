@@ -51,12 +51,12 @@ router.post('/register', async (req, res, next) => {
 
     user = await User.findOne({ email: email }, "email");
     if (user) {
-      errors.push({ msg: 'Email already exists' });
+      errors.push({ msg: 'This email is already registered. You can reset password for it' });
     }
 
     user = await User.findOne({ name: name }, "name");
     if (user) {
-      errors.push({ msg: 'Name already exists' });
+      errors.push({ msg: 'The user with this name already exists. Choose different name' });
     }
 
     if (errors.length > 0) {
@@ -126,13 +126,13 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
     if (email) {
       var user = await User.findOne({ email: email, _id: {$ne: req.user._id} }, "email");
       if (user) {
-        errors.push({ msg: 'Email already exists' });
+        errors.push({ msg: 'This email is already registered' });
       }
     }
     if (name) {
       var user = await User.findOne({ name: name, _id: {$ne: req.user._id} }, "name");
       if (user) {
-        errors.push({ msg: 'Name already exists' });
+        errors.push({ msg: 'The user with this name already exists. Choose different name' });
       }
     }
 
@@ -234,7 +234,7 @@ router.post('/reset', async (req, res, next) => {
           errors.push({ msg: 'Email is not correct' });
         } else {
           if (user.resetExpire < new Date()) {
-            errors.push({ msg: 'Token is expired' });
+            errors.push({ msg: 'Token is expired. Please, request password reset again' });
           }
         }
       }
@@ -273,10 +273,13 @@ router.post('/reset', async (req, res, next) => {
           from: "PuzzleDuel<puzzleduel.club@gmail.com>",
           to: email,
           subject: "Reset password for www.PuzzleDuel.club",
-          text: "You or somebody else requested password reset for account " + email + " at web-site http://www.puzzleduel.club \n\n"
-          + "If this wasn't you just ignore ths email. \n"
-          + "If this was you then go to http://www.puzzleduel.club/users/reset/" + newToken + " and enter the new password. "
-          + "The link is valid for two hours. \n"
+          text: "You or somebody else recently requested to reset your password for account " + email + " at web site http://www.puzzleduel.club \n\n"
+          + "Click the following link http://www.puzzleduel.club/users/reset/" + newToken + " and enter the new password. "
+          + "The link is valid for the next two hours. \n\n"
+          + "If you didn't request a password reset, please just ignore this email. \n\n"
+          + "Write to puzzleduel.club@gmail.com if you have any questions. \n\n\n"
+          + "Thanks,\n"
+          + "Andrey"
         };
 
         await user.save();
@@ -284,7 +287,7 @@ router.post('/reset', async (req, res, next) => {
         await transporter.sendMail(mailOptions);
       }
 
-      req.flash('success_msg', 'Email with instructions to reset password is sent to the provided address');
+      req.flash('success_msg', 'Email with instructions to reset your password is sent to the provided address');
       res.redirect('/');
     }
   } catch (e) {
