@@ -3,7 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const uniqid = require('uniqid');
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
+const Recaptcha = require('express-recaptcha').RecaptchaV2;
+
+var recaptcha = new Recaptcha('6Lcr5-kUAAAAAFUWp_nBJkXnoWWW0DbJR7CMxHmF', process.env.CAPTCHA_KEY);
 
 // Load User model
 const User = require('../models/User');
@@ -181,12 +184,12 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
 });
 
 // Reset password page
-router.get('/reset', forwardAuthenticated, (req, res) => {
-  res.render('reset_password');
+router.get('/reset', forwardAuthenticated, recaptcha.middleware.render, (req, res) => {
+  res.render('reset_password', { captcha:res.recaptcha });
 });
 
 // Reset password page
-router.post('/reset', async (req, res, next) => {
+router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, async (req, res, next) => {
   try {
     const {email, password, password2, token} = req.body;
     let errors = [];
@@ -259,6 +262,18 @@ router.post('/reset', async (req, res, next) => {
       req.flash('success_msg', 'Password has changed and you can log in');
       res.redirect('/users/login');
     } else {
+      if (req.recaptcha.error) {
+        errors.push({ msg: 'Please confirm that you are not a robot' });
+      }
+      if (errors.length > 0) {
+        res.render('reset_password', {
+          errors: errors,
+          email: email,
+          captcha:res.recaptcha
+        });
+        return;
+      }
+
       if (user) {
         var newToken = uniqid();
         var hash = await hashWithSalt(newToken);
