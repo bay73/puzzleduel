@@ -39,7 +39,7 @@ innerCluePuzzle.prototype.initImages = function() {
     this.togglers = ["white"];
   }
   if(this.typeCode == "chat_room") {
-    this.clues = ["phone", "white_circle", "1_white", "2_white", "3_white", "4_white", "5_white", "black_circle", "1_black", "2_black", "3_black", "4_black", "5_black"];
+    this.clues = ["phone", "white_circle", "white_1", "white_2", "white_3", "white_4", "white_5", "black_circle", "black_1", "black_2", "black_3", "black_4", "black_5"];
     this.togglers = ["white"];
   }
   this.preloadImages(this.clues);
