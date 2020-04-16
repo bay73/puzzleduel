@@ -253,6 +253,8 @@ commonPuzzle.prototype.showClues = function(data) {
           this.left[i].setClue(value[i]);
         }
       }
+    } else if (key=="areas") {
+      this.areas = value;
     } else {
       var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
       var y = parseInt(key.substring(1)) - 1;
@@ -266,12 +268,48 @@ commonPuzzle.prototype.showClues = function(data) {
     }
     cell.syncCell();
   });
+  if (this.areas) {
+    this.drawAreas();
+  }
   this.startTimer();
   $(this.controls.startBtn).html('Restart');
   $(this.controls.revertBtn).show().prop('disabled', true);
   $(this.controls.checkBtn).show().prop('disabled', true);
   $(this.controls.pencilMarkCtrl).show();
   $(this.controls.pencilMarkCb).prop( "checked", false );
+}
+
+commonPuzzle.prototype.drawAreas = function() {
+  for(var i=0; i<this.areas.length;i++) {
+    var area = this.areas[i];
+    for (var j=0;j<area.length;j++) {
+      var x = area[j].charCodeAt(0) - 'a'.charCodeAt(0);
+      var y = parseInt(area[j].substring(1)) - 1;
+      this.cells[y][x].area = i;
+    }
+  }
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      var corner = this.cells[y][x].getCorner();
+      if (x < this.cols-1 && this.cells[y][x].area != this.cells[y][x+1].area) {
+        var line = this.snap.line(corner.x + this.cellSize, corner.y, corner.x + this.cellSize, corner.y + this.cellSize);
+        line.attr({
+          fill: this.gridProperty.fill,
+          stroke: this.gridProperty.stroke,
+          strokeWidth: this.gridProperty.boldWidth,
+          "stroke-linecap": "round"
+        });
+      }
+      if (y < this.rows-1 && this.cells[y][x].area != this.cells[y+1][x].area) {
+        var line = this.snap.line(corner.x, corner.y + this.cellSize, corner.x + this.cellSize, corner.y + this.cellSize);
+        line.attr({
+          fill: this.gridProperty.fill,
+          stroke: this.gridProperty.stroke,
+          strokeWidth: this.gridProperty.boldWidth
+        });
+      }
+    }
+  }
 }
 
 commonPuzzle.prototype.startTimer = function() {
