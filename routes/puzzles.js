@@ -14,6 +14,7 @@ const type_cheker = {};
 type_cheker["tapa_classic"] = require('../puzzle_types/tapa_classic')
 type_cheker["yin_yang_classic"] = require('../puzzle_types/yin_yang_classic')
 type_cheker["minesweeper_classic"] = require('../puzzle_types/minesweeper_classic')
+type_cheker["starbattle"] = require('../puzzle_types/starbattle')
 type_cheker["nurikabe"] = require('../puzzle_types/nurikabe')
 type_cheker["clouds"] = require('../puzzle_types/clouds')
 type_cheker["snake_simple"] = require('../puzzle_types/snake_simple')
