@@ -14,6 +14,9 @@ innerCluePuzzle.prototype.initImages = function() {
   if(this.typeCode == "loop_minesweeper") {
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
   }
+  if(this.typeCode == "chat_room") {
+    this.clues = ["phone", "white_circle", "1_white", "2_white", "3_white", "4_white", "5_white", "black_circle", "1_black", "2_black", "3_black", "4_black", "5_black"];
+  }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
 }
@@ -39,7 +42,7 @@ innerCluePuzzle.prototype.collectData = function(needWhites, needClues) {
 }
 
 squarePuzzleCell.prototype.getLineAttr = function(pencilMark) {
-  var width = pencilMark ? this.puzzle.cellSize/16 : this.puzzle.cellSize/4;
+  var width = pencilMark ? this.puzzle.cellSize/16 : this.puzzle.cellSize/6;
   var attr = {
     stroke: "#002B36",
     strokeWidth: width + "px",
