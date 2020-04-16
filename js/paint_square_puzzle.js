@@ -26,6 +26,10 @@ innerCluePuzzle.prototype.initImages = function() {
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
     this.togglers = ["white", "mine", "cross"];
   }
+  if(this.typeCode == "starbattle") {
+    this.clues = ["black"];
+    this.togglers = ["white", "star", "cross"];
+  }
   if(this.typeCode == "nurikabe") {
     this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
     this.togglers = ["white", "black", "cross"];
