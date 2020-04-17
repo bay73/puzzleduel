@@ -101,12 +101,18 @@ classicSudokuPuzzle.prototype.initImages = function() {
       this.clues.push(i.toString());
     }
   }
+  if (this.typeCode == "sudoku_odd_even_big_small") {
+    this.clues.push("odd");
+    this.clues.push("even");
+    this.clues.push("big");
+    this.clues.push("small");
+  }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
 }
 
 classicSudokuPuzzle.prototype.outerCluePosition = function() {
-  if (this.typeCode == "sudoku_x_sums" || this.typeCode == "sudoku_skyscrapers") {
+  if (this.typeCode == "sudoku_x_sums" || this.typeCode == "sudoku_skyscrapers" || this.typeCode == "sudoku_odd_even_big_small") {
     return this.FOUR_SIDES;
   } else {
     return this.NONE;
