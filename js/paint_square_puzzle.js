@@ -46,6 +46,10 @@ innerCluePuzzle.prototype.initImages = function() {
     this.clues = ["phone", "white_circle", "white_1", "white_2", "white_3", "white_4", "white_5", "black_circle", "black_1", "black_2", "black_3", "black_4", "black_5"];
     this.togglers = ["white"];
   }
+  if(this.typeCode == "akari") {
+    this.clues = ["black", "0_shade", "1_shade", "2_shade", "3_shade", "4_shade"];
+    this.togglers = ["white", "bulb", "cross"];
+  }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
 }
