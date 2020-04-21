@@ -14,10 +14,11 @@
           <% } %>
         </div>
         <div class="card-body">
-          <table class="table table-hover table-condensed table-striped">
+          <table class="table table-hover table-condensed table-striped table-responsive">
             <tbody>
               <tr>
                 <th></th>
+                <th>Total</th>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>
                 <th>
@@ -27,22 +28,22 @@
                 </th>
                 <% } %>
                 <% }) %>
-                <th>Total</th>
               </tr>
               <% contest.results.sort((r1,r2) => r2.score - r1.score).forEach(function(result) { %>
               <tr>
                 <td><%= result.userName %></td>
+                <td><%= result.score %></td>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>
                 <% var userRes = puzzle.results.filter(res => res.userId==result.userId); %>
                 <td><%= userRes==0 ? "":userRes[0].score %></td>
                 <% } %>
                 <% }) %>
-                <td><%= result.score %></td>
               </tr>
               <% }) %>
               <tr>
                 <th></th>
+                <th>Total</th>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>
                 <th>
@@ -52,10 +53,10 @@
                 </th>
                 <% } %>
                 <% }) %>
-                <th>Total</th>
               </tr>
               <% if (typeof user != 'undefined' && user.role=='admin') { %>
               <tr>
+                <td></td>
                 <td></td>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>

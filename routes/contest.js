@@ -41,7 +41,7 @@ async function recountPuzzle(puzzle) {
   } else {
     var median = success[(success.length-1)/2].solvingTime;
   }
-  var complexity = median * Math.pow(median / 4000, 0.25);
+  var complexity = median * Math.pow(median / 8000, 0.33);
   times.forEach(time => {
     var result = time.toObject();
     var score = complexity / result.solvingTime;
