@@ -36,7 +36,12 @@
               </div>
               <script>
                 $(document).ready(function () {
-                  $('#datepicker').datepicker({format: "yyyy-mm-dd", startDate: "2020-04-01", endDate: "0d"});
+                  $('#datepicker').datepicker({
+                    format: "yyyy-mm-dd",
+                    startDate: "2020-04-01",
+                    endDate: "0d",
+                    todayHighlight: true,
+                    maxViewMode: "month"});
                 });
                 $("#setDate").click(function () {
                   var url="/archive/" + $('#datepicker').datepicker('getFormattedDate') + "/scores";
