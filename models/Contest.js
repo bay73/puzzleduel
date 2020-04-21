@@ -40,7 +40,7 @@ const ContestSchema = new mongoose.Schema({
     },
     results: [{
       userId: {
-        type: String,
+        type: ObjectId,
         required: true
       },
       score: {
@@ -55,7 +55,7 @@ const ContestSchema = new mongoose.Schema({
   }],
   results: [{
     userId: {
-      type: String,
+      type: ObjectId,
       required: true
     },
     userName: {

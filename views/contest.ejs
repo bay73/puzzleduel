@@ -35,7 +35,7 @@
                 <td><%= result.score %></td>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>
-                <% var userRes = puzzle.results.filter(res => res.userId==result.userId); %>
+                <% var userRes = puzzle.results.filter(res => res.userId.equals(result.userId)); %>
                 <td><%= userRes==0 ? "":userRes[0].score %></td>
                 <% } %>
                 <% }) %>
