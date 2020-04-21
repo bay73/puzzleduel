@@ -1,17 +1,50 @@
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
+  integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous">
+</script>
+<link
+  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+  integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous"
+/>
 <%- include ('./partials/navbar') %>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
       <%- include ('./partials/messages') %>
       <div class="card">
-        <% if(puzzle) { %>
-        <h1 class="card-header">
-          <a href="/single/<%= puzzle.code %>">
-            <%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>: 
-            <%= puzzle.type %>
-            <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
-          </a>
-        </h1>
+        <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+          <% if(puzzle) { %>
+          <h1 class="">
+            <a href="/single/<%= puzzle.code %>">
+              <%= puzzle.type %>
+              <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+            </a>
+          </h1>
+          <div class="p-2 align-bottom text-right" style="position: relative;">
+            <h2>
+              <%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>
+              <a class="btn" data-toggle="collapse" href="#choosedate" aria-expanded="false" aria-controls="Collapse">
+                <span class="glyphicon glyphicon-collapse-down"></span>
+              </a>
+            </h2>
+              <div class="collapse bg-secondary text-white"
+                   style="position: absolute; top: 45; left: -30; z-index: 100;" id="choosedate">
+                <div class="card card-body">
+                  <div id="datepicker" data-date="<%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>"></div>
+                  <button type="submit" id="setDate" class="btn btn-primary">Set</button>
+                </div>
+              </div>
+              <script>
+                $(document).ready(function () {
+                  $('#datepicker').datepicker({format: "yyyy-mm-dd", startDate: "2020-04-01", endDate: "0d"});
+                });
+                $("#setDate").click(function () {
+                  var url="/archive/" + $('#datepicker').datepicker('getFormattedDate') + "/scores";
+                  window.location = url;
+                });
+              </script>
+          </div>
+        </div>
         <div class="card-body">
           <table class="table table-hover table-condensed">
             <tbody>
