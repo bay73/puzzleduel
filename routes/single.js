@@ -9,6 +9,8 @@ const PuzzleType = require('../models/PuzzleType');
 const User = require('../models/User');
 // UserSolvingTime model
 const UserSolvingTime = require('../models/UserSolvingTime');
+// UserActionLog model
+const UserActionLog = require('../models/UserActionLog');
 
 const { ensureAuthenticated } = require('../config/auth');
 
@@ -117,5 +119,36 @@ router.get('/:typeid/:dimension/new', ensureAuthenticated, async (req, res, next
   }
 });
 
+// Author puzzle page show
+router.get('/:puzzleid/answers', ensureAuthenticated, async (req, res, next) => {
+  try {
+    if (!req.user || req.user.role!="admin") {
+      res.sendStatus(404);
+      return;
+    }
+    var puzzle = await Puzzle.findOne({code: req.params.puzzleid});
+    if (!puzzle) {
+      res.sendStatus(404);
+      return;
+    }
+    var puzzleObj = puzzle.toObject();
+    var type = await PuzzleType.findOne({ code: puzzleObj.type });
+    if(type) {
+      puzzleObj.type = type.toObject();
+    }
+    const log = await UserActionLog.aggregate([{
+      $match : {puzzleId: puzzle.code, action: "solved"}
+    }, {
+      $group: {_id: "$data", count: { $sum: 1 }}
+    }]);
+    res.render('answers', {
+      user: req.user,
+      puzzle: puzzleObj,
+      answers: log.map(item => {return {data: item._id};})
+    });
+  } catch (e) {
+    next(e);
+  }
+});
 
 module.exports = router;
