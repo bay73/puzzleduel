@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const Mixed = mongoose.Schema.Types.Mixed;
 
 const UserActionLogSchema = new mongoose.Schema({
   userId: {
@@ -20,6 +21,10 @@ const UserActionLogSchema = new mongoose.Schema({
   },
   data: {
     type: String,
+    required: false
+  },
+  ipInfo: {
+    type: Mixed,
     required: false
   }
 });

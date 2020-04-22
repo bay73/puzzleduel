@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
+const expressip = require('express-ip');
 const MongoStore = require('connect-mongo')(session);
 
 const app = express();
@@ -32,6 +33,7 @@ app.set('view engine', 'ejs');
 // Express body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(expressip().getIpInfoMiddleware);
 
 // Express session
 app.use(

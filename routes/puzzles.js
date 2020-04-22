@@ -33,11 +33,12 @@ type_cheker["every_second_turn"] = require('../puzzle_types/every_second_turn')
 type_cheker["loop_minesweeper"] = require('../puzzle_types/loop_minesweeper')
 type_cheker["chat_room"] = require('../puzzle_types/chat_room')
 
-function logAction(user, puzzleId, action, data) {
+function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({
     userId: user._id,
     puzzleId: puzzleId,
-    action: action
+    action: action,
+    ipInfo: ipInfo
   });
   if (data) {
     newUserActionLog.data = data;
@@ -122,7 +123,7 @@ router.get('/:puzzleid/start', async (req, res, next) => {
         return;
       }
       if (req.user.role != "test") {
-        logAction(req.user, req.params.puzzleid, "start");
+        logAction(req.user, req.params.puzzleid, "start", req.ipInfo);
       }
     }
     res.json(JSON.parse(puzzle.data));
@@ -173,6 +174,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
           req.user,
           req.params.puzzleid,
           result.status == "OK" ? "solved" : "submitted",
+          req.ipInfo,
           result.status == "OK" ? JSON.stringify(req.body) : null
         );
         var hidden = puzzle.author.equals(req.user._id);
