@@ -4,7 +4,6 @@ const router = express.Router();
 const Contest = require('../models/Contest');
 const UserSolvingTime = require('../models/UserSolvingTime');
 
-// Read puzzle header
 router.get('/:contestid', async (req, res, next) => {
   try {
     const contest = await Contest.findOne({code: req.params.contestid});
@@ -63,7 +62,6 @@ async function recountPuzzle(puzzle) {
   };
 }
 
-// Read puzzle header
 router.get('/:contestid/recount', async (req, res, next) => {
   try {
     if (!req.user || req.user.role != "admin") {
