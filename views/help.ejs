@@ -5,74 +5,113 @@
       <%- include ('./partials/messages') %>
       <div class="card">
         <h1 class="card-header">Help page</h1>
-        <h2 class="card-body">Game control</h2>
-        <p class="card-body">
-        When you open a puzzle window the grid size and the puzzle rules are available before you start solving.
-        Read rules carefully to be aware of all the important puzzle conditions.
-        <br>
-        <br>
-        When you press "Start" button the puzzle clues are revealed and timer starting.
-        Remember that timer at the screen only for your information. Real start time is recorder internally and if you reload page
-        and start the puzzle again then your score displayed at the 
-        <a href="/archive/scores">scores page</a> is computed based on time when
-        you start the puzzle first time.
-        <br>
-        <br>
-        "Restart" button allows you to remove all the progress made in the puzzle and start from very beginning.
-        But it doesn't restart the solving time.
-        <br>
-        <br>
-        "Check" button examines the solution in the grid to correspond all puzzle rules and if the solution is correct,
-        stops the timer and record the solving time.
-        If there are some mistakes in the solution then error message notifies about one broken condition
-        and corresponding puzzle cells are marked in the grid. You can fix the solution and submit it again.
-        Number of submission is not limited, but recorded and displayed in the scores table.
-        <br>
-        <br>
-        "Undo" button allows you to revert changes made in the grid one by one in reverse order.
-        <br>
-        <br>
-        After successful submission of the puzzle you can start it again as many times as you want without any effects
-        on you score. Old puzzles available at <a href="/archive">archive page</a> can be solved without registration
-        and without changes in score table.
-        </p>
-        <h2 class="card-body">Grid control</h2>
-        <p class="card-body">
-        You can change the state of the grid cells by using mouse or touch screen. Keyboard control is not supported.
-        <br>
-        <br>
-        For puzzles accepting only a single state for the cell (like a mine in Minesweeper puzzle) click the mouse button at the
-        selected cell to change the content of the cell. Second click to the same cell marks the cell as empty.
-        Third click returns the cell to the initial state.
-        <br>
-        <br>
-        For puzzles accepting multiple cell values (as Sudoku puzzle) click on the cell reveal the value chooser.
-        Click on the selected value changes the state of the cell.
-        You also can remove the cell value by choosing the empty holder in the value chooser.
-        <br>
-        <br>
-        To speed up the solving you can select value in one click. Press the mouse button at the selected cell and
-        then holding the button move the mouse to the right option and release the button.
-        <br>
-        <br>
-        For puzzles requiring drawing a line press the mouse button at the start cell of the line
-        and move mouse to another cell holding the button. After reaching the finish cell you can continue drawing to the next.
-        </p>
-        <h2 class="card-body">Pencil marks</h2>
-        <p class="card-body">
-        You can switch the grid from "Normal" to "Pencil mark" mode.
-        In this mode the same mouse operations do not change state of the cells,
-        but instead put small notes (pencil marks) to the cells. In line-drawing puzzles the pencil marks look like thiner dashed line.
-        Remember that these pencil marks are used only for solving convenience and are not considered while puzzle submission.
-        <br>
-        <br>
-        You can put pencil marks on top of already filled cell, but setting the value of the cell in "Normal" mode deletes
-        all pencil marks from it.
-        <br>
-        <br>
-        Pencil marks are not affected by the "Undo" button - this button reverts only main values in the cells.
-        But "Restart" button cleans all the pencil marks in the grid. 
-        </p>
+        <div class="accordion" id="mainAccordion">
+          <div class="card">
+            <div class="card-header" id="gameControlHeading">
+              <button class="btn btn-link" type="button"
+                data-toggle="collapse" data-target="#gameControlCollapse"
+                aria-expanded="true" aria-controls="gameControlCollapse"
+              >
+                <h2>Game control</h2>
+              </button>
+            </div>
+            <div id="gameControlCollapse" class="collapse show" aria-labelledby="gameControlHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+              When you open a puzzle window the grid size and the puzzle rules are available before you start solving.
+              Read rules carefully to be aware of all the important puzzle conditions.
+              <br>
+              <br>
+              When you press "Start" button the puzzle clues are revealed and timer starting.
+              Remember that timer at the screen only for your information.
+              Real start time is recorder internally and if you reload page
+              and start the puzzle again then your score displayed at the
+              <a href="/archive/scores">scores page</a> is computed based on time when
+              you start the puzzle first time.
+              <br>
+              <br>
+              "Restart" button allows you to remove all the progress made in the puzzle and start from very beginning.
+              But it doesn't restart the solving time.
+              <br>
+              <br>
+              "Check" button examines the solution in the grid to correspond all puzzle rules and if the solution is correct,
+              stops the timer and record the solving time.
+              If there are some mistakes in the solution then error message notifies about one broken condition
+              and corresponding puzzle cells are marked in the grid. You can fix the solution and submit it again.
+              Number of submission is not limited, but recorded and displayed in the scores table.
+              <br>
+              <br>
+              "Undo" button allows you to revert changes made in the grid one by one in reverse order.
+              <br>
+              <br>
+              After successful submission of the puzzle you can start it again as many times as you want without any effects
+              on you score. Old puzzles available at <a href="/archive">archive page</a> can be solved without registration
+              and without changes in score table.
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="gridControlHeading">
+              <button class="btn btn-link collapsed" type="button"
+                data-toggle="collapse" data-target="#gridControlCollapse"
+                aria-expanded="false" aria-controls="gridControlCollapse"
+              >
+                <h2>Grid control</h2>
+              </button>
+            </div>
+            <div id="gridControlCollapse" class="collapse" aria-labelledby="gridControlHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+              You can change the state of the grid cells by using mouse or touch screen. Keyboard control is not supported.
+              <br>
+              <br>
+              For puzzles accepting only a single state for the cell (like a mine in Minesweeper puzzle) click the mouse button at the
+              selected cell to change the content of the cell. Second click to the same cell marks the cell as empty.
+              Third click returns the cell to the initial state.
+              <br>
+              <br>
+              For puzzles accepting multiple cell values (as Sudoku puzzle) click on the cell reveal the value chooser.
+              Click on the selected value changes the state of the cell.
+              You also can remove the cell value by choosing the empty holder in the value chooser.
+              <br>
+              <br>
+              To speed up the solving you can select value in one click. Press the mouse button at the selected cell and
+              then holding the button move the mouse to the right option and release the button.
+              <br>
+              <br>
+              For puzzles requiring drawing a line press the mouse button at the start cell of the line
+              and move mouse to another cell holding the button. After reaching the finish cell you can continue drawing to the next.
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="pencilMarksHeading">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button"
+                  data-toggle="collapse" data-target="#pencilMarksCollapse"
+                  aria-expanded="false" aria-controls="pencilMarksCollapse"
+                >
+                  <h2>Pencil marks</h2>
+                </button>
+              </h2>
+            </div>
+            <div id="pencilMarksCollapse" class="collapse" aria-labelledby="pencilMarksHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+              You can switch the grid from "Normal" to "Pencil mark" mode.
+              In this mode the same mouse operations do not change state of the cells,
+              but instead put small notes (pencil marks) to the cells.
+              In line-drawing puzzles the pencil marks look like thiner dashed line.
+              Remember that these pencil marks are used only for solving convenience and are not considered while puzzle submission.
+              <br>
+              <br>
+              You can put pencil marks on top of already filled cell, but setting the value of the cell in "Normal" mode deletes
+              all pencil marks from it.
+              <br>
+              <br>
+              Pencil marks are not affected by the "Undo" button - this button reverts only main values in the cells.
+              But "Restart" button cleans all the pencil marks in the grid.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
