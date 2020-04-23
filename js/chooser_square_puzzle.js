@@ -143,17 +143,35 @@ classicSudokuPuzzle.prototype.render = function(snap) {
   }
   for (var j = 0; j < this.rows/sizeV; j++) {
     for (var i = 0; i < this.cols/sizeH; i++) {
-        var area = this.snap.rect(
-          this.leftGap + i * sizeH * this.cellSize,
-          this.topGap + j * sizeV * this.cellSize,
-          sizeH * this.cellSize, sizeV * this.cellSize);
-        area.attr({
-          fill: "none",
-          stroke: this.gridProperty.stroke,
-          strokeWidth: this.gridProperty.boldWidth
-        });
-      }
+      var area = this.snap.rect(
+        this.leftGap + i * sizeH * this.cellSize,
+        this.topGap + j * sizeV * this.cellSize,
+        sizeH * this.cellSize, sizeV * this.cellSize);
+      area.attr({
+        fill: "none",
+        stroke: this.gridProperty.stroke,
+        strokeWidth: this.gridProperty.boldWidth
+      });
     }
+  }
+  if (this.typeCode=='sudoku_diagonal' || this.typeCode=='sudoku_antidiagonal') {
+    var line = this.snap.line(
+      this.leftGap, this.topGap,
+      this.leftGap + this.cols * this.cellSize, this.topGap + this.rows * this.cellSize);
+    line.attr({
+      stroke: this.gridProperty.stroke,
+      strokeWidth: this.gridProperty.strokeWidth,
+      "stroke-dasharray": this.gridProperty.boldWidth +"," + this.gridProperty.boldWidth*1.5
+    });
+    line = this.snap.line(
+      this.leftGap + this.cols * this.cellSize, this.topGap,
+      this.leftGap, this.topGap + this.rows * this.cellSize);
+    line.attr({
+      stroke: this.gridProperty.stroke,
+      strokeWidth: this.gridProperty.strokeWidth,
+      "stroke-dasharray": this.gridProperty.boldWidth +"," + this.gridProperty.boldWidth*1.5
+    });
+  }
 }
 
 squarePuzzleCell.prototype.revertTo = function(data) {
