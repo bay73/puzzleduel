@@ -27,7 +27,7 @@ async function singlePuzzleRating(puzzleId) {
   times.forEach(time => {
     var result = time.toObject();
     var rating = 2000 - 500*Math.log2(result.solvingTime / median + result.errCount);
-    if (rating < 0) rating = 0;
+    if (rating < 1) rating = 1;
     ratings.push({userId: result.userId, userName: result.userName, value: rating});
   });
   return ratings;
@@ -50,7 +50,7 @@ async function computeRating(computeDate) {
     ratingMap[rating.userId].puzzles=[];
   });
   var filter = { $and: [{daily: {$lt: d}}, {daily: {$gte: pd} }]};
-  const puzzles = await Puzzle.find(filter, "code");
+  const puzzles = await Puzzle.find(filter, "code daily");
   for (var i=0; i<puzzles.length; i++) {
     var puzzleId = puzzles[i].code;
     var puzzleRating = await singlePuzzleRating(puzzleId);
@@ -58,6 +58,7 @@ async function computeRating(computeDate) {
       if (typeof ratingMap[rating.userId]=='undefined'){
         ratingMap[rating.userId] = {userName: rating.userName, value: 0, ratingWeek:0, missedWeek: 0, puzzles:[] };
       }
+      rating.puzzleDate = puzzles[i].daily;
       ratingMap[rating.userId].puzzles.push(rating);
       ratingMap[rating.userId].userName = rating.userName;
     });
@@ -76,11 +77,11 @@ async function computeRating(computeDate) {
     }
     if (puzzlesNum > 0) {
       weeks = weeks + 1;
+      var weekSum = 0;
       ratingMap[userId].puzzles.forEach(puzzle => {
-        weekValue = weekValue + puzzle.value;
-        details.puzzles.push(puzzle.value);
+        weekSum = weekSum + puzzle.value;
       });
-      weekValue = weekValue / puzzlesNum;
+      weekValue = weekSum / puzzlesNum;
       var diff = weekValue - oldValue;
       change = Math.pow(Math.abs(diff),0.66) * Math.sign(diff);
       if (change > 0) {
@@ -90,8 +91,14 @@ async function computeRating(computeDate) {
         }
       }
       newValue = oldValue + change;
+      var coeff = change / weekSum;
+      var coeff = change / (weekSum - puzzlesNum*oldValue);
+      ratingMap[userId].puzzles.forEach(puzzle => {
+        details.puzzles.push({date: puzzle.puzzleDate, value: puzzle.value, change: (puzzle.value - oldValue) * coeff});
+      });
     }
     details.weekValue = weekValue;
+    
     var rating = new Rating({
       date: d,
       userId: userId,

@@ -20,10 +20,15 @@ router.get('/:ratingdate', async (req, res, next) => {
       ratingDate: d,
       ratingFinal: d <= ld,
       ratings: ratingList.map(rating => {
+        var details = "";
+        rating.details.puzzles.forEach(puzzle => {
+          details += puzzle.date.toISOString().split('T')[0] + ": " + Math.round(puzzle.change) + "\n";
+        });
         return {
           userName: rating.userName,
           value: rating.value,
-          change: rating.change
+          change: rating.change,
+          details: details
         };
       })
     }); 

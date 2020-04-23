@@ -63,7 +63,11 @@
               <tr>
                 <td><%= rating.userName %></td>
                 <td class="text-center"><%= Math.round(rating.value) %></td>
-                <td class="text-center <%= rating.change < 0?'text-warning':(rating.change > 0?'text-success':'')%>"><%= rating.change?Math.round(rating.change):"-" %></td>
+                <td class="text-center <%= rating.change < 0?'text-warning':(rating.change > 0?'text-success':'')%>"
+                   data-toggle="tooltip" title="<%= rating.details %>"
+                >
+                  <%= rating.change?Math.round(rating.change):"-" %>
+                </td>
               </tr>
               <% }) %>
             </tbody>
