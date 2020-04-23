@@ -13,12 +13,12 @@ router.get('/:ratingdate', async (req, res, next) => {
       return;
     }
     var ld = new Date();
-    ld.setDate(ld.getDate() - 5);
+    ld.setDate(ld.getDate() - 4);
     const ratingList = await Rating.find({date: d});
     res.render('rating', {
       user: req.user,
       ratingDate: d,
-      ratingFinal: d < ld,
+      ratingFinal: d <= ld,
       ratings: ratingList.map(rating => {
         return {
           userName: rating.userName,
@@ -34,7 +34,7 @@ router.get('/:ratingdate', async (req, res, next) => {
 
 router.get('/', (req, res) => {
   var d = new Date();
-  d.setDate(d.getDate() - 5);
+  d.setDate(d.getDate() - 4);
   res.redirect('/rating/' + d.toISOString().split('T')[0]);
 });
 

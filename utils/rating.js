@@ -49,7 +49,7 @@ async function computeRating(computeDate) {
     ratingMap[rating.userId] = rating.toObject();
     ratingMap[rating.userId].puzzles=[];
   });
-  var filter = { $and: [{daily: {$lte: d}}, {daily: {$gt: pd} }]};
+  var filter = { $and: [{daily: {$lt: d}}, {daily: {$gte: pd} }]};
   const puzzles = await Puzzle.find(filter, "code");
   for (var i=0; i<puzzles.length; i++) {
     var puzzleId = puzzles[i].code;
