@@ -5,6 +5,8 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
 const expressip = require('express-ip');
+const i18n = require('./config/i18n');
+const cookieParser = require('cookie-parser');
 const MongoStore = require('connect-mongo')(session);
 
 const app = express();
@@ -33,7 +35,10 @@ app.set('view engine', 'ejs');
 // Express body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(expressip().getIpInfoMiddleware);
+app.use(cookieParser());
+app.use(i18n);
 
 // Express session
 app.use(
