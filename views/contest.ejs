@@ -59,7 +59,7 @@
                 <td></td>
                 <td></td>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
-                <% if (puzzle.revealDate < new Date()) { %>
+                <% if (puzzle.revealDate < new Date() && typeof puzzle.details != 'undefined') { %>
                 <td>
                   <%= Math.round(puzzle.details.bestTime/1000) %>(<%= Math.round(puzzle.details.bestScore*10)/10 %>)<br>
                   <%= Math.round(puzzle.details.medianTime/1000) %>(<%= Math.round(puzzle.details.medianScore*10)/10 %>)<br>

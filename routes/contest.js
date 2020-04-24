@@ -79,13 +79,15 @@ router.get('/:contestid/recount', async (req, res, next) => {
       var results = await recountPuzzle(contest.puzzles[i]);
       contest.puzzles[i].results = [];
       contest.puzzles[i].details = results.details;
-      results.results.forEach(result => {
-        contest.puzzles[i].results.push({userId: result.userId, score: result.score});
-        if (typeof userTotals[result.userId]=='undefined'){
-          userTotals[result.userId] = {userName: result.userName, score: 0 };
-        }
-        userTotals[result.userId].score += result.score;
-      });
+      if (typeof results.results != 'undefined') {
+        results.results.forEach(result => {
+          contest.puzzles[i].results.push({userId: result.userId, score: result.score});
+          if (typeof userTotals[result.userId]=='undefined'){
+            userTotals[result.userId] = {userName: result.userName, score: 0 };
+          }
+          userTotals[result.userId].score += result.score;
+        });
+      }
     }
     contest.results = [];
     for (let [userId, value] of Object.entries(userTotals)) {
