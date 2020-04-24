@@ -62,7 +62,7 @@
               <br>
               The average of rating points of individual puzzles shows the instant weekly rating.
               The new rating value is calcilated as previous value moved towards this instant value:
-              $$newRating = oldRating + \sqrt[3] {instantRating - oldRating},$$
+              $$newRating = oldRating + (instantRating - oldRating)^{0.66},$$
               If user solves only part of weekly puzzles, then the rating increase for the week is reduced correspondingly.
               For each of the solved puzzles one seventh of the increase is applied.
               Special bonus is applied for newcomers - since their previous rating value is not defined the change increases
