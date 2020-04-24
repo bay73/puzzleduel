@@ -17,7 +17,7 @@ module.exports = function(req, res, next) {
   i18n.init(req, res);
 
   if (req.query.lang) {
-    res.cookie('lang', req.query.lang, { maxAge: 900000});
+    res.cookie('lang', req.query.lang, { maxAge: 100*24*60*60*1000});
   }
 
   return next();
