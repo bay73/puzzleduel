@@ -1,4 +1,10 @@
 <%- include ('./partials/navbar') %>
+<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+  <script>
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
@@ -6,6 +12,64 @@
       <div class="card">
         <h1 class="card-header">Help page</h1>
         <div class="accordion" id="mainAccordion">
+          <div class="card">
+            <div class="card-header" id="siteStructureHeading">
+              <button class="btn btn-link" type="button"
+                data-toggle="collapse" data-target="#siteStructureCollapse"
+                aria-expanded="true" aria-controls="siteStructureCollapse"
+              >
+                <h2>Site structure</h2>
+              </button>
+            </div>
+            <div id="siteStructureCollapse" class="collapse show" aria-labelledby="siteStructureHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+              Every day new competitive puzzle is published at our site.
+              Solving time for this puzzle is recorded and included to the <a href="/archive/scores">scores table</a>.
+              To solve the puzzle user must <a href="/users/register">register</a> and <a href="/users/login">log in</a> at the site.
+              Registration is totally free. Email is required to be able restore password in case it is forgotten.
+              The puzzle remains competitive five days and after that becomes free and available without registration.
+              <br>
+              <br>
+              List of all puzzles from previous days are available at our <a href="/archive">archive page</a>.
+              You can also see the best solving time there and check score tables for all the puzzles.
+              <br>
+              <br>
+              Solvers rating is computed based on solving time of daily competitive puzzles.
+              Rating is recomputed once per week and reflects the current performance of users.
+              Weekly rating for date X is based on all daily puzzles published between dates X-7 and X-1.
+              Initial rating calculations are preliminary and finilized when all affecting puzzles become noncompetitive.
+              See "Rating calculation" section for detailed rating formulas.
+              At the <a href="/rating">rating page</a> you can see the latest value of the rating and the change during the week. 
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="ratingHeading">
+              <button class="btn btn-link" type="button"
+                data-toggle="collapse" data-target="#ratingCollapse"
+                aria-expanded="true" aria-controls="ratingCollapse"
+              >
+                <h2>Rating calculation</h2>
+              </button>
+            </div>
+            <div id="ratingCollapse" class="collapse" aria-labelledby="ratingHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+              Weekly rating for date X is based on all daily puzzles published between dates X-7 and X-1.
+              Performance of a solver for each puzzle is first converted to rating points using the next formula:
+              $$ratingPoints = 2000 - 500 * log_2 ({{solvingTime \over medianTime} + errorCount}),$$
+              where <i>medianTime</i> is a median solving time without errors for this puzzle amoung all users.
+              <br>
+              <br>
+              The average of rating points of individual puzzles shows the instant weekly rating.
+              The new rating value is calcilated as previous value moved towards this instant value:
+              $$newRating = oldRating + \sqrt[3] {instantRating - oldRating},$$
+              If user solves only part of weekly puzzles, then the rating increase for the week is reduced correspondingly.
+              For each of the solved puzzles one seventh of the increase is applied.
+              Special bonus is applied for newcomers - since their previous rating value is not defined the change increases
+              to come to stable rating values faster.
+              </p>
+            </div>
+          </div>
           <div class="card">
             <div class="card-header" id="gameControlHeading">
               <button class="btn btn-link" type="button"
@@ -15,7 +79,7 @@
                 <h2>Game control</h2>
               </button>
             </div>
-            <div id="gameControlCollapse" class="collapse show" aria-labelledby="gameControlHeading" data-parent="#mainAccordion">
+            <div id="gameControlCollapse" class="collapse" aria-labelledby="gameControlHeading" data-parent="#mainAccordion">
               <p class="card-body">
               When you open a puzzle window the grid size and the puzzle rules are available before you start solving.
               Read rules carefully to be aware of all the important puzzle conditions.
