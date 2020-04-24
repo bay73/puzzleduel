@@ -19,6 +19,11 @@
         <script>
           $(document).ready(function () {
             showPuzzle();
+            showMessage("<br>Solvers rating is introduced. It is computed based on solving time of daily competitive puzzles. " +
+              "Rating is recomputed once per week and reflects the current performance of the users.<br><br>" +
+              "At the <a href='/rating'>rating page</a> you can see the latest value of the rating and the change during the week.<br>" +
+              "See <a href='/help'>help page</a> for detailed rating formulas.<br><br>",
+              null,"2020-04-24");
           });
         </script>
       <% } %>
