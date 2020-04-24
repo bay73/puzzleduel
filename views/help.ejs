@@ -44,33 +44,6 @@
             </div>
           </div>
           <div class="card">
-            <div class="card-header" id="ratingHeading">
-              <button class="btn btn-link" type="button"
-                data-toggle="collapse" data-target="#ratingCollapse"
-                aria-expanded="true" aria-controls="ratingCollapse"
-              >
-                <h2>Rating calculation</h2>
-              </button>
-            </div>
-            <div id="ratingCollapse" class="collapse" aria-labelledby="ratingHeading" data-parent="#mainAccordion">
-              <p class="card-body">
-              Weekly rating for date X is based on all daily puzzles published between dates X-7 and X-1.
-              Performance of a solver for each puzzle is first converted to rating points using the next formula:
-              $$ratingPoints = 2000 - 500 * log_2 ({{solvingTime \over medianTime} + errorCount}),$$
-              where <i>medianTime</i> is a median solving time without errors for this puzzle amoung all users.
-              <br>
-              <br>
-              The average of rating points of individual puzzles shows the instant weekly rating.
-              The new rating value is calcilated as previous value moved towards this instant value:
-              $$newRating = oldRating + (instantRating - oldRating)^{0.66},$$
-              If user solves only part of weekly puzzles, then the rating increase for the week is reduced correspondingly.
-              For each of the solved puzzles one seventh of the increase is applied.
-              Special bonus is applied for newcomers - since their previous rating value is not defined the change increases
-              to come to stable rating values faster.
-              </p>
-            </div>
-          </div>
-          <div class="card">
             <div class="card-header" id="gameControlHeading">
               <button class="btn btn-link" type="button"
                 data-toggle="collapse" data-target="#gameControlCollapse"
@@ -172,6 +145,33 @@
               <br>
               Pencil marks are not affected by the "Undo" button - this button reverts only main values in the cells.
               But "Restart" button cleans all the pencil marks in the grid.
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="ratingHeading">
+              <button class="btn btn-link" type="button"
+                data-toggle="collapse" data-target="#ratingCollapse"
+                aria-expanded="true" aria-controls="ratingCollapse"
+              >
+                <h2>Rating calculation</h2>
+              </button>
+            </div>
+            <div id="ratingCollapse" class="collapse" aria-labelledby="ratingHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+              Weekly rating for date X is based on all daily puzzles published between dates X-7 and X-1.
+              Performance of a solver for each puzzle is first converted to rating points using the next formula:
+              $$ratingPoints = 2000 - 500 * log_2 ({{solvingTime \over medianTime} + errorCount}),$$
+              where <i>medianTime</i> is a median solving time without errors for this puzzle amoung all users.
+              <br>
+              <br>
+              The average of rating points of individual puzzles shows the instant weekly rating.
+              The new rating value is calcilated as previous value moved towards this instant value:
+              $$newRating = oldRating + (instantRating - oldRating)^{0.66},$$
+              If user solves only part of weekly puzzles, then the rating increase for the week is reduced correspondingly.
+              For each of the solved puzzles one seventh of the increase is applied.
+              Special bonus is applied for newcomers - since their previous rating value is not defined the change increases
+              to come to stable rating values faster.
               </p>
             </div>
           </div>
