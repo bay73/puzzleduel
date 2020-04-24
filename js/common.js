@@ -255,6 +255,8 @@ commonPuzzle.prototype.showClues = function(data) {
       }
     } else if (key=="areas") {
       this.areas = value;
+    } else if (key=="edges") {
+      this.edges = value;
     } else {
       var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
       var y = parseInt(key.substring(1)) - 1;
@@ -270,6 +272,9 @@ commonPuzzle.prototype.showClues = function(data) {
   });
   if (this.areas) {
     this.drawAreas();
+  }
+  if (this.edges) {
+    this.drawEdgeClues();
   }
   this.startTimer();
   $(this.controls.startBtn).html('Restart');
@@ -309,6 +314,26 @@ commonPuzzle.prototype.drawAreas = function() {
         });
       }
     }
+  }
+}
+
+commonPuzzle.prototype.drawEdgeClues = function() {
+  for (const [key, value] of Object.entries(this.edges)) {
+    var part = key.split("-");
+    var x = part[0].charCodeAt(0) - 'a'.charCodeAt(0);
+    var y = parseInt(part[0].substring(1)) - 1;
+    var side = part[1];
+    var imageSize = this.cellSize / 3;
+    var left = this.leftGap + x*this.cellSize + this.cellSize / 2 - this.cellSize / 6;
+    var top = this.topGap + y*this.cellSize + this.cellSize / 2 - this.cellSize / 6;
+    if (side=="b") {
+      top += this.cellSize / 2;
+    } else if (side=="r"){
+      left += this.cellSize / 2;
+    }
+    this.element = this.snap.image(
+      this.imageUrl(value), 
+      left, top, imageSize, imageSize);
   }
 }
 
