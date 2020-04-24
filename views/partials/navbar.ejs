@@ -14,8 +14,12 @@
         <li class="nav-item">
           <a class="nav-link" href="/archive"><span class="glyphicon glyphicon-calendar"></span> Archive</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/archive/scores"><span class="glyphicon glyphicon-list"></span> Scores</a>
+        <li class="dropdown nav-link">
+          <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-list"></span> Scores</a>
+          <ul class="dropdown-menu">
+            <li><a class="nav-link" href="/archive/scores">Daily score</a></li>
+            <li><a class="nav-link" href="/rating">Rating</a></li>
+          </ul>
         </li>
         <% if (user && user.role == 'author') { %>
         <li class="nav-item">
