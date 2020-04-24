@@ -108,13 +108,17 @@ router.get('/:puzzleid', async (req, res, next) => {
 // Read puzzle data
 router.get('/:puzzleid/start', async (req, res, next) => {
   try {
-    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, 'data daily');
+    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, 'data daily author');
     if (!puzzle) {
       res.sendStatus(404);
       return;
     }
     if (puzzle.hidden) {
-      if (!req.user || req.user.role != 'test') {
+      if (!req.user) {
+        res.sendStatus(404);
+        return;
+      }
+      if (!puzzle.author.equals(req.user._id) && req.user.role != 'test') {
         res.sendStatus(404);
         return;
       }
