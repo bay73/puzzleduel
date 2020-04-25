@@ -5,20 +5,21 @@ i18n.configure({
   locales:['en', 'ru'],
 
   defaultLocale: 'en',
+
+  directory: './locales',
   
   // sets a custom cookie name to parse locale settings from  - defaults to NULL
   cookie: 'lang',
 
   queryParameter: 'lang',
+
 });
 
 module.exports = function(req, res, next) {
-
-  i18n.init(req, res);
 
   if (req.query.lang) {
     res.cookie('lang', req.query.lang, { maxAge: 100*24*60*60*1000});
   }
 
-  return next();
+  return i18n.init(req, res, next);
 };

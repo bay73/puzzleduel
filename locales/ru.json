@@ -1,0 +1,23 @@
+{
+	"Home": "Стартовая",
+	"Archive": "Архив",
+	"Scores": "Результаты",
+	"Daily score": "Результаты дня",
+	"Rating": "Рейтинг",
+	"Author": "Авторам",
+	"Help": "Справка",
+	"Logout": "Выйти",
+	"Login": "Войти",
+	"Author:": "Автор:",
+	"Sorry, but your browser is not supported. Try to setup the new version.": "К сожалению, ваш браузер не поддерживается. Постарайтесь обновить версию.",
+	"Start": "Старт",
+	"Undo": "Отменить",
+	"Pencil-marks": "Пометки",
+	"Check": "Проверить",
+	"Grid control": "Управление",
+	"Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.": "Щелчок по клетке открывает панель выбора значений. Щелчок по выбранному значению меняет значение в клетке.",
+	"More details about grid control are at the": "Подробнее о том, как решать задачи смотрите на ",
+	"To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.": "Чтобы нарисовать линию нажмите кнопку мыши на стартовой ячейке и перемещайте мышь до финишной ячейки удерживая кнопку.",
+	"Click the mouse button at the selected cell to change the filling of the cell.": "Щелкните кнопкой мыши на выбраной ячейке, чтобы изменить состояние ячейки.",
+	"help page": "странице справки"
+}

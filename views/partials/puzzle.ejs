@@ -1,6 +1,6 @@
 <% if(typeof puzzle != 'undefined'){ %> 
 <h2 class="card-body pt-0 pb-0 mb-0"><%= puzzle.type.name %></h2>
-<p class="card-body text-right pb-0 pt-0 mb-0"><small>Author: <%= puzzle.author %></small></p>
+<p class="card-body text-right pb-0 pt-0 mb-0"><small><%= __('Author:') %> <%= puzzle.author %></small></p>
 <svg id="mainGrid" class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
   <filter id="chooser">
     <feColorMatrix type="matrix" values="-1 0 0 0 1
@@ -20,37 +20,37 @@
                                          0 0 0 0 0
                                          0 0 0 1 0"/>
   </filter>
-  Sorry, but your browser is not supported. Try to setup the new version.
+  <%= __('Sorry, but your browser is not supported. Try to setup the new version.') %>
 </svg>
 <div class="row card-body">
   <div class="col-8">
     <div class="d-flex flex-row flex-wrap">
-      <button id="startBtn" type="button" class="btn btn-primary mb-3 mr-3">Start</button>
-      <button id="revertBtn" type="button" class="btn btn-primary mb-3 mr-3" style="display: none;">Undo</button>
+      <button id="startBtn" type="button" class="btn btn-primary mb-3 mr-3"><%= __('Start') %></button>
+      <button id="revertBtn" type="button" class="btn btn-primary mb-3 mr-3" style="display: none;"><%= __('Undo') %></button>
       <div class="mt-1 mr-3" id="pencilMarkCtrl" style="display: none;">
         <div class="custom-control custom-switch">
           <input type="checkbox" class="custom-control-input" id="pencilMarkCb">
-          <label class="custom-control-label" for="pencilMarkCb">Pencil-marks</label>
+          <label class="custom-control-label" for="pencilMarkCb"><%= __('Pencil-marks') %></label>
         </div>
       </div>
     </div>
   </div>
   <div class="col-4">
     <div class="d-flex flex-row-reverse flex-wrap">
-      <button id="checkBtn" type="button" class="btn btn-primary mb-3 ml-3">Check</button>
+      <button id="checkBtn" type="button" class="btn btn-primary mb-3 ml-3"><%= __('Check') %></button>
       <span id="timer" class="align-top" style="font-family: Lucida Console; font-size: 130%; display: none;"></span>
     </div>
   </div>
   <p class="card-text text-left mt-2"><%= puzzle.type.rules %></p>
-  <p class="card-text text-left mt-1"><b>Grid control</b>:
+  <p class="card-text text-left mt-1"><b><%= __('Grid control') %></b>:
     <% if(puzzle.type.puzzleJs=="chooser_square_puzzle.js") { %>
-      Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.
+      <%= __('Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.') %>
     <% } else if(puzzle.type.puzzleJs=="path_square_puzzle.js") { %>
-      To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.
+      <%= __('To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.') %>
     <% } else { %>
-      Click the mouse button at the selected cell to change the filling of the cell.
+      <%= __('Click the mouse button at the selected cell to change the filling of the cell.') %>
     <% } %>
-    More details about grid control are at the <a href='/help'>help page</a>.
+    <%= __('More details about grid control are at the') %> <a href='/help'><%= __('help page') %></a>.
   </p>
 </div>
 <script src="/js/common.js"></script>

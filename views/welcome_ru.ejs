@@ -1,0 +1,31 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <% if (!user) { %>
+      <div class="card card-body">
+        <p>Ниже приведена текущая задача дня.
+           Эта задача - соревновательная, для решения этой задачи и участия в соревновании требуется регистрация.
+           Для регистрации используйте ссылку <a href="/users/login">Войти</a> в правом верхнем углу.</p>
+        <p>На <a href="/archive/scores">странице результатов</a> вы можете найти время, затраченое другими решателями на эту головоломку.</p>
+        <p>Все задачи прошлых дней доступны на <a href="/archive">странице архива</a>.
+           Задачи старше пяти дней не учитываются в таблице результатов и вы можете попробовать решить их без регистрации.</p>
+      </div>
+      <% } %>
+      <%- include ('./partials/messages') %>
+      <% if(puzzle){ %> 
+        <div class="card">
+          <h1 class="card-body pb-0 pt-0">Задача дня</h1>
+          <%- include ('./partials/puzzle') %>
+        </div>
+        <script>
+          $(document).ready(function () {
+            showPuzzle();
+          });
+        </script>
+      <% } %>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

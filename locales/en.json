@@ -1,0 +1,20 @@
+{
+	"Home": "Home",
+	"Archive": "Archive",
+	"Scores": "Scores",
+	"Daily score": "Daily score",
+	"Rating": "Rating",
+	"Help": "Help",
+	"Logout": "Logout",
+	"Author:": "Author:",
+	"Sorry, but your browser is not supported. Try to setup the new version.": "Sorry, but your browser is not supported. Try to setup the new version.",
+	"Start": "Start",
+	"Undo": "Undo",
+	"Pencil-marks": "Pencil-marks",
+	"Check": "Check",
+	"Grid control": "Grid control",
+	"Click the mouse button at the selected cell to change the filling of the cell.": "Click the mouse button at the selected cell to change the filling of the cell.",
+	"More details about grid control are at the": "More details about grid control are at the",
+	"help page": "help page",
+	"Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.": "Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell."
+}

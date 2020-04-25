@@ -9,35 +9,35 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
+          <a class="nav-link" href="/"><span class="glyphicon glyphicon-home"></span> <%= __('Home') %></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/archive"><span class="glyphicon glyphicon-calendar"></span> Archive</a>
+          <a class="nav-link" href="/archive"><span class="glyphicon glyphicon-calendar"></span> <%= __('Archive') %></a>
         </li>
         <li class="dropdown nav-link">
-          <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-list"></span> Scores
+          <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-list"></span> <%= __('Scores') %>
           <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a class="nav-link" href="/archive/scores">Daily score</a></li>
-            <li><a class="nav-link" href="/rating">Rating</a></li>
+            <li><a class="nav-link" href="/archive/scores"><%= __('Daily score') %></a></li>
+            <li><a class="nav-link" href="/rating"><%= __('Rating') %></a></li>
           </ul>
         </li>
         <% if (user && user.role == 'author') { %>
         <li class="nav-item">
-          <a class="nav-link" href="/archive/author"><span class="glyphicon glyphicon-pencil"></span> Author</a>
+          <a class="nav-link" href="/archive/author"><span class="glyphicon glyphicon-pencil"></span> <%= __('Author') %></a>
         </li>
         <% } %>
         <li class="nav-item">
-          <a class="nav-link" href="/help"><span class="glyphicon glyphicon-question-sign"></span> Help</a>
+          <a class="nav-link" href="/help"><span class="glyphicon glyphicon-question-sign"></span> <%= __('Help') %></a>
         </li>
       </ul>
       <div class="navbar-right">    
         <ul class="nav navbar-nav">
           <% if(user) { %>
           <li class="nav-item"><a class="nav-link" href="/users/edit"><span class="glyphicon glyphicon-user"></span> <%= user.name %></a></li>
-          <li class="nav-item"><a class="nav-link" href="/users/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+          <li class="nav-item"><a class="nav-link" href="/users/logout"><span class="glyphicon glyphicon-log-out"></span> <%= __('Logout') %></a></li>
           <% } else { %>
-          <li class="nav-item"><a class="nav-link" href="/users/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="/users/login"><span class="glyphicon glyphicon-log-in"></span> <%= __('Login') %></a></li>
           <% } %>
         </ul>
       </div>
