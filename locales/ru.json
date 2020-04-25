@@ -19,5 +19,6 @@
 	"More details about grid control are at the": "Подробнее о том, как решать задачи смотрите на ",
 	"To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.": "Чтобы нарисовать линию нажмите кнопку мыши на стартовой ячейке и перемещайте мышь до финишной ячейки удерживая кнопку.",
 	"Click the mouse button at the selected cell to change the filling of the cell.": "Щелкните кнопкой мыши на выбраной ячейке, чтобы изменить состояние ячейки.",
-	"help page": "странице справки"
+	"help page": "странице справки",
+	"welcome": "welcome_ru"
 }

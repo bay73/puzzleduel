@@ -36,6 +36,11 @@ router.get('/:puzzleid', async (req, res, next) => {
     }
     var puzzleObj = puzzle.toObject();
     var type = await PuzzleType.findOne({ code: puzzleObj.type });
+    if (req.getLocale() != 'en') {
+      if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
+        type.rules = type.translations[req.getLocale()].rules;
+      }
+    }
     if(type) {
       puzzleObj.type = type.toObject();
     }

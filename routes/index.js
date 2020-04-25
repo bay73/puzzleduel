@@ -10,7 +10,7 @@ const User = require('../models/User');
 // Welcome Page
 router.get('/', async (req, res, next) => { 
   try {
-    var renderTemplate = 'welcome' + (req.getLocale()=='ru'?'_ru':'');
+    var renderTemplate = res.__('welcome');
     var datetime = new Date();
     var puzzle = await Puzzle.findOne({daily: datetime.toISOString().slice(0,10)}, "-data");
     if (!puzzle) {
@@ -22,6 +22,11 @@ router.get('/', async (req, res, next) => {
     }
     var puzzleObj = puzzle.toObject();
     var type = await PuzzleType.findOne({ code: puzzleObj.type });
+    if (req.getLocale() != 'en') {
+      if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
+        type.rules = type.translations[req.getLocale()].rules;
+      }
+    }
     if(type) {
       puzzleObj.type = type.toObject();
     }

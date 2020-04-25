@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Mixed = mongoose.Schema.Types.Mixed;
 
 const PuzzleTypeSchema = new mongoose.Schema({
   code: {
@@ -23,6 +24,10 @@ const PuzzleTypeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  translations: {
+    type: Mixed,
+    required: false
+  }
 });
 
 const PuzzleType = mongoose.model('PuzzleType', PuzzleTypeSchema);
