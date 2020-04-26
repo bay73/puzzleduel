@@ -4,8 +4,10 @@
 	"Scores": "Scores",
 	"Daily score": "Daily score",
 	"Rating": "Rating",
+	"Author:": "Author:",
 	"Help": "Help",
 	"Logout": "Logout",
+	"Login": "Login",
 	"Author:": "Author:",
 	"Sorry, but your browser is not supported. Try to setup the new version.": "Sorry, but your browser is not supported. Try to setup the new version.",
 	"Start": "Start",
@@ -13,8 +15,10 @@
 	"Pencil-marks": "Pencil-marks",
 	"Check": "Check",
 	"Grid control": "Grid control",
+	"Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.": "Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.",
+	"To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.": "To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.",
 	"Click the mouse button at the selected cell to change the filling of the cell.": "Click the mouse button at the selected cell to change the filling of the cell.",
 	"More details about grid control are at the": "More details about grid control are at the",
 	"help page": "help page",
-	"Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.": "Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell."
+	"welcome_page": "welcome_page"
 }

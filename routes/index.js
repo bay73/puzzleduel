@@ -10,11 +10,10 @@ const User = require('../models/User');
 // Welcome Page
 router.get('/', async (req, res, next) => { 
   try {
-    var renderTemplate = res.__('welcome');
     var datetime = new Date();
     var puzzle = await Puzzle.findOne({daily: datetime.toISOString().slice(0,10)}, "-data");
     if (!puzzle) {
-      res.render(renderTemplate, {
+      res.render(res.__('welcome_page'), {
         user: req.user,
         puzzle: null
       });
@@ -37,7 +36,7 @@ router.get('/', async (req, res, next) => {
       }
       puzzleObj.author = author.name;
     }
-    res.render(renderTemplate, {
+    res.render(res.__('welcome_page'), {
       user: req.user,
       puzzle: puzzleObj
     });
