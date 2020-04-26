@@ -277,7 +277,7 @@ commonPuzzle.prototype.showClues = function(data) {
     this.drawEdgeClues();
   }
   this.startTimer();
-  $(this.controls.startBtn).html('Restart');
+  $(this.controls.startBtn).html(__['Restart']);
   $(this.controls.revertBtn).show().prop('disabled', true);
   $(this.controls.checkBtn).show().prop('disabled', true);
   $(this.controls.pencilMarkCtrl).show();
@@ -375,9 +375,9 @@ commonPuzzle.prototype.showSaveResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
     this.stopTimer();
-    this.message = showMessage("The puzzle has been saved!");
+    this.message = showMessage(__["The puzzle has been saved!"]);
   } else {
-    this.message = showError("Error while saving. " + result.status + ".");
+    this.message = showError(__["Error while saving. "] + result.status + ".");
     this.showErrorCells(result);
   }
 }
@@ -386,9 +386,9 @@ commonPuzzle.prototype.showResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
     this.stopTimer();
-    this.message = showMessage("Congratulations! The puzzle has been solved correctly!");
+    this.message = showMessage(__["Congratulations! The puzzle has been solved correctly!"]);
   } else {
-    this.message = showError("Sorry, there is a mistake. " + result.status + ". Try again.");
+    this.message = showError(__["Sorry, there is a mistake. "] + result.status + ". " + __["Try again."]);
     this.showErrorCells(result);
   }
 }
