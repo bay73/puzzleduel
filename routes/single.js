@@ -12,7 +12,7 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 // UserActionLog model
 const UserActionLog = require('../models/UserActionLog');
 
-const { ensureAuthenticated } = require('../config/auth');
+const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
 function timeToString(millis) {
   if (!millis) return "";

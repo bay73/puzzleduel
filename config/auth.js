@@ -1,3 +1,7 @@
+const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
 module.exports = {
   ensureAuthenticated: function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -11,5 +15,14 @@ module.exports = {
       return next();
     }
     res.redirect('/');      
-  }
+  },
+  sessionConfig: {
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 100*24*60*60*1000
+    },
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+  },
 };

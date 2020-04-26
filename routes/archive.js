@@ -7,7 +7,7 @@ const PuzzleType = require('../models/PuzzleType');
 // UserSolvingTime model
 const UserSolvingTime = require('../models/UserSolvingTime');
 
-const { ensureAuthenticated } = require('../config/auth');
+const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
 function timeToString(millis) {
   if (!millis) return "";

@@ -2,71 +2,36 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const flash = require('connect-flash');
 const session = require('express-session');
 const expressip = require('express-ip');
-const i18n = require('./config/i18n');
 const cookieParser = require('cookie-parser');
-const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
 require('dotenv').config();
-
-// Passport Config
 require('./config/passport')(passport);
 
-// DB Config
-const db = require('./config/keys').mongoURI;
-
-// Connect to MongoDB
 mongoose
   .connect(
-    db,
+    require('./config/keys').mongoURI,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
-// EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
-// Express body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(expressip().getIpInfoMiddleware);
 app.use(cookieParser());
-app.use(i18n);
-
-// Express session
-app.use(
-  session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 100*24*60*60*1000
-    },
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
-  })
-);
-
-// Passport middleware
+app.use(require('./config/i18n'));
+app.use(session(require('./config/auth').sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(require('./config/flash'));
 
-// Connect flash
-app.use(flash());
-
-// Global variables
-app.use(function(req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  next();
-});
 
 // Routes
 app.use('/', require('./routes/index.js'));
