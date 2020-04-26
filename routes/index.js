@@ -48,7 +48,7 @@ router.get('/', async (req, res, next) => {
 // Help Page
 router.get('/help', async (req, res, next) => {
   try {
-    res.render('help', {
+    res.render(res.__('help_page'), {
       user: req.user,
     });
   } catch (e) {

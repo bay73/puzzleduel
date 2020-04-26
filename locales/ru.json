@@ -20,5 +20,6 @@
 	"Click the mouse button at the selected cell to change the filling of the cell.": "Щелкните кнопкой мыши на выбраной ячейке, чтобы изменить состояние ячейки.",
 	"More details about grid control are at the": "Подробнее о том, как решать задачи смотрите на ",
 	"help page": "странице справки",
-	"welcome_page": "welcome_page_ru"
+	"welcome_page": "welcome_page_ru",
+	"help_page": "help_page_ru"
 }

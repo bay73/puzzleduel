@@ -8,7 +8,6 @@
 	"Help": "Help",
 	"Logout": "Logout",
 	"Login": "Login",
-	"Author:": "Author:",
 	"Sorry, but your browser is not supported. Try to setup the new version.": "Sorry, but your browser is not supported. Try to setup the new version.",
 	"Start": "Start",
 	"Undo": "Undo",
@@ -20,5 +19,6 @@
 	"Click the mouse button at the selected cell to change the filling of the cell.": "Click the mouse button at the selected cell to change the filling of the cell.",
 	"More details about grid control are at the": "More details about grid control are at the",
 	"help page": "help page",
-	"welcome_page": "welcome_page"
+	"welcome_page": "welcome_page",
+	"help_page": "help_page"
 }
