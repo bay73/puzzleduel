@@ -31,7 +31,7 @@
                    style="position: absolute; top: 45; left: -30; z-index: 100;" id="choosedate">
                 <div class="card card-body">
                   <div id="datepicker" data-date="<%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>"></div>
-                  <button type="submit" id="setDate" class="btn btn-primary">Set</button>
+                  <button type="submit" id="setDate" class="btn btn-primary"><%= __('Set') %></button>
                 </div>
               </div>
               <script>
@@ -41,6 +41,7 @@
                     startDate: "2020-04-01",
                     endDate: "0d",
                     todayHighlight: true,
+                    language: '<%= getLocale() %>',
                     maxViewMode: "month"});
                 });
                 $("#setDate").click(function () {
@@ -57,7 +58,7 @@
               <tr>
                 <td><%= time.userName %></td>
                 <td><%= time.time %></td>
-                <td><%= time.errors==0 ? "" : (time.errors == 1 ? "1 error" : (time.errors + " errors")) %></td>
+                <td><%= time.errors==0 ? "" : (time.errors + " " + __n("error", time.errors)) %></td>
               </tr>
               <% }) %>
             </tbody>

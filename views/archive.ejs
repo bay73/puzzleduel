@@ -4,19 +4,19 @@
     <div class="col-12 col-lg-10 m-auto">
       <%- include ('./partials/messages') %>
       <div class="card">
-        <h1 class="card-header">Daily puzzles</h1>
+        <h1 class="card-header"><%= __('Daily puzzles') %></h1>
         <div class="card-body">
           <table class="table table-hover table-condensed">
             <tbody>
               <tr>
-                <th>Date</th><th>Puzzle</th><th class="d-none d-sm-block">Best score</th>
+                <th><%= __('Date') %></th><th><%= __('Puzzle') %></th><th class="d-none d-sm-block"><%= __('Best score') %></th>
               </tr>
               <% puzzles.forEach(function(puzzle) { %>
               <tr>
                 <td>
                   <%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>
                   <% if(puzzle.competitive) { %>
-                  <span class="pl-1 d-none d-sm-inline-flex">(competitive)</span>
+                  <span class="pl-1 d-none d-sm-inline-flex">(<%= __('competitive') %>)</span>
                   <% }%>
                 </td>
                 <td>
@@ -35,9 +35,9 @@
             </tbody>
           </table>
           <p class="card-text text-left pt-3">
-            Click at the puzzle name to solve the selected puzzle.
-            Puzzles which are older than 5 days are non-competitive and can be attempted without registration<br>
-            Click at the best solving time value to see the score table for the selected puzzle.
+            <%= __('Click at the puzzle name to solve the selected puzzle.') %>
+            <%= __('Puzzles which are older than 5 days are non-competitive and can be attempted without registration.') %><br>
+            <%= __('Click at the best solving time value to see the score table for the selected puzzle.') %>
           </p>
         </div>
       </div>
