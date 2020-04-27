@@ -100,5 +100,7 @@
 	"There should be single loop passing through some cells": "There should be single loop passing through some cells",
 	"Loop can't pass through the cell with digit": "Loop can't pass through the cell with digit",
 	"The diagonal should contain exactly three different digits": "The diagonal should contain exactly three different digits",
-	"Author": "Author"
+	"Author": "Author",
+	"Cells shouldn't form 'chess' pattern": "Cells shouldn't form 'chess' pattern",
+	"Cells should form 'chess' pattern": "Cells should form 'chess' pattern"
 }
