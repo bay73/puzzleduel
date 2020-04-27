@@ -57,7 +57,7 @@ checkNurikabeClues: function(cluecells, cells) {
           return {status: "The clue is not correct" , errors: [util.coord(x,y)]};
         }
         if (!Checker.checkSingleClue(cluecells[y][x], {x:x, y:y}, cluecells, cells)) {
-          return {status: "Each islind should contain single" , errors: [util.coord(x,y)]};
+          return {status: "Each island should contain single" , errors: [util.coord(x,y)]};
         }
         Checker.fillIslind(filled, {x:x, y:y}, cells);
       }

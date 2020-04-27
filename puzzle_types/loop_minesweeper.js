@@ -81,20 +81,6 @@ findStart: function(h) {
   }
   return null;
 },
-checkAllFilled: function(cells, line) {
-  var used = util.create2DArray(cells.rows, cells.cols, false)
-  for (var i=0;i<line.length;i++) {
-    used[line[i].y][line[i].x] = true;
-  }
-  for (var y=0;y<used.rows;y++) {
-    for (var x=0;x<used.cols;x++) {
-      if (!used[y][x]) {
-        return {status: "There should be single loop passing through all cells", errors: [util.coord(x, y)]};
-      }
-    }
-  }
-  return {status: "OK"};
-},
 checkClues: function(line, clues) {
   var used = util.create2DArray(clues.rows, clues.cols, false)
   for (var i=0;i<line.length;i++) {

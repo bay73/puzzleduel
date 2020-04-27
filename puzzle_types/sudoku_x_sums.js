@@ -66,13 +66,13 @@ checkColumnClues: function(cells, top, bottom, digits) {
     if (top[x] && top[x] != "white") {
       res = Checker.checkColumnClue(cells, x, top[x], 1, digits);
       if (res) {
-        return {status: top[x] + " should be the sum of the first " + cells[0][x] + " digits in the column", errors: res};
+        return {status: "Wrong sum of the first digits in the row", errors: res};
       }
     }
     if (bottom[x] && bottom[x] != "white") {
       res = Checker.checkColumnClue(cells, x, bottom[x], -1, digits);
       if (res) {
-        return {status: bottom[x] + " should be the sum of the last " + cells[cells.rows - 1][x] + " digits in the column", errors: res};
+        return {status: "Wrong sum of the last digits in the row", errors: res};
       }
     }
   }
@@ -102,13 +102,13 @@ checkRowClues: function(cells, left, right, digits) {
     if (left[y] && left[y] != "white") {
       res = Checker.checkRowClue(cells, y, left[y], 1, digits);
       if (res) {
-        return {status: left[y] + " should be the sum of the first " + cells[y][0] + " digits in the row", errors: res};
+        return {status: "Wrong sum of the first digits in the row", errors: res};
       }
     }
     if (right[y] && right[y] != "white") {
       res = Checker.checkRowClue(cells, y, right[y], -1, digits);
       if (res) {
-        return {status: right[y] + " should be the sum of the last " + cells[y][cells.cols - 1] + " digits in the row", errors: res};
+        return {status: "Wrong sum of the last digits in the row", errors: res};
       }
     }
   }

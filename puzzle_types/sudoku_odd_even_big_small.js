@@ -66,13 +66,13 @@ checkColumnClues: function(cells, top, bottom, digits) {
     if (top[x] && top[x] != "white") {
       res = Checker.checkTopClue(cells, x, top[x]);
       if (res) {
-        return {status: "The first two digits in the column should be " + top[x], errors: res};
+        return {status: "Wrong condition for the first two digits in the column", errors: res};
       }
     }
     if (bottom[x] && bottom[x] != "white") {
       res = Checker.checkBottomClue(cells, x, bottom[x]);
       if (res) {
-        return {status: "The last two digits in the column should be " + bottom[x], errors: res};
+        return {status: "Wrong condition for the last two digits in the column", errors: res};
       }
     }
   }
@@ -103,13 +103,13 @@ checkRowClues: function(cells, left, right, digits) {
     if (left[y] && left[y] != "white") {
       res = Checker.checkLeftClue(cells, y, left[y]);
       if (res) {
-        return {status: "The first two digits in the row should be " + left[y], errors: res};
+        return {status: "Wrong condition for the first two digits in the row", errors: res};
       }
     }
     if (right[y] && right[y] != "white") {
       res = Checker.checkRightClue(cells, y, right[y]);
       if (res) {
-        return {status: "The last two digits in the row should be " + right[y], errors: res};
+        return {status: "Wrong condition for the last two digits in the column", errors: res};
       }
     }
   }

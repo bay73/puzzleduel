@@ -53,7 +53,7 @@ buildLines: function(clues, v, h) {
         }
         if (clues[y][x].substring(6) != "circle") {
           if (res.turns.toString() != clues[y][x].substring(6)) {
-            return {status: "The line should have " + clues[y][x].substring(6) + " turns", errors: [util.coord(x,y)]};
+            return {status: "Wrong number of turns for the line", errors: [util.coord(x,y)]};
           }
         }
         for (var i=0;i<res.line.length;i++) {
@@ -97,7 +97,7 @@ buildLine: function(start, v, h, clues) {
       nextDirection = 'v';
     }
     if (nextCount > 1) {
-      return {status: "There should be single loop without bifurcations", errors: [util.coord(current.x,current.y)]};
+      return {status: "There should be single line without bifurcations", errors: [util.coord(current.x,current.y)]};
     }
     if (nextCount < 1) {
       return {status: "Each circle should be connected to a phone", errors: [util.coord(start.x,start.y)]};

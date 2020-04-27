@@ -66,13 +66,13 @@ checkColumnClues: function(cells, top, bottom, digits) {
     if (top[x] && top[x] != "white") {
       res = Checker.checkTopClue(cells, x, top[x]);
       if (res) {
-        return {status: top[x] + " should be the number of visible buldings in the column", errors: res};
+        return {status: "Wrong number of visible buldings in the row", errors: res};
       }
     }
     if (bottom[x] && bottom[x] != "white") {
       res = Checker.checkBottomClue(cells, x, bottom[x]);
       if (res) {
-        return {status: bottom[x] + " should be the number of visible buldings in the column", errors: res};
+        return {status: "Wrong number of visible buldings in the row", errors: res};
       }
     }
   }
@@ -111,13 +111,13 @@ checkRowClues: function(cells, left, right, digits) {
     if (left[y] && left[y] != "white") {
       res = Checker.checkLeftClue(cells, y, left[y]);
       if (res) {
-        return {status: left[y] + " should be the number of visible buldings in the row", errors: res};
+        return {status: "Wrong number of visible buldings in the row", errors: res};
       }
     }
     if (right[y] && right[y] != "white") {
       res = Checker.checkRightClue(cells, y, right[y]);
       if (res) {
-        return {status: right[y] + " should be the number of visible buldings in the row", errors: res};
+        return {status: "Wrong number of visible buldings in the row", errors: res};
       }
     }
   }

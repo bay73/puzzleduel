@@ -125,8 +125,8 @@ router.get('/:puzzleid/start', async (req, res, next) => {
     }
     if (puzzle.needLogging) {
       if (!req.user) {
-        res.status(403).send('This puzzle is competitive and you should log in to solve it! ' +
-                             'Check our <a href="/archive">archive</a> to try puzzles without registration');
+        res.status(403).send(res.__('This puzzle is competitive and you should log in to solve it! ' +
+                             'Check our <a href="/archive">archive</a> to try puzzles without registration'));
         return;
       }
       if (req.user.role != "test") {
@@ -173,7 +173,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
     var result = type_cheker[puzzle.type].check(puzzle.dimension, JSON.parse(puzzle.data), req.body);
     if (puzzle.needLogging) {
       if (!req.user) {
-        res.status(403).send('You should log in to solve this puzzle!');
+        res.status(403).send(res.__('You should log in to solve this puzzle!'));
         return;
       }
       if (req.user.role != "test") {
@@ -190,6 +190,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
         }
       }
     }
+    result.status = res.__(result.status);
     res.json(result);
   } catch (e) {
     next(e);
@@ -218,7 +219,7 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
       return;
     }
     if (puzzle.published) {
-      res.status(403).send('Puzzle is already published, changes are not allowed!');
+      res.status(403).send(res.__('Puzzle is already published, changes are not allowed!'));
       return;
     }
     var newData = JSON.stringify(req.body);

@@ -72,13 +72,13 @@ checkColumnClues: function(cells, top, bottom, letters) {
     if (top[x] && top[x] != "white") {
       res = Checker.checkColumnClue(cells, x, top[x], 1, letters);
       if (res) {
-        return {status: "Letter " + top[x] + " should be the first in the column", errors: res};
+        return {status: "Wrong first letter in the row", errors: res};
       }
     }
     if (bottom[x] && bottom[x] != "white") {
       res = Checker.checkColumnClue(cells, x, bottom[x], -1, letters);
       if (res) {
-        return {status: "Letter " + bottom[x] + " should be the last in the column", errors: res};
+        return {status: "Wrong last letter in the row", errors: res};
       }
     }
   }
@@ -106,13 +106,13 @@ checkRowClues: function(cells, left, right, letters) {
     if (left[y] && left[y] != "white") {
       res = Checker.checkRowClue(cells, y, left[y], 1, letters);
       if (res) {
-        return {status: "Letter " + left[y] + " should be the first in the row", errors: res};
+        return {status: "Wrong first letter in the row", errors: res};
       }
     }
     if (right[y] && right[y] != "white") {
       res = Checker.checkRowClue(cells, y, right[y], -1, letters);
       if (res) {
-        return {status: "Letter " + right[y] + " should be the last in the row", errors: res};
+        return {status: "Wrong last letter in the row", errors: res};
       }
     }
   }
