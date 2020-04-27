@@ -82,6 +82,11 @@ outerCluePuzzle.prototype.initImages = function() {
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "13", "14", "15"];
     this.togglers = ["white", "black", "grey"];
   }
+  if(this.typeCode == "paint_battenberg") {
+    this.useTopColor = true;
+    this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "13", "14", "15", "battenberg"];
+    this.togglers = ["white", "black", "cross"];
+  }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
 }
