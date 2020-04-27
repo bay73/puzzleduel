@@ -154,7 +154,10 @@ commonPuzzle.prototype.render = function(snap) {
       strokeWidth: this.gridProperty.boldWidth
   });
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  this.snap.node.setAttribute("height", this.snap.getBBox().height + this.cellSize / (isSafari ? 2 : 4));
+  var height = this.snap.getBBox().height + this.cellSize / (isSafari ? 2 : 4);
+  this.snap.node.setAttribute("height", height);
+  this.snap.node.setAttribute("width", this.snap.node.clientWidth);
+  this.snap.node.setAttribute("viewBox", "0 0 " + this.snap.node.clientWidth + " " + height);
 }
 
 commonPuzzle.prototype.createBoard = function() {
