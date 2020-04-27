@@ -260,6 +260,8 @@ commonPuzzle.prototype.showClues = function(data) {
       this.areas = value;
     } else if (key=="edges") {
       this.edges = value;
+    } else if (key=="nodes") {
+      this.nodes = value;
     } else {
       var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
       var y = parseInt(key.substring(1)) - 1;
@@ -278,6 +280,9 @@ commonPuzzle.prototype.showClues = function(data) {
   }
   if (this.edges) {
     this.drawEdgeClues();
+  }
+  if (this.nodes) {
+    this.drawNodeClues();
   }
   this.startTimer();
   $(this.controls.startBtn).html(__['Restart']);
@@ -334,8 +339,31 @@ commonPuzzle.prototype.drawEdgeClues = function() {
     } else if (side=="r"){
       left += this.cellSize / 2;
     }
-    this.element = this.snap.image(
-      this.imageUrl(value), 
+    var circle = this.snap.circle(left + imageSize/2, top + imageSize/2, imageSize/3);
+    circle.attr({
+      fill: this.gridProperty.fill,
+      stroke: "none"
+    });
+    var image = this.snap.image(
+      this.imageUrl(value),
+      left, top, imageSize, imageSize);
+  }
+}
+
+commonPuzzle.prototype.drawNodeClues = function() {
+  for (const [key, value] of Object.entries(this.edges)) {
+    var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
+    var y = parseInt(key.substring(1)) - 1;
+    var imageSize = this.cellSize / 3;
+    var left = this.leftGap + x*this.cellSize + this.cellSize - this.cellSize / 6;
+    var top = this.topGap + y*this.cellSize + this.cellSize - this.cellSize / 6;
+    var circle = this.snap.circle(left + imageSize/2, top + imageSize/2, imageSize/3);
+    circle.attr({
+      fill: this.gridProperty.fill,
+      stroke: "none"
+    });
+    var image = this.snap.image(
+      this.imageUrl(value),
       left, top, imageSize, imageSize);
   }
 }
