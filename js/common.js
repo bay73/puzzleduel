@@ -351,7 +351,7 @@ commonPuzzle.prototype.drawEdgeClues = function() {
 }
 
 commonPuzzle.prototype.drawNodeClues = function() {
-  for (const [key, value] of Object.entries(this.edges)) {
+  for (const [key, value] of Object.entries(this.nodes)) {
     var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
     var y = parseInt(key.substring(1)) - 1;
     var imageSize = this.cellSize / 3;
