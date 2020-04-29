@@ -22,7 +22,7 @@
   </filter>
   <%= __('Sorry, but your browser is not supported. Try to setup the new version.') %>
 </svg>
-<div class="row card-body">
+<div class="row card-body" id="puzzleControls">
   <div class="col-8">
     <div class="d-flex flex-row flex-wrap">
       <div class="modal" id="restartModal">
@@ -71,15 +71,7 @@
 <script src="/js/<%= puzzle.type.puzzleJs %>"></script>
 <script>
   function showPuzzle() {
-    var controls = {
-      startBtn: "#startBtn",
-      revertBtn: "#revertBtn",
-      checkBtn: "#checkBtn",
-      pencilMarkCtrl: "#pencilMarkCtrl",
-      pencilMarkCb: "#pencilMarkCb",
-      restartModal: "#restartModal",
-      timer: "#timer"
-    };
+    var controls = "#puzzleControls";
     var puzzleData = {
       typeCode: "<%= puzzle.type.code %>",
       id: "<%= puzzle.code %>",

@@ -21,7 +21,7 @@
   </filter>
   Sorry, but your browser is not supported. Try to setup the new version.
 </svg>
-<div class="row card-body">
+<div class="row card-body" id="editControls" >
   <div class="col-8 text-left">
     <button id="revertBtn" type="button" class="btn btn-primary">Undo</button>
   </div>
@@ -34,16 +34,12 @@
 <script src="/js/<%= puzzle.type.puzzleJs=="path_square_puzzle.js"?"paint_square_puzzle.js":puzzle.type.puzzleJs %>"></script>
 <script>
   function showPuzzle() {
-    var controls = {
-      revertBtn: "#revertBtn",
-      saveBtn: "#saveBtn"
-    };
     var puzzleData = {
       typeCode: "<%= puzzle.type.code %>",
       id: "<%= puzzle.code %>",
       dimension: "<%= puzzle.dimension %>"
     };
-    puzzle = new <%= puzzle.type.puzzleObj %>(puzzleData, controls);
+    puzzle = new <%= puzzle.type.puzzleObj %>(puzzleData, "#editControls");
     puzzle.render(Snap("#mainGrid"));
     puzzle.edit();
   }
