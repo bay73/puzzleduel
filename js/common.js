@@ -286,6 +286,8 @@ commonPuzzle.prototype.showClues = function(data) {
   }
   this.startTimer();
   $(this.controls.startBtn).html(__['Restart']);
+  $(this.controls.startBtn).unbind('click');
+  $(this.controls.startBtn).click(() => {$(this.controls.restartModal).modal();});
   $(this.controls.revertBtn).show().prop('disabled', true);
   $(this.controls.checkBtn).show().prop('disabled', true);
   $(this.controls.pencilMarkCtrl).show();
@@ -456,6 +458,10 @@ commonPuzzle.prototype.initControls = function (controls) {
   self = this;
   this.controls = controls;
   $(this.controls.startBtn).click(() => self.start());
+  $(this.controls.restartModal + " #confirmYes").click(() => {
+    $(this.controls.restartModal).modal('hide');
+    self.start();
+  });
   $(this.controls.revertBtn).hide().click(() => self.revertStep());
   $(this.controls.checkBtn).prop('disabled', true).click(() => self.check());
   $(this.controls.saveBtn).click(() => self.save());
