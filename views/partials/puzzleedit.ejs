@@ -1,32 +1,14 @@
 <% if(typeof puzzle != 'undefined'){ %> 
 <h2 class="card-body"><%= puzzle.type.name %> (Edit mode)</h2>
 <svg id="mainGrid" class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
-  <filter id="chooser">
-    <feColorMatrix type="matrix" values="-1 0 0 0 1
-                                         0 -1 0 0 1
-                                         0 0 -1 0 1
-                                         0 0 0 1 0"/>
-  </filter>
-  <filter id="bottomclue">
-    <feColorMatrix type="matrix" values="-1 0 0 0 0.2
-                                         0 -1 0 0 0.6
-                                         0 0 -1 0 0.6
-                                         0 0 0 1 0"/>
-  </filter>
-  <filter id="topclue">
-    <feColorMatrix type="matrix" values="0 0 0 0 0
-                                         0 0 0 0 0
-                                         0 0 0 0 0
-                                         0 0 0 1 0"/>
-  </filter>
   Sorry, but your browser is not supported. Try to setup the new version.
 </svg>
 <div class="row card-body" id="editControls" >
   <div class="col-8 text-left">
-    <button id="revertBtn" type="button" class="btn btn-primary">Undo</button>
+    <button name="revertBtn" type="button" class="btn btn-primary">Undo</button>
   </div>
   <div class="col-4 text-right">
-    <button id="saveBtn" type="button" class="btn btn-primary">Save</button>
+    <button name="saveBtn" type="button" class="btn btn-primary">Save</button>
   </div>
 </div>
 <script src="/js/locale_<%= getLocale() %>.js"></script>

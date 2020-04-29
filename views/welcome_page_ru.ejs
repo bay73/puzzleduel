@@ -13,17 +13,57 @@
       </div>
       <% } %>
       <%- include ('./partials/messages') %>
-      <% if(puzzle){ %> 
-        <div class="card">
-          <h1 class="card-body pb-0 pt-0">Задача дня</h1>
-          <%- include ('./partials/puzzle') %>
+      <style>
+        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+          background-color: rgba(238,232,213,0.125);
+          border-bottom: 0;
+        }
+        .nav-tabs {
+          border-bottom: 0;
+        }
+      </style>
+      <ul class="nav nav-tabs">
+        <% if(dailyPuzzle){ %>
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#daily"><h1 class="card-body pb-0 pt-0">Задача дня</h1></a>
+        </li>
+        <% } %>
+        <% if(contestPuzzle){ %>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#contest"><h1 class="card-body pb-0 pt-0">Конкурсная задача</h1></a>
+        </li>
+        <% } %>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+      <% if(dailyPuzzle){ %>
+        <div class="tab-pane fade active show" id="daily">
+          <div class="card" style="border: 0;">
+            <% puzzle = dailyPuzzle; %>
+            <% prefix = 'daily'; %>
+            <%- include ('./partials/puzzle') %>
+          </div>
         </div>
-        <script>
-          $(document).ready(function () {
-            showPuzzle();
-          });
-        </script>
       <% } %>
+      <% if(contestPuzzle){ %>
+        <div class="tab-pane fade" id="contest">
+          <div class="card" style="border: 0;">
+            <% puzzle = contestPuzzle; %>
+            <% prefix = 'contest'; %>
+            <%- include ('./partials/puzzle') %>
+          </div>
+        </div>
+      <% } %>
+      </div>
+      <script>
+        $(document).ready(function () {
+          <% if(dailyPuzzle){ %>
+          showdailyPuzzle();
+          <% } %>
+          <% if(contestPuzzle){ %>
+          showcontestPuzzle();
+          <% } %>
+        });
+      </script>
     </div>
   </div>
 </div>

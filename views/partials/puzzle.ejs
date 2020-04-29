@@ -1,57 +1,44 @@
 <% if(typeof puzzle != 'undefined'){ %> 
 <h2 class="card-body pt-0 pb-0 mb-0"><%= puzzle.type.name %></h2>
 <p class="card-body text-right pb-0 pt-0 mb-0"><small><%= __('Author:') %> <%= puzzle.author %></small></p>
-<svg id="mainGrid" class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
-  <filter id="chooser">
-    <feColorMatrix type="matrix" values="-1 0 0 0 1
-                                         0 -1 0 0 1
-                                         0 0 -1 0 1
-                                         0 0 0 1 0"/>
-  </filter>
-  <filter id="bottomclue">
-    <feColorMatrix type="matrix" values="-1 0 0 0 0.2
-                                         0 -1 0 0 0.6
-                                         0 0 -1 0 0.6
-                                         0 0 0 1 0"/>
-  </filter>
-  <filter id="topclue">
-    <feColorMatrix type="matrix" values="0 0 0 0 0
-                                         0 0 0 0 0
-                                         0 0 0 0 0
-                                         0 0 0 1 0"/>
-  </filter>
+<svg id="<%= (typeof prefix != undefined)?prefix+'Grid':'mainGrid' %>"
+     class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
   <%= __('Sorry, but your browser is not supported. Try to setup the new version.') %>
 </svg>
-<div class="row card-body" id="puzzleControls">
+<div class="row card-body" id="<%= (typeof prefix != undefined)?prefix+'Controls':'puzzleControls' %>">
   <div class="col-8">
     <div class="d-flex flex-row flex-wrap">
-      <div class="modal" id="restartModal">
+      <div class="modal" name="restartModal">
         <div class="modal-dialog" role="document">
            <div class="modal-content">
              <div class="modal-body">
               <p><%= __('Do you want to restart the puzzle? All progress will be lost!') %></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" id="confirmYes"><%= __('Yes') %></button>
+              <button type="button" class="btn btn-primary" name="confirmYes"><%= __('Yes') %></button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= __('No') %></button>
             </div>
           </div>
         </div>
       </div>
-      <button id="startBtn" type="button" class="btn btn-primary mb-3 mr-3"><%= __('Start') %></button>
-      <button id="revertBtn" type="button" class="btn btn-primary mb-3 mr-3" style="display: none;"><%= __('Undo') %></button>
-      <div class="mt-1 mr-3" id="pencilMarkCtrl" style="display: none;">
+      <button name="startBtn" type="button" class="btn btn-primary mb-3 mr-3"><%= __('Start') %></button>
+      <button name="revertBtn" type="button" class="btn btn-primary mb-3 mr-3" style="display: none;"><%= __('Undo') %></button>
+      <div class="mt-1 mr-3" name="pencilMarkCtrl" style="display: none;">
         <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="pencilMarkCb">
-          <label class="custom-control-label" for="pencilMarkCb"><%= __('Pencil-marks') %></label>
+          <input type="checkbox" class="custom-control-input" name="pencilMarkCb"
+                 id="<%= (typeof prefix != undefined)?prefix+'pencilMarkCb':'pencilMarkCb' %>">
+          <label class="custom-control-label"
+                 for="<%= (typeof prefix != undefined)?prefix+'pencilMarkCb':'pencilMarkCb' %>">
+            <%= __('Pencil-marks') %>
+          </label>
         </div>
       </div>
     </div>
   </div>
   <div class="col-4">
     <div class="d-flex flex-row-reverse flex-wrap">
-      <button id="checkBtn" type="button" class="btn btn-primary mb-3 ml-3"><%= __('Check') %></button>
-      <span id="timer" class="align-top" style="font-family: Lucida Console; font-size: 130%; display: none;"></span>
+      <button name="checkBtn" type="button" class="btn btn-primary mb-3 ml-3"><%= __('Check') %></button>
+      <span name="timer" class="align-top" style="font-family: Lucida Console; font-size: 130%; display: none;"></span>
     </div>
   </div>
   <p class="card-text text-left mt-2"><%= puzzle.type.rules %></p>
@@ -70,15 +57,16 @@
 <script src="/js/common.js"></script>
 <script src="/js/<%= puzzle.type.puzzleJs %>"></script>
 <script>
-  function showPuzzle() {
-    var controls = "#puzzleControls";
+  function show<%= (typeof prefix != undefined)?prefix+'Puzzle':'Puzzle' %>() {
+    var controls = "#<%= (typeof prefix != undefined)?prefix+'Controls':'puzzleControls' %>";
     var puzzleData = {
       typeCode: "<%= puzzle.type.code %>",
       id: "<%= puzzle.code %>",
       dimension: "<%= puzzle.dimension %>"
     };
-    puzzle = new <%= puzzle.type.puzzleObj %>(puzzleData, controls);
-    puzzle.render(Snap("#mainGrid"));
+    var grid = "#<%= (typeof prefix != undefined)?prefix+'Grid':'mainGrid' %>"
+    <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %> = new <%= puzzle.type.puzzleObj %>(puzzleData, controls);
+    <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %>.render(Snap(grid));
   }
 </script>
 <% } %>

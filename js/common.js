@@ -128,6 +128,7 @@ commonPuzzle.prototype.render = function(snap) {
   // Draw puzzle grid
   this.snap = snap;
   this.findCellSize();
+  this.createFilters();
   this.gridProperty = {
     fill: "#fff",
     stroke: "#000",
@@ -147,11 +148,15 @@ commonPuzzle.prototype.render = function(snap) {
       stroke: this.gridProperty.stroke,
       strokeWidth: this.gridProperty.boldWidth
   });
-  var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  var height = this.snap.getBBox().height + this.cellSize / (isSafari ? 2 : 4);
-  this.snap.node.setAttribute("height", height);
-  this.snap.node.setAttribute("width", this.snap.node.clientWidth);
-  this.snap.node.setAttribute("viewBox", "0 0 " + this.snap.node.clientWidth + " " + height);
+  this.snap.node.setAttribute("height", this.height);
+  this.snap.node.setAttribute("width", this.width);
+  this.snap.node.setAttribute("viewBox", "0 0 " + this.width + " " + this.height);
+}
+
+commonPuzzle.prototype.createFilters = function() {
+  this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix' values='-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0'/>");
+  this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='-1 0 0 0 0.2 0 -1 0 0 0.6 0 0 -1 0 0.6 0 0 0 1 0'/>");
+  this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/>");
 }
 
 commonPuzzle.prototype.createBoard = function() {
@@ -193,7 +198,11 @@ commonPuzzle.prototype.createBoard = function() {
 
 commonPuzzle.prototype.findCellSize = function() {
   // Find cell size based on size of the window.
-  var hSizeLimit = this.snap.node.clientWidth*0.90;
+  this.width = this.snap.node.clientWidth;
+  if (this.width==0) {
+    this.width = $(this.snap.node).parent().parent().parent().width();
+  }
+  var hSizeLimit = this.width*0.90;
   var vSizeLimit = window.innerHeight*0.57;
   var cols = this.cols;
   var rows = this.rows;
@@ -205,8 +214,10 @@ commonPuzzle.prototype.findCellSize = function() {
     rows = rows + 2;
   }
   this.cellSize = Math.min(hSizeLimit / cols, vSizeLimit / rows);
-  this.leftGap = (this.snap.node.clientWidth - this.cellSize * cols)/2;
+  this.leftGap = (this.width - this.cellSize * cols)/2;
   this.topGap = 1;
+  var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  this.height = rows * this.cellSize + this.topGap + this.cellSize / (isSafari ? 2 : 4);
   if (this.cluePosition == this.FOUR_SIDES) {
     this.topGap = this.topGap + this.cellSize;
     this.leftGap = this.leftGap + this.cellSize;
@@ -362,7 +373,7 @@ commonPuzzle.prototype.startTimer = function() {
   if (!this.controls.timer || this.timer) {
     return;
   }
-  self = this;
+  var self = this;
   this.startTime = new Date();
   this.showTime();
   this.timer = setInterval(() => self.showTime(),1000);
@@ -444,18 +455,18 @@ commonPuzzle.prototype.showForEdit = function (data) {
 }
 
 commonPuzzle.prototype.initControls = function (controls) {
-  self = this;
+  var self = this;
   this.controls = {};
-  this.controls.startBtn = controls + " #startBtn";
-  this.controls.restartModal = controls + " #restartModal";
-  this.controls.restartYes = this.controls.restartModal + " #confirmYes";
-  this.controls.restartNo = this.controls.restartModal + " #confirmNo";
-  this.controls.revertBtn = controls + " #revertBtn";
-  this.controls.saveBtn = controls + " #saveBtn";
-  this.controls.checkBtn = controls + " #checkBtn";
-  this.controls.pencilMarkCtrl = controls + " #pencilMarkCtrl";
-  this.controls.pencilMarkCb = controls + " #pencilMarkCb";
-  this.controls.timer = controls + " #timer";
+  this.controls.startBtn = controls + " [name=startBtn]";
+  this.controls.restartModal = controls + " [name=restartModal]";
+  this.controls.restartYes = this.controls.restartModal + " [name=confirmYes]";
+  this.controls.restartNo = this.controls.restartModal + " [name=confirmNo]";
+  this.controls.revertBtn = controls + " [name=revertBtn]";
+  this.controls.saveBtn = controls + " [name=saveBtn]";
+  this.controls.checkBtn = controls + " [name=checkBtn]";
+  this.controls.pencilMarkCtrl = controls + " [name=pencilMarkCtrl]";
+  this.controls.pencilMarkCb = controls + " [name=pencilMarkCb]";
+  this.controls.timer = controls + " [name=timer]";
 
   $(this.controls.startBtn).click(() => self.start());
   $(this.controls.restartYes).click(() => {
@@ -540,13 +551,13 @@ squarePuzzleCell.prototype.renderCell = function() {
     corner.x, corner.y, this.cellSize, this.cellSize);
   if (this.overGrid()) {
     if (this.puzzle.useTopColor) {
-      $(this.element.node).css("filter","url(#topclue)");
+      this.element.attr({filter: this.puzzle.topClueFilter });
     } else {
-      $(this.element.node).css("filter","url(#bottomclue)");
+      this.element.attr({filter: this.puzzle.bottomClueFilter });
     }
   }
   if (this.belowGrid()) {
-    $(this.element.node).css("filter","url(#bottomclue)");
+    this.element.attr({filter: this.puzzle.bottomClueFilter });
   }
   this.element.cell = this;
   this.rect = this.puzzle.snap.rect(corner.x, corner.y, this.cellSize, this.cellSize);

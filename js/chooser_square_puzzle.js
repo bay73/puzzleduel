@@ -244,7 +244,7 @@ createToggler: function(puzzle, center, angle, distance, size, index, value) {
     center.y - Math.cos(index*angle)*size*distance - size*(1.-distance),
     size*(1.-distance)*2,
     size*(1.-distance)*2);
-  $(togglerImage.node).css("filter","url(#chooser)");
+  togglerImage.attr({filter: puzzle.chooserFilter});
   togglerImage.valueIndex = index;
   puzzle.chooserElem.append(togglerImage);
   togglerImage.node.addEventListener("mouseover", ()=> {togglerCircle.attr({opacity: 1});});
