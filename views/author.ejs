@@ -4,7 +4,16 @@
     <div class="col-12 col-lg-10 m-auto">
       <%- include ('./partials/messages') %>
       <div class="card">
-        <h1 class="card-header">You puzzles</h1>
+        <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+          <h1 class="">You puzzles</h1>
+          <div class="p-2 align-bottom text-right">
+            <% if (future) { %>
+            <a href="/archive/author">Show old puzzles</a>
+            <% } else { %>
+            <a href="/archive/author?future=true">Hide old puzzles</a>
+            <% } %>
+          </div>
+        </div>
         <p class="card-body">
           <a class="btn btn-primary" data-toggle="collapse" href="#newform" aria-expanded="false" aria-controls="Collapse">
             Create new

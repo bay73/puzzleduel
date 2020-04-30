@@ -101,9 +101,20 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     var timesMap = await util.bestSolvingTimeMap(true);
 
     var filter = {author: req.user._id};
+
+    if (req.query.future) {
+      filter = {
+        author: req.user._id,
+        $or: [
+          {daily: {$gt: new Date()}},
+          {daily: {$exists: false}}
+        ]
+      }
+    }
     const puzzles = await Puzzle.find(filter, "code type dimension daily").sort({daily: -1});
     res.render('author', {
       user: req.user,
+      future: req.query.future,
       types: Object.entries(typeMap).sort(([key1, value1],[key2, value2]) => key1.localeCompare(key2)).map(([key, value]) => {
         return {
           code: key,
