@@ -51,6 +51,12 @@ PuzzleSchema.virtual('hidden').get(function() {
   return true;
 });
 
+PuzzleSchema.virtual('hiddenScore').get(function() {
+  var d = new Date();
+  if (this.daily < d) return false;
+  return true;
+});
+
 PuzzleSchema.virtual('published').get(function() {
   var d = new Date();
   d.setDate(d.getDate()+2);

@@ -36,6 +36,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// Solving time for a single puzzle
 router.get(['/:puzzleid/scores','/:puzzleid/times'],
   async (req, res, next) => {
   try {
@@ -45,7 +46,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
       filter = {daily: date};
     }
     puzzle = await Puzzle.findOne(filter, "-data");
-    if (puzzle.isHidden) {
+    if (!puzzle || puzzle.hiddenScore) {
       res.sendStatus(404);
       return;
     }
@@ -82,6 +83,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
   }
 });
 
+// Socre for today's puzzle
 router.get('/scores', (req, res) => {
   var d = new Date().toISOString().split('T')[0];
   res.redirect('/archive/' + d + '/scores');
