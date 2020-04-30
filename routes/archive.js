@@ -111,7 +111,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
         ]
       }
     }
-    const puzzles = await Puzzle.find(filter, "code type dimension daily").sort({daily: -1});
+    const puzzles = await Puzzle.find(filter, "code type dimension tag daily").sort({daily: -1});
     res.render('author', {
       user: req.user,
       future: req.query.future,
@@ -126,6 +126,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
           code: puzzle.code,
           type: typeMap[puzzle.type],
           dimension: puzzle.dimension,
+          tag: puzzle.tag,
           daily: puzzle.daily,
           time: util.timeToString(timesMap[puzzle.code]),
           published: puzzle.published

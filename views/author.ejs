@@ -63,7 +63,9 @@
             <tbody>
               <% puzzles.forEach(function(puzzle) { %>
               <tr>
-                <td><%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %></td>
+                <td>
+                  <%= puzzle.tag %>
+                  <%= puzzle.daily?("("+puzzle.daily.toISOString().split('T')[0]+")"):"" %></td>
                 <td>
                   <a href="/single/<%= puzzle.code %>">
                     <%= puzzle.type %>
