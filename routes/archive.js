@@ -1,58 +1,17 @@
 const express = require('express');
 const router = express.Router();
-// Puzzle model
 const Puzzle = require('../models/Puzzle');
-// PuzzleType model
 const PuzzleType = require('../models/PuzzleType');
-// UserSolvingTime model
 const UserSolvingTime = require('../models/UserSolvingTime');
+const util = require('../utils/puzzle_util');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
-function timeToString(millis) {
-  if (!millis) return "";
-  var secs = Math.round(millis/1000);
-  var mins = Math.trunc(secs/60);
-  var hours = Math.trunc(mins/60);
-  secs = secs - 60 * mins;
-  mins = mins - 60 * hours;
-  return (hours > 0 ? (hours + "h ") : "") +
-    ((hours > 0 || mins > 0) ? (mins + "m ") : "") +
-    (secs + " s");
-}
-
-function showPuzzle(puzzle, user) {
-  if (!puzzle) return false;
-  if (!puzzle.daily || puzzle.daily > new Date()) {
-    if (!user || user.role != "test") {
-      return false;
-    }
-  }
-  return true;
-}
-
-// Puzzle list
+// List of daily puzzles
 router.get('/', async (req, res, next) => { 
   try {
-    const types = await PuzzleType.find({}, "code name");
-    var typeMap = {};
-    types.forEach(type => typeMap[type.code] = type.name);
-    const times = await UserSolvingTime.aggregate([{
-      $match : {
-        errCount : 0,
-        $or: [
-          {hidden: false},
-          {hidden: {$exists: false}}
-        ]
-      }
-    }, {
-      $group: {
-        _id: "$puzzleId",
-        min: { $min: "$solvingTime" }
-      }
-    }]);
-    var timesMap = {};
-    times.forEach(time => timesMap[time._id] = time.min);
+    var timesMap = await util.bestSolvingTimeMap(false);
+    var typeMap = await util.typeNameMap();
 
     var filter = {daily: {$lte: new Date()} };
     if (req.user && req.user.role == "test") {
@@ -68,7 +27,7 @@ router.get('/', async (req, res, next) => {
           dimension: puzzle.dimension,
           daily: puzzle.daily,
           competitive: puzzle.needLogging,
-          time: timeToString(timesMap[puzzle.code])
+          time: util.timeToString(timesMap[puzzle.code])
         };
       })
     });
@@ -86,12 +45,8 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
       filter = {daily: date};
     }
     puzzle = await Puzzle.findOne(filter, "-data");
-    if (!showPuzzle(puzzle, req.user)) {
-      res.render('times', {
-        user: req.user,
-        puzzle: null,
-        times: []
-      });
+    if (puzzle.isHidden) {
+      res.sendStatus(404);
       return;
     }
     var puzzleType = puzzle.type;
@@ -117,7 +72,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
       times: times.map(time => {
         return {
           userName: time.userName,
-          time: timeToString(time.solvingTime),
+          time: util.timeToString(time.solvingTime),
           errors: time.errCount
         };
       })
@@ -139,24 +94,18 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    const types = await PuzzleType.find({}, "code name");
-    var typeMap = {};
-    types.forEach(type => typeMap[type.code] = type.name);
-    const times = await UserSolvingTime.aggregate([{$group: {
-        _id: "$puzzleId",
-        min: { $min: "$solvingTime" }
-      }
-    }]);
-    var timesMap = {};
-    times.forEach(time => timesMap[time._id] = time.min);
+
+    var typeMap = await util.typeNameMap();
+    var timesMap = await util.bestSolvingTimeMap(true);
+
     var filter = {author: req.user._id};
     const puzzles = await Puzzle.find(filter, "code type dimension daily").sort({daily: -1});
     res.render('author', {
       user: req.user,
-      types: types.map(type => {
+      types: Object.entries(typeMap).sort(([key1, value1],[key2, value2]) => key1.localeCompare(key2)).map(([key, value]) => {
         return {
-          code: type.code,
-          name: type.name
+          code: key,
+          name: value
         };
       }),
       puzzles: puzzles.map(puzzle => {
@@ -165,7 +114,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
           type: typeMap[puzzle.type],
           dimension: puzzle.dimension,
           daily: puzzle.daily,
-          time: timeToString(timesMap[puzzle.code]),
+          time: util.timeToString(timesMap[puzzle.code]),
           published: puzzle.published
         };
       })

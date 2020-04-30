@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const Mixed = mongoose.Schema.Types.Mixed;
 
 const PuzzleSchema = new mongoose.Schema({
   code: {
@@ -12,8 +13,12 @@ const PuzzleSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  description: {
+  tag: {
     type: String,
+    required: false
+  },
+  description: {
+    type: Mixed,
     required: false
   },
   dimension: {
@@ -42,7 +47,8 @@ PuzzleSchema.virtual('needLogging').get(function() {
 
 PuzzleSchema.virtual('hidden').get(function() {
   var d = new Date();
-  return this.daily && this.daily > d
+  if (this.daily < d) return false;
+  return true;
 });
 
 PuzzleSchema.virtual('published').get(function() {
