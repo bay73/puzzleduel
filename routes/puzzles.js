@@ -130,6 +130,10 @@ router.get('/:puzzleid/start', async (req, res, next) => {
                              'Check our <a href="/archive">archive</a> to try puzzles without registration'));
         return;
       }
+      if (req.user.role == "blocked") {
+        res.status(403).send('Your account is blocked. Please contact the side admin');
+        return;
+      }
       if (req.user.role != "test") {
         logAction(req.user, req.params.puzzleid, "start", req.ipInfo);
       }
