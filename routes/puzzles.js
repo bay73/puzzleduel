@@ -223,16 +223,18 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
       res.status(403).send(res.__('Puzzle is already published, changes are not allowed!'));
       return;
     }
-    var newData = JSON.stringify(req.body);
+    var tag = req.body["tag"];
+    var data = req.body;
+    delete data["tag"];
+    var newData = JSON.stringify(data);
     if (puzzle.data != newData) {
-      puzzle.data = newData;
-      await puzzle.save();
       await UserSolvingTime.deleteMany({puzzleId: puzzle.code});
       await UserActionLog.deleteMany({puzzleId: puzzle.code});
-      res.json({status: "OK"});
-    } else {
-      res.json({status: "OK"});
     }
+    puzzle.data = newData;
+    puzzle.tag = tag;
+    await puzzle.save();
+    res.json({status: "OK"});
   } catch (e) {
     next(e);
   }

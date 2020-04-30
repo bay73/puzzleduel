@@ -4,10 +4,15 @@
   Sorry, but your browser is not supported. Try to setup the new version.
 </svg>
 <div class="row card-body" id="editControls" >
-  <div class="col-8 text-left">
+  <div class="col-4 text-left">
     <button name="revertBtn" type="button" class="btn btn-primary">Undo</button>
   </div>
-  <div class="col-4 text-right">
+  <div class="col-8 text-right">
+    <select class="custom-select" name="tag" style="width: 150px" >
+      <option value=""></option>
+      <option value="daily" <%= (puzzle.tag && puzzle.tag.includes("daily"))?"selected":"" %>>Daily</option>
+      <option value="example"<%= (puzzle.tag && puzzle.tag.includes("example"))?"selected":"" %>>Example</option>
+    </select>
     <button name="saveBtn" type="button" class="btn btn-primary">Save</button>
   </div>
 </div>

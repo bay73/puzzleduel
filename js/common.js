@@ -102,6 +102,7 @@ commonPuzzle.prototype.edit = function() {
 
 commonPuzzle.prototype.save = function() {
   var data = this.collectData(false, true);
+  data.tag = $(this.controls.tag).val();
   this.removeMessages();
   // Read result from server and show.
   $.post("/puzzles/" + (this.id ? this.id: "0") + "/edit", data)
@@ -467,6 +468,7 @@ commonPuzzle.prototype.initControls = function (controls) {
   this.controls.pencilMarkCtrl = controls + " [name=pencilMarkCtrl]";
   this.controls.pencilMarkCb = controls + " [name=pencilMarkCb]";
   this.controls.timer = controls + " [name=timer]";
+  this.controls.tag =  controls + " [name=tag]";
 
   $(this.controls.startBtn).click(() => self.start());
   $(this.controls.restartYes).click(() => {
