@@ -9,6 +9,10 @@ const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 // List of daily puzzles
 router.get('/actionlog', ensureAuthenticated, async (req, res, next) => {
   try {
+    if (!req.user || req.user.role != "admin") {
+      res.sendStatus(404);
+      return;
+    }
     var users = req.query.users.split(',');
     var userData = await User.find({_id: {$in: users}});
     var log = await UserActionLog.find({userId: {$in: users}}).sort("date");
@@ -25,6 +29,10 @@ router.get('/actionlog', ensureAuthenticated, async (req, res, next) => {
 // List of daily puzzles
 router.get('/userips', ensureAuthenticated, async (req, res, next) => {
   try {
+    if (!req.user || req.user.role != "admin") {
+      res.sendStatus(404);
+      return;
+    }
     var d = new Date();
     d.setDate(d.getDate() - 10);
     var userMap = {}
