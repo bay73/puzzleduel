@@ -33,6 +33,14 @@
       </ul>
       <div class="navbar-right">    
         <ul class="nav navbar-nav">
+          <li class="dropdown nav-link">
+            <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-globe"></span> Language
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a class="nav-link" href="?lang=en">English</a></li>
+              <li><a class="nav-link" href="?lang=ru">Русский</a></li>
+            </ul>
+          </li>
           <% if(user) { %>
           <li class="nav-item"><a class="nav-link" href="/users/edit"><span class="glyphicon glyphicon-user"></span> <%= user.name %></a></li>
           <li class="nav-item"><a class="nav-link" href="/users/logout"><span class="glyphicon glyphicon-log-out"></span> <%= __('Logout') %></a></li>
