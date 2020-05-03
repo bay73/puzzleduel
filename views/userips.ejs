@@ -1,0 +1,33 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header">Users action log</h1>
+        <div class="card-body">
+          <table class="table table-hover table-condensed">
+            <tbody>
+              <tr>
+                <th></th>
+              </tr>
+              <% var prevIp = ""; %>
+              <% logData.sort((item1, item2) => (""+item1.country).localeCompare(item2.country)*1000 + (""+item1.region).localeCompare(item2.region)*100 + (""+item1.ip).localeCompare(item2.ip)).forEach(function(logItem) { %>
+              <tr>
+                <td><%= logItem.country %>(<%= logItem.region %>)</td>
+                <td class="text-center <%= prevIp==logItem.ip?'table-warning':'' %>"><%= logItem.ip %></td>
+                <td><%= logItem.userId %></td>
+                <td><%= logItem.userName %> (<%= logItem.userEmail %>)</td>
+                <td><%= logItem.count %></td>
+              </tr>
+              <%   prevIp = logItem.ip; %>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+
