@@ -1,0 +1,57 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+          <h1 class="">Daily puzzles</h1>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-condensed">
+            <tbody>
+              <% puzzles.forEach(function(puzzle) { %>
+              <tr>
+                <td>
+                  <% if (!puzzle.daily) { %>
+                  <a href="/admin/daily/<%= puzzle.code %>/top">
+                    <span class="glyphicon glyphicon-arrow-up"></span>
+                  </a>
+                  <% } else if (puzzle.daily > new Date()) { %>
+                  <a href="/admin/daily/<%= puzzle.code %>/up">
+                    <span class="glyphicon glyphicon-chevron-up"></span>
+                  </a>
+                  <a href="/admin/daily/<%= puzzle.code %>/top">
+                    <span class="glyphicon glyphicon-arrow-up"></span>
+                  </a>
+                  <% } %>
+                </td>
+                <td class="<%= puzzle.daily<new Date()?'text-warning':'' %>">
+                  <%= puzzle.tag %>
+                  <%= puzzle.daily?("("+puzzle.daily.toISOString().split('T')[0]+")"):"" %>
+                </td>
+                <td>
+                  <a href="/single/<%= puzzle.code %>">
+                    <%= puzzle.type %>
+                    <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+                  </a>
+                </td>
+                <td>
+                  <a href="/archive/<%= puzzle.code %>/scores">
+                    <%= puzzle.time %>
+                  </a>
+                </td>
+                <td>
+                  <%= puzzle.author %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+
