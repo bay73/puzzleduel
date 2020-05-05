@@ -84,8 +84,8 @@ async function computeRating(computeDate) {
       weekValue = weekSum / puzzlesNum;
       var diff = weekValue - oldValue;
       change = Math.pow(Math.abs(diff),0.66) * Math.sign(diff);
+      change = change * puzzlesNum / 7;
       if (change > 0) {
-        change = change * puzzlesNum / 7;
         if (weeks < 5 ) {
           change = change * (5 - weeks);
         }
