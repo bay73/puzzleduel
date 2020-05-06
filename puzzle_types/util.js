@@ -151,7 +151,7 @@ const Util = {
   },
 
   checkOnceInList: function(cells, positionsToCheck, colorsToCheck) {
-    // Returns list of cells if something is wring
+    // Returns list of cells if something is wrong
     // or null if everything is Ok
     var colorsPresent = [];
     var repeat = false;

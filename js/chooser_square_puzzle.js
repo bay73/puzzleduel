@@ -29,6 +29,13 @@ innerCluePuzzle.prototype.initImages = function() {
     this.togglers.push("cross");
     this.togglers.push("white_circle");
   }
+  if(this.typeCode == "ripple_effect") {
+    this.togglers = ["white"];
+    for (var i=1;i<=6;i++) {
+      this.clues.push(i.toString());
+      this.togglers.push(i.toString());
+    }
+  }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
 }

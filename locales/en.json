@@ -105,5 +105,7 @@
 	"The diagonal should contain exactly three different digits": "The diagonal should contain exactly three different digits",
 	"Author": "Author",
 	"Cells shouldn't form 'chess' pattern": "Cells shouldn't form 'chess' pattern",
-	"Cells should form 'chess' pattern": "Cells should form 'chess' pattern"
+	"Cells should form 'chess' pattern": "Cells should form 'chess' pattern",
+	"Area should contain sequential numbers from 1 to N": "Area should contain sequential numbers from 1 to N",
+	"Distance between digits is too small": "Distance between digits is too small"
 }

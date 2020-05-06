@@ -106,5 +106,7 @@
 	"Loop can't pass through the cell with digit": "Цикл не должен проходит через клетки с цифрами",
 	"The diagonal should contain exactly three different digits": "Диагональ должна содержать ровно три разные цифры",
 	"Cells shouldn't form 'chess' pattern": "Ячейки не должны создавать шахматный рисунок",
-	"Cells should form 'chess' pattern": "Ячейки должны создавать шахматный рисунок"
+	"Cells should form 'chess' pattern": "Ячейки должны создавать шахматный рисунок",
+	"Area should contain sequential numbers from 1 to N": "Область должна содержать последовательные числа от 1 до N",
+	"Distance between digits is too small": "Расстояние между цифрами слишком маленькое"
 }
