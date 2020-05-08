@@ -61,6 +61,13 @@
                 <td><%= time.errors==0 ? "" : (time.errors + " " + __n("error", time.errors)) %></td>
               </tr>
               <% }) %>
+              <% notFinished.forEach(function(userName) { %>
+              <tr>
+                <td><%= userName %></td>
+                <td><%= __("didn't finish") %></td>
+                <td></td>
+              </tr>
+              <% }) %>
             </tbody>
           </table>
         </div>

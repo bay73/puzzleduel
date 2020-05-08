@@ -108,5 +108,6 @@
 	"Cells shouldn't form 'chess' pattern": "Ячейки не должны создавать шахматный рисунок",
 	"Cells should form 'chess' pattern": "Ячейки должны создавать шахматный рисунок",
 	"Area should contain sequential numbers from 1 to N": "Область должна содержать последовательные числа от 1 до N",
-	"Distance between digits is too small": "Расстояние между цифрами слишком маленькое"
+	"Distance between digits is too small": "Расстояние между цифрами слишком маленькое",
+	"didn't finish": "не закончено"
 }
