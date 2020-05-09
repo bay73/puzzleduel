@@ -313,7 +313,9 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
 
       }
 
-      req.flash('success_msg', 'Email with instructions to reset your password is sent to the provided address');
+      req.flash('success_msg', 'Email with instructions to reset your password is sent to the provided address.\n'
+                + 'Check spam folder if you did not find it in to inbox.\n'
+                + 'Contact puzzleduel.club@gmail.com in case of problems.');
       res.redirect('/');
     }
   } catch (e) {
