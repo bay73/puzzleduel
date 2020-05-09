@@ -293,7 +293,7 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
         user.resetExpire = d;
 
         var mailOptions = {
-          from: "PuzzleDuel<puzzleduel.club@gmail.com>",
+          from: "PuzzleDuel<puzzleduel.club@mail.ru>",
           to: email,
           subject: "Reset password for www.PuzzleDuel.club",
           text: "You or somebody else recently requested to reset your password for account " + email

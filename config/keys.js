@@ -7,9 +7,9 @@ module.exports = {
     secret: process.env.CAPTCHA_KEY
   },
   email: {
-    service: 'gmail',
+    service: 'Mail.Ru',
     auth: {
-      user: 'puzzleduel.club@gmail.com',
+      user: 'puzzleduel.club@mail.ru',
       pass: process.env.EMAIL_PASS
     }
   }
