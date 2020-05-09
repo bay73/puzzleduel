@@ -31,6 +31,7 @@
     "express-recaptcha": "^5.0.1",
     "express-session": "^1.17.1",
     "i18n": "^0.9.0",
+    "mailgun-js": "^0.22.0",
     "mongoose": "^5.9.10",
     "nodemailer": "^6.4.6",
     "passport": "^0.4.1",
