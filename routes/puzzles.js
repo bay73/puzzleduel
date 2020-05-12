@@ -136,6 +136,10 @@ router.get('/:puzzleid/start', async (req, res, next) => {
         res.status(403).send('Your account is blocked. Please contact the side admin');
         return;
       }
+      if (req.user.role == "admin") {
+        res.status(403).send('Admin account cannot solve contest puzzles');
+        return;
+      }
       if (req.user.role != "test") {
         logAction(req.user, req.params.puzzleid, "start", req.ipInfo);
       }
