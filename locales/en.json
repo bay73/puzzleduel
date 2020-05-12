@@ -108,5 +108,8 @@
 	"Cells should form 'chess' pattern": "Cells should form 'chess' pattern",
 	"Area should contain sequential numbers from 1 to N": "Area should contain sequential numbers from 1 to N",
 	"Distance between digits is too small": "Distance between digits is too small",
-	"didn't finish": "didn't finish"
+	"didn't finish": "didn't finish",
+	"Wrong number of stars in the column": "Wrong number of stars in the column",
+	"Wrong number of stars in the row": "Wrong number of stars in the row",
+	"The arrow should point to one star": "The arrow should point to one star"
 }

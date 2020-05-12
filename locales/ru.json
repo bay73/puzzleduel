@@ -109,5 +109,8 @@
 	"Cells should form 'chess' pattern": "Ячейки должны создавать шахматный рисунок",
 	"Area should contain sequential numbers from 1 to N": "Область должна содержать последовательные числа от 1 до N",
 	"Distance between digits is too small": "Расстояние между цифрами слишком маленькое",
-	"didn't finish": "не закончено"
+	"didn't finish": "не закончено",
+	"Wrong number of stars in the column": "Неверное число звезд в столце",
+	"Wrong number of stars in the row": "Неверное число звезд в ряду",
+	"The arrow should point to one star": "Стрелка должна указывать на одну звезду"
 }
