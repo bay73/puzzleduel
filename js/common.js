@@ -455,6 +455,7 @@ commonPuzzle.prototype.showForEdit = function (data) {
 commonPuzzle.prototype.initControls = function (controls) {
   var self = this;
   this.controls = {};
+  this.controls.card = controls;
   this.controls.startBtn = controls + " [name=startBtn]";
   this.controls.restartModal = controls + " [name=restartModal]";
   this.controls.restartYes = this.controls.restartModal + " [name=confirmYes]";
@@ -511,26 +512,34 @@ commonPuzzle.prototype.togglePencilMarkMode = function() {
 }
 
 commonPuzzle.prototype.showError = function(message, timeout){
-    $(this.controls.errorText).text(message);
-    $(this.controls.errorMsg).show();
-    if (timeout) {
-      setTimeout(() => $(this.controls.errorMsg).hide(), timeout);
-    }
-    this.message = this.controls.errorMsg;
+  this.showMessage('danger', message, timeout);
 }
 
 commonPuzzle.prototype.showSuccess = function(message, timeout){
-    $(this.controls.successText).text(message);
-    $(this.controls.successMsg).show();
+  this.showMessage('success', message, timeout);
+}
+
+commonPuzzle.prototype.showMessage = function(type, message, timeout){
+    this.message = $(
+      '<div name="' + type + 'Message" '+
+           'class="alert alert-' +  type + ' alert-dismissible fade show" ' + 
+           'role="alert" '+
+           'style="display: block; position: absolute; top: 0; left: 0; z-index: 100;" '+
+       '> '+
+       '  <span name="' + type + 'MessageText">' + message + '</span> '+
+       '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+       '    <span aria-hidden="true">&times;</span>'+
+       '  </button>'+
+       '</div>');
+    this.message.appendTo($(this.controls.card));
     if (timeout) {
-      setTimeout(() => $(this.controls.successMsg).hide(), timeout);
+      setTimeout(() => this.message.remove(), timeout);
     }
-    this.message = this.controls.successMsg;
 }
 
 commonPuzzle.prototype.removeMessages = function() {
   if (this.message) {
-    $(this.message).hide();
+    this.message.remove();
     this.message = null;
   }
 }
