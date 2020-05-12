@@ -29,21 +29,23 @@ commonPuzzle.prototype.initImages = function() {
 }
 
 commonPuzzle.prototype.start = function() {
+  var self = this;
   this.pencilMarkMode = false;
   this.removeMessages();
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/start")
-    .done(data => this.showClues(data))
-    .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
+    .done(data => self.showClues(data))
+    .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.check = function() {
+  var self = this;
   var data = this.collectData(true, false);
   this.removeMessages();
   // Read result from server and show.
   $.post("/puzzles/" + this.id + "/check", data)
-    .done(response => this.showResult(response))
-    .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
+    .done(response => self.showResult(response))
+    .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.collectData = function(needWhites, needClues) {
@@ -93,21 +95,23 @@ commonPuzzle.prototype.collectData = function(needWhites, needClues) {
 }
 
 commonPuzzle.prototype.edit = function() {
+  var self = this;
   this.removeMessages();
   // Read clues from server and show
   $.getJSON("/puzzles/" + this.id + "/get")
     .done(data => this.showForEdit(data))
-    .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
+    .fail((jqxhr, textStatus, error) => {slef.showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.save = function() {
+  var self = this;
   var data = this.collectData(false, true);
   data.tag = $(this.controls.tag).val();
   this.removeMessages();
   // Read result from server and show.
   $.post("/puzzles/" + (this.id ? this.id: "0") + "/edit", data)
     .done(response => this.showSaveResult(response))
-    .fail((jqxhr, textStatus, error) => {this.message = showError(jqxhr.responseText);});
+    .fail((jqxhr, textStatus, error) => {slef.showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.addStep = function(cell, data ) {
@@ -408,9 +412,9 @@ commonPuzzle.prototype.showSaveResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
     this.stopTimer();
-    this.message = showMessage(__["The puzzle has been saved!"]);
+    this.showSuccess(__["The puzzle has been saved!"]);
   } else {
-    this.message = showError(__["Error while saving. "] + result.status + ".");
+    this.showError(__["Error while saving. "] + result.status + ".");
     this.showErrorCells(result);
   }
 }
@@ -419,9 +423,9 @@ commonPuzzle.prototype.showResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
     this.stopTimer();
-    this.message = showMessage(__["Congratulations! The puzzle has been solved correctly!"]);
+    this.showSuccess(__["Congratulations! The puzzle has been solved correctly!"]);
   } else {
-    this.message = showError(__["Sorry, there is a mistake. "] + result.status + ". " + __["Try again."]);
+    this.showError(__["Sorry, there is a mistake. "] + result.status + ". " + __["Try again."]);
     this.showErrorCells(result);
   }
 }
@@ -433,13 +437,6 @@ commonPuzzle.prototype.showErrorCells = function(result) {
       var y = parseInt(coord.substring(1)) - 1;
       this.cells[y][x].markError();
     });
-  }
-}
-
-commonPuzzle.prototype.removeMessages = function() {
-  if (this.message) {
-    this.message.remove();
-    this.message = null;
   }
 }
 
@@ -469,6 +466,10 @@ commonPuzzle.prototype.initControls = function (controls) {
   this.controls.pencilMarkCb = controls + " [name=pencilMarkCb]";
   this.controls.timer = controls + " [name=timer]";
   this.controls.tag =  controls + " [name=tag]";
+  this.controls.successText =  controls + " [name=successMessageText]";
+  this.controls.successMsg =  controls + " [name=successMessage]";
+  this.controls.errorText =  controls + " [name=errorMessageText]";
+  this.controls.errorMsg =  controls + " [name=errorMessage]";
 
   $(this.controls.startBtn).click(() => self.start());
   $(this.controls.restartYes).click(() => {
@@ -507,6 +508,31 @@ commonPuzzle.prototype.convertEditControls = function () {
 
 commonPuzzle.prototype.togglePencilMarkMode = function() {
   this.pencilMarkMode = $(this.controls.pencilMarkCb).is(':checked');
+}
+
+commonPuzzle.prototype.showError = function(message, timeout){
+    $(this.controls.errorText).text(message);
+    $(this.controls.errorMsg).show();
+    if (timeout) {
+      setTimeout(() => $(this.controls.errorMsg).hide(), timeout);
+    }
+    this.message = this.controls.errorMsg;
+}
+
+commonPuzzle.prototype.showSuccess = function(message, timeout){
+    $(this.controls.successText).text(message);
+    $(this.controls.successMsg).show();
+    if (timeout) {
+      setTimeout(() => $(this.controls.successMsg).hide(), timeout);
+    }
+    this.message = this.controls.successMsg;
+}
+
+commonPuzzle.prototype.removeMessages = function() {
+  if (this.message) {
+    $(this.message).hide();
+    this.message = null;
+  }
 }
 
 var squarePuzzleCell = function(puzzle, col, row) {

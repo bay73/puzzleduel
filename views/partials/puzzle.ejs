@@ -1,11 +1,26 @@
 <% if(typeof puzzle != 'undefined'){ %> 
+<div class="card" id="<%= (typeof prefix != undefined)?prefix+'Controls':'puzzleControls' %>">
+<div name="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert"
+     style="display: none; position: absolute; top: 0; left: 0; z-index: 100;">
+  <span name="errorMessageText"></span>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden='true'>&times;</span>
+  </button>
+</div>
+<div name="successMessage" class="alert alert-success alert-dismissible fade show" role="alert"
+     style="display: none; position: absolute; top: 0; left: 0; z-index: 100;">
+  <span name="successMessageText"></span>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <h2 class="card-body pt-0 pb-0 mb-0"><%= puzzle.type.name %></h2>
 <p class="card-body text-right pb-0 pt-0 mb-0"><small><%= __('Author:') %> <%= puzzle.author %></small></p>
 <svg id="<%= (typeof prefix != undefined)?prefix+'Grid':'mainGrid' %>"
      class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
   <%= __('Sorry, but your browser is not supported. Try to setup the new version.') %>
 </svg>
-<div class="row card-body" id="<%= (typeof prefix != undefined)?prefix+'Controls':'puzzleControls' %>">
+<div class="row card-body">
   <div class="col-8">
     <div class="d-flex flex-row flex-wrap">
       <div class="modal" name="restartModal">
@@ -52,6 +67,7 @@
     <% } %>
     <%= __('More details about grid control are at the') %> <a href='/help'><%= __('help page') %></a>.
   </p>
+</div>
 </div>
 <script src="/js/locale_<%= getLocale() %>.js"></script>
 <script src="/js/common.js"></script>
