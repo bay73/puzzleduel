@@ -6,14 +6,12 @@
       <div class="card">
         <h1 class="card-header">Users action log</h1>
         <div class="card-body">
-          <table class="table table-hover table-condensed">
+          <table class="table table-hover table-condensed" id="mainList">
             <tbody>
-              <tr>
-                <th></th>
-              </tr>
               <% var prevIp = ""; %>
               <% logData.sort((item1, item2) => (""+item1.country).localeCompare(item2.country)*1000 + (""+item1.region).localeCompare(item2.region)*100 + (""+item1.ip).localeCompare(item2.ip)).forEach(function(logItem) { %>
               <tr>
+                <td class="align-baseline"><input type="checkbox" class="form-check-input" data="<%= logItem.userId %>"></td>
                 <td><%= logItem.country %>(<%= logItem.region %>)</td>
                 <td class="text-center <%= prevIp==logItem.ip?'table-warning':'' %>"><%= logItem.ip %></td>
                 <td><%= logItem.userId %></td>
@@ -24,6 +22,17 @@
               <% }) %>
             </tbody>
           </table>
+          <button type="submit" class="btn btn-primary" id="userActionsBtn">See actions</a>
+          <script>
+            $("#userActionsBtn").click(function () {
+              var userIds = [];
+              $('#mainList :checkbox:checked').each(function() {userIds.push($(this).attr('data'))});
+              if (userIds.length > 0) {
+                var url = "/admin/actionlog?users=" + userIds.join();
+                window.location = url;
+              }
+            });
+          </script>
         </div>
       </div>
     </div>
