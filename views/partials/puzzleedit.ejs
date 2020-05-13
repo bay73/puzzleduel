@@ -19,8 +19,6 @@
 </div>
 </div>
 <script src="/js/locale_<%= getLocale() %>.js"></script>
-<script src="/js/common.js"></script>
-<script src="/js/<%= puzzle.type.puzzleJs=="path_square_puzzle.js"?"paint_square_puzzle.js":puzzle.type.puzzleJs %>"></script>
 <script>
   function showPuzzle() {
     var puzzleData = {
@@ -28,9 +26,11 @@
       id: "<%= puzzle.code %>",
       dimension: "<%= puzzle.dimension %>"
     };
-    puzzle = new <%= puzzle.type.puzzleObj %>(puzzleData, "#editControls");
-    puzzle.render(Snap("#mainGrid"));
-    puzzle.edit();
+    requirejs(["/js/<%= puzzle.type.puzzleJs=="path_square_puzzle.js"?"paint_square_puzzle.js":puzzle.type.puzzleJs %>"], function() {
+      puzzle = new <%= puzzle.type.puzzleObj %>(puzzleData, "#editControls");
+      puzzle.render(Snap("#mainGrid"));
+      puzzle.edit();
+    });
   }
 </script>
 <% } %>

@@ -56,8 +56,6 @@
 </div>
 </div>
 <script src="/js/locale_<%= getLocale() %>.js"></script>
-<script src="/js/common.js"></script>
-<script src="/js/<%= puzzle.type.puzzleJs %>"></script>
 <script>
   function show<%= (typeof prefix != undefined)?prefix+'Puzzle':'Puzzle' %>() {
     var controls = "#<%= (typeof prefix != undefined)?prefix+'Controls':'puzzleControls' %>";
@@ -67,8 +65,11 @@
       dimension: "<%= puzzle.dimension %>"
     };
     var grid = "#<%= (typeof prefix != undefined)?prefix+'Grid':'mainGrid' %>"
-    <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %> = new <%= puzzle.type.puzzleObj %>(puzzleData, controls);
-    <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %>.render(Snap(grid));
+    requirejs(["/js/<%= puzzle.type.puzzleJs %>"], function() {
+      <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %> = new <%= puzzle.type.puzzleObj %>(puzzleData, controls);
+      <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %>.render(Snap(grid));
+    });
+
   }
 </script>
 <% } %>

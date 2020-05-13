@@ -1,4 +1,6 @@
-var innerCluePuzzle = function(puzzleData, controls) {
+define(["/js/common.js"], function() {
+
+innerCluePuzzle = function(puzzleData, controls) {
   commonPuzzle.call(this, puzzleData, controls);
 }
 
@@ -238,3 +240,4 @@ onMouseUp: function(puzzle, event) {
 }
 }
 
+})

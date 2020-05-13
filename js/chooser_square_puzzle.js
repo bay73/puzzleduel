@@ -1,16 +1,18 @@
-var innerCluePuzzle = function(puzzleData, controls) {
+define(["/js/common.js"], function() {
+
+innerCluePuzzle = function(puzzleData, controls) {
   commonPuzzle.call(this, puzzleData, controls);
 }
 
 Object.setPrototypeOf(innerCluePuzzle.prototype, commonPuzzle.prototype);
 
-var classicSudokuPuzzle = function(typeCode, id, dimension) {
+classicSudokuPuzzle = function(typeCode, id, dimension) {
   innerCluePuzzle.call(this, typeCode, id, dimension);
 }
 
 Object.setPrototypeOf(classicSudokuPuzzle.prototype, innerCluePuzzle.prototype);
 
-var outerCluePuzzle = function(puzzleData, controls) {
+outerCluePuzzle = function(puzzleData, controls) {
   commonPuzzle.call(this, puzzleData, controls);
 }
 
@@ -284,3 +286,4 @@ onMouseUp: function(puzzle, event) {
 }
 }
 
+})
