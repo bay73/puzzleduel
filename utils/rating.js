@@ -35,8 +35,8 @@ async function singlePuzzleRating(puzzleId) {
 
 async function computeRating(computeDate) {
   var d = new Date(Date.parse(computeDate));
-  if (d.getDay() != 0) {
-    d.setDate(d.getDate() - d.getDay());
+  if (d.getUTCDay() != 0) {
+    d.setDate(d.getDate() - d.getUTCDay());
   }
   d.setUTCHours(0,0,0,0);
   console.log("ComputeRating at",d);

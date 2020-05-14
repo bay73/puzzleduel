@@ -7,8 +7,8 @@ const computeRating = require('../utils/rating');
 router.get('/:ratingdate', async (req, res, next) => {
   try {
     var d = new Date(Date.parse(req.params.ratingdate));
-    if (d.getDay() != 0) {
-      d.setDate(d.getDate() - d.getDay());
+    if (d.getUTCDay() != 0) {
+      d.setDate(d.getDate() - d.getUTCDay());
       res.redirect('/rating/' + d.toISOString().split('T')[0]);
       return;
     }
@@ -50,8 +50,8 @@ router.get('/:ratingdate/recount', async (req, res, next) => {
       return;
     }
     var d = new Date(Date.parse(req.params.ratingdate));
-    if (d.getDay() != 0) {
-      d.setDate(d.getDate() - d.getDay());
+    if (d.getUTCDay() != 0) {
+      d.setDate(d.getDate() - d.getUTCDay());
     }
     await computeRating(d);
     res.redirect('/rating/' + d.toISOString().split('T')[0]);
