@@ -3,6 +3,7 @@ const router = express.Router();
 const UserActionLog = require('../models/UserActionLog');
 const User = require('../models/User');
 const Puzzle = require('../models/Puzzle');
+const Rating = require('../models/Rating');
 const util = require('../utils/puzzle_util');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
@@ -187,5 +188,55 @@ router.get('/daily/:puzzleid/top', ensureAuthenticated, async (req, res, next) =
     next(e)
   }
 });
+
+router.get('/instantrating', ensureAuthenticated, async (req, res, next) => {
+  try {
+    if (!req.user || req.user.role != "admin") {
+      res.sendStatus(404);
+      return;
+    }
+    var userData = {}
+    var users = await User.find();
+    users.forEach(user => userData[user._id] = {name: user.name});
+    var lastDate = new Date();
+    if (lastDate.getUTCDay() != 0) {
+      lastDate.setDate(lastDate.getDate() + 7 - lastDate.getUTCDay());
+    }
+    lastDate.setUTCHours(0,0,0,0);
+    var dates = [];
+    for (var i=5;i>=0;i--) {
+      var d = new Date(lastDate);
+      d.setDate(lastDate.getDate() - i*7);
+      dates.push(d);
+      const ratingList = await Rating.find({date: d});
+      ratingList.forEach(rating => userData[rating.userId][d] = rating.details.weekValue);
+    }
+    var allData = [];
+    for (let [userId, data] of Object.entries(userData)) {
+      var sum = 0;
+      var count = 0;
+      var item = {userId: userId, userName: data.name}
+      dates.forEach(d => {
+        if (data[d]) {
+         sum = sum + data[d];
+         item[d] = data[d]
+         count++;
+        }
+      });
+      if (count > 0 ) {
+        item.avg = sum / count;
+        allData.push(item);
+      }
+    }
+    res.render('instantrating', {
+      user: req.user,
+      dates: dates,
+      data: allData
+    });
+  } catch (e) {
+    next(e)
+  }
+});
+
 
 module.exports = router;

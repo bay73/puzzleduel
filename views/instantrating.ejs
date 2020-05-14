@@ -1,0 +1,37 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header">Instant rating</h1>
+        <div class="card-body">
+          <table class="table table-hover table-condensed table-striped table-responsive">
+            <tbody>
+              <tr>
+                <th></th>
+                <th>Avg</th>
+                <% dates.forEach(function(d) { %>
+                <th>
+                  <%= d.toISOString().split('T')[0] %>
+                </th>
+                <% }) %>
+              </tr>
+              <% data.sort((r1,r2) => r2.avg - r1.avg).forEach(function(item) { %>
+              <tr>
+                <td><%= item.userName %></td>
+                <td><%= Math.round(item.avg) %></td>
+                <% dates.forEach(function(d) { %>
+                <td><%= item[d]?Math.round(item[d]):"" %></td>
+                <% }) %>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

@@ -113,5 +113,6 @@
 	"didn't finish": "didn't finish",
 	"Wrong number of stars in the column": "Wrong number of stars in the column",
 	"Wrong number of stars in the row": "Wrong number of stars in the row",
-	"The arrow should point to one star": "The arrow should point to one star"
+	"The arrow should point to one star": "The arrow should point to one star",
+	"Instant rating": "Instant rating"
 }
