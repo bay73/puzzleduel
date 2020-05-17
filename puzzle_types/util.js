@@ -91,6 +91,11 @@ const Util = {
     return filled;
   },
 
+  fillConnected: function(cells, first, colors, result) {
+    // Mark cells which of given colors are orthogonally connected in result array.
+    ConnectedChecker.fill(cells, result, first, colors);
+  },
+
   findWrongValue: function(cells, goodValues) {
     // Returns one cell not having good value.
     // Returns null if all cells have good value.

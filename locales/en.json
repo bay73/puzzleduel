@@ -114,5 +114,8 @@
 	"Wrong number of stars in the column": "Wrong number of stars in the column",
 	"Wrong number of stars in the row": "Wrong number of stars in the row",
 	"The arrow should point to one star": "The arrow should point to one star",
-	"Instant rating": "Instant rating"
+	"Instant rating": "Instant rating",
+	"All white cells should be connected to the edge of the grid": "All white cells should be connected to the edge of the grid",
+	"Wrong first fragment in the row": "Wrong first fragment in the row",
+	"Wrong last fragment in the row": "Wrong last fragment in the row"
 }

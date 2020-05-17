@@ -68,6 +68,9 @@ outerCluePuzzle.prototype.outerCluePosition = function() {
   if(this.typeCode == "paint_by_max") {
     return this.FOUR_SIDES;
   }
+  if(this.typeCode == "easy_as_coral") {
+    return this.FOUR_SIDES;
+  }
   return this.BOTTOM_RIGHT;
 }
 
@@ -77,6 +80,10 @@ outerCluePuzzle.prototype.initImages = function() {
   this.togglers = [];
   if(this.typeCode == "clouds") {
     this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
+    this.togglers = ["white", "black", "cross"];
+  }
+  if(this.typeCode == "easy_as_coral") {
+    this.clues = ["1", "2", "3", "4", "5", "6", "7", "8"];
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "snake_simple") {

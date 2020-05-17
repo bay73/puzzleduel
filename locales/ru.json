@@ -115,5 +115,8 @@
 	"Wrong number of stars in the column": "Неверное число звезд в столце",
 	"Wrong number of stars in the row": "Неверное число звезд в ряду",
 	"The arrow should point to one star": "Стрелка должна указывать на одну звезду",
-	"Instant rating": "Instant rating"
+	"Instant rating": "Instant rating",
+	"All white cells should be connected to the edge of the grid": "Все белые клетки должны соединяться с краем сетки",
+	"Wrong first fragment in the row": "Неверная длина первого фрагмента в ряду",
+	"Wrong last fragment in the row": "Неверная длина последнего фрагмента в ряду"
 }
