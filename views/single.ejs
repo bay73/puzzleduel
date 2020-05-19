@@ -6,6 +6,7 @@
       <% if(puzzle){ %> 
         <% prefix = ''; %>
         <div class="card">
+          <% if(typeof puzzle.tag != 'undefined') { %>
           <% if(puzzle.tag.includes("daily")) { %>
           <div class="card-header">
             <h1><%= __('Daily puzzle') %> (<%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>)</h1>
@@ -28,6 +29,7 @@
           <div class="card-body">
             <%= __('This is an example puzzle. You can solve it the same way as you would solve competition puzzle, but result never stored. You can reveal an answer for the puzzle by cleicking "Show answer" link.') %>
           </div>
+          <% } %>
           <% } %>
           <%- include ('./partials/puzzle') %>
         </div>

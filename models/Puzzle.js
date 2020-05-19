@@ -74,7 +74,7 @@ PuzzleSchema.virtual('hiddenScore').get(function() {
 });
 
 PuzzleSchema.virtual('published').get(function() {
-  if (!this.tag) return true;
+  if (!this.tag) return false;
   if (this.tag.includes("daily")) {
     var d = new Date();
     d.setDate(d.getDate()+2);

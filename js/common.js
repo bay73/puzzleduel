@@ -111,7 +111,7 @@ commonPuzzle.prototype.save = function() {
   // Read result from server and show.
   $.post("/puzzles/" + (this.id ? this.id: "0") + "/edit", data)
     .done(response => this.showSaveResult(response))
-    .fail((jqxhr, textStatus, error) => {slef.showError(jqxhr.responseText);});
+    .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.addStep = function(cell, data ) {

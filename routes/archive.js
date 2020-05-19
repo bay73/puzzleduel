@@ -41,7 +41,6 @@ router.get('/', async (req, res, next) => {
 // List of daily puzzles
 router.get('/examples', async (req, res, next) => {
   try {
-    console.log('/examples');
     var typeMap = await util.typeNameMap();
 
     const puzzles = await Puzzle.find({tag: "example" }, "code type dimension tag daily");
