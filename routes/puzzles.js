@@ -113,7 +113,7 @@ router.get('/:puzzleid', async (req, res, next) => {
 // Read puzzle data
 router.get('/:puzzleid/start', async (req, res, next) => {
   try {
-    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, 'data daily author');
+    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, 'data tag daily author');
     if (!puzzle) {
       res.sendStatus(404);
       return;
@@ -159,7 +159,7 @@ router.get('/:puzzleid/get', async (req, res, next) => {
       res.sendStatus(403);
       return;
     }
-    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, 'data daily author');
+    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, 'data daily tag author');
     if (!puzzle) {
       res.sendStatus(404);
       return;

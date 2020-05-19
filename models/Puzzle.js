@@ -40,27 +40,47 @@ const PuzzleSchema = new mongoose.Schema({
 });
 
 PuzzleSchema.virtual('needLogging').get(function() {
-  var d = new Date();
-  d.setDate(d.getDate()-5);
-  return !this.daily || this.daily > d
+  if (!this.tag) return true;
+  if (this.tag.includes("daily")) {
+    var d = new Date();
+    d.setDate(d.getDate()-5);
+    return !this.daily || this.daily > d
+  } else if (this.tag.includes("example")) {
+    return false;
+  }
+  return true;
 });
 
 PuzzleSchema.virtual('hidden').get(function() {
-  var d = new Date();
-  if (this.daily < d) return false;
+  if (!this.tag) return true;
+  if (this.tag.includes("daily")) {
+    var d = new Date();
+    if (this.daily < d) return false;
+  } else if (this.tag.includes("example")) {
+    return false;
+  }
   return true;
 });
 
 PuzzleSchema.virtual('hiddenScore').get(function() {
-  var d = new Date();
-  if (this.daily < d) return false;
+  if (!this.tag) return true;
+  if (this.tag.includes("daily")) {
+    var d = new Date();
+    if (this.daily < d) return false;
+  } else if (this.tag.includes("example")) {
+    return false;
+  }
   return true;
 });
 
 PuzzleSchema.virtual('published').get(function() {
-  var d = new Date();
-  d.setDate(d.getDate()+2);
-  return this.daily && this.daily < d
+  if (!this.tag) return true;
+  if (this.tag.includes("daily")) {
+    var d = new Date();
+    d.setDate(d.getDate()+2);
+    return this.daily && this.daily < d
+  }
+  return false;
 });
 
 const Puzzle = mongoose.model('Puzzle', PuzzleSchema);

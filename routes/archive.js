@@ -19,7 +19,7 @@ router.get('/', async (req, res, next) => {
     if (req.user && req.user.role == "test") {
       filter = {};
     }
-    const puzzles = await Puzzle.find(filter, "code type dimension daily").sort({daily: -1});
+    const puzzles = await Puzzle.find(filter, "code type dimension tag daily").sort({daily: -1});
     res.render('archive', {
       user: req.user,
       puzzles: puzzles.map(puzzle => {

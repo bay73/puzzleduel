@@ -168,7 +168,7 @@ router.get('/daily/:puzzleid/top', ensureAuthenticated, async (req, res, next) =
       nextDate = new Date(date);
     }
     var lastDate = null;
-    var nextPuzzles = await Puzzle.find({daily: {$gt: date} }, "daily").sort({daily: 1});
+    var nextPuzzles = await Puzzle.find({daily: {$gt: date} }, "tag daily").sort({daily: 1});
     for (var i=0;i < nextPuzzles.length; i++) {
       var nextPuzzle = nextPuzzles[i];
       if (nextDate) {
