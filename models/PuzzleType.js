@@ -27,6 +27,16 @@ const PuzzleTypeSchema = new mongoose.Schema({
   translations: {
     type: Mixed,
     required: false
+  },
+  example: {
+    puzzleId: {
+      type: String,
+      required: false
+    },
+    answerImg: {
+      type: String,
+      required: false
+    }
   }
 });
 

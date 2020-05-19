@@ -118,5 +118,10 @@
 	"Instant rating": "Instant rating",
 	"All white cells should be connected to the edge of the grid": "Все белые клетки должны соединяться с краем сетки",
 	"Wrong first fragment in the row": "Неверная длина первого фрагмента в ряду",
-	"Wrong last fragment in the row": "Неверная длина последнего фрагмента в ряду"
+	"Wrong last fragment in the row": "Неверная длина последнего фрагмента в ряду",
+	"Example puzzles": "Примеры",
+	"Example puzzle": "Пример",
+	"Show answer": "Показать ответ",
+	"Daily puzzle": "Задача дня",
+	"This is an example puzzle. You can solve it the same way as you would solve competition puzzle, but result never stored. You can reveal an answer for the puzzle by cleicking \"Show answer\" link.": "Это пример задачи. Её можно решать точно также как и соревновательную задачу, но результат нигде не сохраняется. Чтобы увидеть правильный ответ воспользуйтесь ссылкой \"Показать ответ\"."
 }

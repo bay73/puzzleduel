@@ -6,6 +6,29 @@
       <% if(puzzle){ %> 
         <% prefix = ''; %>
         <div class="card">
+          <% if(puzzle.tag.includes("daily")) { %>
+          <div class="card-header">
+            <h1><%= __('Daily puzzle') %> (<%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>)</h1>
+          </div>
+          <% } else if (puzzle.tag.includes("example")) { %>
+          <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+            <h1><%= __('Example puzzle') %></h1>
+            <div class="p-2 align-bottom text-right" style="position: relative;">
+              <a data-toggle="collapse" href="#answer" aria-expanded="false" aria-controls="Collapse">
+                <span><%= __('Show answer') %></span>
+              </a>
+              <div class="collapse bg-secondary text-white"
+                   style="position: absolute; top: 45px; left: -60px; z-index: 100;" id="answer">
+                <div class="card card-body">
+                  <img src="<%= puzzle.answerImg %>" width="200" height="200">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <%= __('This is an example puzzle. You can solve it the same way as you would solve competition puzzle, but result never stored. You can reveal an answer for the puzzle by cleicking "Show answer" link.') %>
+          </div>
+          <% } %>
           <%- include ('./partials/puzzle') %>
         </div>
         <script>

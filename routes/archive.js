@@ -10,7 +10,7 @@ const util = require('../utils/puzzle_util');
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
 // List of daily puzzles
-router.get('/', async (req, res, next) => { 
+router.get('/', async (req, res, next) => {
   try {
     var timesMap = await util.bestSolvingTimeMap(false);
     var typeMap = await util.typeNameMap();
@@ -34,7 +34,29 @@ router.get('/', async (req, res, next) => {
       })
     });
   } catch (e) {
-    next(e) 
+    next(e)
+  }
+});
+
+// List of daily puzzles
+router.get('/examples', async (req, res, next) => {
+  try {
+    console.log('/examples');
+    var typeMap = await util.typeNameMap();
+
+    const puzzles = await Puzzle.find({tag: "example" }, "code type dimension tag daily");
+    res.render('examples', {
+      user: req.user,
+      puzzles: puzzles.map(puzzle => {
+        return {
+          code: puzzle.code,
+          type: typeMap[puzzle.type],
+          dimension: puzzle.dimension,
+        };
+      })
+    });
+  } catch (e) {
+    next(e)
   }
 });
 
@@ -84,7 +106,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
       notFinished: notFinished.map(log => userMap[log])
     });
   } catch (e) {
-    next(e) 
+    next(e)
   }
 });
 

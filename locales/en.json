@@ -117,5 +117,10 @@
 	"Instant rating": "Instant rating",
 	"All white cells should be connected to the edge of the grid": "All white cells should be connected to the edge of the grid",
 	"Wrong first fragment in the row": "Wrong first fragment in the row",
-	"Wrong last fragment in the row": "Wrong last fragment in the row"
+	"Wrong last fragment in the row": "Wrong last fragment in the row",
+	"Example puzzles": "Example puzzles",
+	"Example puzzle": "Example puzzle",
+	"Show answer": "Show answer",
+	"Daily puzzle": "Daily puzzle",
+	"This is an example puzzle. You can solve it the same way as you would solve competition puzzle, but result never stored. You can reveal an answer for the puzzle by cleicking \"Show answer\" link.": "This is an example puzzle. You can solve it the same way as you would solve competition puzzle, but result never stored. You can reveal an answer for the puzzle by cleicking \"Show answer\" link."
 }
