@@ -43,6 +43,9 @@
     </div>
   </div>
   <p class="card-text text-left mt-2"><%= puzzle.type.rules %></p>
+  <% if (typeof puzzle.type.example != 'undefined' && puzzle.type.example.puzzleId) { %>
+  <p class="card-text text-left mt-2"><a href="/single/<%= puzzle.type.example.puzzleId %>"><b><%= __('Example puzzle') %></b></a></p>
+  <% } %>
   <p class="card-text text-left mt-1"><b><%= __('Grid control') %></b>:
     <% if(puzzle.type.puzzleJs=="chooser_square_puzzle.js") { %>
       <%= __('Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.') %>
