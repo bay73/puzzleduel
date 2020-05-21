@@ -122,6 +122,8 @@
 	"Example puzzle": "Example puzzle",
 	"Show answer": "Show answer",
 	"Daily puzzle": "Daily puzzle",
-	"This is an example puzzle. You can solve it the same way as you would solve competition puzzle, but result never stored. You can reveal an answer for the puzzle by clicking \"Show answer\" link.": "This is an example puzzle. You can solve it the same way as you would solve competition puzzle, but result never stored. You can reveal an answer for the puzzle by clicking \"Show answer\" link.",
-	"Puzzle is already published, changes are not allowed!": "Puzzle is already published, changes are not allowed!"
+	"Sinlge example text": "This is an example puzzle. You can solve it the same way as you would solve competition puzzle, but result never stored. You can reveal an answer for the puzzle by clicking \"Show answer\" link.",
+	"Puzzle is already published, changes are not allowed!": "Puzzle is already published, changes are not allowed!",
+	"About": "About",
+	"List examples text": "Example puzzles allow to understand better puzzle rules. You can solve it as competitive puzzles, but result never stored. Each example has an answer which you can see."
 }
