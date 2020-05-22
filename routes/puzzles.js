@@ -12,6 +12,7 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 const type_cheker = {};
 
 type_cheker["tapa_classic"] = require('../puzzle_types/tapa_classic')
+type_cheker["cave_classic"] = require('../puzzle_types/cave_classic')
 type_cheker["yin_yang_classic"] = require('../puzzle_types/yin_yang_classic')
 type_cheker["minesweeper_classic"] = require('../puzzle_types/minesweeper_classic')
 type_cheker["queens"] = require('../puzzle_types/queens')

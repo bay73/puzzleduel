@@ -20,6 +20,10 @@ innerCluePuzzle.prototype.initImages = function() {
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "1_1", "1_2", "1_3", "1_4", "1_5", "2_2", "2_3", "2_4", "3_3", "1_1_1", "1_1_2", "1_1_3", "1_2_2", "1_1_1_1"];
     this.togglers = ["white", "black", "cross"];
   }
+  if(this.typeCode == "cave_classic") {
+    this.clues = ["2", "3", "4", "5", "6", "7", "8", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",];
+    this.togglers = ["white", "black", "cross"];
+  }
   if(this.typeCode == "yin_yang_classic") {
     this.clues = ["black_circle", "white_circle"];
     this.togglers = ["white", "black_circle", "white_circle"];
