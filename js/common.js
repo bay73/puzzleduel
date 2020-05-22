@@ -100,7 +100,7 @@ commonPuzzle.prototype.edit = function() {
   // Read clues from server and show
   $.getJSON("/puzzles/" + this.id + "/get")
     .done(data => this.showForEdit(data))
-    .fail((jqxhr, textStatus, error) => {slef.showError(jqxhr.responseText);});
+    .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
 }
 
 commonPuzzle.prototype.save = function() {
