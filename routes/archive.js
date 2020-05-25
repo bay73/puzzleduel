@@ -41,7 +41,7 @@ router.get('/', async (req, res, next) => {
 // List of daily puzzles
 router.get('/examples', async (req, res, next) => {
   try {
-    var typeMap = await util.typeNameMap();
+    var typeMap = await util.typeDataMap();
 
     const puzzles = await Puzzle.find({tag: "example" }, "code type dimension tag daily");
     res.render('examples', {
@@ -49,7 +49,8 @@ router.get('/examples', async (req, res, next) => {
       puzzles: puzzles.map(puzzle => {
         return {
           code: puzzle.code,
-          type: typeMap[puzzle.type],
+          category: typeMap[puzzle.type].category,
+          type: typeMap[puzzle.type].name,
           dimension: puzzle.dimension,
         };
       })

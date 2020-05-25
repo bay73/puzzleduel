@@ -9,20 +9,44 @@
           <p>
             <%= __('List examples text') %>
           </p>
-          <table class="table table-hover table-condensed">
-            <tbody>
-              <% puzzles.forEach(function(puzzle) { %>
-              <tr>
-                <td>
-                  <a href="/single/<%= puzzle.code %>">
-                    <%= puzzle.type %>
-                    <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
-                  </a>
-                </td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
+          <div class="accordion" id="mainAccordion">
+            <% var prevCategory = null; %>
+            <% puzzles.sort((p1,p2) => (""+p1.category).localeCompare(p2.category)).forEach(function(puzzle) { %>
+            <% if (puzzle.category != prevCategory) { %>
+            <% if (prevCategory!=null) { %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <% } %>
+            <div class="card">
+              <div class="card-header" id="<%= puzzle.category.substr(3) %>Heading">
+                <button class="btn btn-link" type="button"
+                  data-toggle="collapse" data-target="#<%= puzzle.category.substr(3) %>Collapse"
+                  aria-expanded="true" aria-controls="<%= puzzle.category.substr(3) %>Collapse"
+                >
+                  <h2><%= __(puzzle.category.substr(3)) %></h2>
+                </button>
+              </div>
+              <div id="<%= puzzle.category.substr(3) %>Collapse" class="collapse <%= prevCategory==null?"show":"" %>" aria-labelledby="<%= puzzle.category.substr(3) %>Heading" data-parent="#mainAccordion">
+                <table class="card-body table table-hover table-condensed ml-5">
+                  <tbody>
+            <% } %>
+            <% prevCategory = puzzle.category; %>
+                    <tr>
+                      <td>
+                        <a href="/single/<%= puzzle.code %>">
+                          <%= puzzle.type %>
+                          <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+                        </a>
+                      </td>
+                    </tr>
+            <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

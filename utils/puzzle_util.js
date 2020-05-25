@@ -44,3 +44,10 @@ module.exports.typeNameMap = async function() {
   return typeMap;
 }
 
+module.exports.typeDataMap = async function() {
+  const types = await PuzzleType.find({});
+  var typeMap = {};
+  types.forEach(type => typeMap[type.code] = type.toObject());
+  return typeMap;
+}
+

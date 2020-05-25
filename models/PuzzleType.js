@@ -33,11 +33,11 @@ const PuzzleTypeSchema = new mongoose.Schema({
       type: String,
       required: false
     },
-    answerImg: {
-      type: String,
-      required: false
-    }
-  }
+  },
+  category: {
+    type: String,
+    required: true
+  },
 });
 
 const PuzzleType = mongoose.model('PuzzleType', PuzzleTypeSchema);

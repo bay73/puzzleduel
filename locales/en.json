@@ -127,5 +127,11 @@
 	"About": "About",
 	"List examples text": "Example puzzles allow to understand better puzzle rules. You can solve it as competitive puzzles, but result never stored. Each example has an answer which you can see.",
 	"All black cells should be connected to the edge of the grid": "All black cells should be connected to the edge of the grid",
-	"White area should be connected": "White area should be connected"
+	"White area should be connected": "White area should be connected",
+	"object_placement": "Object Placement Puzzles",
+	"painting": "Painting Puzzles",
+	"lines": "Line Drawing Puzzles",
+	"latin_square": "Other Latin Squares",
+	"sudoku": "Sudokus",
+	"other": "Other Puzzles"
 }
