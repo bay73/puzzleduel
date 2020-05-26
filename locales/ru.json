@@ -134,5 +134,7 @@
 	"lines": "Задачи с проведением линий",
 	"latin_square": "Другие латинские квадраты",
 	"sudoku": "Судоку",
-	"other": "Другие задачи"
+	"other": "Другие задачи",
+	"Wrong length of blackened fragment in the column": "Неверная длина закрашенного фрагмента в столбце",
+	"Wrong length of blackened fragment in the row": "Неверная длина закрашенного фрагмента в ряду"
 }
