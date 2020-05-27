@@ -14,7 +14,7 @@ module.exports.timeToString = function(millis) {
 }
 
 module.exports.bestSolvingTimeMap = async function(includeHidden) {
-  var filter = {errCount : 0};
+  var filter = {};
   if (!includeHidden) {
     filter = {
       errCount : 0,
