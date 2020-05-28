@@ -142,11 +142,14 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     res.render('author', {
       user: req.user,
       future: req.query.future,
-      types: Object.entries(typeMap).sort(([key1, value1],[key2, value2]) => key1.localeCompare(key2)).map(([key, value]) => {
-        return {
-          code: key,
-          name: value
-        };
+      types: Object.entries(typeMap)
+        .filter(([key, value]) => key!="starbattle" && key!="sudoku_square_number" && key!="paint_battenberg" && key!="ripple_effect")
+        .sort(([key1, value1],[key2, value2]) => key1.localeCompare(key2))
+        .map(([key, value]) => {
+          return {
+            code: key,
+            name: value
+          };
       }),
       puzzles: puzzles.map(puzzle => {
         return {
