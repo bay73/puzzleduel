@@ -63,12 +63,13 @@ outerCluePuzzle.prototype.initImages = function() {
   this.togglers = [];
   if(this.typeCode == "doubleblock") {
     this.togglers = ["white"];
-    for (var i=1;i<=parseInt(this.rows) - 2;i++) {
+    var numCount = parseInt(this.rows) - 2;
+    for (var i=1;i<=numCount;i++) {
       this.togglers.push(i.toString());
     }
     this.togglers.push("cross");
     this.togglers.push("white_circle");
-    for (var i=0;i<=15;i++) {
+    for (var i=0;i<=numCount*(numCount+1)/2;i++) {
       this.clues.push(i.toString());
     }
   }
