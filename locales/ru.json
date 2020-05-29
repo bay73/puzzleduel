@@ -136,5 +136,7 @@
 	"sudoku": "Судоку",
 	"other": "Другие задачи",
 	"Wrong length of blackened fragment in the column": "Неверная длина закрашенного фрагмента в столбце",
-	"Wrong length of blackened fragment in the row": "Неверная длина закрашенного фрагмента в ряду"
+	"Wrong length of blackened fragment in the row": "Неверная длина закрашенного фрагмента в ряду",
+	"There should be single loop passing through all white cells": "Один цикл должен проходить через все белые клетки",
+	"Loop can't pass through the black cell": "Цикл не должен проходить через черные клетки"
 }

@@ -52,6 +52,10 @@ innerCluePuzzle.prototype.initImages = function() {
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
     this.togglers = ["white"];
   }
+  if(this.typeCode == "simple_loop") {
+    this.clues = ["black"];
+    this.togglers = ["white"];
+  }
   if(this.typeCode == "chat_room") {
     this.clues = ["phone", "white_circle", "white_1", "white_2", "white_3", "white_4", "white_5", "black_circle", "black_1", "black_2", "black_3", "black_4", "black_5"];
     this.togglers = ["white"];
