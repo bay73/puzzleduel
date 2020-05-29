@@ -43,6 +43,7 @@ type_cheker["every_second_turn"] = require('../puzzle_types/every_second_turn')
 type_cheker["simple_loop"] = require('../puzzle_types/simple_loop')
 type_cheker["loop_minesweeper"] = require('../puzzle_types/loop_minesweeper')
 type_cheker["chat_room"] = require('../puzzle_types/chat_room')
+type_cheker["masyu"] = require('../puzzle_types/masyu')
 
 function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({

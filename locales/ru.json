@@ -138,5 +138,10 @@
 	"Wrong length of blackened fragment in the column": "Неверная длина закрашенного фрагмента в столбце",
 	"Wrong length of blackened fragment in the row": "Неверная длина закрашенного фрагмента в ряду",
 	"There should be single loop passing through all white cells": "Один цикл должен проходить через все белые клетки",
-	"Loop can't pass through the black cell": "Цикл не должен проходить через черные клетки"
+	"Loop can't pass through the black cell": "Цикл не должен проходить через черные клетки",
+	"Loop shouldn't turn next to the black circle": "Цикл не должен поворачивать рядом с черным кружком",
+	"Loop should turn next to the white circle": "Цикл должен поворачивать рядом с белым кружком",
+	"Loop shouldn't turn at the white circle": "Цикл не должен поворачивать в клетке с белым кружком",
+	"Loop should turn at the black circle": "Цикл должен поворачивать в клетке с черным кружком",
+	"Loop should pass through all cells with circles": "Цикл должен проходить через все клетки с кружками"
 }

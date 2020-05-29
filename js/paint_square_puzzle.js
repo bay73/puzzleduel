@@ -52,6 +52,10 @@ innerCluePuzzle.prototype.initImages = function() {
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
     this.togglers = ["white"];
   }
+  if(this.typeCode == "masyu") {
+    this.clues = ["white_circle", "black_circle"];
+    this.togglers = ["white"];
+  }
   if(this.typeCode == "simple_loop") {
     this.clues = ["black"];
     this.togglers = ["white"];

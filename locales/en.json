@@ -137,5 +137,10 @@
 	"Wrong length of blackened fragment in the column": "Wrong length of blackened fragment in the column",
 	"Wrong length of blackened fragment in the row": "Wrong length of blackened fragment in the row",
 	"There should be single loop passing through all white cells": "There should be single loop passing through all white cells",
-	"Loop can't pass through the black cell": "Loop can't pass through the black cell"
+	"Loop can't pass through the black cell": "Loop can't pass through the black cell",
+	"Loop shouldn't turn next to the black circle": "Loop shouldn't turn next to the black circle",
+	"Loop should turn next to the white circle": "Loop should turn next to the white circle",
+	"Loop shouldn't turn at the white circle": "Loop shouldn't turn at the white circle",
+	"Loop should turn at the black circle": "Loop should turn at the black circle",
+	"Loop should pass through all cells with circles": "Loop should pass through all cells with circles"
 }

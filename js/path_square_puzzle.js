@@ -16,6 +16,9 @@ innerCluePuzzle.prototype.initImages = function() {
   if(this.typeCode == "loop_minesweeper") {
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
   }
+  if(this.typeCode == "masyu") {
+    this.clues = ["white_circle", "black_circle"];
+  }
   if(this.typeCode == "simple_loop") {
     this.clues = ["black"];
   }
