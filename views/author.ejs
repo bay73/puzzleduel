@@ -54,7 +54,7 @@
           });
           $("#createPuzzle").click(function () {
             var type = $("#type").children("option:selected").val();
-            var dimension = $("#rows").val() + "x" + $("#cols").val();
+            var dimension = $("#cols").val() + "x" + $("#rows").val();
             if ($("#letters").val()) {
               dimension = dimension + "-" + $("#letters").val();
             }
