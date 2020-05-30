@@ -85,12 +85,19 @@ outerCluePuzzle.prototype.initImages = function() {
     this.togglers.push("cross");
     this.togglers.push("white_circle");
   }
+  if (this.typeCode == "skyscrapers") {
+    this.togglers = ["white"];
+    for (var i=1;i<=parseInt(this.rows);i++) {
+      this.clues.push(i.toString());
+      this.togglers.push(i.toString());
+    }
+  }
   this.preloadImages(this.clues);
   this.preloadImages(this.togglers);
 }
 
 outerCluePuzzle.prototype.outerCluePosition = function() {
-  if (this.typeCode == "easy_as_abc") {
+  if (this.typeCode == "easy_as_abc" || this.typeCode == "skyscrapers") {
     return this.FOUR_SIDES;
   } else {
     return this.BOTTOM_RIGHT;
