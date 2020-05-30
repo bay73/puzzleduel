@@ -38,7 +38,7 @@
                 <input type="number" min="2" max="15" value="9" class="form-control" id="cols">
               </div>
               <div class="form-group pr-4 pb-2">
-                <label class="col-form-label pr-1" for="cols">Letters</label>
+                <label class="col-form-label pr-1" for="cols">Values</label>
                 <input class="form-control" width="5" id="letters">
               </div>
               <div class="form-group pr-4 pb-2">
@@ -48,9 +48,12 @@
           </div>
         </div>
         <script>
-          $("#letters").parent().toggle($("#type").children("option:selected").val()=="easy_as_abc");
+          function showLetters(type) {
+            return type == "easy_as_abc" || type=="magic_snail";
+          }
+          $("#letters").parent().toggle(showLetters($("#type").children("option:selected").val()));
           $("#type").change(function() {
-            $("#letters").parent().toggle($("#type").children("option:selected").val()=="easy_as_abc");
+            $("#letters").parent().toggle(showLetters($("#type").children("option:selected").val()));
           });
           $("#createPuzzle").click(function () {
             var type = $("#type").children("option:selected").val();

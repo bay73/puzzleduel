@@ -18,6 +18,12 @@ outerCluePuzzle = function(puzzleData, controls) {
 
 Object.setPrototypeOf(outerCluePuzzle.prototype, commonPuzzle.prototype);
 
+snailPuzzle = function(puzzleData, controls) {
+  outerCluePuzzle.call(this, puzzleData, controls);
+}
+
+Object.setPrototypeOf(snailPuzzle.prototype, outerCluePuzzle.prototype);
+
 innerCluePuzzle.prototype.initImages = function() {
   // Images used for the given puzzle type.
   this.clues = [];
@@ -47,7 +53,7 @@ innerCluePuzzle.prototype.outerCluePosition = function() {
 }
 
 outerCluePuzzle.prototype.parseDimension = function(dimension) {
-  if (this.typeCode == "easy_as_abc") {
+  if (this.typeCode == "easy_as_abc" || this.typeCode == "magic_snail") {
     // Parse dimension string to values.
     var part = dimension.split("-");
     commonPuzzle.prototype.parseDimension.call(this, part[0]);
@@ -73,7 +79,7 @@ outerCluePuzzle.prototype.initImages = function() {
       this.clues.push(i.toString());
     }
   }
-  if (this.typeCode == "easy_as_abc") {
+  if (this.typeCode == "easy_as_abc" || this.typeCode == "magic_snail") {
     this.togglers = ["white"];
     if (this.letters) {
       for (var i=0;i<this.letters.length;i++) {
@@ -97,7 +103,7 @@ outerCluePuzzle.prototype.initImages = function() {
 }
 
 outerCluePuzzle.prototype.outerCluePosition = function() {
-  if (this.typeCode == "easy_as_abc" || this.typeCode == "skyscrapers") {
+  if (this.typeCode == "easy_as_abc" || this.typeCode == "skyscrapers" || this.typeCode == "magic_snail") {
     return this.FOUR_SIDES;
   } else {
     return this.BOTTOM_RIGHT;
@@ -188,6 +194,27 @@ classicSudokuPuzzle.prototype.render = function(snap) {
       strokeWidth: this.gridProperty.strokeWidth,
       "stroke-dasharray": this.gridProperty.boldWidth +"," + this.gridProperty.boldWidth*1.5
     });
+  }
+}
+
+snailPuzzle.prototype.render = function(snap) {
+  outerCluePuzzle.prototype.render.call(this, snap);
+  var lineLength = this.rows - 1;
+  var start = {x:0, y: 1};
+  var direction = {x:1, y:0};
+  while (lineLength > 0) {
+    var end = {x: start.x + direction.x * lineLength, y: start.y + direction.y * lineLength};
+    var line = this.snap.line(
+      this.leftGap + this.cellSize * start.x, this.topGap + this.cellSize * start.y,
+      this.leftGap + this.cellSize * end.x, this.topGap + this.cellSize * end.y);
+      line.attr({
+        fill: "none",
+        stroke: this.gridProperty.stroke,
+        strokeWidth: this.gridProperty.boldWidth
+      });
+    start = end;
+    direction = {x: -direction.y, y: direction.x};
+    if (direction.x==0) lineLength--;
   }
 }
 

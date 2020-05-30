@@ -142,5 +142,6 @@
 	"Loop should turn next to the white circle": "Loop should turn next to the white circle",
 	"Loop shouldn't turn at the white circle": "Loop shouldn't turn at the white circle",
 	"Loop should turn at the black circle": "Loop should turn at the black circle",
-	"Loop should pass through all cells with circles": "Loop should pass through all cells with circles"
+	"Loop should pass through all cells with circles": "Loop should pass through all cells with circles",
+	"Wrong digit reading along spiral": "Wrong digit reading along spiral"
 }
