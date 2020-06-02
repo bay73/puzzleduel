@@ -37,7 +37,7 @@ innerCluePuzzle.prototype.initImages = function() {
     this.togglers.push("cross");
     this.togglers.push("white_circle");
   }
-  if(this.typeCode == "ripple_effect") {
+  if(this.typeCode == "ripple_effect" || this.typeCode == "suguru") {
     this.togglers = ["white"];
     for (var i=1;i<=6;i++) {
       this.clues.push(i.toString());
