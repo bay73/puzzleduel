@@ -67,11 +67,17 @@ checkNoTouch: function(cells) {
 findTouch: function(cells) {
   for (var y = 0; y < cells.rows; y++) {
     for (var x = 0; x < cells.cols; x++) {
+      if (y<cells.rows-1&&cells[y][x]==cells[y+1][x]){
+        return [util.coord(x,y), util.coord(x,y+1)];
+      }
       if (x>0 && y<cells.rows-1&&cells[y][x]==cells[y+1][x-1]){
         return [util.coord(x,y), util.coord(x-1,y+1)];
       }
       if (x<cells.cols-1 && y<cells.rows-1&&cells[y][x]==cells[y+1][x+1]){
         return [util.coord(x,y), util.coord(x+1,y+1)];
+      }
+      if (x<cells.cols-1 && cells[y][x]==cells[y][x+1]){
+        return [util.coord(x,y), util.coord(x+1,y)];
       }
     }
   }
