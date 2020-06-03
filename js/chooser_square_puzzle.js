@@ -88,6 +88,7 @@ outerCluePuzzle.prototype.initImages = function() {
         this.clues.push(letter);
       }
     }
+    this.clues.push("cross");
     this.togglers.push("cross");
     this.togglers.push("white_circle");
   }
