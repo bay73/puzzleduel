@@ -34,6 +34,7 @@ innerCluePuzzle.prototype.initImages = function() {
       this.clues.push(i.toString());
       this.togglers.push(i.toString());
     }
+    this.clues.push("cross");
     this.togglers.push("cross");
     this.togglers.push("white_circle");
   }
