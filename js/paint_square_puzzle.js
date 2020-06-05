@@ -117,7 +117,7 @@ outerCluePuzzle.prototype.initImages = function() {
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "point_a_star") {
-    this.clues = ["0", "1", "2", "3", "4", "5", "arrow_u", "arrow_ur", "arrow_r", "arrow_dr", "arrow_d", "arrow_dl", "arrow_l", "arrow_ul"];
+    this.clues = ["0", "1", "2", "3", "4", "5", "6", "arrow_u", "arrow_ur", "arrow_r", "arrow_dr", "arrow_d", "arrow_dl", "arrow_l", "arrow_ul"];
     this.togglers = ["white", "star", "cross"];
   }
   this.preloadImages(this.clues);
