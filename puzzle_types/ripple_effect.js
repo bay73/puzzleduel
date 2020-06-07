@@ -25,11 +25,11 @@ check:function(dimension, clues, data){
       }
     }
   }
-  var res = Checker.checkAreas(areas, cells);
+  var res = Checker.checkDistances(cells);
   if (res.status != "OK") {
     return res;
   }
-  var res = Checker.checkDistances(cells);
+  var res = Checker.checkAreas(areas, cells);
   if (res.status != "OK") {
     return res;
   }
