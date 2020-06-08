@@ -6,8 +6,10 @@
         <% if (user) { %>
         <div class="card card-body">
           <p>Below you can find two puzzles: <br>
-             One is a regular daily puzzle. Solving time for the puzzle affects daily score list and the user rating. <br>
-             The second puzzle is a contest puzzle. The contest rules, results and additional information can
+             One is a regular daily puzzle. Solving time for the puzzle affects <a href="/archive/scores">daily score list</a>
+             and the <a href="/rating">user rating</a>. <br>
+             The second puzzle is a contest puzzle. It doesn't affect rating but used for separate contest scoring.
+             The contest rules, results and additional information can
              be found at <a href="<%= contestPuzzle.contest.link %>">contest page</a>.</p>
         </div>
         <% } else { %>
