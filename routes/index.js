@@ -4,6 +4,8 @@ const router = express.Router();
 const Puzzle = require('../models/Puzzle');
 // PuzzleType model
 const PuzzleType = require('../models/PuzzleType');
+// Puzzle model
+const Contest = require('../models/Contest');
 // User model
 const User = require('../models/User');
 
@@ -34,10 +36,28 @@ router.get('/', async (req, res, next) => {
     if (dailyPuzzle) {
       var dailyPuzzleObj = await puzzleToObj(dailyPuzzle, req.getLocale());
     }
+    var contest = await Contest.findOne({type: "daily_shadow", start: {$lt: datetime}, finish: {$gt: datetime} }, "code puzzles");
+    if (contest) {
+      var contestPuzzleId = null;
+      contest.puzzles.forEach(puzzle => {
+        if (puzzle.revealDate.toISOString().slice(0,10) == datetime.toISOString().slice(0,10)) {
+          contestPuzzleId = puzzle.puzzleId;
+        }
+      })
+      if (contestPuzzleId) {
+        var contestPuzzle = await Puzzle.findOne({code: contestPuzzleId}, "-data");
+        if (contestPuzzle) {
+          var contestPuzzleObj = await puzzleToObj(contestPuzzle, req.getLocale());
+          contestPuzzleObj.contest = {
+            link: "/contest/" + contest.code
+          };
+        }
+      }
+    }
     res.render(res.__('welcome_page'), {
       user: req.user,
       dailyPuzzle: dailyPuzzleObj,
-      contestPuzzle: null
+      contestPuzzle: contestPuzzleObj
     });
   } catch (e) {
     next(e);

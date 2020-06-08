@@ -17,6 +17,10 @@ const ContestSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  type: {
+    type: String,
+    required: false
+  },
   start: {
     type: Date,
     required: true
