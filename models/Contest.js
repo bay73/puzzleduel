@@ -17,6 +17,10 @@ const ContestSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  translations: {
+    type: Mixed,
+    required: false
+  },
   type: {
     type: String,
     required: false

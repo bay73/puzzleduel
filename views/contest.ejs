@@ -5,72 +5,55 @@
       <%- include ('./partials/messages') %>
       <div class="card">
         <h1 class="card-header"><%= contest.name %></h1>
-        <div class="row card-body">
-          <p class="col-10 d-flex flex-row flex-wrap"><%= contest.description %></p>
-          <% if (typeof user != 'undefined' && user.role=='admin') { %>
-          <div class="col-2 d-flex flex-row-reverse flex-wrap">
-            <a class="btn btn-primary" href="/contest/<%= contest.code %>/recount">Recount</a>
-          </div>
-          <% } %>
+        <div class="card-body">
+          <%- contest.description %>
+          <br><br>
+          <%= __('Full results of the contest see at ') %>
+          <a href="/contest/<%= contest.code %>/results"><%= __('the results page') %></a>
         </div>
         <div class="card-body">
-          <table class="table table-hover table-condensed table-striped table-responsive">
+          <table class="table table-hover table-condensed">
             <tbody>
               <tr>
-                <th></th>
-                <th>Total</th>
-                <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
-                <% if (puzzle.revealDate < new Date()) { %>
-                <th>
-                  <a href="/archive/<%= puzzle.puzzleId %>/scores">
-                    <%= puzzle.puzzleNum %>
-                  </a>
-                </th>
+                <th><%= __('#') %></th><th><%= __('Puzzle') %></th>
+                <% if(user) { %>
+                <th><%= __('Your time') %></th>
+                <th><%= __('Your score') %></th>
                 <% } %>
-                <% }) %>
+                <th><%= __('Best score') %></th>
               </tr>
-              <% contest.results.sort((r1,r2) => r2.score - r1.score).forEach(function(result) { %>
+              <% puzzles.sort((puzzle1, puzzle2) => puzzle1.num - puzzle2.num).forEach(function(puzzle) { %>
               <tr>
-                <td><%= result.userName %></td>
-                <td><%= result.score %></td>
-                <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
-                <% if (puzzle.revealDate < new Date()) { %>
-                <% var userRes = puzzle.results.filter(res => res.userId.equals(result.userId)); %>
-                <td><%= userRes==0 ? "":userRes[0].score %></td>
+                <td>
+                  <%= puzzle.num %>
+                  <% if(puzzle.competitive) { %>
+                  <span class="pl-1 d-none d-sm-inline-flex">(<%= __('competitive') %>)</span>
+                  <% }%>
+                </td>
+                <td>
+                  <a href="/single/<%= puzzle.code %>">
+                    <%= puzzle.type %>
+                    <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+                  </a>
+                </td>
+                <% if(user) { %>
+                <td><%= puzzle.userTime %><%= puzzle.userErrCount==0 ? "" : (" (" + puzzle.userErrCount + " " + __n("error", puzzle.userErrCount) + ")") %></td>
+                <td><%= puzzle.userScore ? puzzle.userScore:"" %></td>
                 <% } %>
-                <% }) %>
+                <td>
+                  <a href="/archive/<%= puzzle.code %>/scores">
+                    <%= puzzle.bestTime %>
+                  </a>
+                </td>
               </tr>
               <% }) %>
-              <tr>
-                <th></th>
-                <th>Total</th>
-                <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
-                <% if (puzzle.revealDate < new Date()) { %>
-                <th>
-                  <a href="/archive/<%= puzzle.puzzleId %>/scores">
-                    <%= puzzle.puzzleNum %>
-                  </a>
-                </th>
-                <% } %>
-                <% }) %>
-              </tr>
-              <% if (typeof user != 'undefined' && user.role=='admin') { %>
-              <tr>
-                <td></td>
-                <td></td>
-                <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
-                <% if (puzzle.revealDate < new Date() && typeof puzzle.details != 'undefined') { %>
-                <td>
-                  <%= Math.round(puzzle.details.bestTime/1000) %>(<%= Math.round(puzzle.details.bestScore*10)/10 %>)<br>
-                  <%= Math.round(puzzle.details.medianTime/1000) %>(<%= Math.round(puzzle.details.medianScore*10)/10 %>)<br>
-                  <%= Math.round(puzzle.details.complexity/10000) %>
-                </td>
-                <% } %>
-                <% }) %>
-              </tr>
-              <% } %>
             </tbody>
           </table>
+          <p class="card-text text-left pt-3">
+            <%= __('Click at the puzzle name to solve the selected puzzle.') %>
+            <%= __('Puzzles which are older than 5 days are non-competitive and can be attempted without registration.') %><br>
+            <%= __('Click at the best solving time value to see the score table for the selected puzzle.') %>
+          </p>
         </div>
       </div>
     </div>

@@ -143,5 +143,11 @@
 	"Loop shouldn't turn at the white circle": "Loop shouldn't turn at the white circle",
 	"Loop should turn at the black circle": "Loop should turn at the black circle",
 	"Loop should pass through all cells with circles": "Loop should pass through all cells with circles",
-	"Wrong digit reading along spiral": "Wrong digit reading along spiral"
+	"Wrong digit reading along spiral": "Wrong digit reading along spiral",
+	"#": "#",
+	"Your time": "Your time",
+	"Your score": "Your score",
+	"Full results of the contest see at ": "Full results of the contest see at ",
+	"the results page": "the results page",
+	"Total": "Total"
 }
