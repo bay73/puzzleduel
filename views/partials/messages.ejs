@@ -53,10 +53,8 @@
     return $('#errorMessage');
   }
   function showMessage(message, timeout, messageId){
-    console.log(messageId)
     if (messageId) {
       var numberOfTimes = parseInt(localStorage.getItem("message"+messageId));
-      console.log(numberOfTimes);
       if (!numberOfTimes) numberOfTimes = 0;
       if (numberOfTimes>3) {
         return null;
