@@ -58,7 +58,7 @@
       var numberOfTimes = parseInt(localStorage.getItem("message"+messageId));
       console.log(numberOfTimes);
       if (!numberOfTimes) numberOfTimes = 0;
-      if (numberOfTimes>5) {
+      if (numberOfTimes>3) {
         return null;
       }
       localStorage.setItem("message"+messageId,numberOfTimes + 1);
