@@ -53,10 +53,16 @@
     return $('#errorMessage');
   }
   function showMessage(message, timeout, messageId){
-    if (messageId && localStorage.getItem("message"+messageId)) {
-      return null;
+    console.log(messageId)
+    if (messageId) {
+      var numberOfTimes = parseInt(localStorage.getItem("message"+messageId));
+      console.log(numberOfTimes);
+      if (!numberOfTimes) numberOfTimes = 0;
+      if (numberOfTimes>5) {
+        return null;
+      }
+      localStorage.setItem("message"+messageId,numberOfTimes + 1);
     }
-    localStorage.setItem("message"+messageId,"closed");
     $("#alerts").append(
       "<div id='successMessage' class='message-overlap alert alert-success alert-dismissible fade show' role='alert'>" +
        message +
