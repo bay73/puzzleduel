@@ -50,9 +50,11 @@ PuzzleSchema.virtual('needLogging').get(function() {
     d.setDate(d.getDate()-5);
     return !this.daily || this.daily > d
   } else if (this.tag.includes("contest")) {
-    var d = new Date();
-    d.setDate(d.getDate()-5);
-    return !this.contest.puzzleDate || this.contest.puzzleDate > d
+    if (this.contest && this.contest.puzzleDate) {
+      var d = new Date();
+      d.setDate(d.getDate()-5);
+      return this.contest.puzzleDate > d;
+    }
   } else if (this.tag.includes("example")) {
     return false;
   }
@@ -65,8 +67,10 @@ PuzzleSchema.virtual('hidden').get(function() {
     var d = new Date();
     if (this.daily < d) return false;
   } else if (this.tag.includes("contest")) {
-    var d = new Date();
-    if (this.contest.puzzleDate < d) return false;
+    if (this.contest && this.contest.puzzleDate) {
+      var d = new Date();
+      return this.contest.puzzleDate > d;
+    }
   } else if (this.tag.includes("example")) {
     return false;
   }
@@ -79,8 +83,10 @@ PuzzleSchema.virtual('hiddenScore').get(function() {
     var d = new Date();
     if (this.daily < d) return false;
   } else if (this.tag.includes("contest")) {
-    var d = new Date();
-    if (this.contest.puzzleDate < d) return false;
+    if (this.contest && this.contest.puzzleDate) {
+      var d = new Date();
+      return this.contest.puzzleDate > d;
+    }
   } else if (this.tag.includes("example")) {
     return false;
   }
