@@ -37,6 +37,14 @@ const RatingSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
+  totalStarted: {
+    type: Number,
+    required: false
+  },
+  totalSolved: {
+    type: Number,
+    required: false
+  },
   details: {
     type: Mixed,
     required: false

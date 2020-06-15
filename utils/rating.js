@@ -1,6 +1,8 @@
 const Rating = require('../models/Rating');
 const UserSolvingTime = require('../models/UserSolvingTime');
+const UserActionLog = require('../models/UserActionLog');
 const Puzzle = require('../models/Puzzle');
+const User = require('../models/User');
 
 async function singlePuzzleRating(puzzleId) {
   const times = await UserSolvingTime.find({
@@ -23,12 +25,17 @@ async function singlePuzzleRating(puzzleId) {
   } else {
     var median = success[(success.length-1)/2].solvingTime;
   }
+  const finished = await UserActionLog.find({puzzleId: puzzleId, action: "solved"}, "userId").distinct("userId");
+  const notFinished = await UserActionLog.find({puzzleId: puzzleId, userId: {$nin: finished}}, "userId").distinct("userId");
   ratings = [];
   times.forEach(time => {
     var result = time.toObject();
     var rating = 2000 - 500*Math.log2(result.solvingTime / median + result.errCount);
     if (rating < 1) rating = 1;
-    ratings.push({userId: result.userId, userName: result.userName, value: rating});
+    ratings.push({userId: result.userId, value: rating, finished: true});
+  });
+  notFinished.forEach(userId => {
+    ratings.push({userId: userId, value: 0, finished: false});
   });
   return ratings;
 }
@@ -49,6 +56,11 @@ async function computeRating(computeDate) {
     ratingMap[rating.userId] = rating.toObject();
     ratingMap[rating.userId].puzzles=[];
   });
+
+  const users = await User.find({});
+  var userMap = {};
+  users.forEach(user => userMap[user._id] = user.name);
+
   var filter = { $and: [{daily: {$lt: d}}, {daily: {$gte: pd} }]};
   const puzzles = await Puzzle.find(filter, "code tag daily").sort({daily: 1});
   for (var i=0; i<puzzles.length; i++) {
@@ -56,35 +68,45 @@ async function computeRating(computeDate) {
     var puzzleRating = await singlePuzzleRating(puzzleId);
     puzzleRating.forEach(rating => {
       if (typeof ratingMap[rating.userId]=='undefined'){
-        ratingMap[rating.userId] = {userName: rating.userName, value: 0, ratingWeek:0, missedWeek: 0, puzzles:[] };
+        ratingMap[rating.userId] = {
+          userName: userMap[rating.userId],
+          value: 0,
+          ratingWeek: 0,
+          missedWeek: 0,
+          totalStarted: 0,
+          totalSolved: 0,
+          puzzles:[],
+        };
       }
       rating.puzzleDate = puzzles[i].daily;
+      ratingMap[rating.userId].userName = userMap[rating.userId];
       ratingMap[rating.userId].puzzles.push(rating);
-      ratingMap[rating.userId].userName = rating.userName;
     });
   }
   for (let [userId, data] of Object.entries(ratingMap)) {
     var weekValue = 0;
-    var puzzlesNum = ratingMap[userId].puzzles.length;
+    var finishedPuzzlesNum = ratingMap[userId].puzzles.filter(puzzle=>puzzle.finished).length;
     var oldValue = ratingMap[userId].value;
+    var totalStarted = ratingMap[userId].totalStarted + ratingMap[userId].puzzles.length;
+    var totalSolved = ratingMap[userId].totalSolved + finishedPuzzlesNum;
     var weeks = data.ratingWeek;
     var change = null;
     var newValue = oldValue;
     var details = {
       oldValue: oldValue,
-      puzzlesNum: puzzlesNum,
+      puzzlesNum: finishedPuzzlesNum,
       puzzles: []
     }
-    if (puzzlesNum > 0) {
+    if (finishedPuzzlesNum > 0) {
       weeks = weeks + 1;
       var weekSum = 0;
       ratingMap[userId].puzzles.forEach(puzzle => {
         weekSum = weekSum + puzzle.value;
       });
-      weekValue = weekSum / puzzlesNum;
+      weekValue = weekSum / finishedPuzzlesNum;
       var diff = weekValue - oldValue;
       change = Math.pow(Math.abs(diff),0.66) * Math.sign(diff);
-      change = change * puzzlesNum / 7;
+      change = change * finishedPuzzlesNum / 7;
       if (change > 0) {
         if (weeks < 5 ) {
           change = change * (5 - weeks);
@@ -92,7 +114,7 @@ async function computeRating(computeDate) {
       }
       newValue = oldValue + change;
       var coeff = change / weekSum;
-      var coeff = change / (weekSum - puzzlesNum*oldValue);
+      var coeff = change / (weekSum - finishedPuzzlesNum*oldValue);
       ratingMap[userId].puzzles.forEach(puzzle => {
         details.puzzles.push({date: puzzle.puzzleDate, value: puzzle.value, change: (puzzle.value - oldValue) * coeff});
       });
@@ -104,10 +126,12 @@ async function computeRating(computeDate) {
       userId: userId,
       userName: data.userName,
       value: newValue,
+      totalStarted: totalStarted,
+      totalSolved: totalSolved,
       change: change,
-      solved: puzzlesNum,
+      solved: finishedPuzzlesNum,
       ratingWeek: weeks,
-      missedWeek: puzzlesNum==0 ? (data.missedWeek+1) : 0,
+      missedWeek: finishedPuzzlesNum==0 ? (data.missedWeek+1) : 0,
       details: details
     });
     await rating.save();

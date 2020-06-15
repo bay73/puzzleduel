@@ -65,12 +65,16 @@
               <tr>
                 <th></th>
                 <th class="text-center"><%= __('Rating') %></th>
+                <th class="text-center"><%= __('Success rate') %></th>
                 <th class="text-center"><%= __('Weekly change') %></th>
               </tr>
               <% ratings.sort((r1,r2) => r2.value - r1.value).forEach(function(rating) { %>
               <tr>
                 <td><%= rating.userName %></td>
                 <td class="text-center"><%= Math.round(rating.value) %></td>
+                <td class="text-center" data-toggle="tooltip" title="<%= rating.totalSolved + "/" +  rating.totalStarted %>">
+                  <%= Math.round(rating.totalStarted=0?0:rating.totalSolved/rating.totalStarted*100) %>%
+                </td>
                 <td class="text-center <%= rating.change < 0?'text-warning':(rating.change > 0?'text-success':'')%>"
                    data-toggle="tooltip" title="<%= rating.details %>"
                 >
