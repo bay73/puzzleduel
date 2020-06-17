@@ -33,7 +33,7 @@ router.get('/:ratingdate', async (req, res, next) => {
           details: details
         };
       }),
-      sortColumn: req.query.sort || "rating"
+      sortColumn: req.query.sort || Math.random() > 0.33?"rating":"success"
     }); 
   } catch (e) {
     next(e);
