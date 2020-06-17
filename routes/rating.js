@@ -32,7 +32,8 @@ router.get('/:ratingdate', async (req, res, next) => {
           totalSolved: rating.totalSolved,
           details: details
         };
-      })
+      }),
+      sortColumn: req.query.sort || "rating"
     }); 
   } catch (e) {
     next(e);

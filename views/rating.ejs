@@ -63,19 +63,52 @@
           <table class="table table-hover table-condensed table-striped">
             <tbody>
               <tr>
-                <th></th>
-                <th class="text-center"><%= __('Rating') %></th>
-                <th class="text-center"><%= __('Success rate') %></th>
-                <th class="text-center"><%= __('Weekly change') %></th>
+                <th class="text-left align-baseline">
+                  <% if(sortColumn != "name") { %>
+                  <a class="btn" href="?sort=name">
+                    <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+                  </a>
+                  <% } %>
+                </th>
+                <th class="text-center align-baseline">
+                  <%= __('Rating') %>
+                  <% if(sortColumn != "rating") { %>
+                  <a class="btn" href="?sort=rating">
+                    <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+                  </a>
+                  <% } %>
+                </th>
+                <th class="d-none d-sm-table-cell text-center align-baseline">
+                  <%= __('Success rate') %>
+                  <% if(sortColumn != "success") { %>
+                  <a class="btn" href="?sort=success">
+                    <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+                  </a>
+                  <% } %>
+                </th>
+                <th class="d-none d-sm-table-cell text-center align-baseline">
+                  <%= __('Weekly change') %>
+                  <% if(sortColumn != "change") { %>
+                  <a class="btn" href="?sort=change">
+                    <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+                  </a>
+                  <% } %>
+                </th>
               </tr>
-              <% ratings.sort((r1,r2) => r2.value - r1.value).forEach(function(rating) { %>
+              <% function rate(ratingObj) { return Math.round(ratingObj.totalStarted==0?0:ratingObj.totalSolved/ratingObj.totalStarted*100); }%>
+              <% ratings.sort((r1,r2) => {  %>
+              <%   if (sortColumn=='success') {return (rate(r2) == rate(r1))?(Math.round(r2.value) - Math.round(r1.value)):(rate(r2) - rate(r1));}
+                   else if (sortColumn=='change') {return (Math.round(r2.change) == Math.round(r1.change))?(Math.round(r2.value) - Math.round(r1.value)):(Math.round(r2.change) - Math.round(r1.change));}
+                   else if (sortColumn=='name') {return r1.userName.localeCompare(r2.userName);}
+                   else {return (Math.round(r2.value)==Math.round(r1.value))?(rate(r2) - rate(r1)):(Math.round(r2.value) - Math.round(r1.value));}  %>
+              <% }).forEach(function(rating) { %>
               <tr>
                 <td><%= rating.userName %></td>
                 <td class="text-center"><%= Math.round(rating.value) %></td>
-                <td class="text-center" data-toggle="tooltip" title="<%= rating.totalSolved + "/" +  rating.totalStarted %>">
-                  <%= Math.round(rating.totalStarted=0?0:rating.totalSolved/rating.totalStarted*100) %>%
+                <td class="d-none d-sm-table-cell text-center" data-toggle="tooltip" title="<%= rating.totalSolved + "/" +  rating.totalStarted %>">
+                  <%= rate(rating) %>%
                 </td>
-                <td class="text-center <%= rating.change < 0?'text-warning':(rating.change > 0?'text-success':'')%>"
+                <td class="d-none d-sm-table-cell text-center <%= rating.change < 0?'text-warning':(rating.change > 0?'text-success':'')%>"
                    data-toggle="tooltip" title="<%= rating.details %>"
                 >
                   <%= rating.change?Math.round(rating.change):"-" %>
