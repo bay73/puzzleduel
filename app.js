@@ -31,6 +31,7 @@ app.use(session(require('./config/auth').sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./config/flash'));
+app.use(require('./config/theme'));
 
 
 // Routes
