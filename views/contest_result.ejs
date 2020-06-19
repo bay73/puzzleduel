@@ -43,7 +43,7 @@
               <% }) %>
               <tr>
                 <th></th>
-                <th>Total</th>
+                <th><%= __('Total') %></th>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>
                 <th>
