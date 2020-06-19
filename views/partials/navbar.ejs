@@ -11,18 +11,18 @@
         <li class="nav-item">
           <a class="nav-link" href="/"><span class="glyphicon glyphicon-home"></span> <%= __('Home') %></a>
         </li>
-        <li class="dropdown nav-link">
-          <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-calendar"></span> <%= __('Archive') %>
+        <li class="dropdown">
+          <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-calendar"></span> <%= __('Archive') %>
           <span class="caret"></span></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu bg-dark">
             <li><a class="nav-link" href="/archive"><%= __('Daily puzzles') %></a></li>
             <li><a class="nav-link" href="/contest/40645r1kb6ih7hk"><%= __('Puzzle XL 2020') %></a></li>
           </ul>
         </li>
-        <li class="dropdown nav-link">
-          <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-list"></span> <%= __('Scores') %>
+        <li class="dropdown">
+          <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-list"></span> <%= __('Scores') %>
           <span class="caret"></span></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu bg-dark">
             <li><a class="nav-link" href="/archive/scores"><%= __('Daily score') %></a></li>
             <li><a class="nav-link" href="/rating"><%= __('Rating') %></a></li>
             <li><a class="nav-link" href="/contest/40645r1kb6ih7hk/results"><%= __('Puzzle XL 2020') %></a></li>
@@ -34,20 +34,20 @@
         </li>
         <% } %>
         <% if (user && user.role == 'admin') { %>
-        <li class="dropdown nav-link">
-          <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-cog"></span> <%= __('Admin') %>
+        <li class="dropdown">
+          <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-cog"></span> <%= __('Admin') %>
           <span class="caret"></span></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu bg-dark">
             <li><a class="nav-link" href="/admin/daily"><%= __('Daily puzzles') %></a></li>
             <li><a class="nav-link" href="/admin/userips"><%= __('User stat') %></a></li>
             <li><a class="nav-link" href="/admin/instantrating"><%= __('Instant rating') %></a></li>
           </ul>
         </li>
         <% } %>
-        <li class="dropdown nav-link">
-          <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-question-sign"></span> <%= __('Help') %>
+        <li class="dropdown">
+          <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-question-sign"></span> <%= __('Help') %>
           <span class="caret"></span></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu bg-dark">
             <li><a class="nav-link" href="/help"><%= __('About') %></a></li>
             <li><a class="nav-link" href="/archive/examples"><%= __('Example puzzles') %></a></li>
           </ul>
@@ -55,10 +55,10 @@
       </ul>
       <div class="navbar-right">    
         <ul class="nav navbar-nav">
-          <li class="dropdown nav-link">
-            <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-globe"></span> Language
+          <li class="dropdown">
+            <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-globe"></span> Language
             <span class="caret"></span></a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu bg-dark">
               <li><a class="nav-link" href="?lang=en">English</a></li>
               <li><a class="nav-link" href="?lang=ru">Русский</a></li>
             </ul>
