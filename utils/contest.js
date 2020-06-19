@@ -12,7 +12,16 @@ async function recountPuzzle(puzzle) {
     ]
   }).sort("solvingTime");
   if (times.length == 0) {
-    return {};
+    return {
+      results: [],
+      details: {
+        bestTime: null,
+        medianTime: null,
+        complexity: null,
+        bestScore: null,
+        medianScore: null
+      }
+    };
   }
   var success = times.filter(time => !time.errCount);
   if (success.length==0) {
