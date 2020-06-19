@@ -56,6 +56,15 @@
       <div class="navbar-right">    
         <ul class="nav navbar-nav">
           <li class="dropdown">
+            <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-adjust"></span> <%= __('Color') %>
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu bg-dark">
+              <li><a class="nav-link" href="?theme=default"><%= __('Default') %></a></li>
+              <li><a class="nav-link" href="?theme=contrast"><%= __('Contrast') %></a></li>
+              <li><a class="nav-link" href="?theme=white"><%= __('White') %></a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
             <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-globe"></span> Language
             <span class="caret"></span></a>
             <ul class="dropdown-menu bg-dark">
