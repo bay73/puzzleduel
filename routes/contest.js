@@ -80,7 +80,7 @@ router.get('/:contestid', async (req, res, next) => {
           bestTime: util.timeToString(puzzle.details.bestTime),
           userTime: (typeof userTimes[puzzle.puzzleId]=="undefined")?"":util.timeToString(userTimes[puzzle.puzzleId].time),
           userErrCount: (typeof userTimes[puzzle.puzzleId]=="undefined")?0:userTimes[puzzle.puzzleId].errCount,
-          userScore: getUserScore(puzzle, req.user._id),
+          userScore: req.user ? getUserScore(puzzle, req.user._id) : "",
         };
       });
     res.render('contest', {user: req.user, contest: contestObj, puzzles: puzzleList})

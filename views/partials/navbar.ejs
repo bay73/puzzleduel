@@ -11,8 +11,13 @@
         <li class="nav-item">
           <a class="nav-link" href="/"><span class="glyphicon glyphicon-home"></span> <%= __('Home') %></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/archive"><span class="glyphicon glyphicon-calendar"></span> <%= __('Archive') %></a>
+        <li class="dropdown nav-link">
+          <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-calendar"></span> <%= __('Archive') %>
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a class="nav-link" href="/archive"><%= __('Daily puzzles') %></a></li>
+            <li><a class="nav-link" href="/contest/40645r1kb6ih7hk"><%= __('Puzzle XL 2020') %></a></li>
+          </ul>
         </li>
         <li class="dropdown nav-link">
           <a class="dropdown-toggle text-secondary" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-list"></span> <%= __('Scores') %>
@@ -20,6 +25,7 @@
           <ul class="dropdown-menu">
             <li><a class="nav-link" href="/archive/scores"><%= __('Daily score') %></a></li>
             <li><a class="nav-link" href="/rating"><%= __('Rating') %></a></li>
+            <li><a class="nav-link" href="/contest/40645r1kb6ih7hk/results"><%= __('Puzzle XL 2020') %></a></li>
           </ul>
         </li>
         <% if (user && user.role == 'author') { %>
