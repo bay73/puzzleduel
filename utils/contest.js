@@ -36,10 +36,10 @@ async function recountPuzzle(puzzle) {
   var complexity = median * Math.pow(median / 8000, 0.33);
   times.forEach(time => {
     var result = time.toObject();
-    var score = complexity / result.solvingTime;
-    if (result.errCount > 0 ) {
-      score = score / (result.errCount + 1);
-    }
+    var score = complexity / (result.solvingTime + median * result.errCount);
+//    if (result.errCount > 0 ) {
+//      score = score / (result.errCount + 1);
+//    }
     score = Math.round(score*10)/10;
     results.push({userId: result.userId, userName: result.userName, score: score});
   });
