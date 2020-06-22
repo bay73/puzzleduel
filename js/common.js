@@ -159,9 +159,10 @@ commonPuzzle.prototype.render = function(snap) {
 }
 
 commonPuzzle.prototype.createFilters = function() {
-  this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix' values='-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0'/>");
-  this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='-1 0 0 0 0.2 0 -1 0 0 0.6 0 0 -1 0 0.6 0 0 0 1 0'/>");
-  this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/>");
+  this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix' values='   -1 0 0 0 1     0 -1 0 0 1    0 0 -1 0 1    0 0 0 1 0'/>");
+  this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='-1 0 0 0 0.2   0 -1 0 0 0.6  0 0 -1 0 0.6  0 0 0 1 0'/>");
+  this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='    0 0 0 0 0     0 0 0 0 0     0 0 0 0 0     0 0 0 1 0'/>");
+  this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='  0.8 0 0 0 0   0 0.8 0 0 0   0 0 0.8 0 0   0 0 0 0.8 0'/>");
 }
 
 commonPuzzle.prototype.createBoard = function() {
@@ -564,6 +565,7 @@ squarePuzzleCell.prototype.setClue = function(value) {
   this.value = value;
   this.pencilMarks = null;
   this.reset();
+  this.setClueColor();
 }
 
 squarePuzzleCell.prototype.setRegular = function(togglers) {
@@ -579,23 +581,28 @@ squarePuzzleCell.prototype.setRegular = function(togglers) {
 squarePuzzleCell.prototype.reset = function() {
 }
 
-squarePuzzleCell.prototype.renderCell = function() {
-  // Draw cell in the canvas.
-  this.cellSize = this.puzzle.cellSize;
-  var corner = this.getCorner();
-  this.element = this.puzzle.snap.image(
-    this.puzzle.imageUrl(this.value), 
-    corner.x, corner.y, this.cellSize, this.cellSize);
+squarePuzzleCell.prototype.setClueColor = function() {
   if (this.overGrid()) {
     if (this.puzzle.useTopColor) {
       this.element.attr({filter: this.puzzle.topClueFilter });
     } else {
       this.element.attr({filter: this.puzzle.bottomClueFilter });
     }
-  }
-  if (this.belowGrid()) {
+  } else if (this.belowGrid()) {
     this.element.attr({filter: this.puzzle.bottomClueFilter });
+  } else if (this.isClue) {
+    this.element.attr({filter: this.puzzle.innerClueFilter });
   }
+}
+
+squarePuzzleCell.prototype.renderCell = function() {
+  // Draw cell in the canvas.
+  this.cellSize = this.puzzle.cellSize;
+  var corner = this.getCorner();
+  this.element = this.puzzle.snap.image(
+    this.puzzle.imageUrl(this.value),
+    corner.x, corner.y, this.cellSize, this.cellSize);
+  this.setClueColor();
   this.element.cell = this;
   this.rect = this.puzzle.snap.rect(corner.x, corner.y, this.cellSize, this.cellSize);
   this.rect.attr({
@@ -651,6 +658,9 @@ squarePuzzleCell.prototype.syncCell = function() {
     this.markElements = [];
     if (this.value) {
       this.element.attr({href: this.puzzle.imageUrl(this.value)});
+    }
+    if (this.clue) {
+      this.setClueColors();
     }
     if (this.pencilMarks) {
       var corner = this.getCorner();
