@@ -21,6 +21,28 @@
         </p>
         <div class="collapse" id="newform">
           <div class="card card-body">
+            <a data-toggle="collapse" href="#dailyqueue" aria-expanded="false" aria-controls="Collapse">
+              Show current queue
+            </a><br>
+            <div class="collapse bg-light" style="position: absolute; top: 45px; left: -30px; z-index: 100;" id="dailyqueue">
+              <div class="card card-body">
+                The list shows how many puzzles of each type are waiting<br> in the daily puzzles queue to be published
+                <table class="table table-sm table-condensed table-borderless">
+                  <tbody>
+                    <% dailyQueue.sort((type1,type2) => (type1.count - type2.count)).forEach(function(type) { %>
+                    <tr>
+                      <td>
+                        <%= type.name %>
+                      </td>
+                      <td>
+                        <%= type.count %>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
             <div class="form-inline">
               <div class="form-group pr-4 pb-2">
                 <select class="custom-select" id="type">

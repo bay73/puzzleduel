@@ -19,7 +19,7 @@ router.get('/', async (req, res, next) => {
     if (req.user && req.user.role == "test") {
       filter = {};
     }
-    const puzzles = await Puzzle.find(filter, "code type dimension tag daily").sort({daily: -1});
+    const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
     res.render('archive', {
       user: req.user,
       puzzles: puzzles.map(puzzle => {
@@ -43,7 +43,7 @@ router.get('/examples', async (req, res, next) => {
   try {
     var typeMap = await util.typeDataMap();
 
-    const puzzles = await Puzzle.find({tag: "example" }, "code type dimension tag daily");
+    const puzzles = await Puzzle.find({tag: "example" }, "-data");
     res.render('examples', {
       user: req.user,
       puzzles: puzzles.map(puzzle => {
@@ -138,7 +138,13 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
         ]
       }
     }
-    const puzzles = await Puzzle.find(filter, "code type dimension tag daily").sort({daily: -1});
+    const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
+    var typePuzzleCount = Object.entries(typeMap).reduce((map, [key, value]) => {
+      map[key] = {name: value, puzzleCount: 0};
+      return map;
+    }, {});
+    const futurePuzzles = await Puzzle.find({tag: "daily", $or: [{daily: {$gt: new Date()}}, {daily: {$exists: false}}]}, "-data").sort({daily: -1});
+    futurePuzzles.forEach(puzzle => typePuzzleCount[puzzle.type].puzzleCount++);
     res.render('author', {
       user: req.user,
       future: req.query.future,
@@ -160,6 +166,13 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
           daily: puzzle.daily,
           time: util.timeToString(timesMap[puzzle.code]),
           published: puzzle.published
+        };
+      }),
+      dailyQueue: Object.entries(typePuzzleCount).map(([key, value]) => {
+        return {
+          code: key,
+          name: value.name,
+          count: value.puzzleCount
         };
       })
     });
