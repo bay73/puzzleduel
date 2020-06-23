@@ -50,7 +50,7 @@ router.get('/:contestid', async (req, res, next) => {
     var typeMap = await util.typeNameMap();
     var puzzleMap = {};
     const puzzles = await Puzzle.find();
-    puzzles.forEach(puzzle => puzzles[puzzle.code] = puzzle.toObject());
+    puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();puzzleMap[puzzle.code].needLogging = puzzle.needLogging});
     var userTimes = {};
     if (req.user) {
       var userId = req.user._id;
@@ -70,7 +70,7 @@ router.get('/:contestid', async (req, res, next) => {
     var puzzleList = contest.puzzles
       .filter(puzzle => puzzle.revealDate < new Date())
       .map(puzzle => {
-        puzzleObj = puzzles[puzzle.puzzleId];
+        puzzleObj = puzzleMap[puzzle.puzzleId];
         return {
           num: puzzle.puzzleNum,
           code: puzzle.puzzleId,
