@@ -174,7 +174,7 @@ commonPuzzle.prototype.createFilters = function() {
     this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 1     0 0 0 0 1      0 0 0 0 1       0 0 0 1 0'/>");
     this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='0 0 0 0 0.2   0 0 0 0 0.6    0 0 0 0 0.6     0 0 0 1 0'/>");
     this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 0     0 0 0 0 0      0 0 0 0 0       0 0 0 1 0'/>");
-    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix'  values='0.8 0 0 0 0   0 0.8 0 0 0    0 0 0.8 0 0     0 0 0 0.8 0'/>");
+    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix'  values='0.8 0 0 0 0   0 0.8 0 0 0    0 0 0.8 0 0     0 0 0 1 0'/>");
   }
 }
 
