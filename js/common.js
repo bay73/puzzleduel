@@ -161,20 +161,20 @@ commonPuzzle.prototype.render = function(snap) {
 
 commonPuzzle.prototype.createFilters = function() {
   if (this.settings.theme=="white") {
-    this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix' values='   -1 0 0 0 1     0 -1 0 0 1      0 0 -1 0 1      0 0 0 1 0'/>");
-    this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values=' -1 0 0 0 0    0 0.5 0 0 0.1     0 0 1 0 0.5       0 0 0 1 0'/>");
-    this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='    -1 0 0 0 0    0 0.1 0 0 0.02  0 0 0.2 0 0.1   0 0 0 1 0'/>");
-    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='  -1 0 0 0 0    0 0.2 0 0 0.04  0 0 0.4 0 0.2   0 0 0 1 0'/>");
+    this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 1     0 0 0 0 1       0 0 0 0 1      0 0 0 1 0'/>");
+    this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='0 0 0 0 0     0 0.5 0 0 0.1   0 0 1 0 0.5    0 0 0 1 0'/>");
+    this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 0     0 0.1 0 0 0.02  0 0 0.2 0 0.1  0 0 0 1 0'/>");
+    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix'  values='0 0 0 0 0     0 0.2 0 0 0.04  0 0 0.4 0 0.2  0 0 0 1 0'/>");
   } else if (this.settings.theme=="contrast") {
-    this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix' values='   -1 0 0 0 1       0 -1 0 0 1       0 0 -1 0 1      0 0 0 1 0'/>");
-    this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values=' 1 0 0 0 1       0 1 0 0 1        0 0 1 0 1       0 0 0 1 0'/>");
-    this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='    0.2 0 0 0 0.2   0 0.3 0 0 0.3    0 0 0.4 0 0.4   0 0 0 1 0'/>");
-    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='  0.2 0 0 0 0.1   0 0.3 0 0 0.15   0 0 0.4 0 0.2   0 0 0 1 0'/>");
+    this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 1     0  0 0 0 1      0 0 0 0 1      0 0 0 1 0'/>");
+    this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='1 0 0 0 1     0 1 0 0 1      0 0 1 0 1       0 0 0 1 0'/>");
+    this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0.2 0 0 0 0.2 0 0.3 0 0 0.3  0 0 0.4 0 0.4   0 0 0 1 0'/>");
+    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix'  values='0.2 0 0 0 0.1 0 0.3 0 0 0.15 0 0 0.4 0 0.2   0 0 0 1 0'/>");
   } else {
-    this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix' values='   -1 0 0 0 1     0 -1 0 0 1    0 0 -1 0 1    0 0 0 1 0'/>");
-    this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='-1 0 0 0 0.2   0 -1 0 0 0.6  0 0 -1 0 0.6  0 0 0 1 0'/>");
-    this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='    0 0 0 0 0     0 0 0 0 0     0 0 0 0 0     0 0 0 1 0'/>");
-    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='  0.8 0 0 0 0   0 0.8 0 0 0   0 0 0.8 0 0   0 0 0 0.8 0'/>");
+    this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 1     0 0 0 0 1      0 0 0 0 1       0 0 0 1 0'/>");
+    this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='0 0 0 0 0.2   0 0 0 0 0.6    0 0 0 0 0.6     0 0 0 1 0'/>");
+    this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 0     0 0 0 0 0      0 0 0 0 0       0 0 0 1 0'/>");
+    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix'  values='0.8 0 0 0 0   0 0.8 0 0 0    0 0 0.8 0 0     0 0 0 0.8 0'/>");
   }
 }
 
