@@ -1,13 +1,13 @@
 define(["/js/common.js"], function() {
 
-innerCluePuzzle = function(puzzleData, controls) {
-  commonPuzzle.call(this, puzzleData, controls);
+innerCluePuzzle = function(puzzleData, controls, settings) {
+  commonPuzzle.call(this, puzzleData, controls, settings);
 }
 
 Object.setPrototypeOf(innerCluePuzzle.prototype, commonPuzzle.prototype);
 
-outerCluePuzzle = function(puzzleData, controls) {
-  commonPuzzle.call(this, puzzleData, controls);
+outerCluePuzzle = function(puzzleData, controls, settings) {
+  commonPuzzle.call(this, puzzleData, controls, settings);
 }
 
 Object.setPrototypeOf(outerCluePuzzle.prototype, commonPuzzle.prototype);

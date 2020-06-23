@@ -67,9 +67,11 @@
       id: "<%= puzzle.code %>",
       dimension: "<%= puzzle.dimension %>"
     };
+    var settings = {};
+    settings.theme = "<%= (typeof theme != "undefined")?theme:"" %>";
     var grid = "#<%= (typeof prefix != undefined)?prefix+'Grid':'mainGrid' %>"
     requirejs(["/js/<%= puzzle.type.puzzleJs %>"], function() {
-      <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %> = new <%= puzzle.type.puzzleObj %>(puzzleData, controls);
+      <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %> = new <%= puzzle.type.puzzleObj %>(puzzleData, controls, settings);
       <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %>.render(Snap(grid));
     });
 

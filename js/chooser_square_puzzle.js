@@ -1,25 +1,25 @@
 define(["/js/common.js"], function() {
 
-innerCluePuzzle = function(puzzleData, controls) {
-  commonPuzzle.call(this, puzzleData, controls);
+innerCluePuzzle = function(puzzleData, controls, settings) {
+  commonPuzzle.call(this, puzzleData, controls, settings);
 }
 
 Object.setPrototypeOf(innerCluePuzzle.prototype, commonPuzzle.prototype);
 
-classicSudokuPuzzle = function(typeCode, id, dimension) {
-  innerCluePuzzle.call(this, typeCode, id, dimension);
+classicSudokuPuzzle = function(puzzleData, controls, settings) {
+  innerCluePuzzle.call(this, puzzleData, controls, settings);
 }
 
 Object.setPrototypeOf(classicSudokuPuzzle.prototype, innerCluePuzzle.prototype);
 
-outerCluePuzzle = function(puzzleData, controls) {
-  commonPuzzle.call(this, puzzleData, controls);
+outerCluePuzzle = function(puzzleData, controls, settings) {
+  commonPuzzle.call(this, puzzleData, controls, settings);
 }
 
 Object.setPrototypeOf(outerCluePuzzle.prototype, commonPuzzle.prototype);
 
-snailPuzzle = function(puzzleData, controls) {
-  outerCluePuzzle.call(this, puzzleData, controls);
+snailPuzzle = function(puzzleData, controls, settings) {
+  outerCluePuzzle.call(this, puzzleData, controls, settings);
 }
 
 Object.setPrototypeOf(snailPuzzle.prototype, outerCluePuzzle.prototype);
