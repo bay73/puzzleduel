@@ -26,9 +26,7 @@
               <tr>
                 <td>
                   <%= puzzle.num %>
-                  <% if(puzzle.competitive) { %>
-                  <span class="pl-1 d-none d-sm-inline-flex">(<%= __('competitive') %>)</span>
-                  <% }%>
+                  <span class="pl-1 d-none d-sm-inline-flex">(<%= puzzle.puzzleDate.toISOString().split('T')[0] %><% if(puzzle.competitive) { %>, <%= __('competitive') %><% }%>)</span>
                 </td>
                 <td>
                   <a href="/single/<%= puzzle.code %>">

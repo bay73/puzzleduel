@@ -76,6 +76,7 @@ router.get('/:contestid', async (req, res, next) => {
           code: puzzle.puzzleId,
           type: typeMap[puzzleObj.type],
           dimension: puzzleObj.dimension,
+          puzzleDate: puzzleObj.contest.puzzleDate,
           competitive: puzzleObj.needLogging,
           bestTime: util.timeToString(puzzle.details.bestTime),
           userTime: (typeof userTimes[puzzle.puzzleId]=="undefined")?"":util.timeToString(userTimes[puzzle.puzzleId].time),
