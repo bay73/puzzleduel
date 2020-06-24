@@ -115,7 +115,7 @@ async function computeRating(computeDate) {
       newValue = oldValue + change;
       var coeff = change / weekSum;
       var coeff = change / (weekSum - finishedPuzzlesNum*oldValue);
-      ratingMap[userId].puzzles.forEach(puzzle => {
+      ratingMap[userId].puzzles.filter(puzzle=>puzzle.finished).forEach(puzzle => {
         details.puzzles.push({date: puzzle.puzzleDate, value: puzzle.value, change: (puzzle.value - oldValue) * coeff});
       });
     }
