@@ -50,7 +50,7 @@
                   <h2><%= __(puzzle.category.substr(3)) %></h2>
                 </button>
               </div>
-              <div id="<%= puzzle.category.substr(3) %>Collapse" class="collapse <%= prevCategory==null?"show":"" %>" aria-labelledby="<%= puzzle.category.substr(3) %>Heading" data-parent="#mainAccordion">
+              <div id="<%= puzzle.category.substr(3) %>Collapse" class="card-body collapse <%= prevCategory==null?"show":"" %>" aria-labelledby="<%= puzzle.category.substr(3) %>Heading" data-parent="#mainAccordion">
             <% } %>
             <% prevCategory = puzzle.category; %>
               <% if (puzzle.type != prevType) { %>

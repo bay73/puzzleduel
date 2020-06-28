@@ -10,7 +10,8 @@ const util = require('../utils/puzzle_util');
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
 // List of daily puzzles
-router.get('/', async (req, res, next) => {
+router.get(['/','/daily'],
+  async (req, res, next) => {
   try {
     var timesMap = await util.bestSolvingTimeMap(false);
     var typeMap = await util.typeNameMap();
