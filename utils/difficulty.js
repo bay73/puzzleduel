@@ -30,8 +30,10 @@ async function computeDifficulty() {
   for (var i=0; i<puzzles.length; i++) {
     var puzzleId = puzzles[i].code;
     var difficulty = await singlePuzzleDifficulty(puzzleId);
-    puzzles[i].difficulty = difficulty;
-    await puzzles[i].save();
+    if (difficulty != null) {
+      puzzles[i].difficulty = difficulty;
+      await puzzles[i].save();
+    }
   }
 };
 
