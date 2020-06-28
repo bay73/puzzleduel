@@ -1,0 +1,75 @@
+<%- include ('./partials/navbar') %>
+<style>
+  .stars {
+     display: inline-block;
+     background-color: goldenRod;
+     top: 0;
+     left: 0;
+     height: 15px;
+     mask-image: url(/images/star.png);
+     mask-repeat: repeat-x;
+     mask-size: 15px 15px;
+     -webkit-mask-image: url(/images/star.png);
+     -webkit-mask-repeat: repeat-x;
+     -webkit-mask-size: 15px 15px;
+   }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header"><%= __('Puzzles by type') %></h1>
+        <div class="card-body">
+          <div class="accordion" id="mainAccordion">
+            <% var prevCategory = null; %>
+            <% var prevType = null; %>
+            <% function comparePuzzles(p1, p2) {
+              if (p1.category==p2.category) {
+                if (p1.type==p2.type) {
+                  return p1.difficulty - p2.difficulty;
+                } else {
+                  return p1.type.localeCompare(p2.type);
+                }
+              } else {
+                return p1.category.localeCompare(p2.category);
+              }
+            } %>
+            <% puzzles.sort((p1,p2) => comparePuzzles(p1, p2)).forEach(function(puzzle) { %>
+            <% if (puzzle.category != prevCategory) { %>
+            <% if (prevCategory!=null) { %>
+              </div>
+            </div>
+            <% } %>
+            <div class="card">
+              <div class="card-header" id="<%= puzzle.category.substr(3) %>Heading">
+                <button class="btn btn-link" type="button"
+                  data-toggle="collapse" data-target="#<%= puzzle.category.substr(3) %>Collapse"
+                  aria-expanded="true" aria-controls="<%= puzzle.category.substr(3) %>Collapse"
+                >
+                  <h2><%= __(puzzle.category.substr(3)) %></h2>
+                </button>
+              </div>
+              <div id="<%= puzzle.category.substr(3) %>Collapse" class="collapse <%= prevCategory==null?"show":"" %>" aria-labelledby="<%= puzzle.category.substr(3) %>Heading" data-parent="#mainAccordion">
+            <% } %>
+            <% prevCategory = puzzle.category; %>
+              <% if (puzzle.type != prevType) { %>
+                 <h4 class="mb-0 mt-3" ><%= puzzle.type %></h4>
+              <% } %>
+              <% var stars=puzzle.difficulty>0?Math.round(13*Math.log(puzzle.difficulty/30000))/10:0; %>
+              <a class="mr-3" href="/single/<%= puzzle.code %>"><%= puzzle.dimension %>
+                <span class="stars" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>">
+                </span>
+              </a>
+              <% prevType = puzzle.type; %>
+            <% }) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+
