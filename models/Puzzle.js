@@ -40,6 +40,10 @@ const PuzzleSchema = new mongoose.Schema({
   author: {
     type: ObjectId,
     required: false
+  },
+  difficulty: {
+    type: Number,
+    required: false
   }
 });
 
