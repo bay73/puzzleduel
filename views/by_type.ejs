@@ -57,7 +57,7 @@
                  <h4 class="mb-0 mt-3" ><%= puzzle.type %></h4>
               <% } %>
               <% var stars=puzzle.difficulty>0?Math.round(13*Math.log(puzzle.difficulty/30000))/10:0; %>
-              <a class="mr-3" href="/single/<%= puzzle.code %>"><%= puzzle.dimension %>
+              <a style="white-space: nowrap;" class="mr-3" href="/single/<%= puzzle.code %>"><%= puzzle.dimension %>
                 <span class="stars" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>">
                 </span>
               </a>
