@@ -28,7 +28,8 @@
     };
     var settings = {};
     settings.theme = "<%= (typeof theme!="undefined")?theme:"" %>";
-    requirejs(["/js/<%= puzzle.type.puzzleJs=="path_square_puzzle.js"?"paint_square_puzzle.js":puzzle.type.puzzleJs %>"], function() {
+    <% var puzzleJs=puzzle.type.puzzleJs.replace(/\.js$/, ''); %>
+    requirejs(["<%= puzzleJs=="path_square_puzzle"?"paint_square_puzzle":puzzleJs %>"], function() {
       puzzle = new <%= puzzle.type.puzzleObj %>(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();

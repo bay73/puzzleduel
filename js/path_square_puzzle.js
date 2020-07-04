@@ -1,4 +1,4 @@
-define(["/js/common.js"], function() {
+define(["common"], function() {
 
 innerCluePuzzle = function(puzzleData, controls, settings) {
   commonPuzzle.call(this, puzzleData, controls, settings);
