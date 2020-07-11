@@ -40,6 +40,10 @@ async function singlePuzzleRating(puzzleId) {
   return ratings;
 }
 
+function normDiff(diff) {
+  return Math.pow(Math.abs(diff),0.66) * Math.sign(diff);
+}
+
 async function computeRating(computeDate) {
   var d = new Date(Date.parse(computeDate));
   if (d.getUTCDay() != 0) {
@@ -100,12 +104,13 @@ async function computeRating(computeDate) {
     if (finishedPuzzlesNum > 0) {
       weeks = weeks + 1;
       var weekSum = 0;
-      ratingMap[userId].puzzles.forEach(puzzle => {
+      var puzzleDiffSum = 0;
+      ratingMap[userId].puzzles.filter(puzzle=>puzzle.finished).forEach(puzzle => {
         weekSum = weekSum + puzzle.value;
+        puzzleDiffSum = puzzleDiffSum + normDiff(puzzle.value - oldValue) / 7;
       });
       weekValue = weekSum / finishedPuzzlesNum;
-      var diff = weekValue - oldValue;
-      change = Math.pow(Math.abs(diff),0.66) * Math.sign(diff);
+      change = normDiff(weekValue - oldValue);
       change = change * finishedPuzzlesNum / 7;
       if (change > 0) {
         if (weeks < 5 ) {
@@ -113,10 +118,9 @@ async function computeRating(computeDate) {
         }
       }
       newValue = oldValue + change;
-      var coeff = change / weekSum;
-      var coeff = change / (weekSum - finishedPuzzlesNum*oldValue);
+      var coeff = (change - puzzleDiffSum) / finishedPuzzlesNum;
       ratingMap[userId].puzzles.filter(puzzle=>puzzle.finished).forEach(puzzle => {
-        details.puzzles.push({date: puzzle.puzzleDate, value: puzzle.value, change: (puzzle.value - oldValue) * coeff});
+        details.puzzles.push({date: puzzle.puzzleDate, value: puzzle.value, change: normDiff(puzzle.value - oldValue) / 7 + coeff});
       });
     }
     details.weekValue = weekValue;
