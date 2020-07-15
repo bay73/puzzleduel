@@ -70,18 +70,36 @@
           </div>
         </div>
         <script>
-          function showLetters(type) {
-            return type == "easy_as_abc" || type=="magic_snail";
-          }
-          $("#letters").parent().toggle(showLetters($("#type").children("option:selected").val()));
+          var squared = [];
+          var needLetters = [];
+          <% types.forEach(function(type) { %>
+          <% if (type.properties && type.properties.squared) { %>
+          squared['<%= type.code %>'] = true;
+          <% } %>
+          <% if (type.properties && type.properties.needLetters) { %>
+          needLetters['<%= type.code %>'] = true;
+          <% } %>
+          <% }) %>
+          $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true);
+          $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
           $("#type").change(function() {
-            $("#letters").parent().toggle(showLetters($("#type").children("option:selected").val()));
+            $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true);
+            $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
           });
           $("#createPuzzle").click(function () {
             var type = $("#type").children("option:selected").val();
-            var dimension = $("#cols").val() + "x" + $("#rows").val();
-            if ($("#letters").val()) {
-              dimension = dimension + "-" + $("#letters").val();
+            if (squared[type]) {
+              var dimension = $("#rows").val() + "x" + $("#rows").val();
+            } else {
+              var dimension = $("#cols").val() + "x" + $("#rows").val();
+            }
+            if (needLetters[type]) {
+              var letters = $("#letters").val().replace(/[^ABCDE1234567890]/g, '');
+              if (!letters) {
+                window.alert('Specify the list of available letters/digits for the puzzle!');
+                return;
+              }
+              dimension = dimension + "-" + letters;
             }
             var url = "/single/" + type + "/" + dimension + "/new";
             window.location = url;

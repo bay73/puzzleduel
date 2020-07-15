@@ -38,6 +38,10 @@ const PuzzleTypeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  properties: {
+    type: Mixed,
+    required: false
+  },
 });
 
 const PuzzleType = mongoose.model('PuzzleType', PuzzleTypeSchema);

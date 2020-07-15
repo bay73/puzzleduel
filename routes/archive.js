@@ -150,7 +150,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       return;
     }
 
-    var typeMap = await util.typeNameMap();
+    var typeMap = await util.typeDataMap();
     var timesMap = await util.bestSolvingTimeMap(true);
 
     var filter = {author: req.user._id};
@@ -166,7 +166,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     }
     const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
     var typePuzzleCount = Object.entries(typeMap).reduce((map, [key, value]) => {
-      map[key] = {name: value, puzzleCount: 0};
+      map[key] = {name: value.name, puzzleCount: 0};
       return map;
     }, {});
     const futurePuzzles = await Puzzle.find({tag: "daily", $or: [{daily: {$gt: new Date()}}, {daily: {$exists: false}}]}, "-data").sort({daily: -1});
@@ -175,18 +175,19 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       user: req.user,
       future: req.query.future,
       types: Object.entries(typeMap)
-        .filter(([key, value]) => key!="starbattle" && key!="sudoku_square_number" && key!="paint_battenberg" && key!="ripple_effect" && key!="suguru")
+        .filter(([key, value]) => !value.properties || !value.properties.noEdit)
         .sort(([key1, value1],[key2, value2]) => key1.localeCompare(key2))
         .map(([key, value]) => {
           return {
             code: key,
-            name: value
+            name: value.name,
+            properties: value.properties
           };
       }),
       puzzles: puzzles.map(puzzle => {
         return {
           code: puzzle.code,
-          type: typeMap[puzzle.type],
+          type: typeMap[puzzle.type].name,
           dimension: puzzle.dimension,
           tag: puzzle.tag,
           daily: puzzle.daily,
