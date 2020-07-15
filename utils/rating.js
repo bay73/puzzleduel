@@ -105,22 +105,24 @@ async function computeRating(computeDate) {
       weeks = weeks + 1;
       var weekSum = 0;
       var puzzleDiffSum = 0;
+      var newbie = 1;
+      if (weeks < 5 ) {
+        newbie = 5 - weeks;
+      }
       ratingMap[userId].puzzles.filter(puzzle=>puzzle.finished).forEach(puzzle => {
         weekSum = weekSum + puzzle.value;
-        puzzleDiffSum = puzzleDiffSum + normDiff(puzzle.value - oldValue) / 7;
+        puzzleDiffSum = puzzleDiffSum + newbie * normDiff(puzzle.value - oldValue) / 7;
       });
       weekValue = weekSum / finishedPuzzlesNum;
       change = normDiff(weekValue - oldValue);
       change = change * finishedPuzzlesNum / 7;
       if (change > 0) {
-        if (weeks < 5 ) {
-          change = change * (5 - weeks);
-        }
+        change = change * newbie;
       }
       newValue = oldValue + change;
       var coeff = (change - puzzleDiffSum) / finishedPuzzlesNum;
       ratingMap[userId].puzzles.filter(puzzle=>puzzle.finished).forEach(puzzle => {
-        details.puzzles.push({date: puzzle.puzzleDate, value: puzzle.value, change: normDiff(puzzle.value - oldValue) / 7 + coeff});
+        details.puzzles.push({date: puzzle.puzzleDate, value: puzzle.value, change: newbie * normDiff(puzzle.value - oldValue) / 7 + coeff});
       });
     }
     details.weekValue = weekValue;
