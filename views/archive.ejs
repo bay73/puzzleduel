@@ -5,35 +5,59 @@
       <%- include ('./partials/messages') %>
       <div class="card">
         <h1 class="card-header"><%= __('Daily puzzles') %></h1>
-        <div class="card-body">
-          <table class="table table-hover table-condensed">
-            <tbody>
-              <tr>
-                <th><%= __('Date') %></th><th><%= __('Puzzle') %></th><th class="d-none d-sm-block"><%= __('Best score') %></th>
-              </tr>
-              <% puzzles.forEach(function(puzzle) { %>
-              <tr>
-                <td>
-                  <%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>
-                  <% if(puzzle.competitive) { %>
-                  <span class="pl-1 d-none d-sm-inline-flex">(<%= __('competitive') %>)</span>
-                  <% }%>
-                </td>
-                <td>
-                  <a href="/single/<%= puzzle.code %>">
-                    <%= puzzle.type %>
-                    <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
-                  </a>
-                </td>
-                <td class="d-none d-sm-block">
-                  <a href="/archive/<%= puzzle.code %>/scores">
-                    <%= puzzle.time %>
-                  </a>
-                </td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
+          <% function getMonth(puzzle) {return puzzle.daily?puzzle.daily.getMonth():"None"; } %>
+          <div class="accordion" id="mainAccordion">
+            <% var prevMonth = null; %>
+            <% puzzles.forEach(function(puzzle) { %>
+            <% if (getMonth(puzzle) != prevMonth) { %>
+            <% if (prevMonth!=null) { %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <% } %>
+            <div class="card">
+              <div class="card-header" id="month<%= getMonth(puzzle) %>Heading">
+                <button class="btn btn-link" type="button"
+                  data-toggle="collapse" data-target="#month<%= getMonth(puzzle) %>Collapse"
+                  aria-expanded="true" aria-controls="month<%= getMonth(puzzle) %>Collapse"
+                >
+                  <h2><%= __('month' + getMonth(puzzle)) %></h2>
+                </button>
+              </div>
+              <div id="month<%= getMonth(puzzle) %>Collapse" class="collapse <%= prevMonth==null?"show":"" %>" aria-labelledby="month<%= getMonth(puzzle) %>Heading" data-parent="#mainAccordion">
+                <table class="card-body table table-hover table-condensed ml-5">
+                  <tbody>
+                    <tr>
+                      <th><%= __('Date') %></th><th><%= __('Puzzle') %></th><th class="d-none d-sm-block"><%= __('Best score') %></th>
+                    </tr>
+            <% } %>
+            <% prevMonth = getMonth(puzzle); %>
+                    <tr>
+                      <td>
+                        <%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>
+                        <% if(puzzle.competitive) { %>
+                        <span class="pl-1 d-none d-sm-inline-flex">(<%= __('competitive') %>)</span>
+                        <% }%>
+                      </td>
+                      <td>
+                        <a href="/single/<%= puzzle.code %>">
+                          <%= puzzle.type %>
+                          <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+                        </a>
+                      </td>
+                      <td class="d-none d-sm-block">
+                        <a href="/archive/<%= puzzle.code %>/scores">
+                          <%= puzzle.time %>
+                        </a>
+                      </td>
+                    </tr>
+            <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
           <p class="card-text text-left pt-3">
             <%= __('Click at the puzzle name to solve the selected puzzle.') %>
             <%= __('Puzzles which are older than 5 days are non-competitive and can be attempted without registration.') %><br>
