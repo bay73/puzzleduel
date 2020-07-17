@@ -169,5 +169,10 @@
 	"month9": "October",
 	"month10": "November",
 	"month11": "December",
-	"monthNone": "No date"
+	"monthNone": "No date",
+	"Each row should have exactly two circles": "Each row should have exactly two circles",
+	"Each column should have exactly two circles": "Each column should have exactly two circles",
+	"Cells with circles shouldn't touch": "Cells with circles shouldn't touch",
+	"Wrong number of cells between circles in the row": "Wrong number of cells between circles in the row",
+	"Wrong number of cells between circles in the column": "Wrong number of cells between circles in the column"
 }

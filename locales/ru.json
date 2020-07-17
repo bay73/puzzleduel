@@ -170,5 +170,10 @@
 	"month9": "Октябрь",
 	"month10": "Ноябрь",
 	"month11": "Декабрь",
-	"monthNone": "Без даты"
+	"monthNone": "Без даты",
+	"Each row should have exactly two circles": "В каждой строке должно быть два кружка",
+	"Each column should have exactly two circles": "В каждом столбце должно быть два кружка",
+	"Cells with circles shouldn't touch": "Клетки с кружками не должны касаться",
+	"Wrong number of cells between circles in the row": "Неверное число пустых клеток между кружками в строке",
+	"Wrong number of cells between circles in the column": "Неверное число пустых клеток между кружками в столбце"
 }

@@ -106,6 +106,10 @@ outerCluePuzzle.prototype.initImages = function() {
     this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "black", "cross"];
     this.togglers = ["white", "black", "cross"];
   }
+  if(this.typeCode == "gaps") {
+    this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
+    this.togglers = ["white", "white_circle", "cross"];
+  }
   if(this.typeCode == "paint_by_max") {
     this.useTopColor = true;
     this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "13", "14", "15"];
