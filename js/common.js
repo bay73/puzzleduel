@@ -2,15 +2,16 @@ commonPuzzle = function(puzzleData, controls, settings) {
   this.NONE = "0";
   this.BOTTOM_RIGHT = "2";
   this.FOUR_SIDES = "4";
+  this.settings = settings;
   this.id = puzzleData.id;
   this.typeCode = puzzleData.typeCode;
+  this.dimension = puzzleData.dimension;
   this.parseDimension(puzzleData.dimension);
   this.cluePosition = this.outerCluePosition();
   this.initImages();
   this.createBoard();
   this.steps = [];
   this.initControls(controls);
-  this.settings = settings;
 }
 
 commonPuzzle.prototype.parseDimension = function(dimension) {
@@ -33,6 +34,10 @@ commonPuzzle.prototype.start = function() {
   var self = this;
   this.pencilMarkMode = false;
   this.removeMessages();
+  if (typeof this.settings != 'undefined' && this.settings.local) {
+    self.showClues(this.settings.data);
+    return;
+  }
   // Read clues from server and start the puzzle solving.
   $.getJSON("/puzzles/" + this.id + "/start")
     .done(data => self.showClues(data))
@@ -43,6 +48,17 @@ commonPuzzle.prototype.check = function() {
   var self = this;
   var data = this.collectData(true, false);
   this.removeMessages();
+  if (typeof this.settings != 'undefined' && this.settings.local) {
+    var dimension = this.dimension;
+    var puzzleData = this.settings.data;
+    module = {};
+    requirejs(['puzzle_types/util.js','puzzle_types/' + this.typeCode + '.js'], function() {
+      window.util=Util;
+      response = Checker.check(dimension, puzzleData, data);
+      self.showResult(response);
+    });
+    return;
+  }
   // Read result from server and show.
   $.post("/puzzles/" + this.id + "/check", data)
     .done(response => self.showResult(response))
@@ -250,7 +266,11 @@ commonPuzzle.prototype.preloadImages = function(imageList) {
 
 commonPuzzle.prototype.imageUrl = function(imageName) {
   // Url for image with the given name.
-  return "/images/"+imageName+".png";
+  if (typeof this.settings != 'undefined' && this.settings.local) {
+    return "images/"+imageName+".png";
+  } else {
+    return "/images/"+imageName+".png";
+  }
 }
 
 commonPuzzle.prototype.showClues = function(data) {
