@@ -52,8 +52,8 @@ const Util = {
     // Parse dimension string to values.
     var dimensions = dimension.split("x");
     return {
-      rows: dimensions[1],
-      cols: dimensions[0]
+      rows: parseInt(dimensions[1]),
+      cols: parseInt(dimensions[0])
     } 
   },
 
