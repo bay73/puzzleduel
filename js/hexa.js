@@ -240,7 +240,9 @@ hexaPuzzleCell.prototype.drawImage = function() {
 }
 
 hexaPuzzleCell.prototype.drawText = function() {
-  return this.snapText(this.center(), this.puzzle.size.unitSize, this.data.text);
+  var text = this.snapText(this.center(), this.puzzle.size.unitSize, this.data.text);
+  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.defaultColor});
+  return text;
 }
 
 hexaPuzzleCell.prototype.drawPencilColor = function() {
@@ -301,7 +303,9 @@ hexaPuzzleEdge.prototype.drawImage = function() {
 }
 
 hexaPuzzleEdge.prototype.drawText = function() {
-  return this.snapText(this.center(), this.puzzle.size.unitSize*0.6, this.data.text);
+  var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.6, this.data.text);
+  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.defaultColor});
+  return text;
 }
 
 hexaPuzzleEdge.prototype.drawPencilColor = function() {
@@ -366,7 +370,9 @@ hexaPuzzleNode.prototype.drawImage = function() {
 }
 
 hexaPuzzleNode.prototype.drawText = function() {
-  return this.snapText(this.center(), this.puzzle.size.unitSize*0.4, this.data.text);
+  var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.4, this.data.text);
+  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.defaultColor});
+  return text;
 }
 
 hexaPuzzleNode.prototype.drawPencilColor = function() {

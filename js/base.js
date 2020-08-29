@@ -1,11 +1,7 @@
 basePuzzle = function(puzzleData, controls, settings) {
   this.settings = settings;
   this.id = puzzleData.id;
-  this.colorSchema = {
-    defaultColor: "#002b36",
-    traceColor: "#708b96",
-    gridColor: "#aaa",
-  }
+  this.colorSchema = this.chooseColorSchema();
   this.typeCode = puzzleData.typeCode;
   this.dimension = puzzleData.dimension;
   this.parseDimension();
@@ -22,10 +18,9 @@ basePuzzle.prototype.render = function(snap) {
   this.snap.node.setAttribute("width", this.size.width);
   this.snap.node.setAttribute("viewBox", "0 0 " + this.size.width + " " + this.size.height);
 
-  this.createFilters();
   this.gridProperty = {
     cell: {
-      "fill": "white",
+      "fill": this.colorSchema.bgColor,
       "stroke": this.colorSchema.gridColor,
       "strokeWidth": 1,
     },
@@ -55,23 +50,34 @@ basePuzzle.prototype.render = function(snap) {
   this.drawBoard();
 }
 
-
-basePuzzle.prototype.createFilters = function() {
+basePuzzle.prototype.chooseColorSchema = function() {
   if (this.settings.theme=="white") {
-    this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/>");
-    this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='0 0 0 0 0 0 0.5 0 0 0.1 0 0 1 0 0.5 0 0 0 1 0'/>");
-    this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 0 0 0.1 0 0 0.02 0 0 0.2 0 0.1 0 0 0 1 0'/>");
-    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix'  values='0 0 0 0 0 0 0.2 0 0 0.04 0 0 0.4 0 0.2 0 0 0 1 0'/>");
+    return {
+      defaultColor: "#343a40",
+      clueColor: "#296bb3",
+      traceColor: "#9aa0a6",
+      gridColor: "#aaa",
+      bgColor: "#fff",
+      errorColor: "#efa4a7",
+    }
   } else if (this.settings.theme=="contrast") {
-    this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/>");
-    this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='1 0 0 0 1 0 1 0 0 1 0 0 1 0 1 0 0 0 1 0'/>");
-    this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0.2 0 0 0 0.2 0 0.3 0 0 0.3  0 0 0.4 0 0.4 0 0 0 1 0'/>");
-    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix'  values='0.2 0 0 0 0.1 0 0.3 0 0 0.15 0 0 0.4 0 0.2 0 0 0 1 0'/>");
+    return {
+      defaultColor: "#008959",
+      clueColor: "#000000",
+      traceColor: "#66efbf",
+      gridColor: "#aaa",
+      bgColor: "#fff",
+      errorColor: "#f52b14",
+    }
   } else {
-    this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/>");
-    this.bottomClueFilter = this.snap.filter("<feColorMatrix type='matrix' values='0 0 0 0 0.2 0 0 0 0 0.6 0 0 0 0 0.6 0 0 0 1 0'/>");
-    this.topClueFilter = this.snap.filter("<feColorMatrix type='matrix'    values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/>");
-    this.innerClueFilter = this.snap.filter("<feColorMatrix type='matrix'  values='0.8 0 0 0 0 0 0.8 0 0 0 0 0 0.8 0 0 0 0 0 1 0'/>");
+    return {
+      defaultColor: "#000000",
+      clueColor: "#073642",
+      traceColor: "#777777",
+      gridColor: "#aaa",
+      bgColor: "#fff",
+      errorColor: "#e72381",
+    }
   }
 }
 

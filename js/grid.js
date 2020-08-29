@@ -199,7 +199,7 @@ gridElement.prototype.clearElements = function() {
 gridElement.prototype.markError = function() {
   var center = this.center();
   var errorElem = this.puzzle.snap.circle(center.x, center.y, 0);
-  errorElem.attr({fill: "#f08", opacity: 0.5});
+  errorElem.attr({fill: this.puzzle.colorSchema.errorColor, opacity: 0.5});
   var radius = this.puzzle.size.unitSize/2;
   // Blinking animation
   var errorInterval = setInterval(() => {
