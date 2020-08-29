@@ -48,6 +48,7 @@ type_cheker["loop_minesweeper"] = require('../puzzle_types/loop_minesweeper')
 type_cheker["chat_room"] = require('../puzzle_types/chat_room')
 type_cheker["masyu"] = require('../puzzle_types/masyu')
 type_cheker["gaps"] = require('../puzzle_types/gaps')
+type_cheker["hexa_fence"] = require('../puzzle_types/hexa_fence')
 
 function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({
