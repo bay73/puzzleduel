@@ -134,6 +134,12 @@ basePuzzle.prototype.convertControls = function () {
   this.setButtonEnabled(false);
 }
 
+basePuzzle.prototype.convertEditControls = function () {
+  $(this.controls.revertBtn).show();
+  $(this.controls.saveBtn).show();
+  this.setButtonEnabled(false);
+}
+
 basePuzzle.prototype.setButtonEnabled = function (enabled) {
   $(this.controls.checkBtn).prop('disabled', !enabled);
   $(this.controls.saveBtn).prop('disabled', !enabled);
@@ -188,6 +194,19 @@ basePuzzle.prototype.start = function() {
     .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
 }
 
+basePuzzle.prototype.edit = function() {
+  var self = this;
+  this.removeMessages();
+  if (typeof this.settings != 'undefined' && this.settings.local) {
+    self.showForEdit(this.settings.data);
+    return;
+  }
+  // Read clues from server and show
+  $.getJSON("/puzzles/" + this.id + "/get")
+    .done(data => self.showForEdit(data))
+    .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
+}
+
 basePuzzle.prototype.check = function() {
   var self = this;
   var data = this.collectData();
@@ -209,6 +228,18 @@ basePuzzle.prototype.check = function() {
     .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
 }
 
+basePuzzle.prototype.save = function() {
+  var self = this;
+  var data = this.collectData();
+  data.tag = $(this.controls.tag).val();
+  console.log(data);
+  this.removeMessages();
+  // Read result from server and show.
+  $.post("/puzzles/" + (this.id ? this.id: "0") + "/edit", data)
+    .done(response => this.showSaveResult(response))
+    .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
+}
+
 basePuzzle.prototype.showResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
@@ -216,6 +247,17 @@ basePuzzle.prototype.showResult = function(result) {
     this.showSuccess(__["Congratulations! The puzzle has been solved correctly!"]);
   } else {
     this.showError(__["Sorry, there is a mistake. "] + result.status + ". " + __["Try again."]);
+    this.showErrorCells(result);
+  }
+}
+
+basePuzzle.prototype.showSaveResult = function(result) {
+  this.removeMessages();
+  if (result.status == 'OK') {
+    this.stopTimer();
+    this.showSuccess(__["The puzzle has been saved!"]);
+  } else {
+    this.showError(__["Error while saving. "] + result.status + ".");
     this.showErrorCells(result);
   }
 }
@@ -228,6 +270,14 @@ basePuzzle.prototype.processClueData = function(data) {
   this.steps = [];
   this.convertControls();
   this.startTimer();
+}
+
+basePuzzle.prototype.showForEdit = function (data) {
+  this.clearAll();
+  this.showClues(data);
+  this.initEditController();
+  this.steps = [];
+  this.convertEditControls();
 }
 
 basePuzzle.prototype.togglePencilMarkMode = function() {
@@ -324,9 +374,9 @@ basePuzzle.prototype.initController = function () {
   throw 'initController is not implemented for ' + this.constructor.name + '!';
 }
 
-basePuzzle.prototype.save = function() {
-  // Saves puzzle data
-  throw 'save is not implemented for ' + this.constructor.name + '!';
+basePuzzle.prototype.initEditController = function () {
+  // Attach mouse controllers to the grid
+  throw 'initEditController is not implemented for ' + this.constructor.name + '!';
 }
 
 basePuzzle.prototype.collectData = function() {

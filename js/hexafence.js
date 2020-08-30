@@ -32,4 +32,25 @@ hexaFencePuzzle.prototype.initController = function() {
 }
 
 
+hexaFencePuzzle.prototype.initEditController = function() {
+  hexaPuzzle.prototype.initController.call(this);
+  for (var y = 0; y < this.rows + this.cols - 1; y++) {
+    for (var x = 0; x < 2*this.cols - 1; x++) {
+      if (this.cells[y] && this.cells[y][x]) {
+        this.cells[y][x].isClue = true;
+        this.cells[y][x].clickSwitch = [
+          {},
+          {text: "0", returnValue: "0"},
+          {text: "1", returnValue: "1"},
+          {text: "2", returnValue: "2"},
+          {text: "3", returnValue: "3"},
+          {text: "4", returnValue: "4"},
+          {text: "5", returnValue: "5"},
+          {text: "6", returnValue: "6"}
+        ];
+      }
+    }
+  }
+}
+
 })
