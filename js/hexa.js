@@ -327,7 +327,7 @@ hexaPuzzleEdge.prototype.drawPencilText = function() {
 
 hexaPuzzleEdge.prototype.isPointInside = function(position) {
   var middle = this.center();
-  return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/10;
+  return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/6;
 }
 
 
@@ -351,7 +351,7 @@ hexaPuzzleNode.prototype.center = function() {
 
 hexaPuzzleNode.prototype.isPointInside = function(position) {
   var point = this.center();
-  return this.distanceSquare(position, point) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/10;
+  return this.distanceSquare(position, point) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/6;
 }
 
 hexaPuzzleNode.prototype.render = function() {
