@@ -175,5 +175,7 @@
 	"Each column should have exactly two circles": "В каждом столбце должно быть два кружка",
 	"Cells with circles shouldn't touch": "Клетки с кружками не должны касаться",
 	"Wrong number of cells between circles in the row": "Неверное число пустых клеток между кружками в строке",
-	"Wrong number of cells between circles in the column": "Неверное число пустых клеток между кружками в столбце"
+	"Wrong number of cells between circles in the column": "Неверное число пустых клеток между кружками в столбце",
+	"An island must consist of 6 cells": "Остров должен состоять из 6 ячеек",
+	"There should be 6 white islands": "Должно быть 6 белых островов"
 }

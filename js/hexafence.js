@@ -77,7 +77,7 @@ hexaFencePuzzle.prototype.initEditController = function() {
       for (var x = 0; x < 2*this.cols - 1; x++) {
         if (this.cells[y] && this.cells[y][x]) {
           this.cells[y][x].isClue = true;
-          this.cells[y][x].clickSwitch = [{},{color: this.colorSchema.textColor, returnValue: "1"}];
+          this.cells[y][x].clickSwitch = [{},{color: this.colorSchema.clueColor, returnValue: "1"}];
           for (var i=0; i<6; i++){
             if (this.edges[y][x][i].allCells.length==1) {
               this.edges[y][x][i].switchToData({color: this.colorSchema.gridColor});

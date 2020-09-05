@@ -1,6 +1,4 @@
-if (typeof define !== 'function') {
-  const util = require('./util');
-}
+const util = require('./util');
 
 const Checker = {
 check:function(dimension, clues, data){
@@ -33,6 +31,8 @@ check:function(dimension, clues, data){
     }
   }
 
+
+  var islandCount = 0;
   for (var y = 0; y < dim.rows + dim.cols - 1; y++) {
     for (var x = 0; x < 2*dim.cols - 1; x++) {
       if (y - x < dim.rows && x - y < dim.cols) {
@@ -44,10 +44,18 @@ check:function(dimension, clues, data){
               status: "An island must consist of 6 cells",
               errors: island
             };
+          } else {
+            islandCount++;
           }
         }
       }
     }
+  }
+  if (islandCount != 6) {
+    return {
+      status: "There should be 6 white islands",
+      errors: []
+    };
   }
   
   return {status: "OK"};
@@ -55,7 +63,7 @@ check:function(dimension, clues, data){
 paint: function(dim, cells, x, y, island){
   if (cells[y] && cells[y][x]) {
     if (!cells[y][x].black && !cells[y][x].used) {
-      island.push(Util.coord(x,y));
+      island.push(util.coord(x,y));
       cells[y][x].used = true;
       Checker.paint(dim, cells, x-1, y, island)
       Checker.paint(dim, cells, x, y-1, island)
