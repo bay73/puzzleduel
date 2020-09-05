@@ -89,4 +89,18 @@ hexaFencePuzzle.prototype.initEditController = function() {
   }
 }
 
+hexaFencePuzzle.prototype.decodeClue = function(value) {
+  if (this.typeCode == "hexa_fence") {
+    return {text: value};
+  }
+  if (this.typeCode == "hexa_islands") {
+    if (value=='1') {
+      return {color: this.colorSchema.clueColor};
+    }
+    if (value=='0') {
+      return {image: "cross"};
+    }
+  }
+}
+
 })

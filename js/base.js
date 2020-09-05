@@ -57,9 +57,9 @@ basePuzzle.prototype.render = function(snap) {
 basePuzzle.prototype.chooseColorSchema = function() {
   if (this.settings.theme=="white") {
     return {
-      textColor: "#18254d",
+      textColor: "#10153d",
       lineColor: "#18254d",
-      clueColor: "#294b83",
+      clueColor: "#203063",
       traceColor: "#5a70a6",
       gridColor: "#000",
       bgColor: "#fff",
@@ -79,7 +79,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
     return {
       textColor: "#00121d",
       lineColor: "#00121d",
-      clueColor: "#073642",
+      clueColor: "#042632",
       traceColor: "#777777",
       gridColor: "#000",
       bgColor: "#fff",
@@ -389,6 +389,11 @@ basePuzzle.prototype.initEditController = function () {
 basePuzzle.prototype.collectData = function() {
   // Collect state of puzzle elements for check solution. 
   throw 'collectData is not implemented for ' + this.constructor.name + '!';
+}
+
+basePuzzle.prototype.decodeClue = function(value) {
+  // Convert clue value to data for element.
+  throw 'decodeClue is not implemented for ' + this.constructor.name + '!';
 }
 
 basePuzzle.prototype.showErrorCells = function(result) {

@@ -144,15 +144,6 @@ gridElement.prototype.draw = function() {
     this.elements.path = this.render();
   }
   this.clearElements();
-  if (this.data.color) {
-    this.elements.color = this.drawColor();
-  }
-  if (this.data.image) {
-    this.elements.image = this.drawImage();
-  }
-  if (this.data.text) {
-    this.elements.text = this.drawText();
-  }
   if (this.pencilData && this.pencilData.color) {
     this.elements.pencilColor = this.drawPencilColor();
   }
@@ -161,6 +152,15 @@ gridElement.prototype.draw = function() {
   }
   if (this.pencilData && this.pencilData.text) {
     this.elements.pencilText = this.drawPencilText();
+  }
+  if (this.data.color) {
+    this.elements.color = this.drawColor();
+  }
+  if (this.data.image) {
+    this.elements.image = this.drawImage();
+  }
+  if (this.data.text) {
+    this.elements.text = this.drawText();
   }
 }
 

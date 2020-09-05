@@ -127,7 +127,7 @@ hexaPuzzle.prototype.showClues = function(data) {
     var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
     var y = parseInt(key.substring(1)) - 1;
     if (this.cells[y] && this.cells[y][x]) {
-      this.cells[y][x].setClue({text: value});
+      this.cells[y][x].setClue(this.decodeClue(value));
     }
   }
 }
