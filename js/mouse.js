@@ -7,11 +7,22 @@ var mouseController = function(elements){
 mouseController.prototype.attachEvents = function(snap) {
   this.snap = snap;
   var self = this;
-  this.snap.node.addEventListener("mousedown", function(event){self.onMouseDown(event)});
-  this.snap.node.addEventListener("touchstart", function(event){self.onMouseDown(event)});
-  this.snap.node.addEventListener("mouseup", function(event){self.onMouseUp(event)});
-  this.snap.node.addEventListener("touchend", function(event){self.onMouseUp(event)});
-  this.snap.node.addEventListener("touchcancel", function(event){self.onMouseUp(event)});
+  self.mouseDown = function(event){self.onMouseDown(event)};
+  self.mouseUp = function(event){self.onMouseUp(event)};
+  this.snap.node.addEventListener("mousedown", self.mouseDown);
+  this.snap.node.addEventListener("touchstart", self.mouseDown);
+  this.snap.node.addEventListener("mouseup", self.mouseUp);
+  this.snap.node.addEventListener("touchend", self.mouseUp);
+  this.snap.node.addEventListener("touchcancel", self.mouseUp);
+}
+
+mouseController.prototype.detachEvents = function() {
+  var self = this;
+  this.snap.node.removeEventListener("mousedown", self.mouseDown);
+  this.snap.node.removeEventListener("touchstart", self.mouseDown);
+  this.snap.node.removeEventListener("mouseup", self.mouseUp);
+  this.snap.node.removeEventListener("touchend", self.mouseUp);
+  this.snap.node.removeEventListener("touchcancel", self.mouseUp);
 }
 
 mouseController.prototype.onMouseDown = function(event) {

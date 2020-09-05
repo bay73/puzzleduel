@@ -239,7 +239,6 @@ basePuzzle.prototype.save = function() {
   var self = this;
   var data = this.collectData();
   data.tag = $(this.controls.tag).val();
-  console.log(data);
   this.removeMessages();
   // Read result from server and show.
   $.post("/puzzles/" + (this.id ? this.id: "0") + "/edit", data)

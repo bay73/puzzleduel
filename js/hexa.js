@@ -90,6 +90,9 @@ hexaPuzzle.prototype.createBoard = function() {
 }
 
 hexaPuzzle.prototype.initController = function () {
+  if (typeof this.controller != 'undefined') {
+    this.controller.detachEvents();
+  }
   this.controller = new mouseController(this.elements);
   this.controller.attachEvents(this.snap);
 }
