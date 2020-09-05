@@ -48,6 +48,25 @@ hexaFencePuzzle.prototype.initController = function() {
       }
     }
   }
+  if (this.typeCode == "hexa_paint") {
+    for (var y = 0; y < this.rows + this.cols - 1; y++) {
+      for (var x = 0; x < 2*this.cols - 1; x++) {
+        if (this.cells[y] && this.cells[y][x]) {
+          if (this.cells[y][x].isClue) {
+            value = this.cells[y][x].data.text;
+            this.cells[y][x].clickSwitch = [{text: value},{text: value, color: "grey", returnValue: 1},{text: value, image: "white_circle"}];
+          } else {
+            this.cells[y][x].clickSwitch = [{},{color: "grey", returnValue: 1},{image: "white_circle"}];
+          }
+          for (var i=0; i<6; i++){
+            if (this.edges[y][x][i].allCells.length==1) {
+              this.edges[y][x][i].switchToData({color: this.colorSchema.gridColor});
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 
@@ -87,10 +106,33 @@ hexaFencePuzzle.prototype.initEditController = function() {
       }
     }
   }
+  if (this.typeCode == "hexa_paint") {
+    for (var y = 0; y < this.rows + this.cols - 1; y++) {
+      for (var x = 0; x < 2*this.cols - 1; x++) {
+        if (this.cells[y] && this.cells[y][x]) {
+          this.cells[y][x].isClue = true;
+          this.cells[y][x].clickSwitch = [
+            {},
+            {text: "0", returnValue: "0"},
+            {text: "1", returnValue: "1"},
+            {text: "2", returnValue: "2"},
+            {text: "3", returnValue: "3"},
+            {text: "4", returnValue: "4"},
+            {text: "5", returnValue: "5"},
+            {text: "6", returnValue: "6"},
+            {text: "7", returnValue: "7"}
+          ];
+        }
+      }
+    }
+  }
 }
 
 hexaFencePuzzle.prototype.decodeClue = function(value) {
   if (this.typeCode == "hexa_fence") {
+    return {text: value};
+  }
+  if (this.typeCode == "hexa_paint") {
     return {text: value};
   }
   if (this.typeCode == "hexa_islands") {

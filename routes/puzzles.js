@@ -50,6 +50,7 @@ type_cheker["masyu"] = require('../puzzle_types/masyu')
 type_cheker["gaps"] = require('../puzzle_types/gaps')
 type_cheker["hexa_fence"] = require('../puzzle_types/hexa_fence')
 type_cheker["hexa_islands"] = require('../puzzle_types/hexa_islands')
+type_cheker["hexa_paint"] = require('../puzzle_types/hexa_paint')
 
 function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({
