@@ -2,6 +2,7 @@ var gridElement = function(puzzle){
   // Element of the grid.
   this.puzzle = puzzle;
   this.isClue = false;
+  this.isFinal = false;
   this.data = {};
   this.elements = {};
   this.data = {text: null, image: null, color: null, textColor: null};
@@ -21,8 +22,10 @@ gridElement.prototype.distanceSquare = function(point1, point2) {
 
 // Data control functions
 gridElement.prototype.clearData = function() {
-  this.data = {text: null, image: null, color: null, textColor: null};
-  this.redraw();
+  if (!this.isFinal) {
+    this.data = {text: null, image: null, color: null, textColor: null};
+    this.redraw();
+  }
 }
 
 gridElement.prototype.setClue = function(clueData) {

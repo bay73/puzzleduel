@@ -7,6 +7,24 @@ hexaFencePuzzle = function(puzzleData, controls, settings) {
 Object.setPrototypeOf(hexaFencePuzzle.prototype, hexaPuzzle.prototype);
 
 
+hexaFencePuzzle.prototype.createBoard = function() {
+  hexaPuzzle.prototype.createBoard.call(this);
+  if (this.typeCode != "hexa_fence") {
+    for (var y = 0; y < this.rows + this.cols - 1; y++) {
+      for (var x = 0; x < 2*this.cols - 1; x++) {
+        if (this.cells[y] && this.cells[y][x]) {
+          for (var i=0; i<6; i++){
+            if (this.edges[y][x][i].allCells.length==1) {
+              this.edges[y][x][i].isFinal = true;
+              this.edges[y][x][i].data = {text: null, image: null, color: this.colorSchema.gridColor, textColor: null};
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 hexaFencePuzzle.prototype.initController = function() {
   hexaPuzzle.prototype.initController.call(this);
   if (this.typeCode == "hexa_fence") {
@@ -39,11 +57,6 @@ hexaFencePuzzle.prototype.initController = function() {
             this.cells[y][x].clickSwitch = [{},{color: this.colorSchema.textColor, returnValue: "1"},{image: "cross"}];
             this.cells[y][x].pencilClickSwitch = [{},{color: this.colorSchema.textColor},{image: "cross"}];
           }
-          for (var i=0; i<6; i++){
-            if (this.edges[y][x][i].allCells.length==1) {
-              this.edges[y][x][i].switchToData({color: this.colorSchema.gridColor});
-            }
-          }
         }
       }
     }
@@ -57,11 +70,6 @@ hexaFencePuzzle.prototype.initController = function() {
             this.cells[y][x].clickSwitch = [{text: value},{text: value, color: "grey", returnValue: 1},{text: value, image: "white_circle"}];
           } else {
             this.cells[y][x].clickSwitch = [{},{color: "grey", returnValue: 1},{image: "white_circle"}];
-          }
-          for (var i=0; i<6; i++){
-            if (this.edges[y][x][i].allCells.length==1) {
-              this.edges[y][x][i].switchToData({color: this.colorSchema.gridColor});
-            }
           }
         }
       }

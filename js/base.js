@@ -32,13 +32,13 @@ basePuzzle.prototype.render = function(snap) {
       "strokeWidth": 1,
     },
     edge: {
-      "strokeWidth": this.size.unitSize < 32 ? 8: Math.round(this.size.unitSize/4),
+      "strokeWidth": this.size.unitSize < 36 ? 6: Math.round(this.size.unitSize/6),
       "stroke-linecap": "round"
     },
     pencilEdge: {
-      "strokeWidth": this.size.unitSize < 30 ? 5: Math.round(this.size.unitSize/6),
+      "strokeWidth": this.size.unitSize < 32 ? 4: Math.round(this.size.unitSize/8),
       "stroke-linecap": "round",
-      "stroke-dasharray": "0 " + (this.size.unitSize < 30 ? 6: Math.round(this.size.unitSize/5))
+      "stroke-dasharray": "0 " + (this.size.unitSize < 35 ? 5: Math.round(this.size.unitSize/7))
     },
     node: {
     },
