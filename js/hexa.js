@@ -230,9 +230,13 @@ hexaPuzzleCell.prototype.render = function() {
 }
 
 hexaPuzzleCell.prototype.drawColor = function() {
-  var path = this.puzzle.snap.polygon(this.cellCorners().flatMap(corner => [corner.x, corner.y]));
-  path.attr({fill: this.data.color});
-  return path;
+  var attr = Object.assign({}, this.puzzle.gridProperty.cell);
+  Object.assign(attr, {fill: this.data.color});
+  this.elements.path.attr(attr);
+}
+
+hexaPuzzleCell.prototype.clearColor = function() {
+  this.elements.path.attr(this.puzzle.gridProperty.cell);
 }
 
 hexaPuzzleCell.prototype.drawImage = function() {
@@ -241,14 +245,18 @@ hexaPuzzleCell.prototype.drawImage = function() {
 
 hexaPuzzleCell.prototype.drawText = function() {
   var text = this.snapText(this.center(), this.puzzle.size.unitSize, this.data.text);
-  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.defaultColor});
+  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor});
   return text;
 }
 
 hexaPuzzleCell.prototype.drawPencilColor = function() {
-  var path = this.puzzle.snap.polygon(this.cellCorners().flatMap(corner => [corner.x, corner.y]));
-  path.attr(Object.assign({fill: this.data.color}, this.puzzle.gridProperty.pencilCell));
-  return path;
+  var attr = Object.assign({}, this.puzzle.gridProperty.pencilCell);
+  Object.assign(attr, {fill: this.pencilData.color});
+  this.elements.path.attr(attr);
+}
+
+hexaPuzzleCell.prototype.clearPencilColor = function() {
+  this.elements.path.attr(this.puzzle.gridProperty.cell);
 }
 
 hexaPuzzleCell.prototype.drawPencilImage = function() {
@@ -294,8 +302,16 @@ hexaPuzzleEdge.prototype.drawColor = function() {
   var start = corners[this.side];
   var end = corners[(this.side+1)%6];
   var path = this.puzzle.snap.line(start.x, start.y,  end.x, end.y);
-  path.attr(Object.assign({stroke: this.data.color}, this.puzzle.gridProperty.edge));
+  var attr = Object.assign({}, this.puzzle.gridProperty.edge);
+  Object.assign(attr, {stroke: this.data.color});
+  path.attr(attr);
   return path;
+}
+
+hexaPuzzleEdge.prototype.clearColor = function() {
+  if (this.elements.color) {
+    this.elements.color.remove();
+  }
 }
 
 hexaPuzzleEdge.prototype.drawImage = function() {
@@ -304,7 +320,7 @@ hexaPuzzleEdge.prototype.drawImage = function() {
 
 hexaPuzzleEdge.prototype.drawText = function() {
   var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.6, this.data.text);
-  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.defaultColor});
+  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor});
   return text;
 }
 
@@ -313,8 +329,16 @@ hexaPuzzleEdge.prototype.drawPencilColor = function() {
   var start = corners[this.side];
   var end = corners[(this.side+1)%6];
   var path = this.puzzle.snap.line(start.x, start.y,  end.x, end.y);
-  path.attr(Object.assign({stroke: this.pencilData.color}, this.puzzle.gridProperty.pencilEdge));
+  var attr = Object.assign({}, this.puzzle.gridProperty.pencilEdge);
+  Object.assign(attr, {stroke: this.pencilData.color});
+  path.attr(attr);
   return path;
+}
+
+hexaPuzzleEdge.prototype.clearPencilColor = function() {
+  if (this.elements.color) {
+    this.elements.pencilColor.remove();
+  }
 }
 
 hexaPuzzleEdge.prototype.drawPencilImage = function() {
@@ -361,8 +385,16 @@ hexaPuzzleNode.prototype.render = function() {
 hexaPuzzleNode.prototype.drawColor = function() {
   var point = this.center();
   var path = this.puzzle.snap.circle(point.x, point.y, this.puzzle.size.unitSize*0.2);
-  path.attr(Object.assign({fill: this.data.color}, this.puzzle.gridProperty.node));
+  var attr = Object.assign({}, this.puzzle.gridProperty.node);
+  Object.assign(attr, {fill: this.data.color});
+  path.attr(attr);
   return path;
+}
+
+hexaPuzzleNode.prototype.clearColor = function() {
+  if (this.elements.color) {
+    this.elements.color.remove();
+  }
 }
 
 hexaPuzzleNode.prototype.drawImage = function() {
@@ -371,15 +403,22 @@ hexaPuzzleNode.prototype.drawImage = function() {
 
 hexaPuzzleNode.prototype.drawText = function() {
   var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.4, this.data.text);
-  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.defaultColor});
+  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor});
   return text;
 }
 
 hexaPuzzleNode.prototype.drawPencilColor = function() {
   var point = this.center();
   var path = this.puzzle.snap.circle(point.x, point.y, this.puzzle.size.unitSize*0.1);
-  path.attr(Object.assign({fill: this.pencilData.color}, this.puzzle.gridProperty.pencilNode));
+  var attr = Object.assign({}, this.puzzle.gridProperty.pencilNode);
+  Object.assign(attr, {fill: this.pencilData.color});
   return path;
+}
+
+hexaPuzzleNode.prototype.clearPencilColor = function() {
+  if (this.elements.color) {
+    this.elements.color.remove();
+  }
 }
 
 hexaPuzzleNode.prototype.drawPencilImage = function() {

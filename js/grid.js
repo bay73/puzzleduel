@@ -129,12 +129,9 @@ gridElement.prototype.snapText = function(center, size, text) {
   }
   var textElement = this.puzzle.snap.text(
     center.x-width/2, center.y + size*0.35, text);
-  textElement.attr(
-    Object.assign({
-    "font-size": size,
-    "textLength": width,
-    },
-    this.puzzle.gridProperty.font));
+  var attr = Object.assign({}, this.puzzle.gridProperty.font);
+  Object.assign(attr, {"font-size": size,"textLength": width });
+  textElement.attr(attr);
   return textElement;
 }
 
@@ -182,14 +179,12 @@ gridElement.prototype.clearElements = function() {
       }
     }
   }
-  clearElementIfExists(this.elements.color);
-  this.elements.color = null;
+  this.clearColor();
   clearElementIfExists(this.elements.image);
   this.elements.image = null;
   clearElementIfExists(this.elements.text);
   this.elements.text = null;
-  clearElementIfExists(this.elements.pencilColor);
-  this.elements.pencilColor = null;
+  this.clearPencilColor();
   clearElementIfExists(this.elements.pencilImage);
   this.elements.pencilImage = null;
   clearElementIfExists(this.elements.pencilTex);
@@ -252,6 +247,11 @@ gridElement.prototype.drawColor = function() {
   throw 'drawColor is not implemented for ' + this.constructor.name + '!';
 }
 
+gridElement.prototype.clearColor = function() {
+  // Paint the element. Returns the snap element.
+  throw 'clearColor is not implemented for ' + this.constructor.name + '!';
+}
+
 gridElement.prototype.drawImage = function() {
   // Put image to the element. Returns the snap element.
   throw 'drawImage is not implemented for ' + this.constructor.name + '!';
@@ -265,6 +265,11 @@ gridElement.prototype.drawText = function() {
 gridElement.prototype.drawPencilColor = function() {
   // Paint pencil color for the element. Returns the snap element.
   throw 'drawPencilColor is not implemented for ' + this.constructor.name + '!';
+}
+
+gridElement.prototype.clearPencilColor = function() {
+  // Paint pencil color for the element. Returns the snap element.
+  throw 'clearPencilColor is not implemented for ' + this.constructor.name + '!';
 }
 
 gridElement.prototype.drawPencilImage = function() {

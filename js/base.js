@@ -21,11 +21,15 @@ basePuzzle.prototype.render = function(snap) {
   this.gridProperty = {
     cell: {
       "fill": this.colorSchema.bgColor,
+      "fill-opacity": 1,
       "stroke": this.colorSchema.gridColor,
       "strokeWidth": 1,
     },
     pencilCell: {
-      "fill-opacity": 0.3
+      "fill": this.colorSchema.bgColor,
+      "fill-opacity": 0.3,
+      "stroke": this.colorSchema.gridColor,
+      "strokeWidth": 1,
     },
     edge: {
       "strokeWidth": this.size.unitSize < 48 ? 6: this.size.unitSize/8,
@@ -53,28 +57,31 @@ basePuzzle.prototype.render = function(snap) {
 basePuzzle.prototype.chooseColorSchema = function() {
   if (this.settings.theme=="white") {
     return {
-      defaultColor: "#343a40",
-      clueColor: "#296bb3",
-      traceColor: "#9aa0a6",
-      gridColor: "#aaa",
+      textColor: "#18254d",
+      lineColor: "#18254d",
+      clueColor: "#294b83",
+      traceColor: "#5a70a6",
+      gridColor: "#000",
       bgColor: "#fff",
       errorColor: "#efa4a7",
     }
   } else if (this.settings.theme=="contrast") {
     return {
-      defaultColor: "#008959",
-      clueColor: "#000000",
+      textColor: "#101010",
+      lineColor: "#008959",
+      clueColor: "#404040",
       traceColor: "#66efbf",
-      gridColor: "#aaa",
+      gridColor: "#000",
       bgColor: "#fff",
       errorColor: "#f52b14",
     }
   } else {
     return {
-      defaultColor: "#000000",
+      textColor: "#00121d",
+      lineColor: "#00121d",
       clueColor: "#073642",
       traceColor: "#777777",
-      gridColor: "#aaa",
+      gridColor: "#000",
       bgColor: "#fff",
       errorColor: "#e72381",
     }
