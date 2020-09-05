@@ -336,7 +336,7 @@ hexaPuzzleEdge.prototype.drawPencilColor = function() {
 }
 
 hexaPuzzleEdge.prototype.clearPencilColor = function() {
-  if (this.elements.color) {
+  if (this.elements.pencilColor) {
     this.elements.pencilColor.remove();
   }
 }
@@ -351,7 +351,7 @@ hexaPuzzleEdge.prototype.drawPencilText = function() {
 
 hexaPuzzleEdge.prototype.isPointInside = function(position) {
   var middle = this.center();
-  return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/6;
+  return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/8;
 }
 
 
@@ -375,7 +375,7 @@ hexaPuzzleNode.prototype.center = function() {
 
 hexaPuzzleNode.prototype.isPointInside = function(position) {
   var point = this.center();
-  return this.distanceSquare(position, point) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/6;
+  return this.distanceSquare(position, point) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/8;
 }
 
 hexaPuzzleNode.prototype.render = function() {
@@ -416,8 +416,8 @@ hexaPuzzleNode.prototype.drawPencilColor = function() {
 }
 
 hexaPuzzleNode.prototype.clearPencilColor = function() {
-  if (this.elements.color) {
-    this.elements.color.remove();
+  if (this.elements.pencilColor) {
+    this.elements.pencilColor.remove();
   }
 }
 
