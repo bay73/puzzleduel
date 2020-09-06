@@ -71,17 +71,17 @@
                   <% } %>
                 </th>
                 <th class="text-center align-baseline">
-                  <%= __('Rating') %>
-                  <% if(sortColumn != "rating") { %>
-                  <a class="btn" href="?sort=rating">
+                  <%= __('Success rate') %>
+                  <% if(sortColumn != "success") { %>
+                  <a class="btn" href="?sort=success">
                     <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
                   </a>
                   <% } %>
                 </th>
-                <th class="d-none d-sm-table-cell text-center align-baseline">
-                  <%= __('Success rate') %>
-                  <% if(sortColumn != "success") { %>
-                  <a class="btn" href="?sort=success">
+                <th class="text-center align-baseline">
+                  <%= __('Rating') %>
+                  <% if(sortColumn != "rating") { %>
+                  <a class="btn" href="?sort=rating">
                     <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
                   </a>
                   <% } %>
@@ -104,10 +104,10 @@
               <% }).forEach(function(rating) { %>
               <tr>
                 <td><%= rating.userName %></td>
-                <td class="text-center"><%= Math.round(rating.value) %></td>
-                <td class="d-none d-sm-table-cell text-center" data-toggle="tooltip" title="<%= rating.totalSolved + "/" +  rating.totalStarted %>">
+                <td class="text-center" data-toggle="tooltip" title="<%= rating.totalSolved + "/" +  rating.totalStarted %>">
                   <%= rate(rating) %>%
                 </td>
+                <td class="text-center"><%= Math.round(rating.value) %></td>
                 <td class="d-none d-sm-table-cell text-center <%= rating.change < 0?'text-warning':(rating.change > 0?'text-success':'')%>"
                    data-toggle="tooltip" title="<%= rating.details %>"
                 >
