@@ -80,7 +80,7 @@ gridElement.prototype.findCurrentPencil = function(dataArray) {
 gridElement.prototype.processClick = function() {
   // Element get click event.
   if (this.puzzle.pencilMarkMode) {
-    if (this.clickSwitch != null) {
+    if (this.pencilClickSwitch != null) {
       var currentIndex = this.findCurrentPencil(this.pencilClickSwitch);
       this.setPencilData(this.pencilClickSwitch[(currentIndex + 1)%this.clickSwitch.length]);
     }
@@ -190,7 +190,7 @@ gridElement.prototype.clearElements = function() {
   this.clearPencilColor();
   clearElementIfExists(this.elements.pencilImage);
   this.elements.pencilImage = null;
-  clearElementIfExists(this.elements.pencilTex);
+  clearElementIfExists(this.elements.pencilText);
   this.elements.pencilText = null;
 }
 

@@ -429,7 +429,7 @@ hexaPuzzleNode.prototype.drawPencilImage = function() {
 }
 
 hexaPuzzleNode.prototype.drawPencilText = function() {
-  return this.snapText(this.center(), 0.4*this.puzzle.size.unitSize*0.2, this.pencilData.text);
+  return this.snapText(this.center(), this.puzzle.size.unitSize*0.2, this.pencilData.text);
 }
 
 hexaPuzzleNode.prototype.processDragEnd = function(startElement) {
