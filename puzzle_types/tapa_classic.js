@@ -88,8 +88,10 @@ checkTapaClue: function(clue, position, cells) {
     prevCell = cell;
   }
   if (prevCell == 'black' && firstCell == 'black') {
-    painted[0]+=painted[paintedCount];
-    painted.pop();
+    if (paintedCount != 0) {
+      painted[0]+=painted[paintedCount];
+      painted.pop();
+    }
   }
   painted.sort();
   return (clue == painted.join("_"))
