@@ -33,7 +33,7 @@ router.get('/:ratingdate', async (req, res, next) => {
           details: details
         };
       }),
-      sortColumn: req.query.sort || "success"
+      sortColumn: req.query.sort || "rating"
     }); 
   } catch (e) {
     next(e);
