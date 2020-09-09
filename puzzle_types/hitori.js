@@ -80,7 +80,7 @@ findRepeat: function(cells, positionsToCheck){
     for (var b = a + 1; b < positionsToCheck.length; b++) {
       var colorA = cells[positionsToCheck[a].y][positionsToCheck[a].x];
       var colorB = cells[positionsToCheck[b].y][positionsToCheck[b].x];
-      if (colorA != null && colorB != null && colorA == colorB) {
+      if (colorA != null && colorB != null colorA != "" && colorB != "" && colorA == colorB) {
         return [util.coord(positionsToCheck[a].x,positionsToCheck[a].y), util.coord(positionsToCheck[b].x,positionsToCheck[b].y)];
       }
     }
