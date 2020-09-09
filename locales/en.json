@@ -176,5 +176,7 @@
 	"Wrong number of cells between circles in the row": "Wrong number of cells between circles in the row",
 	"Wrong number of cells between circles in the column": "Wrong number of cells between circles in the column",
 	"An island must consist of 6 cells": "An island must consist of 6 cells",
-	"There should be 6 white islands": "There should be 6 white islands"
+	"There should be 6 white islands": "There should be 6 white islands",
+	"Unpainted cells should contain different digits in row": "Unpainted cells should contain different digits in row",
+	"Blackened cells shouldn't sharing an edge": "Blackened cells shouldn't sharing an edge"
 }

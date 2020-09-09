@@ -8,7 +8,6 @@ Object.setPrototypeOf(squarePuzzle.prototype, basePuzzle.prototype);
 
 squarePuzzle.prototype.parseDimension = function() {
   var dimensions = this.dimension.split("x");
-  // Hexa grid has vertical simmetrical.
   // rows - size of the vertical sides of the grid
   // cols - size of top (and bottom) inclined sedes
   this.rows = parseInt(dimensions[1]);
@@ -131,13 +130,13 @@ squarePuzzle.prototype.collectData = function() {
     var value = element.getValue();
     if (value != null) {
       var coord = element.getCoordinates();
-      if (element instanceof hexaPuzzleCell) {
+      if (element instanceof squarePuzzleCell) {
          data[coord] = value;
       }
-      if (element instanceof hexaPuzzleEdge) {
+      if (element instanceof squarePuzzleEdge) {
          edgeData[coord] = value;
       }
-      if (element instanceof hexaPuzzleNode) {
+      if (element instanceof squarePuzzleNode) {
          nodeData[coord] = value;
       }
     }
@@ -161,7 +160,7 @@ squarePuzzle.prototype.showErrorCells = function(result) {
 }
 
 
-// base element  of hexa grid ///////////////////////////////////////////
+// base element  of square grid ///////////////////////////////////////////
 var squareGridElement = function(puzzle, col, row) {
   gridElement.call(this, puzzle);
   this.col = col;

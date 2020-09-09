@@ -23,18 +23,20 @@ squarePuzzleType.prototype.createBoard = function() {
 
 squarePuzzleType.prototype.initController = function() {
   squarePuzzle.prototype.initController.call(this);
-  for (var y = 0; y < this.rows; y++) {
-    for (var x = 0; x < this.cols; x++) {
-      this.cells[y][x].clickSwitch = [{}, {text: "A"},{image: "cross"},{color: "grey"}];
-      this.cells[y][x].pencilClickSwitch = [{}, {text: "A"},{image: "cross"},{color: "grey"}];
-      for (var i=0; i<4; i++){
-        this.edges[y][x][i].clickSwitch = [{},{color: this.colorSchema.lineColor},{image: "cross"},{text: "B"}];
-        this.edges[y][x][i].pencilClickSwitch = [{},{color: this.colorSchema.lineColor},{image: "cross"},{text: "B"}];
-        this.nodes[y][x][i].clickSwitch = [{},{color: this.colorSchema.lineColor},{image: "cross"},{text: "B"}];
-        this.nodes[y][x][i].pencilClickSwitch = [{},{color: this.colorSchema.lineColor},{image: "cross"},{text: "B"}];
-        this.edges[y][x][i].dragSwitch = [{},{color: this.colorSchema.lineColor}];
-        this.edges[y][x][i].pencilDragSwitch = this.edges[y][x][i].dragSwitch;
-        this.nodes[y][x][i].dragProcessor = true;
+  if (this.typeCode == "hitori") {
+    for (var y = 0; y < this.rows; y++) {
+      for (var x = 0; x < this.cols; x++) {
+        if (this.cells[y][x].data.text) {
+          value = this.cells[y][x].data.text;
+          this.cells[y][x].clickSwitch = [
+            {text: value},
+            {text: value, color: "303030", returnValue: "1"},
+            {text: value, image: "white_circle"}
+          ];
+        } else {
+          this.cells[y][x].clickSwitch = [{},{color: "303030", returnValue: "1"},{image: "white_circle"}];
+        }
+        this.cells[y][x].pencilClickSwitch = [{},{color: "303030"},{image: "white_circle"}];
       }
     }
   }
@@ -43,9 +45,23 @@ squarePuzzleType.prototype.initController = function() {
 
 squarePuzzleType.prototype.initEditController = function() {
   squarePuzzle.prototype.initController.call(this);
+  if (this.typeCode == "hitori") {
+    for (var y = 0; y < this.rows; y++) {
+      for (var x = 0; x < this.cols; x++) {
+        this.cells[y][x].isClue = true;
+        this.cells[y][x].clickSwitch = [{}];
+        for (var i=0;i<16;i++) {
+          this.cells[y][x].clickSwitch.push({text: i.toString(), returnValue: i.toString()})
+        }
+      }
+    }
+  }
 }
 
 squarePuzzleType.prototype.decodeClue = function(value) {
+  if (this.typeCode == "hitori") {
+    return {text: value};
+  }
 }
 
 })

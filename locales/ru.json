@@ -177,5 +177,7 @@
 	"Wrong number of cells between circles in the row": "Неверное число пустых клеток между кружками в строке",
 	"Wrong number of cells between circles in the column": "Неверное число пустых клеток между кружками в столбце",
 	"An island must consist of 6 cells": "Остров должен состоять из 6 ячеек",
-	"There should be 6 white islands": "Должно быть 6 белых островов"
+	"There should be 6 white islands": "Должно быть 6 белых островов",
+	"Unpainted cells should contain different digits in row": "Числа в незакрашеных клетках не должны повторяться в строках и столбцах",
+	"Blackened cells shouldn't sharing an edge": "Закрашеные клетки не могут касаться стороной"
 }
