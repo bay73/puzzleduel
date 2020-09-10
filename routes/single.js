@@ -81,7 +81,7 @@ router.get('/:puzzleid/author', ensureAuthenticated, async (req, res, next) => {
     if(type) {
       puzzleObj.type = type.toObject();
     }
-    const times = await UserSolvingTime.find({puzzleId: puzzle.code}).sort("solvingTime");
+    const times = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: true}}).sort("solvingTime");
     res.render('edit', {
       user: req.user,
       puzzle: puzzleObj,

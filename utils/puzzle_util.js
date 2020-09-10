@@ -18,6 +18,7 @@ module.exports.bestSolvingTimeMap = async function(includeHidden) {
   if (!includeHidden) {
     filter = {
       errCount : 0,
+      solvingTime: {$exists: true},
       $or: [
         {hidden: false},
         {hidden: {$exists: false}}

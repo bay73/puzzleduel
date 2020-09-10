@@ -6,6 +6,7 @@ async function recountPuzzle(puzzle) {
   var results = [];
   const times = await UserSolvingTime.find({
     puzzleId: puzzleId,
+    solvingTime: {$exists: true},
     $or: [
       {hidden: false},
       {hidden: {$exists: false}}

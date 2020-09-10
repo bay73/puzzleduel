@@ -109,7 +109,8 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
     var userData = await User.find();
     userData.forEach(user => userMap[user._id] = user.name);
 
-    const times = await UserSolvingTime.find({puzzleId: puzzle.code}).sort("solvingTime");
+    const times = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: true}}).sort("solvingTime");
+    const notFinished1 = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: false}}, "userName").distinct("userName");;
     const finished = await UserActionLog.find({puzzleId: puzzle.code, action: "solved"}, "userId").distinct("userId");
     const notFinished = await UserActionLog.find({puzzleId: puzzle.code, userId: {$nin: finished}}, "userId").distinct("userId");
     res.render('times', {
@@ -129,7 +130,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
             errors: time.errCount
           };
         }),
-      notFinished: notFinished.map(log => userMap[log])
+      notFinished: Array.from(new Set(notFinished.map(log => userMap[log]).concat(notFinished1)))
     });
   } catch (e) {
     next(e)

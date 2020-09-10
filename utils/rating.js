@@ -7,6 +7,7 @@ const User = require('../models/User');
 async function singlePuzzleRating(puzzleId) {
   const times = await UserSolvingTime.find({
     puzzleId: puzzleId,
+    solvingTime: {$exists: true},
     $or: [
       {hidden: false},
       {hidden: {$exists: false}}
