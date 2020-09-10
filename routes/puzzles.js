@@ -53,7 +53,7 @@ type_cheker["hexa_islands"] = require('../puzzle_types/hexa_islands')
 type_cheker["hexa_paint"] = require('../puzzle_types/hexa_paint')
 type_cheker["hitori"] = require('../puzzle_types/hitori')
 
-function logAction(user, puzzleId, action, ipInfo, data) {
+async function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({
     userId: user._id,
     puzzleId: puzzleId,
@@ -63,12 +63,23 @@ function logAction(user, puzzleId, action, ipInfo, data) {
   if (data) {
     newUserActionLog.data = data;
   }
-  newUserActionLog.save();
-}
-
-async function writeSilvingTime(user, puzzleId, hidden) {
+  await newUserActionLog.save();
   const time = await UserSolvingTime.findOne({userId: user._id, puzzleId: puzzleId});
   if (time != null) {
+    return;
+  }
+  var newUserSolvingTime = new UserSolvingTime({
+    userId: user._id,
+    userName: user.name,
+    puzzleId: puzzleId,
+    errCount: 0
+  });
+  await newUserSolvingTime.save();
+}
+
+async function writeSolvingTime(user, puzzleId, hidden) {
+  const time = await UserSolvingTime.findOne({userId: user._id, puzzleId: puzzleId});
+  if (time != null && time.solvingTime != null) {
     return;
   }
   const logs = await UserActionLog.find({userId: user._id, puzzleId: puzzleId}).sort('date');
@@ -87,20 +98,27 @@ async function writeSilvingTime(user, puzzleId, hidden) {
     }
   });
   if (!solveTime) solveTime = new Date();
-  if (! startTime || solveTime < startTime) {
+  if (!startTime || solveTime < startTime) {
     return;
   }
-  const newUserSolvingTime = new UserSolvingTime({
-    userId: user._id,
-    userName: user.name,
-    puzzleId: puzzleId,
-    solvingTime: solveTime - startTime,
-    errCount: errCount
-  });
+  if (time != null) {
+    var newUserSolvingTime = time;
+  } else {
+    var newUserSolvingTime = new UserSolvingTime({
+      userId: user._id,
+      userName: user.name,
+      puzzleId: puzzleId,
+      solvingTime: solveTime - startTime,
+      errCount: errCount
+    });
+  }
+  newUserSolvingTime.userName = user.name;
+  newUserSolvingTime.solvingTime = solveTime - startTime;
+  newUserSolvingTime.errCount = errCount;
   if (hidden) {
     newUserSolvingTime.hidden = true;
   }
-  newUserSolvingTime.save();
+  await newUserSolvingTime.save();
 }
 
 // Read puzzle header
@@ -155,7 +173,7 @@ router.get('/:puzzleid/start', async (req, res, next) => {
         return;
       }
       if (req.user.role != "test") {
-        logAction(req.user, req.params.puzzleid, "start", req.ipInfo);
+        await logAction(req.user, req.params.puzzleid, "start", req.ipInfo);
       }
     }
     res.json(JSON.parse(puzzle.data));
@@ -202,7 +220,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
         return;
       }
       if (req.user.role != "test") {
-        logAction(
+        await logAction(
           req.user,
           req.params.puzzleid,
           result.status == "OK" ? "solved" : "submitted",
@@ -211,7 +229,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
         );
         var hidden = puzzle.author.equals(req.user._id);
         if (result.status == "OK") {
-          writeSilvingTime(req.user, req.params.puzzleid, hidden);
+          await writeSolvingTime(req.user, req.params.puzzleid, hidden);
         }
       }
     }
