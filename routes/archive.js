@@ -3,8 +3,6 @@ const router = express.Router();
 const Puzzle = require('../models/Puzzle');
 const PuzzleType = require('../models/PuzzleType');
 const UserSolvingTime = require('../models/UserSolvingTime');
-const User = require('../models/User');
-const UserActionLog = require('../models/UserActionLog');
 const util = require('../utils/puzzle_util');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
@@ -105,14 +103,9 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
     if (type) {
       puzzleType = type.name;
     }
-    var userMap = {}
-    var userData = await User.find();
-    userData.forEach(user => userMap[user._id] = user.name);
 
     const times = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: true}}).sort("solvingTime");
-    const notFinished1 = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: false}}, "userName").distinct("userName");;
-    const finished = await UserActionLog.find({puzzleId: puzzle.code, action: "solved"}, "userId").distinct("userId");
-    const notFinished = await UserActionLog.find({puzzleId: puzzle.code, userId: {$nin: finished}}, "userId").distinct("userId");
+    const notFinished = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: false}}, "userName").distinct("userName");;
     res.render('times', {
       user: req.user,
       puzzle: {
@@ -130,7 +123,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
             errors: time.errCount
           };
         }),
-      notFinished: Array.from(new Set(notFinished.map(log => userMap[log]).concat(notFinished1)))
+      notFinished: notFinished
     });
   } catch (e) {
     next(e)
