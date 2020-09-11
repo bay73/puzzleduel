@@ -178,5 +178,6 @@
 	"An island must consist of 6 cells": "An island must consist of 6 cells",
 	"There should be 6 white islands": "There should be 6 white islands",
 	"Unpainted cells should contain different digits in row": "Unpainted cells should contain different digits in row",
-	"Blackened cells shouldn't sharing an edge": "Blackened cells shouldn't sharing an edge"
+	"Blackened cells shouldn't sharing an edge": "Blackened cells shouldn't sharing an edge",
+	"See the rating computation rules at ": "See the rating computation rules at "
 }
