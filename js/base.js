@@ -27,7 +27,7 @@ basePuzzle.prototype.render = function(snap) {
     },
     pencilCell: {
       "fill": this.colorSchema.bgColor,
-      "fill-opacity": 0.3,
+      "fill-opacity": 1,
       "stroke": this.colorSchema.gridColor,
       "strokeWidth": 1,
     },
@@ -43,7 +43,7 @@ basePuzzle.prototype.render = function(snap) {
     node: {
     },
     pencilNode: {
-      "fill-opacity": 0.3
+      "fill-opacity": 1
     },
     font: {
       "font-family": "sans-serif",

@@ -55,7 +55,7 @@ hexaFencePuzzle.prototype.initController = function() {
         if (this.cells[y] && this.cells[y][x]) {
           if (!this.cells[y][x].isClue) {
             this.cells[y][x].clickSwitch = [{},{color: this.colorSchema.textColor, returnValue: "1"},{image: "cross"}];
-            this.cells[y][x].pencilClickSwitch = [{},{color: this.colorSchema.textColor},{image: "cross"}];
+            this.cells[y][x].pencilClickSwitch = [{},{color: "grey"},{image: "cross"}];
           }
         }
       }
@@ -71,6 +71,7 @@ hexaFencePuzzle.prototype.initController = function() {
           } else {
             this.cells[y][x].clickSwitch = [{},{color: "grey", returnValue: 1},{image: "white_circle"}];
           }
+          this.cells[y][x].pencilClickSwitch = [{},{color: "lightgrey"},{image: "white_circle"}];
         }
       }
     }

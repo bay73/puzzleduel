@@ -24,6 +24,7 @@ gridElement.prototype.distanceSquare = function(point1, point2) {
 gridElement.prototype.clearData = function() {
   if (!this.isFinal) {
     this.data = {text: null, image: null, color: null, textColor: null};
+    this.pencilData = null;
     this.redraw();
   }
 }

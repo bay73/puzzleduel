@@ -30,13 +30,13 @@ squarePuzzleType.prototype.initController = function() {
           value = this.cells[y][x].data.text;
           this.cells[y][x].clickSwitch = [
             {text: value},
-            {text: value, color: "303030", returnValue: "1"},
+            {text: value, color: "#303030", returnValue: "1"},
             {text: value, image: "white_circle"}
           ];
         } else {
-          this.cells[y][x].clickSwitch = [{},{color: "303030", returnValue: "1"},{image: "white_circle"}];
+          this.cells[y][x].clickSwitch = [{},{color: "#303030", returnValue: "1"},{image: "white_circle"}];
         }
-        this.cells[y][x].pencilClickSwitch = [{},{color: "303030"},{image: "white_circle"}];
+        this.cells[y][x].pencilClickSwitch = [{},{color: "#808080"},{image: "white_circle"}];
       }
     }
   }
