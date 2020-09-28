@@ -19,7 +19,7 @@ router.get('/:ratingdate', async (req, res, next) => {
       user: req.user,
       ratingDate: d,
       ratingFinal: d <= ld,
-      ratings: ratingList.filter(rating => rating.value > 0).map(rating => {
+      ratings: ratingList.filter(rating => rating.value > 0 && rating.missedWeek < 6).map(rating => {
         var details = "";
         rating.details.puzzles.forEach(puzzle => {
           details += puzzle.date.toISOString().split('T')[0] + ": " + Math.round(puzzle.change) + "\n";
@@ -30,6 +30,7 @@ router.get('/:ratingdate', async (req, res, next) => {
           change: rating.change,
           totalStarted: rating.totalStarted,
           totalSolved: rating.totalSolved,
+          missedWeek: rating.missedWeek,
           details: details
         };
       }),
