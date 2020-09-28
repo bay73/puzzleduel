@@ -8,8 +8,9 @@
         <div class="card">
           <% if(typeof puzzle.tag != 'undefined') { %>
           <% if(puzzle.tag.includes("daily")) { %>
-          <div class="card-header">
+          <div class="d-flex flex-row flex-wrap justify-content-between card-header">
             <h1><%= __('Daily puzzle') %> (<%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>)</h1>
+            <a class="p-2 align-bottom text-right" style="position: relative;" href="/archive/<%= puzzle.code %>/scores"><%= __('Scores') %></a>
           </div>
           <% } else if (puzzle.tag.includes("example")) { %>
           <div class="d-flex flex-row flex-wrap justify-content-between card-header">
