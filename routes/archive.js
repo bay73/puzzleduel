@@ -62,6 +62,31 @@ router.get('/types', async (req, res, next) => {
   }
 });
 
+// List of all old puzzles by author
+router.get('/types/author/:authorid', async (req, res, next) => {
+  try {
+    var typeMap = await util.typeDataMap();
+
+    const puzzles = await Puzzle.find({author: req.params.authorid}, "-data").sort({daily: -1});
+    res.render('by_type', {
+      user: req.user,
+      puzzles: puzzles
+        .filter(puzzle => !puzzle.needLogging)
+        .map(puzzle => {
+        return {
+          code: puzzle.code,
+          category: typeMap[puzzle.type].category,
+          type: typeMap[puzzle.type].name,
+          dimension: puzzle.dimension,
+          difficulty: puzzle.difficulty
+        };
+      })
+    });
+  } catch (e) {
+    next(e)
+  }
+});
+
 // List of example puzzles
 router.get('/examples', async (req, res, next) => {
   try {
