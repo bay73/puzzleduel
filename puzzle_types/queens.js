@@ -28,7 +28,7 @@ check:function(dimension, clues, data){
 checkQueensClues: function(cluecells, cells) {
   for (var y = 0; y < cells.rows; y++) {
     for (var x = 0; x < cells.cols; x++) {
-      if (cluecells[y][x]!=""){
+      if (cluecells[y][x]!="" && cluecells[y][x]!="cross"){
         if (!Checker.checkQueensClue(cluecells[y][x], {x:x, y:y}, cells)) {
           return {status: "The clue is not correct" , errors: [util.coord(x,y)]};
         }
