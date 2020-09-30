@@ -29,7 +29,7 @@ innerCluePuzzle.prototype.initImages = function() {
     this.togglers = ["white", "black_circle", "white_circle"];
   }
   if(this.typeCode == "minesweeper_classic") {
-    this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
+    this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "cross"];
     this.togglers = ["white", "mine", "cross"];
   }
   if(this.typeCode == "queens") {
