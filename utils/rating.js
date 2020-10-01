@@ -73,7 +73,7 @@ async function computeRating(computeDate) {
   users.forEach(user => userMap[user._id] = user.name);
 
   var filter = { $and: [{daily: {$lt: d}}, {daily: {$gte: pd} }]};
-  const puzzles = await Puzzle.find(filter, "code tag daily").sort({daily: 1});
+  const puzzles = await Puzzle.find(filter, "code tag daily type").sort({daily: 1});
   for (var i=0; i<puzzles.length; i++) {
     var puzzleId = puzzles[i].code;
     var puzzleRating = await singlePuzzleRating(puzzleId);
@@ -90,6 +90,7 @@ async function computeRating(computeDate) {
         };
       }
       rating.puzzleDate = puzzles[i].daily;
+      rating.type = puzzles[i].type;
       ratingMap[rating.userId].userName = userMap[rating.userId];
       ratingMap[rating.userId].puzzles.push(rating);
     });
@@ -130,7 +131,7 @@ async function computeRating(computeDate) {
       newValue = oldValue + change;
       var coeff = (change - puzzleDiffSum) / startedPuzzlesNum;
       ratingMap[userId].puzzles.forEach(puzzle => {
-        details.puzzles.push({date: puzzle.puzzleDate, value: puzzle.value, change: newbie * normDiff(puzzle.value - oldValue) / 7 + coeff});
+        details.puzzles.push({date: puzzle.puzzleDate, type: puzzle.type, value: puzzle.value, change: newbie * normDiff(puzzle.value - oldValue) / 7 + coeff});
       });
     }
     details.weekValue = weekValue;
