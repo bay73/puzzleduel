@@ -25,6 +25,7 @@ router.get('/:ratingdate', async (req, res, next) => {
           details += puzzle.date.toISOString().split('T')[0] + ": " + Math.round(puzzle.change) + "\n";
         });
         return {
+          userId: rating.userId,
           userName: rating.userName,
           value: rating.value,
           change: rating.change,
