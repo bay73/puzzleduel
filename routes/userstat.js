@@ -34,7 +34,8 @@ router.get('/:userid',
         return {
           date: ratingEntry.date,
           ratingValue: ratingEntry.value,
-          weekValue: ratingEntry.details.weekValue
+          weekValue: ratingEntry.details.weekValue,
+          missedWeek: ratingEntry.missedWeek
         };
       }),
       categories: Object.keys(categories)

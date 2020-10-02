@@ -79,7 +79,11 @@
     } else {
       labels.push("");
     }
+    <% if (dataItem.missedWeek>2){ %>
+    rating.push(null);
+    <% } else { %>
     rating.push(<%= Math.round(dataItem.ratingValue) %>);
+    <% } %>
     value = <%= Math.round(dataItem.weekValue) %>;
     weekValue.push(value==0?null:value);
   <% }) %>
