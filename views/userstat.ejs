@@ -1,0 +1,140 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header"><%= userName %></h1>
+      </div>
+      <div class="card">
+        <h2 class="card-header"><%= __('Rating history') %></h2>
+        <div class="card-body">
+          <canvas id="ratingChart"></canvas>
+          <p>
+            <%= __('Weekly performance shows the performance for daily puzzles solved during the corresponding week. It is nominated in universal scoring scale which allows to compare puzzles of different complexity.') %>
+            <%= __('Rating is a cumulative value which is slowly adjusted every week towards the weekly performance. It shows long-term performance level.') %>
+            <%= __('See the rating computation rules at ') %><a href="/help"><%= __('help page') %></a>.
+          </p>
+        </div>
+      </div>
+      <div class="card">
+        <h2 class="card-header"><%= __('Type performance') %></h2>
+        <div class="accordion card-body" id="typesAccordion">
+          <% categories.sort((c1,c2)=>c1.category.localeCompare(c2.category)).forEach(category => { %>
+          <div class="row" id="<%= category.category.substr(3) %>Heading">
+            <button class="col-9 text-left btn btn-link pt-3" type="button"
+              data-toggle="collapse" data-target="#<%= category.category.substr(3) %>Collapse"
+              aria-expanded="true" aria-controls="<%= category.category.substr(3) %>Collapse"
+            >
+              <%= __(category.category.substr(3)) %>
+            </button>
+            <div class="col-3 pt-3 text-success">
+              <%= Math.round(category.performance) %> (<%= category.count %>  <%= __n("puzzle", category.count) %>)
+            </div>
+          </div>
+          <div id="<%= category.category.substr(3) %>Collapse" class="collapse" aria-labelledby="<%= category.category.substr(3) %>Heading" data-parent="#typesAccordion">
+            <% types.sort((t1,t2) => t2.performance - t1.performance).filter(type => type.category==category.category).forEach(type => { %>
+            <div class="row" >
+              <div class="col-9 text-left">
+                <%= type.name %>
+              </div>
+              <div class="col-3">
+                <%= Math.round(type.performance) %> (<%= type.count %>  <%= __n("puzzle", type.count) %>)
+              </div>
+            </div>
+            <% }) %>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% console.log(types) %>
+<% console.log(categories) %>
+<script>
+  var month = new Array();
+  month[0] = "<%= __('month0') %>";
+  month[1] = "<%= __('month1') %>";
+  month[2] = "<%= __('month2') %>";
+  month[3] = "<%= __('month3') %>";
+  month[4] = "<%= __('month4') %>";
+  month[5] = "<%= __('month5') %>";
+  month[6] = "<%= __('month6') %>";
+  month[7] = "<%= __('month7') %>";
+  month[8] = "<%= __('month8') %>";
+  month[9] = "<%= __('month9') %>";
+  month[10] = "<%= __('month10') %>";
+  month[11] = "<%= __('month11') %>";
+  var labels = [];
+  var rating = [];
+  var weekValue = [];
+  <% statdata.sort((d1,d2) => d1.date - d2.date).forEach(function(dataItem) {%>
+    var date = new Date();
+    date.setTime(<%= dataItem.date.getTime() %>);
+    if (date.getDate() < 8) {
+      if (date.getMonth()==0) {
+        labels.push(1900 + date.getYear());
+      } else {
+        labels.push(month[date.getMonth()]);
+      }
+    } else {
+      labels.push("");
+    }
+    rating.push(<%= Math.round(dataItem.ratingValue) %>);
+    value = <%= Math.round(dataItem.weekValue) %>;
+    weekValue.push(value==0?null:value);
+  <% }) %>
+  require(['https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'], (Chart) => {
+    <% if (theme=="contrast") { %>
+    Chart.defaults.global.defaultFontColor = '#ffffff';
+    var ratingColor = '#375a7f';
+    var weeklyColor = '#182535';
+    <% } else if (theme=="white") { %>
+    Chart.defaults.global.defaultFontColor = '#212559';
+    var ratingColor = '#007bff';
+    var weeklyColor = '#003688';
+    <% } else { %>
+    Chart.defaults.global.defaultFontColor = '#839496';
+    var ratingColor = '#b58900';
+    var weeklyColor = '#624500';
+    <% } %>
+    var ratingChart = new Chart('ratingChart', {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '<%= __('Rating') %>',
+          data: rating,
+          borderColor: ratingColor,
+          backgroundColor: ratingColor,
+          fill: false,
+          pointRadius: 0,
+          pointHitRadius: 20,
+          borderWidth: 2
+        },
+        {
+          label: '<%= __('Weekly performance') %>',
+          data: weekValue,
+          showLine: false,
+          backgroundColor: weeklyColor,
+          pointRadius: 5,
+          pointHitRadius: 20,
+          pointBackgroundColor: weeklyColor,
+          pointBorder: weeklyColor,
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }],
+        },
+      }
+    });
+  })
+</script>
+<%- include ('./partials/footer') %>
+

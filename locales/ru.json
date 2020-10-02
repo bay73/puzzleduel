@@ -180,5 +180,15 @@
 	"There should be 6 white islands": "Должно быть 6 белых островов",
 	"Unpainted cells should contain different digits in row": "Числа в незакрашеных клетках не должны повторяться в строках и столбцах",
 	"Blackened cells shouldn't sharing an edge": "Закрашеные клетки не могут касаться стороной",
-	"See the rating computation rules at ": "Правила расчёта рейтинга смотрите на "
+	"See the rating computation rules at ": "Правила расчёта рейтинга смотрите на ",
+	"Rating history": "История рейтинга",
+	"Weekly performance": "Результат недели",
+	"Type performance": "Результаты по типам",
+	"Weekly performance shows the performance for daily puzzles solved during the corresponding week. It is nominated in universal scoring scale which allows to compare puzzles of different complexity.": "Результат недели показывает усредненные результаты решения задач дня, решённых на соответствуюшей неделе. Он представлен в универсальных рейтинговых очках, которые позволяют сравнивать результаты по задачам разной сложности.",
+	"Rating is a cumulative value which is slowly adjusted every week towards the weekly performance. It shows long-term performance level.": "Рейтинг - накопительный результат, который медленно изменяется по результатам недели.",
+	"puzzle": {
+		"one": "задача",
+		"few": "задачи",
+		"other": "задач"
+	}
 }

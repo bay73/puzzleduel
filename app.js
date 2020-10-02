@@ -43,6 +43,7 @@ app.use('/archive', require('./routes/archive.js'));
 app.use('/contest', require('./routes/contest.js'));
 app.use('/rating', require('./routes/rating.js'));
 app.use('/admin', require('./routes/admin.js'));
+app.use('/userstat', require('./routes/userstat.js'));
 
 // Static content
 app.use('/images', express.static(__dirname + '/images', { maxage: '3d' }));

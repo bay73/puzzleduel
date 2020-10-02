@@ -179,5 +179,14 @@
 	"There should be 6 white islands": "There should be 6 white islands",
 	"Unpainted cells should contain different digits in row": "Unpainted cells should contain different digits in row",
 	"Blackened cells shouldn't sharing an edge": "Blackened cells shouldn't sharing an edge",
-	"See the rating computation rules at ": "See the rating computation rules at "
+	"See the rating computation rules at ": "See the rating computation rules at ",
+	"Rating history": "Rating history",
+	"Weekly performance": "Weekly performance",
+	"Type performance": "Type performance",
+	"Weekly performance shows the performance for daily puzzles solved during the corresponding week. It is nominated in universal scoring scale which allows to compare puzzles of different complexity.": "Weekly performance shows the performance for daily puzzles solved during the corresponding week. It is nominated in universal scoring scale which allows to compare puzzles of different complexity.",
+	"Rating is a cumulative value which is slowly adjusted every week towards the weekly performance. It shows long-term performance level.": "Rating is a cumulative value which is slowly adjusted every week towards the weekly performance. It shows long-term performance level.",
+	"puzzle": {
+		"one": "puzzle",
+		"other": "puzzles"
+	}
 }
