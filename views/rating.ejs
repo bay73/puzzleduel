@@ -5,11 +5,23 @@
       "bootstrap-datepicker" : "//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min"
     }
   });
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip({placement: "auto"});
+  });
 </script>
 <link
   rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
   integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous"
 />
+<style>
+  .tooltip-inner {
+    white-space:pre-wrap;
+    text-align:left;
+    line-height: 120%;
+    font-family: verdana;
+    font-size: small;
+  }
+</style>
 <%- include ('./partials/navbar') %>
 <div class="container">
   <div class="row">
@@ -108,10 +120,10 @@
                   <%= rate(rating) %>%
                 </td>
                 <td class="text-center"><%= Math.round(rating.value) %></td>
-                <td class="d-none d-sm-table-cell text-center <%= rating.change < 0?'text-warning':(rating.change > 0?'text-success':'')%>"
-                   data-toggle="tooltip" title="<%= rating.details %>"
-                >
+                <td class="d-none d-sm-table-cell text-center <%= rating.change < 0?'text-warning':(rating.change > 0?'text-success':'')%>">
+                  <span data-toggle="tooltip" title="<%= rating.details %>">
                   <%= rating.change?Math.round(rating.change):"-" %>
+                  </span>
                 </td>
               </tr>
               <% }) %>
