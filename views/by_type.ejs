@@ -14,6 +14,7 @@
      -webkit-mask-size: 15px 15px;
    }
 </style>
+<script src="/js/accordion.js"></script>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
@@ -71,5 +72,13 @@
     </div>
   </div>
 </div>
+<script>
+  $(function () {
+    $('#mainAccordion').on('shown.bs.collapse', function (e) {
+      saveActiveAccordionPanel('archiveByType-activeCategory', e);
+    })
+  });
+  restoreAccordionPanel('archiveByType-activeCategory', '#mainAccordion');
+</script>
 <%- include ('./partials/footer') %>
 
