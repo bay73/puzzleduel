@@ -1,0 +1,36 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header"><%= __("Our contributors") %></h1>
+          <% contributors.sort((a1,a2) => a2.puzzleCount - a1.puzzleCount).forEach(function(contributor) { %>
+          <div class="card mb-5">
+            
+            <h2 class="card-header">
+              <a name="<%= contributor.id %>"><%= contributor.name %><%= contributor.realName?" ("+contributor.realName+")":"" %></a>
+            </h2>
+            <div class="card-body container">
+              <div class="d-flex flex-wrap flex-md-nowrap">
+                <div class="pr-2">
+                  <img src="<%= contributor.picture?contributor.picture:"/images/users/default.png" %>"  class="rounded" width="180" height="180">
+                </div>
+                <div>
+                  <p class="text-justify">
+                  <%- contributor.text %>
+                  </p>
+                  <p class="text-right"><a href="/archive/types/author/<%= contributor.id %>"><%= __('Puzzles') %></a></p>
+                  <span style="display: none"><%= contributor.puzzleCount %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

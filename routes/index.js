@@ -75,4 +75,45 @@ router.get('/help', async (req, res, next) => {
   }
 });
 
+// Authors Page
+router.get('/help/authors', async (req, res, next) => {
+  try {
+    const byAuthorCount = await Puzzle.aggregate([{
+      $group: {
+        _id: "$author",
+        count: { $sum: 1 }
+      }
+    }]);
+    var byAuthorCountMap = {};
+    byAuthorCount.forEach(author => byAuthorCountMap[author._id] = author.count);
+    const authors = await User.find({role: "author"}, "_id name about");
+    const locale = req.getLocale();
+    res.render('contributors', {
+      user: req.user,
+      contributors: authors.map(author => {
+        var text = "";
+        if (typeof author.about !="undefined") {
+          text = author.about.text;
+          if (locale != 'en' && typeof author.about.translations !="undefined") {
+            if (author.about.translations[locale] && author.about.translations[locale].text) {
+              text = author.about.translations[locale].text;
+            }
+          }
+        }
+        return {
+          id: author._id,
+          name: author.name,
+          puzzleCount: byAuthorCountMap[author._id],
+          about: author.about,
+          realName: typeof author.about!="undefined"?author.about.realName:"",
+          picture: typeof author.about!="undefined"?author.about.picture:"",
+          text: text
+        }
+      })
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = router;

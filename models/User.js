@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Mixed = mongoose.Schema.Types.Mixed;
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -31,6 +32,10 @@ const UserSchema = new mongoose.Schema({
   },
   resetExpire: {
     type: Date,
+    required: false
+  },
+  about: {
+    type: Mixed,
     required: false
   },
 });
