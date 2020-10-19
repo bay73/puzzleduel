@@ -21,6 +21,9 @@
       <%- include ('./partials/messages') %>
       <div class="card">
         <h1 class="card-header"><%= __('Puzzles by type') %></h1>
+        <% if (typeof author!="undefined"){ %>
+          <h3 class="card-header"><%= __('Author:') %> <%= author %></h3>
+        <% } %>
         <div class="card-body">
           <div class="accordion" id="mainAccordion">
             <% var prevCategory = null; %>

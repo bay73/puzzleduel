@@ -3,6 +3,7 @@ const router = express.Router();
 const Puzzle = require('../models/Puzzle');
 const PuzzleType = require('../models/PuzzleType');
 const UserSolvingTime = require('../models/UserSolvingTime');
+const User = require('../models/User');
 const util = require('../utils/puzzle_util');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
@@ -66,10 +67,12 @@ router.get('/types', async (req, res, next) => {
 router.get('/types/author/:authorid', async (req, res, next) => {
   try {
     var typeMap = await util.typeDataMap();
+    var author = await User.findById(req.params.authorid, "name");
 
     const puzzles = await Puzzle.find({author: req.params.authorid}, "-data").sort({daily: -1});
     res.render('by_type', {
       user: req.user,
+      author: author.name,
       puzzles: puzzles
         .filter(puzzle => !puzzle.needLogging)
         .map(puzzle => {
