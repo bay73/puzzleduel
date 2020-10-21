@@ -1,7 +1,7 @@
 <% if(typeof puzzle != 'undefined'){ %> 
 <div class="card" id="<%= (typeof prefix != undefined)?prefix+'Controls':'puzzleControls' %>">
 <h2 class="card-body pt-0 pb-0 mb-0"><%= puzzle.type.name %></h2>
-<p class="card-body text-right pb-0 pt-0 mb-0"><small><%= __('Author:') %> <%= puzzle.author %></small></p>
+<p class="card-body text-right pb-0 pt-0 mb-0"><small><%= __('Author:') %> <a href="/help/authors#<%= puzzle.authorId %>"><%= puzzle.author %></a></small></p>
 <svg id="<%= (typeof prefix != undefined)?prefix+'Grid':'mainGrid' %>"
      class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
   <%= __('Sorry, but your browser is not supported. Try to setup the new version.') %>

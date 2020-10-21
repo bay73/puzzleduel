@@ -22,6 +22,7 @@ async function puzzleToObj(puzzle, locale) {
     puzzleObj.type = type.toObject();
   }
   if (puzzleObj.author) {
+    puzzleObj.authorId = puzzleObj.author;
     var author = await User.findById(puzzleObj.author, "name");
     puzzleObj.author = author.name;
   }

@@ -45,6 +45,7 @@ router.get('/:puzzleid', async (req, res, next) => {
       puzzleObj.type = type.toObject();
     }
     if (puzzleObj.author) {
+      puzzleObj.authorId = puzzleObj.author;
       var author = await User.findById(puzzleObj.author, "name");
       if(type) {
         puzzleObj.type = type.toObject();
