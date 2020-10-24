@@ -21,7 +21,7 @@ innerCluePuzzle.prototype.initImages = function() {
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "cave_classic") {
-    this.clues = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",];
+    this.clues = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"];
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "yin_yang_classic") {
