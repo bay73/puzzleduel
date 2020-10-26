@@ -43,7 +43,7 @@ router.get('/types', async (req, res, next) => {
   try {
     var typeMap = await util.typeDataMap();
 
-    const puzzles = await Puzzle.find({}, "-data").sort({daily: -1});
+    const puzzles = await Puzzle.find({}, "-data");
     res.render('by_type', {
       user: req.user,
       puzzles: puzzles

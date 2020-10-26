@@ -85,14 +85,14 @@ router.get('/help', async (req, res, next) => {
 // Authors Page
 router.get('/help/authors', async (req, res, next) => {
   try {
-    const byAuthorCount = await Puzzle.aggregate([{
-      $group: {
-        _id: "$author",
-        count: { $sum: 1 }
-      }
-    }]);
+    const allPuzzles = await Puzzle.find({tag: {$ne: "example"}}, "-data");
     var byAuthorCountMap = {};
-    byAuthorCount.forEach(author => byAuthorCountMap[author._id] = author.count);
+    allPuzzles.filter(puzzle => !puzzle.needLogging).forEach(puzzle => {
+      if (typeof byAuthorCountMap[puzzle.author] == 'undefined') {
+        byAuthorCountMap[puzzle.author]=0;
+      }
+      byAuthorCountMap[puzzle.author]++;
+    })
     const authors = await User.find({role: "author"}, "_id name about");
     const locale = req.getLocale();
     res.render('contributors', {
