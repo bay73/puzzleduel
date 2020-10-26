@@ -33,9 +33,10 @@
                 <% } %>
                 <% }) %>
               </tr>
-              <% contest.results.sort((r1,r2) => r2.score - r1.score).forEach(function(result) { %>
+              <% var orderNum = 0; %>
+              <% contest.results.sort((r1,r2) => r2.score - r1.score).forEach(function(result) { orderNum++; %>
               <tr>
-                <td><%= result.userName %></td>
+                <td class="<%= orderNum <=3?'text-success':'' %>"><%= orderNum %>. <%= result.userName %></td>
                 <td><%= result.score %></td>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>
