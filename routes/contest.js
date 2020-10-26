@@ -57,7 +57,7 @@ router.get('/:contestid', async (req, res, next) => {
       const times = await UserSolvingTime.find({userId: userId, solvingTime: {$exists: true}});
       times.forEach(time => userTimes[time.puzzleId] = {time: time.solvingTime, errCount: time.errCount});
     }
-    var contestObj = {code: contest.code, name: contest.name, description: contest.description};
+    var contestObj = {code: contest.code, name: contest.name, description: contest.description, logo: contest.logo};
     var locale = req.getLocale();
     if (locale != 'en' && contest.translations) {
       if (contest.translations[locale] && contest.translations[locale].name) {

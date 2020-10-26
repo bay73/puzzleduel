@@ -36,8 +36,13 @@ router.get('/', async (req, res, next) => {
     var dailyPuzzle = await Puzzle.findOne({daily: datetime.toISOString().slice(0,10)}, "-data");
     if (dailyPuzzle) {
       var dailyPuzzleObj = await puzzleToObj(dailyPuzzle, req.getLocale());
+      if (typeof dailyPuzzleObj.contest != "undefined") {
+        dailyPuzzleObj.contest.link = "/contest/" + dailyPuzzleObj.contest.contestId;
+        var contest = await Contest.findOne({code: dailyPuzzleObj.contest.contestId}, "name");
+        dailyPuzzleObj.contest.name = contest.name;
+      }
     }
-    var contest = await Contest.findOne({type: "daily_shadow", start: {$lt: datetime}, finish: {$gt: datetime} }, "code puzzles");
+    var contest = await Contest.findOne({type: "daily_shadow", start: {$lt: datetime}, finish: {$gt: datetime} }, "code name puzzles");
     if (contest) {
       var contestPuzzleId = null;
       contest.puzzles.forEach(puzzle => {
@@ -50,6 +55,7 @@ router.get('/', async (req, res, next) => {
         if (contestPuzzle) {
           var contestPuzzleObj = await puzzleToObj(contestPuzzle, req.getLocale());
           contestPuzzleObj.contest = {
+            name: contest.name,
             link: "/contest/" + contest.code
           };
         }

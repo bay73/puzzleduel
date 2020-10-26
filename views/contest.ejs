@@ -4,7 +4,11 @@
     <div class="col-12 m-auto">
       <%- include ('./partials/messages') %>
       <div class="card">
+        <% if (typeof contest.logo != "undefined") { %>
+        <h1 class="card-header"><img src="<%= contest.logo %>" /></h1>
+        <% } else { %>
         <h1 class="card-header"><%= contest.name %></h1>
+        <% }%>
         <div class="card-body">
           <%- contest.description %>
           <br><br>
