@@ -190,5 +190,11 @@
 		"other": "puzzles"
 	},
 	"Our contributors": "Our contributors",
-	"Puzzles": "Puzzles"
+	"Puzzles": "Puzzles",
+	"Stars show the aproximate puzzle difficulty:": "Stars show the aproximate puzzle difficulty:",
+	"minute": {
+		"one": "minute",
+		"other": "minutes"
+	},
+	"solving time for an expert": "solving time for an expert"
 }

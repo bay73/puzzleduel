@@ -192,5 +192,12 @@
 		"other": "задач"
 	},
 	"Our contributors": "Наши авторы",
-	"Puzzles": "Задачи"
+	"Puzzles": "Задачи",
+	"Stars show the aproximate puzzle difficulty:": "Звёздочки показывают ориентировочную сложности задачи:",
+	"minute": {
+		"one": "минута",
+		"few": "минуты",
+		"other": "минут"
+	},
+	"solving time for an expert": "решения для эксперта"
 }

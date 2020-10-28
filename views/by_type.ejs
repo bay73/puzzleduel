@@ -71,6 +71,30 @@
             </div>
           </div>
         </div>
+        <div class="card-body"><%= __('Stars show the aproximate puzzle difficulty:') %>
+          <ul>
+            <li>
+              <span class="stars" style="width: calc(15px)" data-toggle="tooltip" title="1">
+              </span> - 1 <%= __n('minute',1) %> <%= __('solving time for an expert') %>
+            </li>
+            <li>
+              <span class="stars" style="width: calc(30px)" data-toggle="tooltip" title="2">
+              </span> - 2 <%= __n('minute',2) %> <%= __('solving time for an expert') %>
+            </li>
+            <li>
+              <span class="stars" style="width: calc(45px)" data-toggle="tooltip" title="3">
+              </span> - 5 <%= __n('minute',5) %> <%= __('solving time for an expert') %>
+            </li>
+            <li>
+              <span class="stars" style="width: calc(60px)" data-toggle="tooltip" title="4">
+              </span> - 10 <%= __n('minute',10) %> <%= __('solving time for an expert') %>
+            </li>
+            <li>
+              <span class="stars" style="width: calc(75px)" data-toggle="tooltip" title="5">
+              </span> - 25 <%= __n('minute',25) %> <%= __('solving time for an expert') %>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
