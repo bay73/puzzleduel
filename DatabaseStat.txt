@@ -1,11 +1,23 @@
-		15.07.2020	
-Total size	25.4   MB
-useractionlogs	 15.08 MB +   788 kB
-session		  5    MB + 1.8 MB
-usersolvingtimes   824 kB +   420 kB
-ratings		   789 kB +   164 kB
-contests	   102 kB +    72 kB
-puzzles		    73 kB +    72 kB
-users		    45 kB +   124 kB
-puzzletypes	    35 kB +    72 kB
+		15.07.2020				29.10.2020
+Total size      25.4   MB                             44.9 MB
+useractionlogs  15.08 MB +   788 kB			31.29 MB    + 1.6  MB
+session          5    MB + 1.8 MB                      3.8  MB    + 1.54 MB
+usersolvingtimes   824 kB +   420 kB                   2.02 MB    +   880  kB
+ratings            789 kB +   164 kB                   2.6 MB     +   280 kB
+contests           102 kB +    72 kB                     104.6 kB  +   72 kB
+puzzles             73 kB +    72 kB                     118.91 kB +   88 kB
+users               45 kB +   124 kB                      68.28 kB +   40 kB
+puzzletypes         35 kB +    72 kB                      40.08 kB +   72 kB
 
+
+
+Number of users:
+
+01-05-2020 -> 60 users
+01-06-2020 -> 146 users
+01-07-2020 -> 216 users
+01-08-2020 -> 252 users
+01-09-2020 -> 274 users
+01-10-2020 -> 308 users
+
+29-10-2020 -> 330 users
