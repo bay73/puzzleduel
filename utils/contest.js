@@ -1,7 +1,7 @@
 const Contest = require('../models/Contest');
 const UserSolvingTime = require('../models/UserSolvingTime');
 
-async function recountPuzzle(puzzle) {
+async function recountPuzzle(puzzle, scoring) {
   var puzzleId = puzzle.toObject().puzzleId;
   var results = [];
   const times = await UserSolvingTime.find({
@@ -34,10 +34,10 @@ async function recountPuzzle(puzzle) {
   } else {
     var median = success[(success.length-1)/2].solvingTime;
   }
-  var complexity = median * Math.pow(median / 8000, 0.33);
+  var complexity = median * Math.pow(median / scoring.complexityRate, scoring.complexityPower);
   times.forEach(time => {
     var result = time.toObject();
-    var score = complexity / (result.solvingTime + median * result.errCount);
+    var score = Math.pow(complexity / (result.solvingTime + median * result.errCount), scoring.scoringPower);
 //    if (result.errCount > 0 ) {
 //      score = score / (result.errCount + 1);
 //    }
@@ -50,8 +50,8 @@ async function recountPuzzle(puzzle) {
       bestTime: best, 
       medianTime: median,
       complexity: complexity,
-      bestScore: complexity/best,
-      medianScore: complexity/median
+      bestScore: Math.pow(complexity/best, scoring.scoringPower),
+      medianScore: Math.pow(complexity/median, scoring.scoringPower)
     }
   };
 }
@@ -64,7 +64,7 @@ async function recountContest(contestId) {
   var userTotals = {};
   for (var i=0; i<contest.puzzles.length; i++) {
     if (contest.puzzles[i].revealDate > new Date()) continue;
-    var results = await recountPuzzle(contest.puzzles[i]);
+    var results = await recountPuzzle(contest.puzzles[i], contest.scoring);
     contest.puzzles[i].results = [];
     contest.puzzles[i].details = results.details;
     if (typeof results.results != 'undefined') {
