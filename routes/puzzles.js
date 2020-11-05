@@ -240,7 +240,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
   }
 });
 
-// Check puzzle solution
+// Save puzzle data
 router.post('/:puzzleid/edit', async (req, res, next) => {
   try {
     if (!req.user) {
@@ -248,10 +248,6 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
       return;
     }
     const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
-    if (!puzzle) {
-      res.sendStatus(404);
-      return;
-    }
     if (!puzzle) {
       res.sendStatus(404);
       return;
@@ -276,6 +272,41 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
     puzzle.data = newData;
     puzzle.tag = tag;
     await puzzle.save();
+    res.json({status: "OK"});
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Delete puzzle
+router.post('/:puzzleid/delete', async (req, res, next) => {
+  try {
+    if (!req.user) {
+      res.sendStatus(403);
+      return;
+    }
+    const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
+    if (!puzzle) {
+      res.sendStatus(404);
+      return;
+    }
+    var puzzleObj = puzzle.toObject();
+    if (!puzzleObj.author || !puzzleObj.author.equals(req.user._id)) {
+      res.sendStatus(404);
+      return;
+    }
+    if (puzzle.tag == 'daily') {
+      if (puzzle.daily) {
+        res.status(403).send(res.__('Puzzle is already planned for publishing, deletion is not allowed!'));
+        return;
+      }
+    } else if (puzzle.tag) {
+      res.status(403).send(res.__('Puzzle is already used, deletion is not allowed!'));
+      return;
+    }
+    await UserSolvingTime.deleteMany({puzzleId: puzzle.code});
+    await UserActionLog.deleteMany({puzzleId: puzzle.code});
+    await puzzle.delete();
     res.json({status: "OK"});
   } catch (e) {
     next(e);

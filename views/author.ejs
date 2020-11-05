@@ -129,6 +129,11 @@
                     Edit
                   </a>
                 <% } %></td>
+                <td><% if(!puzzle.tag || puzzle.tag=='daily' && !puzzle.daily) { %>
+                  <a href="" onclick = "deletePuzzle('<%= puzzle.code %>')">
+                    Delete
+                  </a>
+                <% } %></td>
               </tr>
               <% }) %>
             </tbody>
@@ -138,5 +143,14 @@
     </div>
   </div>
 </div>
+<script>
+function deletePuzzle(puzzleId) {
+  if (confirm("Do you really want to delete the puzzle?")) {
+    $.post("/puzzles/" + puzzleId + "/delete")
+    .done(() => {location.reload();})
+    .fail((jqxhr, textStatus, error) => {alert(jqxhr.responseText);});
+  }
+}
+</script>
 <%- include ('./partials/footer') %>
 

@@ -197,5 +197,7 @@
 		"other": "minutes"
 	},
 	"solving time for an expert": "solving time for an expert",
-	"dOubLESHOW": "dOubLESHOW"
+	"dOubLESHOW": "dOubLESHOW",
+	"Puzzle is already planned for publishing, deletion is not allowed!": "Puzzle is already planned for publishing, deletion is not allowed!",
+	"Puzzle is already used, deletion is not allowed!": "Puzzle is already used, deletion is not allowed!"
 }
