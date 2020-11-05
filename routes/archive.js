@@ -171,15 +171,17 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
+    var onlyFuture = req.query.future=="true" || typeof req.query.future=="undefined";
 
     var typeMap = await util.typeDataMap();
     var timesMap = await util.bestSolvingTimeMap(true);
 
     var filter = {author: req.user._id};
 
-    if (req.query.future) {
+    if (onlyFuture) {
       filter = {
         author: req.user._id,
+        tag: {$ne: "example"},
         $or: [
           {daily: {$gt: new Date()}},
           {daily: {$exists: false}}
@@ -195,7 +197,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     futurePuzzles.forEach(puzzle => typePuzzleCount[puzzle.type].puzzleCount++);
     res.render('author', {
       user: req.user,
-      future: req.query.future,
+      future: onlyFuture,
       types: Object.entries(typeMap)
         .filter(([key, value]) => !value.properties || !value.properties.noEdit)
         .sort(([key1, value1],[key2, value2]) => key1.localeCompare(key2))
@@ -206,16 +208,19 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
             properties: value.properties
           };
       }),
-      puzzles: puzzles.map(puzzle => {
-        return {
-          code: puzzle.code,
-          type: typeMap[puzzle.type].name,
-          dimension: puzzle.dimension,
-          tag: puzzle.tag,
-          daily: puzzle.daily,
-          time: util.timeToString(timesMap[puzzle.code]),
-          published: puzzle.published
-        };
+      puzzles: puzzles
+        .filter(puzzle => !onlyFuture || typeof puzzle.contest=="undefined" || puzzle.contest.puzzleDate > new Date())
+        .map(puzzle => {
+          return {
+            code: puzzle.code,
+            type: typeMap[puzzle.type].name,
+            dimension: puzzle.dimension,
+            tag: puzzle.tag,
+            daily: puzzle.daily,
+            puzzleDate: puzzle.daily?puzzle.daily:(typeof puzzle.contest=="undefined"?"":puzzle.contest.puzzleDate),
+            time: util.timeToString(timesMap[puzzle.code]),
+            published: puzzle.published
+          };
       }),
       dailyQueue: Object.entries(typePuzzleCount).map(([key, value]) => {
         return {

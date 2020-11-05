@@ -8,7 +8,7 @@
           <h1 class="">You puzzles</h1>
           <div class="p-2 align-bottom text-right">
             <% if (future) { %>
-            <a href="/archive/author">Show old puzzles</a>
+            <a href="/archive/author?future=false">Show old puzzles</a>
             <% } else { %>
             <a href="/archive/author?future=true">Hide old puzzles</a>
             <% } %>
@@ -108,11 +108,11 @@
         <div class="card-body">
           <table class="table table-hover table-condensed">
             <tbody>
-              <% puzzles.forEach(function(puzzle) { %>
+              <% puzzles.sort((p1,p2) => (p2.puzzleDate - p1.puzzleDate)).forEach(function(puzzle) { %>
               <tr>
                 <td>
                   <%= puzzle.tag %>
-                  <%= puzzle.daily?("("+puzzle.daily.toISOString().split('T')[0]+")"):"" %></td>
+                  <%= puzzle.puzzleDate?("("+puzzle.puzzleDate.toISOString().split('T')[0]+")"):"" %></td>
                 <td>
                   <a href="/single/<%= puzzle.code %>">
                     <%= puzzle.type %>
@@ -129,7 +129,7 @@
                     Edit
                   </a>
                 <% } %></td>
-                <td><% if(!puzzle.tag || puzzle.tag=='daily' && !puzzle.daily) { %>
+                <td><% if(!puzzle.tag || puzzle.tag=='daily' && !puzzle.puzzleDate) { %>
                   <a href="" onclick = "deletePuzzle('<%= puzzle.code %>')">
                     Delete
                   </a>
