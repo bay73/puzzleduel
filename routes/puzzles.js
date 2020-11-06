@@ -300,7 +300,7 @@ router.post('/:puzzleid/delete', async (req, res, next) => {
         res.status(403).send(res.__('Puzzle is already planned for publishing, deletion is not allowed!'));
         return;
       }
-    } else if (puzzle.tag) {
+    } else if (puzzle.tag && puzzle.tag != 'temporary') {
       res.status(403).send(res.__('Puzzle is already used, deletion is not allowed!'));
       return;
     }

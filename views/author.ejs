@@ -129,7 +129,7 @@
                     Edit
                   </a>
                 <% } %></td>
-                <td><% if(!puzzle.tag || puzzle.tag=='daily' && !puzzle.puzzleDate) { %>
+                <td><% if(!puzzle.tag || puzzle.tag=='temporary' || puzzle.tag=='daily' && !puzzle.puzzleDate) { %>
                   <a href="" onclick = "deletePuzzle('<%= puzzle.code %>')">
                     Delete
                   </a>

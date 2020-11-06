@@ -13,6 +13,7 @@
       <option value=""></option>
       <option value="daily" <%= (puzzle.tag && puzzle.tag.includes("daily"))?"selected":"" %>>Daily</option>
       <option value="example_"<%= (puzzle.tag && puzzle.tag.includes("example"))?"selected":"" %>>Example</option>
+      <option value="temporary" <%= (puzzle.tag && puzzle.tag.includes("temporary"))?"selected":"" %>>Temporary</option>
     </select>
     <button name="saveBtn" type="button" class="btn btn-primary">Save</button>
   </div>
