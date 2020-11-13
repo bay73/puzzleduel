@@ -14,9 +14,11 @@
           <div class="card-body">
             <table class="table table-hover table-condensed">
               <tbody>
-                <% answers.forEach(function(answer) { %>
+                <% answers.sort((a1,a2)=>(a1 - a2)).forEach(function(answer) { %>
                 <% if (answer) { %>
                 <tr>
+                  <td><%= answer.date.toISOString().substr(5,14).replace('T',' ') %></td>
+                  <td><%= answer.userName %></td>
                   <td><%= answer.data %></td>
                 </tr>
                 <% } %>

@@ -138,20 +138,19 @@ router.get('/:puzzleid/answers', ensureAuthenticated, async (req, res, next) => 
       res.sendStatus(404);
       return;
     }
+    var users = await User.find({}, "_id name");
+    var userMap = {};
+    users.forEach(user => userMap[user._id] = user.name);
     var puzzleObj = puzzle.toObject();
     var type = await PuzzleType.findOne({ code: puzzleObj.type });
     if(type) {
       puzzleObj.type = type.toObject();
     }
-    const log = await UserActionLog.aggregate([{
-      $match : {puzzleId: puzzle.code, action: "solved"}
-    }, {
-      $group: {_id: "$data", count: { $sum: 1 }}
-    }]);
+    const log = await UserActionLog.find({puzzleId: puzzle.code, action: "solved"});
     res.render('answers', {
       user: req.user,
       puzzle: puzzleObj,
-      answers: log.map(item => {return {data: item._id};})
+      answers: log.map(item => {return {date: item.date, data: item.data, userName: userMap[item.userId]};})
     });
   } catch (e) {
     next(e);
