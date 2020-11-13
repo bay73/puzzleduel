@@ -17,7 +17,7 @@ module.exports = {
     res.redirect('/');      
   },
   sessionConfig: {
-    secret: 'secret',
+    secret: process.env.COOCKIE_SECRET,
     resave: true,
     saveUninitialized: true,
     cookie: {
