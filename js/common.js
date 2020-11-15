@@ -11,6 +11,7 @@ commonPuzzle = function(puzzleData, controls, settings) {
   this.initImages();
   this.createBoard();
   this.steps = [];
+  this.log = [];
   this.initControls(controls);
 }
 
@@ -46,7 +47,9 @@ commonPuzzle.prototype.start = function() {
 
 commonPuzzle.prototype.check = function() {
   var self = this;
+  this.log.push({time: new Date() - this.startTime, data: 'check'});
   var data = this.collectData(true, false);
+  data.log = this.log;
   this.removeMessages();
   if (typeof this.settings != 'undefined' && this.settings.local) {
     var dimension = this.dimension;
@@ -131,6 +134,10 @@ commonPuzzle.prototype.save = function() {
     .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
 }
 
+commonPuzzle.prototype.logStep = function(cell, data ) {
+  this.log.push({time: new Date() - this.startTime, cell: cell, data: data});
+}
+
 commonPuzzle.prototype.addStep = function(cell, data ) {
   this.steps.push({cell: cell, data: data});
   this.setButtonEnabled(true);
@@ -139,6 +146,7 @@ commonPuzzle.prototype.addStep = function(cell, data ) {
 commonPuzzle.prototype.revertStep = function() {
   if (this.steps.length > 0) {
     var step = this.steps.pop(this);
+    this.logStep(step.cell.getCoord(), 'revert');
     step.cell.revertTo(step.data);
   }
   if (this.steps.length == 0) {
@@ -329,6 +337,7 @@ commonPuzzle.prototype.showClues = function(data) {
     this.drawNodeClues();
   }
   this.startTimer();
+  this.log.push({time: new Date() - this.startTime, data: 'start'});
   this.convertControls();
 }
 
@@ -592,6 +601,10 @@ var squarePuzzleCell = function(puzzle, col, row) {
   this.reset();
 }
 
+squarePuzzleCell.prototype.getCoord = function() {
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString();
+}
+
 squarePuzzleCell.prototype.setClue = function(value) {
   // Mark cell as a clue.
   this.isClue = true;
@@ -733,11 +746,13 @@ squarePuzzleCell.prototype.setValue = function(valueIndex) {
     if (this.valueIndex < 0) this.valueIndex = this.togglers.length - 1;
     if (this.valueIndex >= this.togglers.length) this.valueIndex = 0;
     this.value = this.togglers[this.valueIndex];
+    this.puzzle.logStep(this.getCoord(), this.value);
   }
   this.syncCell();
 }
 
 squarePuzzleCell.prototype.togglePencilMark = function(valueIndex) {
+  this.puzzle.logStep(this.getCoord(), "pencil mark");
   if (!this.isClue && valueIndex != 0) {
     if (!this.pencilMarks) {
       this.pencilMarks = [];

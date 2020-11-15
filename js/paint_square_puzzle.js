@@ -189,6 +189,7 @@ squarePuzzleCell.prototype.toggleCell = function() {
 
 squarePuzzleCell.prototype.togglePencilMarks = function() {
   if (this.togglers.length == 3) {
+    this.puzzle.logStep(this.getCoord(), "pencil mark");
     if (!this.pencilMarks || this.pencilMarks.length == 0) {
       this.pencilMarks = [1];
     } else if (this.pencilMarks.includes(1)) {

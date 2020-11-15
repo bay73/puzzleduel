@@ -71,9 +71,11 @@ squarePuzzleCell.prototype.toggleLine = function(direction) {
     this.directions = {};
   }
   if (this.puzzle.pencilMarkMode) {
+    this.puzzle.logStep(this.getCoord(), "pencil mark");
     this.markDirections[direction] = !this.markDirections[direction];
   } else {
     this.puzzle.addStep(this, {h: this.directions.h, v: this.directions.v});
+    this.puzzle.logStep(this.getCoord(), direction);
     this.directions[direction] = !this.directions[direction];
     this.markDirections[direction] = false;
   }
