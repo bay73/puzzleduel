@@ -1,5 +1,6 @@
 const PuzzleType = require('../models/PuzzleType');
 const UserSolvingTime = require('../models/UserSolvingTime');
+const User = require('../models/User');
 
 module.exports.timeToString = function(millis) {
   if (!millis) return "";
@@ -43,6 +44,13 @@ module.exports.typeNameMap = async function() {
   var typeMap = {};
   types.forEach(type => typeMap[type.code] = type.name);
   return typeMap;
+}
+
+module.exports.userNameMap = async function() {
+  const users = await User.find({}, "_id name");
+  var userMap = {};
+  users.forEach(user => userMap[user._id] = user.name);
+  return userMap;
 }
 
 module.exports.typeDataMap = async function() {

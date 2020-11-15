@@ -11,6 +11,7 @@ const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
 // UserActionLog model
 const UserActionLog = require('../models/UserActionLog');
+const util = require('../utils/puzzle_util');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
@@ -138,9 +139,7 @@ router.get('/:puzzleid/answers', ensureAuthenticated, async (req, res, next) => 
       res.sendStatus(404);
       return;
     }
-    var users = await User.find({}, "_id name");
-    var userMap = {};
-    users.forEach(user => userMap[user._id] = user.name);
+    var userMap = await util.userNameMap();
     var puzzleObj = puzzle.toObject();
     var type = await PuzzleType.findOne({ code: puzzleObj.type });
     if(type) {
