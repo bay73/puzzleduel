@@ -27,6 +27,35 @@ router.get('/actionlog', ensureAuthenticated, async (req, res, next) => {
   }
 });
 
+router.get('/actionlog/:puzzleid/:userid', ensureAuthenticated, async (req, res, next) => {
+  try {
+    if (!req.user || req.user.role != "admin") {
+      res.sendStatus(404);
+      return;
+    }
+    const userMap = await util.userNameMap();
+    var log = await UserActionLog.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort("date");
+    if (log.length > 0) {
+      var startTime = log[0].date;
+    }
+    res.render('puzzleactionlog', {
+      user: req.user,
+      logData: log.map(logItem => {
+        return {
+          user: userMap[logItem.userId],
+          date: logItem.date,
+          timeDiff: logItem.date > startTime?util.timeToString(logItem.date - startTime):"",
+          action: logItem.action,
+          data: (typeof logItem.data!="undefined")?JSON.parse(logItem.data):null,
+          ipInfo: logItem.ipInfo
+        };
+      })
+    });
+  } catch (e) {
+    next(e)
+  }
+});
+
 router.get('/userips', ensureAuthenticated, async (req, res, next) => {
   try {
     if (!req.user || req.user.role != "admin") {

@@ -1,0 +1,65 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header">Puzzle action log</h1>
+        <div class="card-body">
+          <table class="table table-hover table-condensed">
+            <tbody>
+              <tr>
+                <th>Date/time</th>
+                <th></th>
+                <th>User</th>
+                <th>Action</th>
+              </tr>
+              <% logData.sort((li1,li2)=>(li1.date - li2.date)).forEach(function(logItem) { %>
+              <% if (logItem.data != null && typeof logItem.data.log != 'undefined') { %>
+              <% var cell = null; %>
+              <% var data = null; %>
+              <% var time = null; %>
+              <% logItem.data.log.forEach(function(logElement) { %>
+              <% if (logElement.cell != cell){ %>
+              <tr>
+                <td></td>
+                <td><%= time %></td>
+                <td><%= logItem.user %></td>
+                <td><%= cell %></td>
+                <td><%= data %></td>
+              </tr>
+              <% cell = logElement.cell; data = logElement.data; time = logElement.time %>
+              <% } else { %>
+              <% data += ", " + logElement.data; time = logElement.time %>
+              <% } %>
+              <% }) %>
+              <tr>
+                <td></td>
+                <td><%= time %></td>
+                <td><%= logItem.user %></td>
+                <td><%= cell %></td>
+                <td><%= data %></td>
+              </tr>
+              <% } %>
+              <tr>
+                <td>
+                  <%= logItem.timeDiff.length>0?logItem.timeDiff:logItem.date.toISOString() %>
+                </td>
+                <td></td>
+                <td>
+                  <%= logItem.user %>
+                </td>
+                <td>
+                  <%= logItem.action %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

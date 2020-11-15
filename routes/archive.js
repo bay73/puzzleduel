@@ -146,6 +146,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
         .filter(time => typeof time.hidden=="undefined" || time.hidden==false)
         .map(time => {
           return {
+            userId: time.userId,
             userName: time.userName,
             time: util.timeToString(time.solvingTime),
             errors: time.errCount

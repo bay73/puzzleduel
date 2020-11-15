@@ -64,8 +64,16 @@
               <% times.forEach(function(time) { %>
               <tr>
                 <td><%= time.userName %></td>
-                <td><%= time.time %></td>
-                <td><%= time.errors==0 ? "" : (time.errors + " " + __n("error", time.errors)) %></td>
+                <td>
+                  <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                  <a href="/admin/actionlog/<%= puzzle.code %>/<%= time.userId %>"><%= time.time %></a>
+                  <% } else { %>
+                  <%= time.time %>
+                  <% } %>
+                </td>
+                <td>
+                  <%= time.errors==0 ? "" : (time.errors + " " + __n("error", time.errors)) %>
+                </td>
               </tr>
               <% }) %>
               <% notFinished.forEach(function(userName) { %>
