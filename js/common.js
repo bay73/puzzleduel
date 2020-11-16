@@ -135,7 +135,11 @@ commonPuzzle.prototype.save = function() {
 }
 
 commonPuzzle.prototype.logStep = function(cell, data ) {
-  this.log.push({time: new Date() - this.startTime, cell: cell, data: data});
+  if (this.log.length < 1001) {
+    this.log.push({time: new Date() - this.startTime, cell: cell, data: data});
+  } else {
+    this.log[1000].data = 'truncated';
+  }
 }
 
 commonPuzzle.prototype.addStep = function(cell, data ) {
