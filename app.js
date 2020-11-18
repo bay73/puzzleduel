@@ -22,8 +22,8 @@ mongoose
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({limit: '1mb'}));
+app.use(express.urlencoded({limit: '1mb', parameterLimit: 10000, extended: true}));
 app.use(expressip().getIpInfoMiddleware);
 app.use(cookieParser());
 app.use(require('./config/i18n'));
