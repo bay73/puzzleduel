@@ -95,7 +95,7 @@ outerCluePuzzle.prototype.initImages = function() {
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "easy_as_coral") {
-    this.clues = ["1", "2", "3", "4", "5", "6", "7", "8"];
+    this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "black", "cross"];
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "snake_simple") {
