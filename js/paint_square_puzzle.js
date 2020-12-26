@@ -21,7 +21,7 @@ innerCluePuzzle.prototype.initImages = function() {
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "cave_classic") {
-    this.clues = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"];
+    this.clues = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "black", "cross"];
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "yin_yang_classic") {
@@ -91,7 +91,7 @@ outerCluePuzzle.prototype.initImages = function() {
   this.clues = [];
   this.togglers = [];
   if(this.typeCode == "clouds") {
-    this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
+    this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "black", "cross"];
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "easy_as_coral") {
@@ -107,7 +107,7 @@ outerCluePuzzle.prototype.initImages = function() {
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "gaps") {
-    this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"];
+    this.clues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "white_circle", "cross"];
     this.togglers = ["white", "white_circle", "cross"];
   }
   if(this.typeCode == "paint_by_max") {
@@ -121,7 +121,7 @@ outerCluePuzzle.prototype.initImages = function() {
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "point_a_star") {
-    this.clues = ["0", "1", "2", "3", "4", "5", "6", "arrow_u", "arrow_ur", "arrow_r", "arrow_dr", "arrow_d", "arrow_dl", "arrow_l", "arrow_ul"];
+    this.clues = ["0", "1", "2", "3", "4", "5", "6", "arrow_u", "arrow_ur", "arrow_r", "arrow_dr", "arrow_d", "arrow_dl", "arrow_l", "arrow_ul", "star", "cross"];
     this.togglers = ["white", "star", "cross"];
   }
   this.preloadImages(this.clues);
