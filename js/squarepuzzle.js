@@ -9,11 +9,16 @@ Object.setPrototypeOf(squarePuzzleType.prototype, squarePuzzle.prototype);
 squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
   var typeProperties = {}
-  
+
   typeProperties["hitori"] = {
     cellController: cell => setClickSwitch(cell, true, [{},{color: "#303030", returnValue: "1"},{image: "white_circle"}], [{},{color: "#808080"},{image: "white_circle"}]),
     cellEditController: cell => setNumberClues(cell, 0, 16),
-   
+  }
+
+  typeProperties["snake_dutch"] = {
+    cellController: cell => setClickSwitch(cell, true, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]),
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"},{image: "cross", returnValue: "cross"}];},
+    decodeClue: value => {return {image: value} },
   }
 
   if (typeCode in typeProperties) {

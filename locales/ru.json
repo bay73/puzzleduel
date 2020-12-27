@@ -202,5 +202,10 @@
 	"solving time for an expert": "решения для эксперта",
 	"dOubLESHOW": "dOubLESHOW",
 	"Puzzle is already planned for publishing, deletion is not allowed!": "Puzzle is already planned for publishing, deletion is not allowed!",
-	"Puzzle is already used, deletion is not allowed!": "Puzzle is already used, deletion is not allowed!"
+	"Puzzle is already used, deletion is not allowed!": "Puzzle is already used, deletion is not allowed!",
+	"Snake should have a head and a tail": "У змеи должны быть голова и хвост",
+	"Snake should be 45 cells long": "Змея должна быть длины 45",
+	"Snake should turn in the cell with black circle": "Змея должна поворачивать в клетке с чёрным кружком",
+	"Snake can't go through crossed cell": "Змея не должна проходить через клетку с крестиком",
+	"Snake should go straight through the cell with white circle": "Змея должна проходить прямо через клетку с белым кружком"
 }

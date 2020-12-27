@@ -199,5 +199,10 @@
 	"solving time for an expert": "solving time for an expert",
 	"dOubLESHOW": "dOubLESHOW",
 	"Puzzle is already planned for publishing, deletion is not allowed!": "Puzzle is already planned for publishing, deletion is not allowed!",
-	"Puzzle is already used, deletion is not allowed!": "Puzzle is already used, deletion is not allowed!"
+	"Puzzle is already used, deletion is not allowed!": "Puzzle is already used, deletion is not allowed!",
+	"Snake should have a head and a tail": "Snake should have a head and a tail",
+	"Snake should be 45 cells long": "Snake should be 45 cells long",
+	"Snake should turn in the cell with black circle": "Snake should turn in the cell with black circle",
+	"Snake can't go through crossed cell": "Snake can't go through crossed cell",
+	"Snake should go straight through the cell with white circle": "Snake should go straight through the cell with white circle"
 }
