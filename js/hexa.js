@@ -6,8 +6,8 @@ hexaPuzzle = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(hexaPuzzle.prototype, basePuzzle.prototype);
 
-hexaPuzzle.prototype.parseDimension = function() {
-  var dimensions = this.dimension.split("x");
+hexaPuzzle.prototype.parseDimension = function(dimension) {
+  var dimensions = dimension.split("x");
   // Hexa grid has vertical simmetrical.
   // rows - size of the vertical sides of the grid
   // cols - size of top (and bottom) inclined sedes
@@ -28,61 +28,77 @@ hexaPuzzle.prototype.createBoard = function() {
       }
     }
   }
-  //
-  this.edges = [];
-  for (var y = 0; y < this.rows + this.cols - 1; y++) {
-    this.edges[y] = new Array(2*this.cols - 1);
-    for (var x = 0; x < 2*this.cols - 1; x++) {
-      if (y - x < this.rows && x - y < this.cols) {
-        this.edges[y][x] = new Array(6);
-        for (var i=0; i<6; i++){
-           if (i==0 && typeof this.edges[y-1] != "undefined" && typeof this.edges[y-1][x] != "undefined") {
-              this.edges[y][x][i] = this.edges[y-1][x][3];
-              this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
-           }else if (i==4 && typeof this.edges[y][x-1] != "undefined") {
-              this.edges[y][x][i] = this.edges[y][x-1][1];
-              this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
-           }else if (i==5 && typeof this.edges[y-1] != "undefined"  && typeof this.edges[y-1][x-1] != "undefined") {
-              this.edges[y][x][i] = this.edges[y-1][x-1][2];
-              this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
-           } else {
-              this.edges[y][x][i] = new hexaPuzzleEdge(this, x, y, i);
-              this.elements.push(this.edges[y][x][i]);
+  if (this.typeProperties.needEdges) {
+    this.edges = [];
+    for (var y = 0; y < this.rows + this.cols - 1; y++) {
+      this.edges[y] = new Array(2*this.cols - 1);
+      for (var x = 0; x < 2*this.cols - 1; x++) {
+        if (y - x < this.rows && x - y < this.cols) {
+          this.edges[y][x] = new Array(6);
+          for (var i=0; i<6; i++){
+             if (i==0 && typeof this.edges[y-1] != "undefined" && typeof this.edges[y-1][x] != "undefined") {
+               this.edges[y][x][i] = this.edges[y-1][x][3];
+               this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
+             }else if (i==4 && typeof this.edges[y][x-1] != "undefined") {
+               this.edges[y][x][i] = this.edges[y][x-1][1];
+               this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
+             }else if (i==5 && typeof this.edges[y-1] != "undefined"  && typeof this.edges[y-1][x-1] != "undefined") {
+               this.edges[y][x][i] = this.edges[y-1][x-1][2];
+               this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
+             } else {
+               this.edges[y][x][i] = new hexaPuzzleEdge(this, x, y, i);
+               this.elements.push(this.edges[y][x][i]);
+             }
            }
         }
       }
     }
+    if (this.typeProperties.outerEdges) {
+      for (var y = 0; y < this.rows + this.cols - 1; y++) {
+        for (var x = 0; x < 2*this.cols - 1; x++) {
+          if (this.cells[y] && this.cells[y][x]) {
+            for (var i=0; i<6; i++){
+              if (this.edges[y][x][i].allCells.length==1) {
+                this.edges[y][x][i].isFinal = true;
+                this.edges[y][x][i].data = {text: null, image: null, color: this.colorSchema.gridColor, textColor: null};
+              }
+            }
+          }
+        }
+      }
+    }
   }
-  //
-  this.nodes = [];
-  for (var y = 0; y < this.rows + this.cols - 1; y++) {
-    this.nodes[y] = new Array(2*this.cols - 1);
-    for (var x = 0; x < 2*this.cols - 1; x++) {
-      if (y - x < this.rows && x - y < this.cols) {
-        this.nodes[y][x] = new Array(6);
-        for (var i=0; i<6; i++){
-           if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
+  if (this.typeProperties.needNodes) {
+    this.nodes = [];
+    for (var y = 0; y < this.rows + this.cols - 1; y++) {
+      this.nodes[y] = new Array(2*this.cols - 1);
+      for (var x = 0; x < 2*this.cols - 1; x++) {
+        if (y - x < this.rows && x - y < this.cols) {
+          this.nodes[y][x] = new Array(6);
+          for (var i=0; i<6; i++){
+            if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
               this.nodes[y][x][i] = this.nodes[y-1][x][4];
               this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-           } else if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x-1] != "undefined") {
+            } else if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x-1] != "undefined") {
               this.nodes[y][x][i] = this.nodes[y-1][x-1][2];
               this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-           } else if (i==1 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
+            } else if (i==1 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
               this.nodes[y][x][i] = this.nodes[y-1][x][3];
               this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-           } else if (i==4 && typeof this.nodes[y][x-1] != "undefined") {
-             this.nodes[y][x][i] = this.nodes[y][x-1][2];
+            } else if (i==4 && typeof this.nodes[y][x-1] != "undefined") {
+              this.nodes[y][x][i] = this.nodes[y][x-1][2];
               this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-           } else if (i==5 && typeof this.nodes[y][x-1] != "undefined") {
-             this.nodes[y][x][i] = this.nodes[y][x-1][1];
+            } else if (i==5 && typeof this.nodes[y][x-1] != "undefined") {
+              this.nodes[y][x][i] = this.nodes[y][x-1][1];
               this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-           }else if (i==5 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x-1] != "undefined") {
-             this.nodes[y][x][i] = this.nodes[y-1][x-1][3];
+            } else if (i==5 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x-1] != "undefined") {
+              this.nodes[y][x][i] = this.nodes[y-1][x-1][3];
               this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-           } else {
+            } else {
               this.nodes[y][x][i] = new hexaPuzzleNode(this, x, y, i);
               this.elements.push(this.nodes[y][x][i]);
-           }
+            }
+          }
         }
       }
     }
@@ -95,6 +111,52 @@ hexaPuzzle.prototype.initController = function () {
   }
   this.controller = new mouseController(this.elements);
   this.controller.attachEvents(this.snap);
+  for (var y = 0; y < this.rows + this.cols - 1; y++) {
+    for (var x = 0; x < 2*this.cols - 1; x++) {
+      if (this.cells[y] && this.cells[y][x]) {
+        if (typeof this.typeProperties.cellController == "function") {
+          this.typeProperties.cellController(this.cells[y][x]);
+        }
+        for (var i=0; i<6; i++){
+          if (typeof this.typeProperties.edgeController == "function") {
+            this.typeProperties.edgeController(this.edges[y][x][i]);
+          }
+        }
+        for (var i=0; i<6; i++){
+          if (typeof this.typeProperties.nodeController == "function") {
+            this.typeProperties.nodeController(this.nodes[y][x][i]);
+          }
+        }
+      }
+    }
+  }
+}
+
+hexaPuzzle.prototype.initEditController = function() {
+  if (typeof this.controller != 'undefined') {
+    this.controller.detachEvents();
+  }
+  this.controller = new mouseController(this.elements);
+  this.controller.attachEvents(this.snap);
+  for (var y = 0; y < this.rows + this.cols - 1; y++) {
+    for (var x = 0; x < 2*this.cols - 1; x++) {
+      if (this.cells[y] && this.cells[y][x]) {
+        if (typeof this.typeProperties.cellEditController == "function") {
+          this.typeProperties.cellEditController(this.cells[y][x]);
+        }
+        for (var i=0; i<6; i++){
+          if (typeof this.typeProperties.edgeEditController == "function") {
+            this.typeProperties.edgeEditController(this.edges[y][x][i]);
+          }
+        }
+        for (var i=0; i<6; i++){
+          if (typeof this.typeProperties.nodeEditController == "function") {
+            this.typeProperties.nodeEditController(this.nodes[y][x][i]);
+          }
+        }
+      }
+    }
+  }
 }
 
 hexaPuzzle.prototype.findSize = function() {

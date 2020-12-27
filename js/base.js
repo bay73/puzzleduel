@@ -1,10 +1,17 @@
 basePuzzle = function(puzzleData, controls, settings) {
   this.settings = settings;
+  this.typeProperties = {
+    needEdges: true,
+    thickEdges: false,
+    outerEdges: true,
+    needNodes: false,
+  };
   this.id = puzzleData.id;
   this.colorSchema = this.chooseColorSchema();
   this.typeCode = puzzleData.typeCode;
   this.dimension = puzzleData.dimension;
-  this.parseDimension();
+  this.parseDimension(puzzleData.dimension);
+  this.setTypeProperties(puzzleData.typeCode);
   this.createBoard();
   this.steps = [];
   this.initControls(controls);
@@ -32,11 +39,15 @@ basePuzzle.prototype.render = function(snap) {
       "strokeWidth": 1,
     },
     edge: {
-      "strokeWidth": this.size.unitSize < 36 ? 6: Math.round(this.size.unitSize/6),
+      "strokeWidth": this.typeProperties.thickEdges ?
+                       (this.size.unitSize < 36 ? 6 : Math.round(this.size.unitSize/6)) :
+                       (this.size.unitSize < 36 ? 4 : Math.round(this.size.unitSize/9)),
       "stroke-linecap": "round"
     },
     pencilEdge: {
-      "strokeWidth": this.size.unitSize < 32 ? 4: Math.round(this.size.unitSize/8),
+      "strokeWidth": this.typeProperties.thickEdges ?
+                       (this.size.unitSize < 32 ? 4 : Math.round(this.size.unitSize/8)) :
+                       (this.size.unitSize < 36 ? 3 : Math.round(this.size.unitSize/12)),
       "stroke-linecap": "round",
       "stroke-dasharray": "0 " + (this.size.unitSize < 35 ? 5: Math.round(this.size.unitSize/7))
     },
@@ -344,7 +355,16 @@ basePuzzle.prototype.removeMessages = function() {
   }
 }
 
-//////////////////////////// virtual mesthods ////////////////////////
+basePuzzle.prototype.decodeClue = function(value) {
+  // Convert clue value to data for element.
+  if (typeof this.typeProperties.decodeClue =="function") {
+    return this.typeProperties.decodeClue(value);
+  } else {
+    return {text: value};
+  }
+}
+
+//////////////////////////// virtual methods ////////////////////////
 basePuzzle.prototype.parseDimension = function() {
   // Parse dimension string to values.
   throw 'parseDimension is not implemented for ' + this.constructor.name + '!';
@@ -391,12 +411,11 @@ basePuzzle.prototype.collectData = function() {
   throw 'collectData is not implemented for ' + this.constructor.name + '!';
 }
 
-basePuzzle.prototype.decodeClue = function(value) {
-  // Convert clue value to data for element.
-  throw 'decodeClue is not implemented for ' + this.constructor.name + '!';
-}
-
 basePuzzle.prototype.showErrorCells = function(result) {
   throw 'showErrorCells is not implemented for ' + this.constructor.name + '!';
+}
+
+basePuzzle.prototype.setTypeProperties = function(typeCode) {
+  throw 'setTypeProperties is not implemented for ' + this.constructor.name + '!';
 }
 

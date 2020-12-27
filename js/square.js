@@ -6,8 +6,8 @@ squarePuzzle = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(squarePuzzle.prototype, basePuzzle.prototype);
 
-squarePuzzle.prototype.parseDimension = function() {
-  var dimensions = this.dimension.split("x");
+squarePuzzle.prototype.parseDimension = function(dimension) {
+  var dimensions = dimension.split("x");
   // rows - size of the vertical sides of the grid
   // cols - size of top (and bottom) inclined sedes
   this.rows = parseInt(dimensions[1]);
@@ -26,50 +26,65 @@ squarePuzzle.prototype.createBoard = function() {
     }
   }
   //
-  this.edges = [];
-  for (var y = 0; y < this.rows; y++) {
-    this.edges[y] = new Array(this.cols);
-    for (var x = 0; x < this.cols; x++) {
-      this.edges[y][x] = new Array(4);
-      for (var i=0; i<4; i++){
-        if (i==0 && typeof this.edges[y-1] != "undefined" && typeof this.edges[y-1][x] != "undefined") {
-          this.edges[y][x][i] = this.edges[y-1][x][2];
-          this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
-        }else if (i==3 && typeof this.edges[y][x-1] != "undefined") {
-          this.edges[y][x][i] = this.edges[y][x-1][1];
-          this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
-        } else {
-          this.edges[y][x][i] = new squarePuzzleEdge(this, x, y, i);
-          this.elements.push(this.edges[y][x][i]);
+  if (this.typeProperties.needEdges) {
+    this.edges = [];
+    for (var y = 0; y < this.rows; y++) {
+      this.edges[y] = new Array(this.cols);
+      for (var x = 0; x < this.cols; x++) {
+        this.edges[y][x] = new Array(4);
+        for (var i=0; i<4; i++){
+          if (i==0 && typeof this.edges[y-1] != "undefined" && typeof this.edges[y-1][x] != "undefined") {
+            this.edges[y][x][i] = this.edges[y-1][x][2];
+            this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
+          }else if (i==3 && typeof this.edges[y][x-1] != "undefined") {
+            this.edges[y][x][i] = this.edges[y][x-1][1];
+            this.edges[y][x][i].allCells.push({col:x, row:y, side: i});
+          } else {
+            this.edges[y][x][i] = new squarePuzzleEdge(this, x, y, i);
+            this.elements.push(this.edges[y][x][i]);
+          }
+        }
+      }
+    }
+    if (this.typeProperties.outerEdges) {
+      for (var y = 0; y < this.rows; y++) {
+        for (var x = 0; x < this.cols; x++) {
+          for (var i=0; i<4; i++){
+            if (this.typeProperties.outerEdges && this.edges[y][x][i].allCells.length==1) {
+              this.edges[y][x][i].isFinal = true;
+              this.edges[y][x][i].data = {text: null, image: null, color: this.colorSchema.gridColor, textColor: null};
+            }
+          }
         }
       }
     }
   }
-  //
-  this.nodes = [];
-  for (var y = 0; y < this.rows; y++) {
-    this.nodes[y] = new Array(this.cols);
-    for (var x = 0; x < this.cols; x++) {
-      this.nodes[y][x] = new Array(4);
-      for (var i=0; i<4; i++){
-        if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
-          this.nodes[y][x][i] = this.nodes[y-1][x][3];
-          this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-        } else if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
-          this.nodes[y][x][i] = this.nodes[y-1][x][1];
-          this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-        } else if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x-1] != "undefined") {
-          this.nodes[y][x][i] = this.nodes[y-1][x-1][2];
-          this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-        } else if (i==1 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
-          this.nodes[y][x][i] = this.nodes[y-1][x][2];
-          this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-        } else if (i==3 && typeof this.nodes[y][x-1] != "undefined") {
-          this.nodes[y][x][i] = this.nodes[y][x-1][2];
-          this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-        } else {
-          this.nodes[y][x][i] = new squarePuzzleNode(this, x, y, i);
-          this.elements.push(this.nodes[y][x][i]);
+  if (this.typeProperties.needNodes) {
+    this.nodes = [];
+    for (var y = 0; y < this.rows; y++) {
+      this.nodes[y] = new Array(this.cols);
+      for (var x = 0; x < this.cols; x++) {
+        this.nodes[y][x] = new Array(4);
+        for (var i=0; i<4; i++){
+          if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
+            this.nodes[y][x][i] = this.nodes[y-1][x][3];
+            this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
+          } else if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
+            this.nodes[y][x][i] = this.nodes[y-1][x][1];
+            this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
+          } else if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x-1] != "undefined") {
+            this.nodes[y][x][i] = this.nodes[y-1][x-1][2];
+            this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
+          } else if (i==1 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
+            this.nodes[y][x][i] = this.nodes[y-1][x][2];
+            this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
+          } else if (i==3 && typeof this.nodes[y][x-1] != "undefined") {
+            this.nodes[y][x][i] = this.nodes[y][x-1][2];
+            this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
+          } else {
+            this.nodes[y][x][i] = new squarePuzzleNode(this, x, y, i);
+            this.elements.push(this.nodes[y][x][i]);
+          }
         }
       }
     }
@@ -82,6 +97,48 @@ squarePuzzle.prototype.initController = function () {
   }
   this.controller = new mouseController(this.elements);
   this.controller.attachEvents(this.snap);
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (typeof this.typeProperties.cellController == "function") {
+        this.typeProperties.cellController(this.cells[y][x]);
+      }
+      for (var i=0; i<4; i++){
+        if (typeof this.typeProperties.edgeController == "function") {
+          this.typeProperties.edgeController(this.edges[y][x][i]);
+        }
+      }
+      for (var i=0; i<4; i++){
+        if (typeof this.typeProperties.nodeController == "function") {
+          this.typeProperties.nodeController(this.nodes[y][x][i]);
+        }
+      }
+    }
+  }
+}
+
+squarePuzzle.prototype.initEditController = function() {
+  if (typeof this.controller != 'undefined') {
+    this.controller.detachEvents();
+  }
+  this.controller = new mouseController(this.elements);
+  this.controller.attachEvents(this.snap);
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (typeof this.typeProperties.cellEditController == "function") {
+        this.typeProperties.cellEditController(this.cells[y][x]);
+      }
+      for (var i=0; i<4; i++){
+        if (typeof this.typeProperties.edgeEditController == "function") {
+          this.typeProperties.edgeEditController(this.edges[y][x][i]);
+        }
+      }
+      for (var i=0; i<4; i++){
+        if (typeof this.typeProperties.nodeEditController == "function") {
+          this.typeProperties.nodeEditController(this.nodes[y][x][i]);
+        }
+      }
+    }
+  }
 }
 
 squarePuzzle.prototype.findSize = function() {
