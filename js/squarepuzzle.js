@@ -18,8 +18,10 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   typeProperties["snake_dutch"] = {
     cellController: cell => {
       setClickSwitch(cell, false, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      setClueClickSwitch(cell, [{},{color: "#606060", returnValue: "1"}], [{},{color: "#a0a0a0"}]);
-      },
+      if (cell.isClue && cell.data.image != "cross") {
+        setClueClickSwitch(cell, [{},{color: "#606060", returnValue: "1"}], [{},{color: "#a0a0a0"}]);
+      }
+    },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"},{image: "cross", returnValue: "cross"}];},
     decodeClue: value => {return {image: value} },
   }
