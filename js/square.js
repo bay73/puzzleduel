@@ -91,6 +91,10 @@ squarePuzzle.prototype.createBoard = function() {
   }
 }
 
+squarePuzzle.prototype.decodeCoordinate = function(key) {
+  return {x: key.charCodeAt(0) - 'a'.charCodeAt(0), y: parseInt(key.substring(1)) - 1};
+}
+
 squarePuzzle.prototype.initController = function () {
   if (typeof this.controller != 'undefined') {
     this.controller.detachEvents();
@@ -171,11 +175,54 @@ squarePuzzle.prototype.clearAll = function(data) {
 squarePuzzle.prototype.showClues = function(data) {
   // Parse clues.
   for (const [key, value] of Object.entries(data)) {
-    var x = key.charCodeAt(0) - 'a'.charCodeAt(0);
-    var y = parseInt(key.substring(1)) - 1;
-    if (this.cells[y] && this.cells[y][x]) {
-      this.cells[y][x].setClue(this.decodeClue(value));
+    if (key=="areas") {
+      this.drawAreas(value);
+    } else if (key=="edges") {
+      this.drawEdgeClues(value);
+    } else if (key=="nodes") {
+      this.drawNodeClues(value);
+    } else {
+      var coord = this.decodeCoordinate(key);
+      if (this.cells[coord.y] && this.cells[coord.y][coord.x]) {
+        this.cells[coord.y][coord.x].setClue(this.decodeClue(value));
+      }
     }
+  }
+}
+
+squarePuzzle.prototype.drawAreas = function(areas) {
+  for(var i=0; i<areas.length;i++) {
+    var area = areas[i];
+    for (var j=0;j<area.length;j++) {
+      var coord = this.decodeCoordinate(area[j]);
+      this.cells[coord.y][coord.x].area = i;
+    }
+  }
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (x < this.cols-1 && this.cells[y][x].area != this.cells[y][x+1].area) {
+        this.edges[y][x][1].setClue({color: this.colorSchema.gridColor});
+      }
+      if (y < this.rows-1 && this.cells[y][x].area != this.cells[y+1][x].area) {
+        this.edges[y][x][2].setClue({color: this.colorSchema.gridColor});
+      }
+    }
+  }
+}
+
+squarePuzzle.prototype.drawEdgeClues = function(edges) {
+  for (const [key, value] of Object.entries(edges)) {
+    var part = key.split("-");
+    var coord = this.decodeCoordinate(part[0]);
+    var side = part[1]=="b" ? 2 : 1;
+    this.edges[coord.y][coord.x][side].setClue(this.decodeClue(value));
+  }
+}
+
+squarePuzzle.prototype.drawNodeClues = function() {
+  for (const [key, value] of Object.entries(this.nodes)) {
+    var coord = this.decodeCoordinate(key);
+    this.nodes[coord.y][coord.x][0].setClue(this.decodeClue(value));
   }
 }
 
@@ -199,7 +246,11 @@ squarePuzzle.prototype.collectData = function() {
     }
   });
   if (Object.keys(edgeData).length != 0) {
-    data["edges"] = edgeData;
+    if (this.typeProperties.collectAreas) {
+      data["areas"] = this.computeAreas();
+    } else {
+      data["edges"] = edgeData;
+    }
   }
   if (Object.keys(nodeData).length != 0) {
     data["nodes"] = nodeData;
@@ -207,12 +258,64 @@ squarePuzzle.prototype.collectData = function() {
   return data;
 }
 
+squarePuzzle.prototype.computeAreas = function() {
+  var root = function(area) {
+    if (areaData[area].parent == area) return area;
+    return root(areaData[area].parent);
+  }
+  var join = function(area1, area2) {
+    var root1 = root(area1);
+    var root2 = root(area2);
+    if (root1 == root2) return;
+    if (areaData[root1].volume > areaData[root2].volume) {
+      areaData[root2].parent = root1;
+      areaData[root1].volume += areaData[root2].volume;
+    } else {
+      areaData[root1].parent = root2;
+      areaData[root2].volume += areaData[root1].volume;
+    }
+  }
+  var areaLink = [];
+  var areaData = []
+  var cellCount = 0;
+  for (var y = 0; y < this.rows; y++) {
+    areaLink[y] = new Array(this.cols);
+    for (var x = 0; x < this.cols; x++) {
+      areaData[cellCount] = {name: this.cells[y][x].getCoordinates(), parent: cellCount, volume: 1};
+      areaLink[y][x] = cellCount;
+      cellCount++;
+    }
+  }
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (x < this.cols-1 && this.edges[y][x][1].getValue() != "1") {
+        join(areaLink[y][x], areaLink[y][x+1]);
+      }
+      if (y < this.rows-1 && this.edges[y][x][2].getValue() != "1") {
+        join(areaLink[y][x], areaLink[y+1][x]);
+      }
+    }
+  }
+  var areasObject = {};
+  for (var i = 0; i< cellCount; i++) {
+    var r = root(i);
+    if (!(r in areasObject)) {
+      areasObject[r] = [];
+    }
+    areasObject[r].push(areaData[i].name);
+  }
+  var areas = [];
+  for (r in areasObject) {
+    areas.push(areasObject[r])
+  }
+  return areas;
+}
+
 squarePuzzle.prototype.showErrorCells = function(result) {
   if (!Array.isArray(result.errors)) return;
-  result.errors.forEach(coord => {
-    var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
-    var y = parseInt(coord.substring(1)) - 1;
-    this.cells[y][x].markError();
+  result.errors.forEach(key => {
+    var coord = this.decodeCoordinate(key);
+    this.cells[coord.y][coord.x].markError();
   });
 }
 

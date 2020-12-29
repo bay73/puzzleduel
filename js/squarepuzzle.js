@@ -26,6 +26,16 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return {image: value} },
   }
 
+  typeProperties["starbattle"] = {
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{image: "star", returnValue: "star"},{image: "cross"}]);
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
+    edgeEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{color: this.colorSchema.gridColor, returnValue: "1"}];},
+    decodeClue: value => {return {image: value} },
+    collectAreas: true,
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = {...this.typeProperties, ...typeProperties[typeCode]};
   }
