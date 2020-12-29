@@ -292,6 +292,7 @@ basePuzzle.prototype.processClueData = function(data) {
 
 basePuzzle.prototype.showForEdit = function (data) {
   this.editMode = true;
+  this.setTypeProperties(this.typeCode);
   this.clearAll();
   this.showClues(data);
   this.initEditController();
