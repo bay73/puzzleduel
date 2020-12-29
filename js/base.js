@@ -14,6 +14,7 @@ basePuzzle = function(puzzleData, controls, settings) {
   this.setTypeProperties(puzzleData.typeCode);
   this.createBoard();
   this.steps = [];
+  this.log = [];
   this.initControls(controls);
 }
 
@@ -227,7 +228,9 @@ basePuzzle.prototype.edit = function() {
 
 basePuzzle.prototype.check = function() {
   var self = this;
+  this.log.push({time: new Date() - this.startTime, data: 'check'});
   var data = this.collectData();
+  data.log = this.log;
   this.removeMessages();
   if (typeof this.settings != 'undefined' && this.settings.local) {
     var dimension = this.dimension;
@@ -288,6 +291,7 @@ basePuzzle.prototype.processClueData = function(data) {
   this.steps = [];
   this.convertControls();
   this.startTimer();
+  this.log.push({time: new Date() - this.startTime, data: 'start'});
 }
 
 basePuzzle.prototype.showForEdit = function (data) {
@@ -302,6 +306,14 @@ basePuzzle.prototype.showForEdit = function (data) {
 
 basePuzzle.prototype.togglePencilMarkMode = function() {
   this.pencilMarkMode = $(this.controls.pencilMarkCb).is(':checked');
+}
+
+basePuzzle.prototype.logStep = function(cell, data ) {
+  if (this.log.length < 201) {
+    this.log.push({time: new Date() - this.startTime, cell: cell, data: data});
+  } else {
+    this.log[200].data = 'truncated';
+  }
 }
 
 basePuzzle.prototype.addStep = function(step) {

@@ -38,14 +38,35 @@ gridElement.prototype.setClue = function(clueData) {
 gridElement.prototype.switchToData = function(data) {
   var oldData = this.data;
   var self = this;
-  this.puzzle.addStep(()=>{self.data = oldData; self.redraw()});
+  var coord = this.getCoordinates();
+  this.puzzle.addStep(()=>{self.data = oldData; self.puzzle.logStep(coord, "revert"); self.redraw()});
   this.data = Object.assign({text: null, image: null, color: null, textColor: null}, data);
+  this.puzzle.logStep(coord, this.diffToString(oldData, data))
   this.pencilData = null;
   this.redraw();
 }
 
+gridElement.prototype.diffToString = function(oldData, data) {
+  var diff = "";
+  if (data.text && data.text != oldData.text) {
+    diff += data.text;
+  }
+  if (data.image && data.image != oldData.image) {
+    if (diff)
+      diff += "|";
+    diff += data.image;
+  }
+  if (data.color && data.color != oldData.color) {
+    if (diff)
+      diff += "|";
+    diff += data.color;
+  }
+  return diff;
+}
+
 gridElement.prototype.setPencilData = function(data) {
   this.pencilData = Object.assign({text: null, image: null, color: null, textColor: null}, data);
+  this.puzzle.logStep(this.getCoordinates(), "pencil mark");
   this.redraw();
 }
 
