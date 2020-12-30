@@ -1,10 +1,10 @@
 define(["hexa"], function() {
 
-hexaFencePuzzle = function(puzzleData, controls, settings) {
+hexaPuzzleType = function(puzzleData, controls, settings) {
   hexaPuzzle.call(this, puzzleData, controls, settings);
 }
 
-Object.setPrototypeOf(hexaFencePuzzle.prototype, hexaPuzzle.prototype);
+Object.setPrototypeOf(hexaPuzzleType.prototype, hexaPuzzle.prototype);
 
 function setClickSwitch(element, withClues, clickSwitch, pencilClickSwitch) {
   if (element.isClue && !withClues) {
@@ -39,7 +39,7 @@ function setNumberClues(cell, start, end) {
   cell.clickSwitch = clickSwitch;
 }
 
-hexaFencePuzzle.prototype.setTypeProperties = function(typeCode){
+hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
   var self = this;
   var typeProperties = {}
 
