@@ -204,5 +204,7 @@
 	"Snake should be 45 cells long": "Snake should be 45 cells long",
 	"Snake should turn in the cell with black circle": "Snake should turn in the cell with black circle",
 	"Snake can't go through crossed cell": "Snake can't go through crossed cell",
-	"Snake should go straight through the cell with white circle": "Snake should go straight through the cell with white circle"
+	"Snake should go straight through the cell with white circle": "Snake should go straight through the cell with white circle",
+	"Tetromino of the same type shoudln't share an edge": "Tetromino of the same type shoudln't share an edge",
+	"Black cells in each area should form valid tetromino": "Black cells in each area should form valid tetromino"
 }
