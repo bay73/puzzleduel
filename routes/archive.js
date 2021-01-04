@@ -48,6 +48,7 @@ router.get('/types', async (req, res, next) => {
       user: req.user,
       puzzles: puzzles
         .filter(puzzle => !puzzle.needLogging)
+        .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
         .map(puzzle => {
         return {
           code: puzzle.code,
@@ -63,6 +64,7 @@ router.get('/types', async (req, res, next) => {
   }
 });
 
+
 // List of all old puzzles by author
 router.get('/types/author/:authorid', async (req, res, next) => {
   try {
@@ -75,6 +77,7 @@ router.get('/types/author/:authorid', async (req, res, next) => {
       author: author.name,
       puzzles: puzzles
         .filter(puzzle => !puzzle.needLogging)
+        .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
         .map(puzzle => {
         return {
           code: puzzle.code,
@@ -98,7 +101,9 @@ router.get('/examples', async (req, res, next) => {
     const puzzles = await Puzzle.find({tag: "example" }, "-data");
     res.render('examples', {
       user: req.user,
-      puzzles: puzzles.map(puzzle => {
+      puzzles: puzzles
+        .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
+        .map(puzzle => {
         return {
           code: puzzle.code,
           category: typeMap[puzzle.type].category,
@@ -191,7 +196,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     }
     const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
     var typePuzzleCount = Object.entries(typeMap).reduce((map, [key, value]) => {
-      map[key] = {name: value.name, puzzleCount: 0};
+      map[key] = {name: value.name, puzzleCount: 0, properties: value.properties};
       return map;
     }, {});
     const futurePuzzles = await Puzzle.find({tag: "daily", $or: [{daily: {$gt: new Date()}}, {daily: {$exists: false}}]}, "-data").sort({daily: -1});
@@ -201,6 +206,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       future: onlyFuture,
       types: Object.entries(typeMap)
         .filter(([key, value]) => !value.properties || !value.properties.noEdit)
+        .filter(([key, value]) => !util.isHiddenType(value))
         .sort(([key1, value1],[key2, value2]) => key1.localeCompare(key2))
         .map(([key, value]) => {
           return {
@@ -223,7 +229,9 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
             published: puzzle.published
           };
       }),
-      dailyQueue: Object.entries(typePuzzleCount).map(([key, value]) => {
+      dailyQueue: Object.entries(typePuzzleCount)
+        .filter(([key, value]) => !util.isHiddenType(value))
+        .map(([key, value]) => {
         return {
           code: key,
           name: value.name,

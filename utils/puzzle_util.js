@@ -60,3 +60,9 @@ module.exports.typeDataMap = async function() {
   return typeMap;
 }
 
+module.exports.isHiddenType = function(type) {
+  if (typeof type.properties != "undefined" && typeof type.properties.activationDate != "undefined") {
+    return type.properties.activationDate > new Date();
+  }
+  return false;
+}
