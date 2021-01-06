@@ -16,7 +16,7 @@ mouseController.prototype.attachEvents = function(snap) {
   this.snap.node.addEventListener("mouseup", self.mouseUp);
   this.snap.node.addEventListener("touchend", self.mouseUp);
   this.snap.node.addEventListener("touchcancel", self.mouseUp);
-  this.chooserBuilder = new chooserBuilder(snap);
+  this.chooserBuilder = new chooserBuilder(this);
 }
 
 mouseController.prototype.detachEvents = function() {
@@ -48,8 +48,17 @@ mouseController.prototype.onMouseDown = function(event) {
     }
     if (element.useChooser()) {
       this.chooserBuilder.createChooser(element);
+      self = this;
+      this.chooserBuilder.listener = function(event){self.onMouseMove(event)};
+      this.snap.node.addEventListener("touchmove", this.chooserBuilder.listener, {passive: true});
+      this.snap.node.addEventListener("mousemove", this.chooserBuilder.listener, {passive: true});
     }
   }
+}
+
+mouseController.prototype.removeChooserListener = function() {
+  this.snap.node.removeEventListener("touchmove", this.chooserBuilder.listener);
+  this.snap.node.removeEventListener("mousemove", this.chooserBuilder.listener);
 }
 
 mouseController.prototype.onMouseUp = function(event) {
@@ -90,6 +99,8 @@ mouseController.prototype.onMouseLeave = function(event) {
 }
 
 mouseController.prototype.onMouseMove = function(event) {
+  var position = this.transformPoint(this.eventPosition(event));
+  this.chooserBuilder.processMove(position);
   if (this.dragHandler) {
     if (this.dragHandler.path) {
       this.dragHandler.path.remove();

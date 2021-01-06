@@ -1,8 +1,10 @@
-chooserBuilder = function(snap) {
-  this.snap = snap;
+chooserBuilder = function(mouseController) {
+  this.mouseController = mouseController;
+  this.snap = mouseController.snap;
   this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/>");
   this.element = null;
   this.chooserElements = [];
+  this.highlighted = null;
 }
 
 
@@ -24,6 +26,7 @@ chooserBuilder.prototype.remove = function() {
   this.chooserElements.forEach(elem => elem.remove());
   this.element = null;
   this.chooserElements = [];
+  this.mouseController.removeChooserListener();
 }
 
 chooserBuilder.prototype.drawChooser = function(element, chooserSize){
@@ -41,11 +44,23 @@ chooserBuilder.prototype.drawChooser = function(element, chooserSize){
   }
 }
 
+chooserBuilder.prototype.processMove = function(position) {
+  if (this.highlighted) {
+    this.highlighted.highlight(false);
+    this.highlighted = null;
+  }
+  this.highlighted = this.elementForPosition(position);
+  if (this.highlighted) {
+    this.highlighted.highlight(true);
+  }
+}
+
 chooserBuilder.prototype.elementForPosition = function(position) {
   var elementForPosition = null
   this.chooserElements.forEach(element => elementForPosition = element.isPointInside(position)?element:elementForPosition);
   return elementForPosition;
 }
+
 
 ///////////////////////////////////////////////////////
 
@@ -94,12 +109,14 @@ chooserToggler = function(chooserBuilder, chooserCenter, angle, distance, choose
 Object.setPrototypeOf(chooserToggler.prototype, chooserElement.prototype);
 
 chooserToggler.prototype.draw = function(value) {
-  var togglerCircle = this.snap.circle(this.center.x, this.center.y, this.size);
-  togglerCircle.attr({stroke: "#430", strokeWidth: 2, fill: "#750", opacity: 0.2});
+  this.togglerCircle = this.snap.circle(this.center.x, this.center.y, this.size);
+  this.togglerCircle.attr({stroke: "#430", strokeWidth: 2, fill: "#750", opacity: 0.1});
+  this.defaultOpacity = 0.1;
   if (value.color) {
-    togglerCircle.attr({fill: value.color, opacity: 0.5});
+    this.togglerCircle.attr({fill: value.color, opacity: 0.5});
+    this.defaultOpacity = 0.5;
   }
-  this.drawElements.push(togglerCircle);
+  this.drawElements.push(this.togglerCircle);
 
   if (value.image) {
     var togglerImage = this.snap.image(
@@ -137,6 +154,10 @@ chooserToggler.prototype.processClick = function() {
   this.chooserBuilder.remove();
 }
 
+chooserToggler.prototype.highlight = function(isOn) {
+  this.togglerCircle.attr({opacity: this.defaultOpacity + (isOn ? 0.4 : 0)});
+}
+
 ///////////////////////////////////////////////////////////////////
 
 chooserBackground = function(chooserBuilder, center, size) {
@@ -159,4 +180,6 @@ chooserBackground.prototype.processClick = function() {
   this.chooserBuilder.remove();
 }
 
+chooserBackground.prototype.highlight = function() {
+}
 
