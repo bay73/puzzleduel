@@ -39,6 +39,15 @@ function setNumberClues(cell, start, end) {
   cell.clickSwitch = clickSwitch;
 }
 
+function setNumberChooser(cell, start, end) {
+  cell.isClue = true;
+  var chooserValues = [{}];
+  for (var i=start; i<=end; i++) {
+    chooserValues.push({text: i.toString(), returnValue: i.toString()});
+  }
+  cell.chooserValues = chooserValues;
+}
+
 hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
   var self = this;
   var typeProperties = {}
@@ -53,7 +62,7 @@ hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
       setDragSwitch(edge, false, [{},{color: self.colorSchema.lineColor}]);
     },
     nodeController: node => node.dragProcessor = true,
-    cellEditController: cell => setNumberClues(cell, 0, 6),
+    cellEditController: cell => setNumberChooser(cell, 0, 6),
   }
 
   typeProperties["hexa_islands"] = {
@@ -71,7 +80,7 @@ hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
 
   typeProperties["hexa_paint"] = {
     cellController: cell => setClickSwitch(cell, true, [{},{color: "grey", returnValue: 1},{image: "white_circle"}], [{},{color: "lightgrey"},{image: "white_circle"}]),
-    cellEditController:  cell => setNumberClues(cell, 0, 7),
+    cellEditController:  cell => setNumberChooser(cell, 0, 7),
   }
 
   if (typeCode in typeProperties) {
