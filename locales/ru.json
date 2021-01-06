@@ -56,7 +56,7 @@
 	"All digits should be exactly once in every column": "Все цифры должны встречаться в столбце ровно один раз",
 	"No 2x2 squares fully occupied with digits are allowed": "Квадраты 2x2 полностью занятые цифрами не разрешены",
 	"All digits should be exactly once in every row": "Все цифры должны встречаться в ряду ровно один раз",
-	"All digits should be exactly once in every area": "Все цифры должны встречаться в область ровно один раз",
+	"All digits should be exactly once in every area": "Все цифры должны встречаться в области ровно один раз",
 	"All digits should be exactly once in the diagonal": "Все цифры должны встречаться на диагонали ровно один раз",
 	"Two cells connected by the knight move should contain different digits": "Клетки соединеннные ходом коня должны содержать разные цифры",
 	"Two cells sharing a point should contain different digits": "Клетки имеющие общую точку должны содержать разные цифры",

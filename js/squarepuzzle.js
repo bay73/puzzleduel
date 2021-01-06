@@ -58,6 +58,19 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     collectAreas: this.editMode,
   }
 
+  typeProperties["sudoku_irregular"] = {
+    needNodes: true,
+    cellController: cell => setNumberChooser(cell, 1, self.rows),
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.rows);},
+    edgeEditController: edge => {
+       edge.isClue = true;
+       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    collectAreas: this.editMode,
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = {...this.typeProperties, ...typeProperties[typeCode]};
   }
