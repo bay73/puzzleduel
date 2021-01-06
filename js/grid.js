@@ -65,7 +65,23 @@ gridElement.prototype.diffToString = function(oldData, data) {
 }
 
 gridElement.prototype.setPencilData = function(data) {
-  this.pencilData = Object.assign({text: null, image: null, color: null, textColor: null}, data);
+  if (this.hasMultiPencil()){
+    if (!this.pencilData) {
+      this.pencilData = [];
+    }
+    var bFound = false;
+    for (var i=0; i<this.pencilData.length; i++){
+      if (this.compareData(this.pencilData[i], data)) {
+        this.pencilData.splice(i,1);
+        bFound = true;
+      }
+    }
+    if (!bFound) {
+      this.pencilData.push(Object.assign({text: null, image: null, color: null, textColor: null}, data));
+    }
+  } else {
+    this.pencilData = Object.assign({text: null, image: null, color: null, textColor: null}, data);
+  }
   this.puzzle.logStep(this.getCoordinates(), "pencil mark");
   this.redraw();
 }
@@ -183,14 +199,19 @@ gridElement.prototype.draw = function() {
     this.elements.path = this.render();
   }
   this.clearElements();
-  if (this.pencilData && this.pencilData.color) {
-    this.elements.pencilColor = this.drawPencilColor();
-  }
-  if (this.pencilData && this.pencilData.image) {
-    this.elements.pencilImage = this.drawPencilImage();
-  }
-  if (this.pencilData && this.pencilData.text) {
+  if (Array.isArray(this.pencilData)) {
     this.elements.pencilText = this.drawPencilText();
+    this.elements.pencilImage = this.drawPencilImage();
+  } else {
+    if (this.pencilData && this.pencilData.color) {
+      this.elements.pencilColor = this.drawPencilColor();
+    }
+    if (this.pencilData && this.pencilData.image) {
+      this.elements.pencilImage = this.drawPencilImage();
+    }
+    if (this.pencilData && this.pencilData.text) {
+      this.elements.pencilText = this.drawPencilText();
+    }
   }
   if (this.data.color) {
     this.elements.color = this.drawColor();
@@ -328,5 +349,9 @@ gridElement.prototype.drawPencilText = function() {
 gridElement.prototype.getCoordinates = function() {
   // Returns the coordinate of element in the grid.
   throw 'getCoordinates is not implemented for ' + this.constructor.name + '!';
+}
+
+gridElement.prototype.hasMultiPencil = function() {
+  return false;
 }
 

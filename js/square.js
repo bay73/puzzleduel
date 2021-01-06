@@ -396,9 +396,13 @@ squarePuzzleCell.prototype.drawText = function() {
 }
 
 squarePuzzleCell.prototype.drawPencilColor = function() {
-  var attr = Object.assign({}, this.puzzle.gridProperty.pencilCell);
-  Object.assign(attr, {fill: this.pencilData.color});
-  this.elements.path.attr(attr);
+  if (Array.isArray(this.pencilData)) {
+    throw 'changeColor is unsupported as pencil mark!';
+  } else {
+    var attr = Object.assign({}, this.puzzle.gridProperty.pencilCell);
+    Object.assign(attr, {fill: this.pencilData.color});
+    this.elements.path.attr(attr);
+  }
 }
 
 squarePuzzleCell.prototype.clearPencilColor = function() {
@@ -406,17 +410,71 @@ squarePuzzleCell.prototype.clearPencilColor = function() {
 }
 
 squarePuzzleCell.prototype.drawPencilImage = function() {
-  return this.snapImage(this.center(), this.puzzle.size.unitSize*0.6, this.pencilData.image);
+  if (Array.isArray(this.pencilData)) {
+    var pencilGroup = this.puzzle.snap.group();
+    for (var i=0;i<this.pencilData.length;i++) {
+      if (this.pencilData[i].image) {
+        var attr = this.pencilMarkAttribute(this.pencilData[i]);
+        pencilGroup.append(this.snapImage(attr.center, this.puzzle.size.unitSize/attr.rows, this.pencilData[i].image));
+      }
+    }
+    return pencilGroup;
+  } else {
+    return this.snapImage(this.center(), this.puzzle.size.unitSize*0.6, this.pencilData.image);
+  }
 }
 
 squarePuzzleCell.prototype.drawPencilText = function() {
-  return this.snapText(this.center(), this.puzzle.size.unitSize*0.4, this.pencilData.text);
+  if (Array.isArray(this.pencilData)) {
+    var pencilGroup = this.puzzle.snap.group();
+    for (var i=0;i<this.pencilData.length;i++) {
+      if (this.pencilData[i].text) {
+        var attr = this.pencilMarkAttribute(this.pencilData[i]);
+        pencilGroup.append(this.snapText(attr.center, this.puzzle.size.unitSize*0.8/attr.rows, this.pencilData[i].text));
+      }
+    }
+    return pencilGroup;
+  } else {
+    return this.snapText(this.center(), this.puzzle.size.unitSize*0.4, this.pencilData.text);
+  }
+}
+
+squarePuzzleCell.prototype.pencilMarkAttribute = function(pencilMark) {
+  var markRows = 4;
+  if (this.chooserValues.length <= 10) {
+    markRows = 3;
+  }
+  if (this.chooserValues.length <= 5) {
+    markRows = 2;
+  }
+  var pencilIndex = 0;
+  for (var j=0; j<this.chooserValues.length; j++){
+    if (this.compareData(this.chooserValues[j], pencilMark)) {
+      pencilIndex = j;
+    }
+  }
+  var row = Math.floor((pencilIndex - 1)/markRows);
+  var col = (pencilIndex - 1)%markRows;
+  if (this.chooserValues.length == 3 && pencilIndex == 2) {
+    row = 1;
+  }
+  return {
+    rows: markRows,
+    center: {
+      x: this.center().x + this.puzzle.size.unitSize*(col - (markRows-1)/2)/markRows,
+      y: this.center().y + this.puzzle.size.unitSize*(row - (markRows-1)/2)/markRows
+    }
+  }
 }
 
 squarePuzzleCell.prototype.isPointInside = function(position) {
   var center = this.center();
   return 2*Math.abs(position.x - center.x) < this.puzzle.size.unitSize
       && 2*Math.abs(position.y - center.y) < this.puzzle.size.unitSize;
+}
+
+squarePuzzleCell.prototype.hasMultiPencil = function() {
+  return this.puzzle.typeProperties.cellMultiPencil;
 }
 
 // edge of square grid ///////////////////////////////////////////

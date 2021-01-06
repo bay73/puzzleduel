@@ -69,6 +69,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     nodeEditController: node => node.dragProcessor = true,
     collectAreas: this.editMode,
+    cellMultiPencil: true,
   }
 
   if (typeCode in typeProperties) {
