@@ -1,4 +1,6 @@
-var mouseController = function(elements){
+define(["chooser"], function() {
+
+mouseController = function(elements){
   this.elements = elements;
   this.mouseStartElement = null;
   this.dragHandler = null;
@@ -14,6 +16,7 @@ mouseController.prototype.attachEvents = function(snap) {
   this.snap.node.addEventListener("mouseup", self.mouseUp);
   this.snap.node.addEventListener("touchend", self.mouseUp);
   this.snap.node.addEventListener("touchcancel", self.mouseUp);
+  this.chooserBuilder = new chooserBuilder(snap);
 }
 
 mouseController.prototype.detachEvents = function() {
@@ -30,6 +33,10 @@ mouseController.prototype.onMouseDown = function(event) {
   var element = this.eventElement(event);
   if (element != null) {
     this.mouseStartElement = element;
+    if (this.chooserObject) {
+      this.chooserObject.remove();
+      this.chooserObject = null;
+    }
     if (element.canDragStart()){
       self = this;
       this.dragHandler = {};
@@ -38,6 +45,9 @@ mouseController.prototype.onMouseDown = function(event) {
       this.snap.node.addEventListener("touchmove", this.dragHandler.listener, {passive: true});
       this.snap.node.addEventListener("mousemove", this.dragHandler.listener, {passive: true});
       this.snap.node.addEventListener("mouseleave", this.dragHandler.leaveListener, {passive: true});
+    }
+    if (element.useChooser()) {
+      this.chooserBuilder.createChooser(element);
     }
   }
 }
@@ -80,32 +90,31 @@ mouseController.prototype.onMouseLeave = function(event) {
 }
 
 mouseController.prototype.onMouseMove = function(event) {
-  if (!this.dragHandler) {
-    return;
-  }
-  if (this.dragHandler.path) {
-    this.dragHandler.path.remove();
-  }
-  var element = this.eventElement(event);
-  if (element == null) {
-    return;
-  }
-  var moveResult = element.processDragMove(this.mouseStartElement);
-  if (moveResult) {
-    if (moveResult.stopDrag) {
-      this.dragHandler = null;
-      this.mouseStartElement = null;
-    } else {
-      this.mouseStartElement = moveResult.newMouseStartElement;
+  if (this.dragHandler) {
+    if (this.dragHandler.path) {
+      this.dragHandler.path.remove();
     }
+    var element = this.eventElement(event);
+    if (element == null) {
+      return;
+    }
+    var moveResult = element.processDragMove(this.mouseStartElement);
+    if (moveResult) {
+      if (moveResult.stopDrag) {
+        this.dragHandler = null;
+        this.mouseStartElement = null;
+      } else {
+        this.mouseStartElement = moveResult.newMouseStartElement;
+      }
+    }
+    if (!this.dragHandler) {
+      return;
+    }
+    var end = this.transformPoint(this.eventPosition(event));
+    var start = this.mouseStartElement.center();
+    this.dragHandler.path = this.snap.line(start.x, start.y,  end.x, end.y);
+    this.dragHandler.path.attr(Object.assign({stroke: this.mouseStartElement.puzzle.colorSchema.traceColor}, this.mouseStartElement.puzzle.gridProperty.edge));
   }
-  if (!this.dragHandler) {
-    return;
-  }
-  var end = this.transformPoint(this.eventPosition(event));
-  var start = this.mouseStartElement.center();
-  this.dragHandler.path = this.snap.line(start.x, start.y,  end.x, end.y);
-  this.dragHandler.path.attr(Object.assign({stroke: this.mouseStartElement.puzzle.colorSchema.traceColor}, this.mouseStartElement.puzzle.gridProperty.edge));
 }
 
 mouseController.prototype.eventPosition =  function(event) {
@@ -129,8 +138,12 @@ mouseController.prototype.transformPoint = function(position) {
 
 mouseController.prototype.eventElement = function(event) {
   var position = this.transformPoint(this.eventPosition(event));
-  var eventElement = null;
+  var eventElement = this.chooserBuilder.elementForPosition(position);
+  if (eventElement != null) {
+    return eventElement;
+  }
   this.elements.forEach(element => eventElement = element.supportMouse() && element.isPointInside(position)?element:eventElement);
   return eventElement;
 }
 
+})

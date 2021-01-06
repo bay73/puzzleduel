@@ -131,11 +131,25 @@ gridElement.prototype.switchOnDrag = function() {
   return null;
 }
 
+gridElement.prototype.switchOnChooser = function(index) {
+  if (this.chooserValues != null) {
+    if (this.puzzle.pencilMarkMode) {
+      this.setPencilData(this.chooserValues[index]);
+    } else {
+      this.switchToData(this.chooserValues[index]);
+    }
+  }
+  return null;
+}
 
 gridElement.prototype.getValue = function() {
   if (this.clickSwitch != null) {
     var currentIndex = this.findCurrent(this.clickSwitch);
     return this.clickSwitch[currentIndex].returnValue;
+  }
+  if (this.chooserValues != null) {
+    var currentIndex = this.findCurrent(this.chooserValues);
+    return this.chooserValues[currentIndex].returnValue;
   }
 }
 
@@ -245,6 +259,10 @@ gridElement.prototype.supportMouse = function() {
 
 gridElement.prototype.canDragStart = function() {
   return this.dragProcessor != null ;
+}
+
+gridElement.prototype.useChooser = function() {
+  return this.chooserValues != null;
 }
 
 gridElement.prototype.center = function() {

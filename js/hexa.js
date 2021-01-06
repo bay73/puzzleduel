@@ -174,6 +174,7 @@ hexaPuzzle.prototype.findSize = function() {
   this.topGap = 1;
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   var height = ((cols+rows-1)*Math.sqrt(3))*unitSize + this.topGap + unitSize / (isSafari ? 2 : 4);
+  this.chooserSize = Math.min(25 + this.leftGap + unitSize / 2, unitSize * 1.6);
 
   return {height: height, width: width, unitSize: unitSize};
 }
