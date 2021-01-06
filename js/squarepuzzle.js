@@ -60,7 +60,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   typeProperties["sudoku_irregular"] = {
     needNodes: true,
-    cellController: cell => setNumberChooser(cell, 1, self.rows),
+    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, self.rows);}},
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.rows);},
     edgeEditController: edge => {
        edge.isClue = true;
