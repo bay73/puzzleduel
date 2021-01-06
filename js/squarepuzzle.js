@@ -12,7 +12,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   typeProperties["hitori"] = {
     cellController: cell => setClickSwitch(cell, true, [{},{color: "#303030", returnValue: "1"},{image: "white_circle"}], [{},{color: "#808080"},{image: "white_circle"}]),
-    cellEditController: cell => setNumberClues(cell, 0, 16),
+    cellEditController: cell => setNumberChooser(cell, 0, 16),
   }
 
   typeProperties["snake_dutch"] = {
@@ -94,6 +94,15 @@ function setNumberClues(cell, start, end) {
     clickSwitch.push({text: i.toString(), returnValue: i.toString()});
   }
   cell.clickSwitch = clickSwitch;
+}
+
+function setNumberChooser(cell, start, end) {
+  cell.isClue = true;
+  var chooserValues = [{}];
+  for (var i=start; i<=end; i++) {
+    chooserValues.push({text: i.toString(), returnValue: i.toString()});
+  }
+  cell.chooserValues = chooserValues;
 }
 
 })
