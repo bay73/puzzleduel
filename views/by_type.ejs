@@ -31,7 +31,7 @@
             <% function comparePuzzles(p1, p2) {
               if (p1.category==p2.category) {
                 if (p1.type==p2.type) {
-                  return p1.difficulty - p2.difficulty;
+                  return (p1.difficulty || 0) - (p2.difficulty || 0);
                 } else {
                   return p1.type.localeCompare(p2.type);
                 }

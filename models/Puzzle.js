@@ -61,6 +61,8 @@ PuzzleSchema.virtual('needLogging').get(function() {
     }
   } else if (this.tag.includes("example")) {
     return false;
+  } else if (this.tag.includes("public")) {
+    return false;
   }
   return true;
 });
@@ -77,6 +79,8 @@ PuzzleSchema.virtual('hidden').get(function() {
     }
   } else if (this.tag.includes("example")) {
     return false;
+  } else if (this.tag.includes("public")) {
+    return false;
   }
   return true;
 });
@@ -92,6 +96,8 @@ PuzzleSchema.virtual('hiddenScore').get(function() {
       return this.contest.puzzleDate > d;
     }
   } else if (this.tag.includes("example")) {
+    return false;
+  } else if (this.tag.includes("public")) {
     return false;
   }
   return true;
