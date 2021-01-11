@@ -65,7 +65,7 @@
               <% if (puzzle.type != prevType) { %>
                  <h4 class="mb-0 mt-3" ><%= puzzle.type %></h4>
               <% } %>
-              <% var stars=puzzle.difficulty>0?Math.round(13*Math.log(puzzle.difficulty/30000))/10:0; %>
+              <% var stars=puzzle.difficulty>0?(1+Math.round(10*Math.log(puzzle.difficulty/30000))/10):0; %>
               <a style="white-space: nowrap;" class="mr-3" href="/single/<%= puzzle.code %>"><%= puzzle.dimension %>
                 <span class="stars" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>">
                 </span>
@@ -79,20 +79,16 @@
         <div class="card-body"><%= __('Stars show the aproximate puzzle difficulty:') %>
           <ul>
             <li>
-              <%= __('no stars') %>
+              <span class="stars" style="width: calc(15px)" data-toggle="tooltip" title="1">
               </span> - 30 <%= __n('second',30) %> <%= __('solving time for an expert') %>
             </li>
             <li>
-              <span class="stars" style="width: calc(15px)" data-toggle="tooltip" title="1">
-              </span> - 1 <%= __n('minute',1) %> <%= __('solving time for an expert') %>
-            </li>
-            <li>
               <span class="stars" style="width: calc(30px)" data-toggle="tooltip" title="2">
-              </span> - 2 <%= __n('minute',2) %> <%= __('solving time for an expert') %>
+              </span> - 75 <%= __n('second',90) %> <%= __('solving time for an expert') %>
             </li>
             <li>
               <span class="stars" style="width: calc(45px)" data-toggle="tooltip" title="3">
-              </span> - 5 <%= __n('minute',5) %> <%= __('solving time for an expert') %>
+              </span> - 4 <%= __n('minute',4) %> <%= __('solving time for an expert') %>
             </li>
             <li>
               <span class="stars" style="width: calc(60px)" data-toggle="tooltip" title="4">
