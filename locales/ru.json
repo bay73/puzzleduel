@@ -209,5 +209,11 @@
 	"Snake can't go through crossed cell": "Змея не должна проходить через клетку с крестиком",
 	"Snake should go straight through the cell with white circle": "Змея должна проходить прямо через клетку с белым кружком",
 	"Tetromino of the same type shoudln't share an edge": "Тетромино одного типа не должны касаться стороной",
-	"Black cells in each area should form valid tetromino": "Закрашенные клетки в каждой области должны образовать тетромино"
+	"Black cells in each area should form valid tetromino": "Закрашенные клетки в каждой области должны образовать тетромино",
+	"no stars": "нет звёзд",
+	"second": {
+		"one": "секунда",
+		"few": "секунды",
+		"other": "секунд"
+	}
 }

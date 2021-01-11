@@ -15,6 +15,11 @@
    }
 </style>
 <script src="/js/accordion.js"></script>
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip({placement: "auto"});
+  });
+</script>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
@@ -73,6 +78,10 @@
         </div>
         <div class="card-body"><%= __('Stars show the aproximate puzzle difficulty:') %>
           <ul>
+            <li>
+              <%= __('no stars') %>
+              </span> - 30 <%= __n('second',30) %> <%= __('solving time for an expert') %>
+            </li>
             <li>
               <span class="stars" style="width: calc(15px)" data-toggle="tooltip" title="1">
               </span> - 1 <%= __n('minute',1) %> <%= __('solving time for an expert') %>
