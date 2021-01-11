@@ -10,7 +10,7 @@ function setClickSwitch(element, withClues, clickSwitch, pencilClickSwitch) {
   if (element.isClue && !withClues) {
     return;
   }
-  element.clickSwitch = clickSwitch.map(val => {return {...element.data, ...val}})
+  element.clickSwitch = clickSwitch.map(val => Object.assign({}, element.data, val))
   if (typeof pencilClickSwitch != "undefined") {
     element.pencilClickSwitch = pencilClickSwitch;
   } else {
@@ -22,7 +22,7 @@ function setDragSwitch(element, withClues, dragSwitch, pencilDragSwitch) {
   if (element.isClue && !withClues) {
     return;
   }
-  element.dragSwitch = dragSwitch.map(val => {return {...element.data, ...val}})
+  element.dragSwitch = dragSwitch.map(val => Object.assign({}, element.data, val))
   if (typeof pencilDragSwitch != "undefined") {
     element.pencilDragSwitch = pencilDragSwitch;
   } else {
@@ -84,7 +84,7 @@ hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
   }
 
   if (typeCode in typeProperties) {
-    this.typeProperties = {...this.typeProperties, ...typeProperties[typeCode]};
+    this.typeProperties = Object.assign({}, this.typeProperties, typeProperties[typeCode]);
   }
 }
 })

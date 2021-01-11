@@ -73,7 +73,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   }
 
   if (typeCode in typeProperties) {
-    this.typeProperties = {...this.typeProperties, ...typeProperties[typeCode]};
+    this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
 }
 
@@ -81,7 +81,7 @@ function setClickSwitch(element, withClues, clickSwitch, pencilClickSwitch) {
   if (element.isClue && !withClues) {
     return;
   }
-  element.clickSwitch = clickSwitch.map(val => {return {...element.data, ...val}})
+  element.clickSwitch = clickSwitch.map(val => Object.assign({}, element.data, val))
   if (typeof pencilClickSwitch != "undefined") {
     element.pencilClickSwitch = pencilClickSwitch;
   } else {
@@ -93,7 +93,7 @@ function setClueClickSwitch(element, clickSwitch, pencilClickSwitch) {
   if (!element.isClue) {
     return;
   }
-  element.clickSwitch = clickSwitch.map(val => {return {...element.data, ...val}})
+  element.clickSwitch = clickSwitch.map(val => Object.assign({}, element.data, val))
   if (typeof pencilClickSwitch != "undefined") {
     element.pencilClickSwitch = pencilClickSwitch;
   } else {
