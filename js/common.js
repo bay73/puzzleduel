@@ -527,6 +527,7 @@ commonPuzzle.prototype.initControls = function (controls) {
   $(this.controls.revertBtn).hide().click(() => self.revertStep());
   $(this.controls.checkBtn).prop('disabled', true).click(() => self.check());
   $(this.controls.saveBtn).click(() => self.save());
+  $(this.controls.tag).click(() => $(self.controls.saveBtn).prop('disabled', false));
   $(this.controls.pencilMarkCtrl).hide();
   $(this.controls.pencilMarkCb).click(() => self.togglePencilMarkMode());
 }
