@@ -127,6 +127,9 @@ commonPuzzle.prototype.save = function() {
   var self = this;
   var data = this.collectData(false, true);
   data.tag = $(this.controls.tag).val();
+  if (this.changeDifficulty) {
+    data.difficulty = $(this.controls.difficulty).val()*1000;
+  }
   this.removeMessages();
   // Read result from server and show.
   $.post("/puzzles/" + (this.id ? this.id: "0") + "/edit", data)
@@ -514,6 +517,7 @@ commonPuzzle.prototype.initControls = function (controls) {
   this.controls.pencilMarkCb = controls + " [name=pencilMarkCb]";
   this.controls.timer = controls + " [name=timer]";
   this.controls.tag =  controls + " [name=tag]";
+  this.controls.difficulty =  controls + " [name=difficulty]";
   this.controls.successText =  controls + " [name=successMessageText]";
   this.controls.successMsg =  controls + " [name=successMessage]";
   this.controls.errorText =  controls + " [name=errorMessageText]";
@@ -527,7 +531,8 @@ commonPuzzle.prototype.initControls = function (controls) {
   $(this.controls.revertBtn).hide().click(() => self.revertStep());
   $(this.controls.checkBtn).prop('disabled', true).click(() => self.check());
   $(this.controls.saveBtn).click(() => self.save());
-  $(this.controls.tag).click(() => $(self.controls.saveBtn).prop('disabled', false));
+  $(this.controls.tag).change(() => $(self.controls.saveBtn).prop('disabled', false));
+  $(this.controls.difficulty).change(() => {self.changeDifficulty = true; $(self.controls.saveBtn).prop('disabled', false);});
   $(this.controls.pencilMarkCtrl).hide();
   $(this.controls.pencilMarkCb).click(() => self.togglePencilMarkMode());
 }

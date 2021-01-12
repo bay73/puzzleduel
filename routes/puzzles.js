@@ -265,8 +265,10 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
       return;
     }
     var tag = req.body["tag"];
+    var difficulty = req.body["difficulty"];
     var data = req.body;
     delete data["tag"];
+    delete data["difficulty"];
     var newData = JSON.stringify(data);
     if (puzzle.data != newData) {
       await UserSolvingTime.deleteMany({puzzleId: puzzle.code});
@@ -274,6 +276,7 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
     }
     puzzle.data = newData;
     puzzle.tag = tag;
+    puzzle.difficulty = difficulty;
     await puzzle.save();
     res.json({status: "OK"});
   } catch (e) {
