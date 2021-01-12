@@ -49,18 +49,87 @@ router.get('/:setid', async (req, res, next) => {
   }
 });
 
-router.get('/:contestid/recount', async (req, res, next) => {
+
+router.get('/:setid/add/:puzzleid', async (req, res, next) => {
   try {
-    if (!req.user || req.user.role != "admin") {
+    const set = await PuzzleSet.findOne({code: req.params.setid});
+    if (!set) {
       res.sendStatus(404);
       return;
     }
-    var recountResult = await recountContest(req.params.contestid)
-    if (!recountResult) {
+    if (!set.author.equals(req.user._id)) {
       res.sendStatus(404);
       return;
     }
-    res.redirect('/contest/' + req.params.contestid + "/results");
+    if (set.puzzles.filter(puzzle=>puzzle.puzzleId==req.params.puzzleid).length == 0) {
+      const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
+      if (puzzle) {
+        if (set.puzzles.length==0) {
+          var nextNum = 1;
+        } else {
+          var nextNum = Math.max(...set.puzzles.map(puzzle => puzzle.puzzleNum)) + 1;
+        }
+        set.puzzles.push({puzzleNum: nextNum, puzzleId: puzzle.code})
+        await set.save();
+      }
+    }
+    res.redirect('/puzzleset/' + req.params.setid);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/:setid/up/:puzzleid', async (req, res, next) => {
+  try {
+    const set = await PuzzleSet.findOne({code: req.params.setid});
+    if (!set) {
+      res.sendStatus(404);
+      return;
+    }
+    if (!set.author.equals(req.user._id)) {
+      res.sendStatus(404);
+      return;
+    }
+    if (set.puzzles.filter(puzzle=>puzzle.puzzleId==req.params.puzzleid).length != 0) {
+      var num = set.puzzles.filter(puzzle=>puzzle.puzzleId==req.params.puzzleid)[0].puzzleNum;
+      var prevNum = num - 1;
+      if (set.puzzles.filter(puzzle => puzzle.puzzleNum==prevNum).length != 0) {
+        set.puzzles.filter(puzzle => puzzle.puzzleNum==prevNum)[0].puzzleNum = num;
+        set.puzzles.filter(puzzle=>puzzle.puzzleId==req.params.puzzleid)[0].puzzleNum = prevNum;
+        await set.save();
+      }
+    }
+    res.redirect('/puzzleset/' + req.params.setid);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/:setid/delete/:puzzleid', async (req, res, next) => {
+  try {
+    const set = await PuzzleSet.findOne({code: req.params.setid});
+    if (!set) {
+      res.sendStatus(404);
+      return;
+    }
+    if (!set.author.equals(req.user._id)) {
+      res.sendStatus(404);
+      return;
+    }
+    if (set.puzzles.filter(puzzle=>puzzle.puzzleId==req.params.puzzleid).length != 0) {
+      var num = set.puzzles.filter(puzzle=>puzzle.puzzleId==req.params.puzzleid)[0].puzzleNum;
+      for( var i = 0; i < set.puzzles.length; i++){
+        if ( set.puzzles[i].puzzleId == req.params.puzzleid) {
+          set.puzzles.splice(i, 1);
+          i--;
+        }
+        if (set.puzzles[i].puzzleNum > num) {
+          set.puzzles[i].puzzleNum--;
+        }
+      }
+      await set.save();
+    }
+    res.redirect('/puzzleset/' + req.params.setid);
   } catch (e) {
     next(e);
   }

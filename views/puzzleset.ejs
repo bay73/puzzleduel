@@ -29,7 +29,7 @@
           <%- set.description %>
         </div>
         <div class="card-body">
-          <table class="table table-hover table-condensed">
+          <table class="table table-hover table-condensed table-responsive table-borderless">
             <tbody>
               <tr>
                 <th><%= __('#') %></th><th><%= __('Puzzle') %></th>
@@ -38,6 +38,11 @@
               <tr>
                 <td>
                   <%= puzzle.num %>
+                  <% if (set.authorId.equals(user._id) && puzzle.num > 1) { %>
+                  <a href="/puzzleset/<%= set.code %>/up/<%= puzzle.code %>">
+                    <span class="glyphicon glyphicon-chevron-up"></span>
+                  </a>
+                  <% } %>
                 </td>
                 <td>
                   <% var stars=puzzle.difficulty>0?(1+Math.round(10*Math.log(puzzle.difficulty/30000))/10):0; %>
@@ -48,20 +53,58 @@
                     </span>
                   </a>
                 </td>
+                <% if (set.authorId.equals(user._id)) { %>
+                <td>
+                  <a href="/puzzleset/<%= set.code %>/delete/<%= puzzle.code %>">
+                    <span class="glyphicon glyphicon-minus"></span>
+                  </a>
+                </td>
+                <% } %>
               </tr>
               <% }) %>
+              <% if (set.authorId.equals(user._id)) { %>
               <tr>
                 <td>
                 </td>
                 <td>
                 </td>
                 <td>
-                  <a href="#">
+                  <a href="#" id="addButton">
                     <span class="glyphicon glyphicon-plus"></span>
                   </a>
+                  <div class="modal" id="addModal">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Add puzzle to the set</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                          </div>
+                          <div class="modal-body">
+                          <div class="form-inline">
+                            <div class="form-group pr-4 pb-2">
+                              <label class="col-form-label pr-1" for="addId">Puzzle Id</label>
+                              <input class="form-control" id="addId">
+                            </div>
+                            <div class="form-group pr-4 pb-2">
+                              <button type="submit" id="addPuzzle" class="btn btn-primary">Add</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </td>
               </tr>
-              <% if (set.authorId.equals(user)) { %>
+              <script>
+                $("#addButton").click(() => {console.log("addModal"); $("#addModal").modal();});
+                $("#addPuzzle").click(function () {
+                  var id = $("#addId").val();
+                  var url = "/puzzleset/<%= set.code %>/add/" + id;
+                  window.location = url;
+                });
+              </script>
               <% } %>
             </tbody>
           </table>
