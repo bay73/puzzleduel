@@ -370,7 +370,7 @@ squarePuzzleCell.prototype.center = function() {
 }
 
 squarePuzzleCell.prototype.render = function() {
-  var path = this.puzzle.snap.polygon(this.cellCorners().flatMap(corner => [corner.x, corner.y]));
+  var path = this.puzzle.snap.polygon([].concat.apply([], this.cellCorners().map(corner => [corner.x, corner.y])));
   path.attr(this.puzzle.gridProperty.cell);
   return path;
 }
