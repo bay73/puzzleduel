@@ -49,6 +49,40 @@ router.get('/:setid', async (req, res, next) => {
   }
 });
 
+router.post('/:setid/edit', async (req, res, next) => {
+  try {
+    const set = await PuzzleSet.findOne({code: req.params.setid});
+    if (!set) {
+      res.sendStatus(404);
+      return;
+    }
+    if (!set.author.equals(req.user._id)) {
+      res.sendStatus(404);
+      return;
+    }
+    var locale = req.getLocale();
+    if (locale == 'en') {
+      set.name = req.body.name;
+      set.description = req.body.description;
+    } else {
+      var translations = set.translations;
+      if (!translations) {
+        translations = {};
+      }
+      if (!translations[locale]) {
+        translations[locale] = {};
+      }
+      translations[locale].name = req.body.name;
+      translations[locale].description = req.body.description;
+      set.translations = translations;
+      set.markModified("translations");
+    }
+    await set.save();
+    res.redirect('/puzzleset/' + req.params.setid);
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.get('/:setid/add/:puzzleid', async (req, res, next) => {
   try {

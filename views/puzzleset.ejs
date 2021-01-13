@@ -24,7 +24,43 @@
     <div class="col-12 m-auto">
       <%- include ('./partials/messages') %>
       <div class="card">
-        <h1 class="card-body pb-0"><%= set.name %></h1>
+        <h1 class="card-body pb-0"><%= set.name %>
+          <% if (set.authorId.equals(user._id)) { %>
+          <a href="#" id="editButton">
+             <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+          <div class="modal" id="editModal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit title of the set</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="/puzzleset/<%= set.code %>/edit" method="post">
+                    <div class="form-group pr-4 pb-2">
+                      <label class="col-form-label pr-1" for="editlabel">Title</label>
+                      <input class="form-control" id="editlabel" value="<%= set.name %>" name="name">
+                    </div>
+                    <div class="form-group pr-4 pb-2">
+                      <label class="col-form-label pr-1" for="editdesc">Description</label>
+                      <textarea class="form-control" rows=8 id="editdesc" name="description"><%- set.description %></textarea>
+                    </div>
+                    <div class="form-group pr-4 pb-2">
+                      <button type="submit" id="editSet" class="btn btn-primary">Save</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            $("#editButton").click(() => $("#editModal").modal());
+          </script>
+          <% } %>
+        </h1>
         <p class="card-body text-right pb-0 pt-0 mb-0"><small><%= __('Compiler:') %> <a href="/help/authors#<%= set.authorId %>"><%= set.author %></a></small></p>
         <div class="card-body">
           <%- set.description %>
@@ -99,7 +135,7 @@
                 </td>
               </tr>
               <script>
-                $("#addButton").click(() => {console.log("addModal"); $("#addModal").modal();});
+                $("#addButton").click(() => $("#addModal").modal());
                 $("#addPuzzle").click(function () {
                   var id = $("#addId").val();
                   var url = "/puzzleset/<%= set.code %>/add/" + id;
