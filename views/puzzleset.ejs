@@ -24,7 +24,8 @@
     <div class="col-12 m-auto">
       <%- include ('./partials/messages') %>
       <div class="card">
-        <h1 class="card-header"><%= set.name %></h1>
+        <h1 class="card-body pb-0"><%= set.name %></h1>
+        <p class="card-body text-right pb-0 pt-0 mb-0"><small><%= __('Compiler:') %> <a href="/help/authors#<%= set.authorId %>"><%= set.author %></a></small></p>
         <div class="card-body">
           <%- set.description %>
         </div>

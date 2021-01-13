@@ -211,5 +211,6 @@
 	"second": {
 		"one": "second",
 		"other": "seconds"
-	}
+	},
+	"Compiler:": "Compiler:"
 }
