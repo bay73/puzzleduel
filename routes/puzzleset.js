@@ -13,9 +13,11 @@ router.get('/:setid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    if (set.tag.includes("hidden") && !set.author.equals(req.user._id)) {
-      res.sendStatus(404);
-      return;
+    if (set.tag.includes("hidden")) {
+      if (!req.user || !set.author.equals(req.user._id)) {
+        res.sendStatus(404);
+        return;
+      }
     }
     var typeMap = await util.typeNameMap();
     var userMap = await util.userNameMap();
@@ -56,7 +58,7 @@ router.post('/:setid/edit', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    if (!set.author.equals(req.user._id)) {
+    if (!req.user || !set.author.equals(req.user._id)) {
       res.sendStatus(404);
       return;
     }
@@ -91,7 +93,7 @@ router.get('/:setid/add/:puzzleid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    if (!set.author.equals(req.user._id)) {
+    if (!req.user || !set.author.equals(req.user._id)) {
       res.sendStatus(404);
       return;
     }
@@ -120,7 +122,7 @@ router.get('/:setid/up/:puzzleid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    if (!set.author.equals(req.user._id)) {
+    if (!req.user || !set.author.equals(req.user._id)) {
       res.sendStatus(404);
       return;
     }
@@ -146,7 +148,7 @@ router.get('/:setid/delete/:puzzleid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    if (!set.author.equals(req.user._id)) {
+    if (!req.user || !set.author.equals(req.user._id)) {
       res.sendStatus(404);
       return;
     }

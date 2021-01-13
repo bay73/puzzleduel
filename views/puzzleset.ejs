@@ -25,7 +25,7 @@
       <%- include ('./partials/messages') %>
       <div class="card">
         <h1 class="card-body pb-0"><%= set.name %>
-          <% if (set.authorId.equals(user._id)) { %>
+          <% if (user && set.authorId.equals(user._id)) { %>
           <a href="#" id="editButton">
              <span class="glyphicon glyphicon-pencil"></span>
           </a>
@@ -75,7 +75,7 @@
               <tr>
                 <td>
                   <%= puzzle.num %>
-                  <% if (set.authorId.equals(user._id) && puzzle.num > 1) { %>
+                  <% if (user && set.authorId.equals(user._id) && puzzle.num > 1) { %>
                   <a href="/puzzleset/<%= set.code %>/up/<%= puzzle.code %>">
                     <span class="glyphicon glyphicon-chevron-up"></span>
                   </a>
@@ -90,7 +90,7 @@
                     </span>
                   </a>
                 </td>
-                <% if (set.authorId.equals(user._id)) { %>
+                <% if (user && set.authorId.equals(user._id)) { %>
                 <td>
                   <a href="/puzzleset/<%= set.code %>/delete/<%= puzzle.code %>">
                     <span class="glyphicon glyphicon-minus"></span>
@@ -99,7 +99,7 @@
                 <% } %>
               </tr>
               <% }) %>
-              <% if (set.authorId.equals(user._id)) { %>
+              <% if (user && set.authorId.equals(user._id)) { %>
               <tr>
                 <td>
                 </td>
