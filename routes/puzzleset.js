@@ -76,6 +76,10 @@ router.get('/:setid/show/:puzzleid', async (req, res, next) => {
   }
 });
 
+router.get('/:setid/single/:puzzleid', async (req, res, next) => {
+  res.redirect('/single/' + req.params.puzzleid);
+});
+
 router.post('/:setid/edit', async (req, res, next) => {
   try {
     const set = await PuzzleSet.findOne({code: req.params.setid});

@@ -13,10 +13,28 @@
      -webkit-mask-repeat: repeat-x;
      -webkit-mask-size: 15px 15px;
    }
+
+  .puzzle-list {
+     width: 300px;
+   }
+
+   <% if (puzzle) { %>
+   @media (max-width: 991.98px) {
+    .puzzle-list {
+       width: 200px;
+     }
+   }
+   <% } %>
 </style>
 <script>
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip({placement: "auto"});
+    if ($(window).width() < 768) {
+      $('.puzzlelink').each(function() {
+        var href = $(this).attr('href');
+        $(this).attr('href', href.replace('/show/','/single/'));
+      });
+    }
   });
 </script>
 <div class="container">
@@ -67,7 +85,7 @@
         </div>
         <table>
         <tr>
-        <td width="300px>
+        <td class="puzzle-list">
         <div class="card-body">
           <table class="table table-hover table-condensed table-responsive table-borderless">
             <tbody>
@@ -90,7 +108,7 @@
                   <span class="glyphicon glyphicon-play align-text-top"></span>
                   <% } %>
                   <% var stars=puzzleItem.difficulty>0?(1+Math.round(10*Math.log(puzzleItem.difficulty/30000))/10):0; %>
-                  <a href="/puzzleset/<%= set.code %>/show/<%= puzzleItem.code %>" >
+                  <a class="puzzlelink" href="/puzzleset/<%= set.code %>/show/<%= puzzleItem.code %>" >
                     <%= puzzleItem.type %>
                     <%= puzzleItem.dimension?" ("+puzzleItem.dimension+")":"" %>
                     <span class="stars" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>">
