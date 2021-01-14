@@ -7,6 +7,10 @@ const util = require('../utils/puzzle_util');
 
 
 router.get('/:setid', async (req, res, next) => {
+  res.redirect('/puzzleset/' + req.params.setid + '/show/0');
+});
+
+router.get('/:setid/show/:puzzleid', async (req, res, next) => {
   try {
     const set = await PuzzleSet.findOne({code: req.params.setid});
     if (!set) {
@@ -19,7 +23,7 @@ router.get('/:setid', async (req, res, next) => {
         return;
       }
     }
-    var typeMap = await util.typeNameMap();
+    var typeMap = await util.typeDataMap();
     var userMap = await util.userNameMap();
     var puzzleMap = {};
     const puzzles = await Puzzle.find();
@@ -40,12 +44,33 @@ router.get('/:setid', async (req, res, next) => {
         return {
           num: puzzle.puzzleNum,
           code: puzzle.puzzleId,
-          type: typeMap[puzzleObj.type],
+          type: typeMap[puzzleObj.type].name,
           dimension: puzzleObj.dimension,
           difficulty: puzzleObj.difficulty,
         };
       });
-    res.render('puzzleset', {user: req.user, set: setObj, puzzles: puzzleList})
+    if (req.params.puzzleid && req.params.puzzleid != '0') {
+      var puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-data");
+      if (!puzzle) {
+        res.sendStatus(404);
+        return;
+      }
+      var showPuzzleObj = puzzle.toObject();
+      var type = typeMap[showPuzzleObj.type];
+      if (req.getLocale() != 'en') {
+        if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
+          type.rules = type.translations[req.getLocale()].rules;
+        }
+      }
+      if(type) {
+        showPuzzleObj.type = type;
+      }
+      var author = userMap[showPuzzleObj.author];
+      if(author) {
+        showPuzzleObj.author = author;
+      }
+    }
+    res.render('puzzleset', {user: req.user, set: setObj, puzzles: puzzleList, puzzle: showPuzzleObj})
   } catch (e) {
     next(e);
   }

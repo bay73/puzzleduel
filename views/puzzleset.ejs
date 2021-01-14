@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-group pr-4 pb-2">
                       <label class="col-form-label pr-1" for="editdesc">Description</label>
-                      <textarea class="form-control" rows=8 id="editdesc" name="description"><%- set.description %></textarea>
+                      <textarea class="form-control" rows=8 id="editdesc" name="description"><%= set.description %></textarea>
                     </div>
                     <div class="form-group pr-4 pb-2">
                       <button type="submit" id="editSet" class="btn btn-primary">Save</button>
@@ -65,34 +65,44 @@
         <div class="card-body">
           <%- set.description %>
         </div>
+        <table>
+        <tr>
+        <td width="300px>
         <div class="card-body">
           <table class="table table-hover table-condensed table-responsive table-borderless">
             <tbody>
               <tr>
                 <th><%= __('#') %></th><th><%= __('Puzzle') %></th>
               </tr>
-              <% puzzles.sort((puzzle1, puzzle2) => puzzle1.num - puzzle2.num).forEach(function(puzzle) { %>
+              <% puzzles.sort((puzzle1, puzzle2) => puzzle1.num - puzzle2.num).forEach(function(puzzleItem) { %>
               <tr>
                 <td>
-                  <%= puzzle.num %>
-                  <% if (user && set.authorId.equals(user._id) && puzzle.num > 1) { %>
-                  <a href="/puzzleset/<%= set.code %>/up/<%= puzzle.code %>">
+                  <%= puzzleItem.num %>
+                  <% if (user && set.authorId.equals(user._id) && puzzleItem.num > 1) { %>
+                  <a href="/puzzleset/<%= set.code %>/up/<%= puzzleItem.code %>">
                     <span class="glyphicon glyphicon-chevron-up"></span>
                   </a>
                   <% } %>
                 </td>
                 <td>
-                  <% var stars=puzzle.difficulty>0?(1+Math.round(10*Math.log(puzzle.difficulty/30000))/10):0; %>
-                  <a href="/single/<%= puzzle.code %>">
-                    <%= puzzle.type %>
-                    <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+                  <% if (puzzle && puzzleItem.code==puzzle.code){ %>
+                  <strong>
+                  <span class="glyphicon glyphicon-play align-text-top"></span>
+                  <% } %>
+                  <% var stars=puzzleItem.difficulty>0?(1+Math.round(10*Math.log(puzzleItem.difficulty/30000))/10):0; %>
+                  <a href="/puzzleset/<%= set.code %>/show/<%= puzzleItem.code %>" >
+                    <%= puzzleItem.type %>
+                    <%= puzzleItem.dimension?" ("+puzzleItem.dimension+")":"" %>
                     <span class="stars" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>">
                     </span>
                   </a>
+                  <% if (puzzle && puzzleItem.code==puzzle.code){ %>
+                  </strong>
+                  <% } %>
                 </td>
                 <% if (user && set.authorId.equals(user._id)) { %>
                 <td>
-                  <a href="/puzzleset/<%= set.code %>/delete/<%= puzzle.code %>">
+                  <a href="/puzzleset/<%= set.code %>/delete/<%= puzzleItem.code %>">
                     <span class="glyphicon glyphicon-minus"></span>
                   </a>
                 </td>
@@ -146,6 +156,24 @@
             </tbody>
           </table>
         </div>
+        </td>
+        <% if(puzzle){ %> 
+        <% prefix = ''; %>
+        <td>
+          <div class="card-body">
+            <div>
+              <%- include ('./partials/puzzle') %>
+            </div>
+          </div>
+        </td>
+        <script>
+          $(document).ready(function () {
+            showPuzzle();
+          });
+        </script>
+        <% } %>
+        </tr>
+        </table>
       </div>
     </div>
   </div>
