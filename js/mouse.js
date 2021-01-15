@@ -26,6 +26,7 @@ mouseController.prototype.detachEvents = function() {
   this.snap.node.removeEventListener("mouseup", self.mouseUp);
   this.snap.node.removeEventListener("touchend", self.mouseUp);
   this.snap.node.removeEventListener("touchcancel", self.mouseUp);
+  this.chooserBuilder.remove();
 }
 
 mouseController.prototype.onMouseDown = function(event) {
@@ -33,10 +34,6 @@ mouseController.prototype.onMouseDown = function(event) {
   var element = this.eventElement(event);
   if (element != null) {
     this.mouseStartElement = element;
-    if (this.chooserObject) {
-      this.chooserObject.remove();
-      this.chooserObject = null;
-    }
     if (element.canDragStart()){
       self = this;
       this.dragHandler = {};
