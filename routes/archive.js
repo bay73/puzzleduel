@@ -187,7 +187,10 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     if (onlyFuture) {
       filter = {
         author: req.user._id,
-        tag: {$ne: "example"},
+        $and : [
+          {tag: {$ne: "example"}},
+          {tag: {$ne: "public"}}
+        ],
         $or: [
           {daily: {$gt: new Date()}},
           {daily: {$exists: false}}
