@@ -1,4 +1,4 @@
-// const util = require('./util');
+const util = require('./util');
 
 const Checker = {
 check:function(dimension, clues, data){
