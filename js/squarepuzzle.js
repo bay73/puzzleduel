@@ -58,6 +58,25 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     collectAreas: this.editMode,
   }
 
+  typeProperties["snake_belarusian"] = {
+    needNodes: true,
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{image: "white_circle"},{image: "cross"}]);
+      if (cell.isClue && cell.data.image != "cross") {
+        setClueClickSwitch(cell, [{},{color: "#605030", returnValue: "1"},{image: "cross"}], [{},{image: "white_circle"},{image: "cross"}]);
+      }
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{color: "tan", returnValue: "1"}];},
+    edgeEditController: edge => {
+       edge.isClue = true;
+       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    decodeClue: value => {return value=="1"?{color: "tan"}:{} },
+    collectAreas: this.editMode,
+  }
+
   typeProperties["sudoku_irregular"] = {
     needNodes: true,
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, self.rows);}},
