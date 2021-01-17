@@ -91,6 +91,34 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["suguru"] = {
+    needNodes: true,
+    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 6);}},
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 6);},
+    edgeEditController: edge => {
+       edge.isClue = true;
+       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    collectAreas: this.editMode,
+    cellMultiPencil: true,
+  }
+
+  typeProperties["ripple_effect"] = {
+    needNodes: true,
+    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 6);}},
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 6);},
+    edgeEditController: edge => {
+       edge.isClue = true;
+       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    collectAreas: this.editMode,
+    cellMultiPencil: true,
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
