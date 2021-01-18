@@ -216,5 +216,8 @@
 		"few": "секунды",
 		"other": "секунд"
 	},
-	"Compiler:": "Составитель:"
+	"Compiler:": "Составитель:",
+	"Puzzle sets": "Подборки задач",
+	"Most of this collections are intended to be used as a train sets for beginner solvers to understand puzzle rules and solving techniques.": "Большая часть этих поборок задумывалась как тренировочные комрлекты ориентированые на начинающих решателей чтобы лучше познакомиться с условиями задач и авработать некоторые подходы к решению.",
+	"Below you can find the list of puzzle collections created by our authors.": "Тут представлен список подборок задач, подготовленных нашими авторами."
 }

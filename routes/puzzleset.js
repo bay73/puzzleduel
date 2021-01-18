@@ -1,10 +1,51 @@
 const express = require('express');
 const router = express.Router();
+const uniqid = require('uniqid');
 
 const PuzzleSet = require('../models/PuzzleSet');
 const Puzzle = require('../models/Puzzle');
 const util = require('../utils/puzzle_util');
 
+router.get('/', async (req, res, next) => {
+  try {
+    const userMap = await util.userNameMap();
+    const sets = await PuzzleSet.find({});
+    res.render('puzzlesets', {
+      user: req.user,
+      sets: sets.map(set => {
+          return {
+            code: set.code,
+            name: set.name,
+            authorId: set.author,
+            author: userMap[set.author],
+            puzzleCount: set.puzzles.length,
+          };
+      })
+    })
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/create', async (req, res, next) => {
+  try {
+    if (!req.user || req.user.role != "author") {
+      res.sendStatus(404);
+      return;
+    }
+    var setid = uniqid();
+    var set = new PuzzleSet({
+      code: setid,
+      name: "New puzzle set",
+      author: req.user._id,
+      tag: "public",
+    });
+    await set.save();
+    res.redirect("/puzzleset/" + setid + "/show/0");
+ } catch (e) {
+    next(e);
+  }
+});
 
 router.get('/:setid', async (req, res, next) => {
   res.redirect('/puzzleset/' + req.params.setid + '/show/0');
@@ -110,6 +151,24 @@ router.post('/:setid/edit', async (req, res, next) => {
     }
     await set.save();
     res.redirect('/puzzleset/' + req.params.setid);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post('/:setid/delete', async (req, res, next) => {
+  try {
+    const set = await PuzzleSet.findOne({code: req.params.setid});
+    if (!set) {
+      res.sendStatus(404);
+      return;
+    }
+    if (!req.user || !set.author.equals(req.user._id)) {
+      res.sendStatus(404);
+      return;
+    }
+    await set.delete();
+    res.json({status: "OK"});
   } catch (e) {
     next(e);
   }

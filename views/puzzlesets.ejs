@@ -1,0 +1,63 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header"><%= __('Puzzle sets') %></h1>
+        <p class="card-text text-left pt-3">
+          <%= __('Below you can find the list of puzzle collections created by our authors.') %>
+          <%= __('Most of this collections are intended to be used as a train sets for beginner solvers to understand puzzle rules and solving techniques.') %>
+        </p>
+        <table class="table table-hover table-condensed table-striped">
+          <% sets.forEach(function(set) { %>
+          <tr>
+            <td>
+              <a href="/puzzleset/<%= set.code %>"><%= set.name %></a>
+            </td>
+            <td>
+              <%= set.puzzleCount %> <%= __n('puzzle', set.puzzleCount) %>
+            </td>
+            <td>
+              <small><%= __('Compiler:') %> <a href="/help/authors#<%= set.authorId %>"><%= set.author %></a></small>
+            </td>
+            <% if (user && set.authorId.equals(user._id)) { %>
+            <td>
+              <a href="#"  onclick = "deleteSet('<%= set.code %>')">
+                <span class="glyphicon glyphicon-minus"></span>
+              </a>
+            </td>
+            <% } %>
+          </tr>
+          <% }) %>
+          <% if (user && user.role=='author') { %>
+          <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+              <a href="/puzzleset/create %>">
+                <span class="glyphicon glyphicon-plus"></span>
+              </a>
+            </td>
+          </tr>
+          <% } %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function deleteSet(setId) {
+  if (confirm("Do you really want to delete the puzzle set?")) {
+    $.post("/puzzleset/" + setId + "/delete")
+    .done(() => {location.reload();})
+    .fail((jqxhr, textStatus, error) => {alert(jqxhr.responseText);});
+  }
+}
+</script>
+<%- include ('./partials/footer') %>
+
