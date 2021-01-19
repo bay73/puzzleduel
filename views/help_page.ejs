@@ -28,8 +28,8 @@
               Every day new competitive puzzle is published at our site.
               Solving time for this puzzle is recorded and included to the <a href="/archive/scores">scores table</a>.
               To solve the puzzle user must <a href="/users/register">register</a> and <a href="/users/login">log in</a> at the site.
-              Registration is totally free. Email is required to be able restore password in case it is forgotten.
-              The puzzle remains competitive five days and after that becomes free and available without registration.
+              Registration is totally free. Email is required to be able to restore password in case it is forgotten.
+              The puzzle remains competitive for five days and after that becomes free and available without registration.
               <br>
               <br>
               List of all puzzles from previous days are available at our <a href="/archive">archive page</a>.
@@ -39,7 +39,7 @@
               Solvers rating is computed based on solving time of daily competitive puzzles.
               Rating is recomputed once per week and reflects the current performance of users.
               Weekly rating for date X is based on all daily puzzles published between dates X-7 and X-1.
-              Initial rating calculations are preliminary and finilized when all affecting puzzles become noncompetitive.
+              Initial rating calculations are preliminary and finalized when all affecting puzzles become noncompetitive.
               See "Rating calculation" section for detailed rating formulas.
               At the <a href="/rating">rating page</a> you can see the latest value of the rating and the change during the week.
               Moving mouse over weekly change number you can see change details per puzzle.
@@ -61,20 +61,20 @@
               Read rules carefully to be aware of all the important puzzle conditions.
               <br>
               <br>
-              When you press "Start" button the puzzle clues are revealed and timer starting.
-              Remember that timer at the screen only for your information.
-              Real start time is recorder internally and if you reload page
+              When you press "Start" button the puzzle clues are revealed and timer starts.
+              Remember that timer at the screen is only for your information.
+              Real start time is recorded internally and if you reload page
               and start the puzzle again then your score displayed at the
               <a href="/archive/scores">scores page</a> is computed based on time when
-              you start the puzzle first time.
+              you start the puzzle for the first time.
               <br>
               <br>
-              "Restart" button allows you to remove all the progress made in the puzzle and start from very beginning.
+              "Restart" button allows you to remove all the progress made in the puzzle and start from the very beginning.
               But it doesn't restart the solving time.
               <br>
               <br>
-              "Check" button examines the solution in the grid to correspond all puzzle rules and if the solution is correct,
-              stops the timer and record the solving time.
+              "Check" button examines the solution in the grid to correspond to all puzzle rules and, if the solution is correct,
+              stops the timer and records the solving time.
               If there are some mistakes in the solution then error message notifies about one broken condition
               and corresponding puzzle cells are marked in the grid. You can fix the solution and submit it again.
               Number of submission is not limited, but recorded and displayed in the scores table.
@@ -84,7 +84,7 @@
               <br>
               <br>
               After successful submission of the puzzle you can start it again as many times as you want without any effects
-              on you score. Old puzzles available at <a href="/archive">archive page</a> can be solved without registration
+              on your score. Old puzzles available at <a href="/archive">archive page</a> can be solved without registration
               and without changes in score table.
               </p>
             </div>
@@ -108,7 +108,7 @@
               Third click returns the cell to the initial state.
               <br>
               <br>
-              For puzzles accepting multiple cell values (as Sudoku puzzle) click on the cell reveal the value chooser.
+              For puzzles accepting multiple cell values (as Sudoku puzzle) click on the cell reveals the value chooser.
               Click on the selected value changes the state of the cell.
               You also can remove the cell value by choosing the empty holder in the value chooser.
               <br>
@@ -138,8 +138,8 @@
               You can switch the grid from "Normal" to "Pencil mark" mode.
               In this mode the same mouse operations do not change state of the cells,
               but instead put small notes (pencil marks) to the cells.
-              In line-drawing puzzles the pencil marks look like thiner dashed line.
-              Remember that these pencil marks are used only for solving convenience and are not considered while puzzle submission.
+              In line-drawing puzzles the pencil marks look like thinner dashed line.
+              Remember that these pencil marks are used only for solving convenience and are not considered for puzzle submission.
               <br>
               <br>
               You can put pencil marks on top of already filled cell, but setting the value of the cell in "Normal" mode deletes
@@ -165,16 +165,16 @@
               Weekly rating for date X is based on all daily puzzles published between dates X-7 and X-1.
               Performance of a solver for each puzzle is first converted to rating points using the next formula:
               $$ratingPoints = 2000 - 500 * log_2 ({{solvingTime \over medianTime} + errorCount}),$$
-              where <i>medianTime</i> is a median solving time without errors for this puzzle amoung all users.
+              where <i>medianTime</i> is a median solving time without errors for this puzzle among all users.
               If a solver started but hasn't finished the puzzle the zero rating points is assigned
               <br>
               <br>
               The average of rating points of individual puzzles shows the instant weekly rating.
-              The new rating value is calcilated as previous value moved towards this instant value:
+              The new rating value is calculated as previous value moved towards this instant value:
               $$newRating = oldRating + (instantRating - oldRating)^{0.66},$$
               If user solves only part of weekly puzzles, then the rating increase for the week is reduced correspondingly.
               For each of the solved puzzles one seventh of the increase is applied.
-              Special bonus is applied for newcomers - since their previous rating value is not defined the change increases
+              Special bonus is applied for newcomers - since their previous rating value is not defined, the change increases
               to come to stable rating values faster.
               </p>
             </div>
