@@ -109,18 +109,24 @@ chooserToggler = function(chooserBuilder, chooserCenter, angle, distance, choose
 Object.setPrototypeOf(chooserToggler.prototype, chooserElement.prototype);
 
 chooserToggler.prototype.draw = function(value) {
+  var puzzle = this.chooserBuilder.element.puzzle;
   this.togglerCircle = this.snap.circle(this.center.x, this.center.y, this.size);
   this.togglerCircle.attr({stroke: "#430", strokeWidth: 2, fill: "#750", opacity: 0.1});
   this.defaultOpacity = 0.1;
-  if (value.color) {
-    this.togglerCircle.attr({fill: value.color, opacity: 0.5});
+  if (typeof puzzle.typeProperties.toChooserShow=="function") {
+    showValue = puzzle.typeProperties.toChooserShow(value);
+  } else {
+    showValue = value;
+  }
+  if (showValue.color) {
+    this.togglerCircle.attr({fill: showValue.color, opacity: 0.5});
     this.defaultOpacity = 0.5;
   }
   this.drawElements.push(this.togglerCircle);
 
-  if (value.image) {
+  if (showValue.image) {
     var togglerImage = this.snap.image(
-      this.chooserBuilder.element.puzzle.imageUrl(value.image),
+      puzzle.imageUrl(showValue.image),
       this.center.x - this.size,
       this.center.y - this.size,
       this.size*2,
@@ -128,14 +134,14 @@ chooserToggler.prototype.draw = function(value) {
     togglerImage.attr({filter: this.chooserBuilder.chooserFilter});
     this.drawElements.push(togglerImage);
   }
-  if (value.text) {
+  if (showValue.text) {
     var width = this.size*1.2;
-    if (value.text!=null && value.text.length==1) {
+    if (showValue.text!=null && showValue.text.length==1) {
       width = 0.6*this.size;
     }
     var togglerText = this.snap.text(
-      this.center.x-width/2, this.center.y + this.size*0.4, value.text);
-    var attr = Object.assign({}, this.chooserBuilder.element.puzzle.gridProperty.font);
+      this.center.x-width/2, this.center.y + this.size*0.4, showValue.text);
+    var attr = Object.assign({}, puzzle.gridProperty.font);
     Object.assign(attr, {"fill": "white", "font-size": this.size*1.2,"textLength": width });
     togglerText.attr(attr);
     this.drawElements.push(togglerText);

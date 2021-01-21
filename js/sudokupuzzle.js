@@ -28,6 +28,38 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["sudoku_fortress"] = {
+    cellController: cell => {
+      if (!cell.data.text) {
+        var chooserValues = [{color: cell.data.color}];
+        for (var i=1; i<=self.rows; i++) {
+          chooserValues.push({text: i.toString(), color: cell.data.color, returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      }
+    },
+    cellEditController: cell => {
+      var chooserValues = [{}];
+      for (var i=1; i<=self.rows; i++) {
+        chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      chooserValues.push({color: "grey", returnValue: "-"});
+      for (var i=1; i<=self.rows; i++) {
+        chooserValues.push({text: i.toString(), color: "grey", returnValue: "-" + i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {
+      if (value.startsWith("-")) {
+        return {color: "grey", text: value.substring(1)}
+      } else {
+        return {text: value}
+      }
+    },
+    cellMultiPencil: true,
+    toChooserShow: value => {showValue = Object.assign({}, value); delete showValue.color; return showValue; },
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
@@ -52,7 +84,6 @@ sudokuPuzzleType.prototype.createBoard = function() {
 }
 
 function setNumberChooser(cell, start, end) {
-  cell.isClue = true;
   var chooserValues = [{}];
   for (var i=start; i<=end; i++) {
     chooserValues.push({text: i.toString(), returnValue: i.toString()});
