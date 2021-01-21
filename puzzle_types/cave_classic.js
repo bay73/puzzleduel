@@ -18,8 +18,14 @@ check:function(dimension, clues, data){
   for (var [key, value] of Object.entries(clues)) {
     var pos = util.parseCoord(key);
     if (cluecells[pos.y]){
-      cluecells[pos.y][pos.x] = value;
-      cells[pos.y][pos.x] = false;
+      if (value=="cross") {
+        cells[pos.y][pos.x] = false;
+      } else if (value=="black") {
+        cells[pos.y][pos.x] = true;
+      } else {
+        cluecells[pos.y][pos.x] = value;
+        cells[pos.y][pos.x] = false;
+      }
     }
   }
   var res = Checker.checkConnected(cells);
