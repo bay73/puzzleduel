@@ -57,7 +57,13 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       }
     },
     cellMultiPencil: true,
-    toChooserShow: value => {showValue = Object.assign({}, value); delete showValue.color; return showValue; },
+    toChooserShow: value => {
+      showValue = Object.assign({}, value);
+      if (!self.editMode) {
+        delete showValue.color;
+      }
+      return showValue;
+    },
   }
 
   if (typeCode in typeProperties) {
