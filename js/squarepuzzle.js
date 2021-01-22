@@ -119,6 +119,19 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["fence"] = {
+    thickEdges: true,
+    outerEdges: false,
+    needNodes: true,
+    cellController: cell => setClickSwitch(cell, true, [{},{image: "cross"},{image: "white_circle"}]),
+    edgeController: edge => {
+      setClickSwitch(edge, false, [{},{color: self.colorSchema.lineColor, returnValue: 1},{image: "cross"}]);
+      setDragSwitch(edge, false, [{},{color: self.colorSchema.lineColor}]);
+    },
+    nodeController: node => node.dragProcessor = true,
+    cellEditController: cell => setNumberChooser(cell, 0, 4),
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
@@ -164,6 +177,18 @@ function setNumberChooser(cell, start, end) {
     chooserValues.push({text: i.toString(), returnValue: i.toString()});
   }
   cell.chooserValues = chooserValues;
+}
+
+function setDragSwitch(element, withClues, dragSwitch, pencilDragSwitch) {
+  if (element.isClue && !withClues) {
+    return;
+  }
+  element.dragSwitch = dragSwitch.map(val => Object.assign({}, element.data, val))
+  if (typeof pencilDragSwitch != "undefined") {
+    element.pencilDragSwitch = pencilDragSwitch;
+  } else {
+    element.pencilDragSwitch = dragSwitch.map(val => {var clone = Object.assign({}, val); delete clone.returnValue; return clone});
+  }
 }
 
 })
