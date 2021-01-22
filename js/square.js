@@ -69,8 +69,8 @@ squarePuzzle.prototype.createBoard = function() {
           if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
             this.nodes[y][x][i] = this.nodes[y-1][x][3];
             this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
-          } else if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x] != "undefined") {
-            this.nodes[y][x][i] = this.nodes[y-1][x][1];
+          } else if (i==0 && typeof this.nodes[y] != "undefined" && typeof this.nodes[y][x-1] != "undefined") {
+            this.nodes[y][x][i] = this.nodes[y][x-1][1];
             this.nodes[y][x][i].allCells.push({col:x, row:y, side: i});
           } else if (i==0 && typeof this.nodes[y-1] != "undefined" && typeof this.nodes[y-1][x-1] != "undefined") {
             this.nodes[y][x][i] = this.nodes[y-1][x-1][2];
