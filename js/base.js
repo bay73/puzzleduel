@@ -5,6 +5,7 @@ basePuzzle = function(puzzleData, controls, settings) {
     thickEdges: false,
     outerEdges: true,
     needNodes: false,
+    needConnectors: false,
   };
   this.id = puzzleData.id;
   this.colorSchema = this.chooseColorSchema();
@@ -56,6 +57,15 @@ basePuzzle.prototype.render = function(snap) {
     },
     pencilNode: {
       "fill-opacity": 1
+    },
+    connector: {
+      "strokeWidth": this.size.unitSize < 36 ? 4 : Math.round(this.size.unitSize/9),
+      "stroke-linecap": "round"
+    },
+    pencilConnector: {
+      "strokeWidth": this.size.unitSize < 36 ? 3 : Math.round(this.size.unitSize/12),
+      "stroke-linecap": "round",
+      "stroke-dasharray": "0 " + (this.size.unitSize < 35 ? 5: Math.round(this.size.unitSize/7))
     },
     font: {
       "font-family": "sans-serif",

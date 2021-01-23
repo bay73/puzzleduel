@@ -89,6 +89,29 @@ squarePuzzle.prototype.createBoard = function() {
       }
     }
   }
+  if (this.typeProperties.needConnectors) {
+    this.connectors = [];
+    for (var y = 0; y < this.rows; y++) {
+      this.connectors[y] = new Array(this.cols);
+      for (var x = 0; x < this.cols; x++) {
+        this.connectors[y][x] = {};
+        if (x < this.cols - 1) {
+          this.connectors[y][x]['h'] = new squarePuzzleConnector(this, x, y, 'h');
+          this.elements.push(this.connectors[y][x]['h']);
+        }
+        if (y < this.rows - 1) {
+          this.connectors[y][x]['v'] = new squarePuzzleConnector(this, x, y, 'v');
+          this.elements.push(this.connectors[y][x]['v']);
+        }
+        if (x > 0) {
+          this.connectors[y][x-1]['h'].allCells.push({col:x, row:y, side: '-h'});
+        }
+        if (y > 0) {
+          this.connectors[y-1][x]['v'].allCells.push({col:x, row:y, side: '-v'});
+        }
+      }
+    }
+  }
 }
 
 squarePuzzle.prototype.decodeCoordinate = function(key) {
@@ -106,14 +129,22 @@ squarePuzzle.prototype.initController = function () {
       if (typeof this.typeProperties.cellController == "function") {
         this.typeProperties.cellController(this.cells[y][x]);
       }
-      for (var i=0; i<4; i++){
-        if (typeof this.typeProperties.edgeController == "function") {
+      if (typeof this.typeProperties.edgeController == "function") {
+        for (var i=0; i<4; i++){
           this.typeProperties.edgeController(this.edges[y][x][i]);
         }
       }
-      for (var i=0; i<4; i++){
-        if (typeof this.typeProperties.nodeController == "function") {
+      if (typeof this.typeProperties.nodeController == "function") {
+        for (var i=0; i<4; i++){
           this.typeProperties.nodeController(this.nodes[y][x][i]);
+        }
+      }
+      if (typeof this.typeProperties.connectorController == "function") {
+        if (this.connectors[y][x]['v']) {
+          this.typeProperties.connectorController(this.connectors[y][x]['v']);
+        }
+        if (this.connectors[y][x]['h']) {
+          this.typeProperties.connectorController(this.connectors[y][x]['h']);
         }
       }
     }
@@ -131,14 +162,22 @@ squarePuzzle.prototype.initEditController = function() {
       if (typeof this.typeProperties.cellEditController == "function") {
         this.typeProperties.cellEditController(this.cells[y][x]);
       }
-      for (var i=0; i<4; i++){
-        if (typeof this.typeProperties.edgeEditController == "function") {
+      if (typeof this.typeProperties.edgeEditController == "function") {
+        for (var i=0; i<4; i++){
           this.typeProperties.edgeEditController(this.edges[y][x][i]);
         }
       }
-      for (var i=0; i<4; i++){
-        if (typeof this.typeProperties.nodeEditController == "function") {
+      if (typeof this.typeProperties.nodeEditController == "function") {
+        for (var i=0; i<4; i++){
           this.typeProperties.nodeEditController(this.nodes[y][x][i]);
+        }
+      }
+      if (typeof this.typeProperties.connectorEditController == "function") {
+        if (this.connectors[y][x]['v']) {
+          this.typeProperties.connectorEditController(this.connectors[y][x]['v']);
+        }
+        if (this.connectors[y][x]['h']) {
+          this.typeProperties.connectorEditController(this.connectors[y][x]['h']);
         }
       }
     }
@@ -243,6 +282,9 @@ squarePuzzle.prototype.collectData = function() {
       }
       if (element instanceof squarePuzzleNode) {
          nodeData[coord] = value;
+      }
+      if (element instanceof squarePuzzleConnector) {
+         connectorData[coord] = value;
       }
     }
   });
@@ -477,6 +519,39 @@ squarePuzzleCell.prototype.hasMultiPencil = function() {
   return this.puzzle.typeProperties.cellMultiPencil;
 }
 
+squarePuzzleCell.prototype.processDragMove = function(startElement) {
+  if (startElement.constructor.name != this.constructor.name) {
+    return false;
+  }
+  var commonConnector = this.commonConnector(startElement);
+  if (!commonConnector) {
+    return false;
+  }
+  commonConnector.switchOnDrag();
+  return {newMouseStartElement: this};
+}
+
+squarePuzzleCell.prototype.commonConnector = function(startElement) {
+  if (this == startElement) {
+    return null;
+  }
+  if (this.col == startElement.col && Math.abs(this.row - startElement.row) == 1) {
+    var col = this.col;
+    var row = this.row < startElement.row ? this.row : startElement.row;
+    var side = 'v';
+  }
+  if (this.row == startElement.row && Math.abs(this.col - startElement.col) == 1) {
+    var col = this.col < startElement.col ? this.col : startElement.col;
+    var row = this.row;
+    var side = 'h';
+  }
+  if (side) {
+    return this.puzzle.connectors[row][col][side];
+  }
+  return null;
+}
+
+
 // edge of square grid ///////////////////////////////////////////
 var squarePuzzleEdge = function(puzzle, col, row, side) {
   squareGridElement.call(this, puzzle, col, row);
@@ -559,6 +634,108 @@ squarePuzzleEdge.prototype.isPointInside = function(position) {
   return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/12;
 }
 
+
+// connector of square grid ///////////////////////////////////////////
+var squarePuzzleConnector = function(puzzle, col, row, side) {
+  squareGridElement.call(this, puzzle, col, row);
+  this.side = side;
+  this.allCells = [];
+  this.allCells.push({col:this.col, row:this.row, side: this.side});
+}
+
+Object.setPrototypeOf(squarePuzzleConnector.prototype, squareGridElement.prototype);
+
+squarePuzzleConnector.prototype.getCoordinates = function() {
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ this.side;
+}
+
+squarePuzzleConnector.prototype.center = function() {
+  var corners = this.cellCorners();
+  if (this.side=='v') {
+    var start = corners[2];
+    var end = corners[3];
+  }
+  if (this.side=='h') {
+    var start = corners[1];
+    var end = corners[2];
+  }
+  return {x: (start.x+end.x)/2, y: (start.y+end.y)/2};
+}
+
+squarePuzzleConnector.prototype.render = function() {
+  return null;
+}
+
+squarePuzzleConnector.prototype.drawColor = function() {
+  var s = this.puzzle.size.unitSize;
+  var base = this.baseCorner();
+  var start = {x: base.x + s/2, y: base.y + s/2};
+  if (this.side =='v') {
+    var end = {x: start.x, y: start.y + s};
+  }
+  if (this.side =='h') {
+    var end = {x: start.x + s, y: start.y};
+  }
+  var path = this.puzzle.snap.line(start.x, start.y,  end.x, end.y);
+  var attr = Object.assign({}, this.puzzle.gridProperty.connector);
+  Object.assign(attr, {stroke: this.data.color});
+  path.attr(attr);
+  return path;
+}
+
+squarePuzzleConnector.prototype.clearColor = function() {
+  if (this.elements.color) {
+    this.elements.color.remove();
+  }
+}
+
+squarePuzzleConnector.prototype.drawImage = function() {
+  // Connector doesn't support images
+  return null;
+}
+
+squarePuzzleConnector.prototype.drawText = function() {
+  // Connector doesn't support text
+  return null;
+}
+
+squarePuzzleConnector.prototype.drawPencilColor = function() { 
+  var s = this.puzzle.size.unitSize;
+  var base = this.baseCorner();
+  var start = {x: base.x + s/2, y: base.y + s/2};
+  if (this.side =='v') {
+    var end = {x: start.x, y: start.y + s};
+  }
+  if (this.side =='h') {
+    var end = {x: start.x + s, y: start.y};
+  }
+  var path = this.puzzle.snap.line(start.x, start.y,  end.x, end.y);
+  var attr = Object.assign({}, this.puzzle.gridProperty.pencilConnector);
+  Object.assign(attr, {stroke: this.pencilData.color});
+  path.attr(attr);
+  return path;
+}
+
+squarePuzzleConnector.prototype.clearPencilColor = function() {
+  if (this.elements.pencilColor) {
+    this.elements.pencilColor.remove();
+  }
+}
+
+squarePuzzleConnector.prototype.drawPencilImage = function() {
+  // Connector doesn't support images
+  return null;
+}
+
+squarePuzzleConnector.prototype.drawPencilText = function() {
+  // Connector doesn't support text
+  return null;
+}
+
+squarePuzzleConnector.prototype.isPointInside = function(position) {
+  // Connector catch mouse events
+  return false;
+}
 
 // node of square grid ///////////////////////////////////////////
 var squarePuzzleNode = function(puzzle, col, row, side) {
