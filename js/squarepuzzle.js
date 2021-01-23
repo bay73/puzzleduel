@@ -33,9 +33,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
     edgeEditController: edge => {
-       edge.isClue = true;
-       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
     },
     nodeEditController: node => node.dragProcessor = true,
     decodeClue: value => {return {image: value} },
@@ -49,9 +51,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
     edgeEditController: edge => {
-       edge.isClue = true;
-       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
     },
     nodeEditController: node => node.dragProcessor = true,
     decodeClue: value => {return {image: value} },
@@ -68,9 +72,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{color: "tan", returnValue: "1"}];},
     edgeEditController: edge => {
-       edge.isClue = true;
-       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
     },
     nodeEditController: node => node.dragProcessor = true,
     decodeClue: value => {return value=="1"?{color: "tan"}:{} },
@@ -82,9 +88,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, self.rows);}},
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.rows);},
     edgeEditController: edge => {
-       edge.isClue = true;
-       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
     },
     nodeEditController: node => node.dragProcessor = true,
     collectAreas: this.editMode,
@@ -96,9 +104,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 6);}},
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 6);},
     edgeEditController: edge => {
-       edge.isClue = true;
-       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
     },
     nodeEditController: node => node.dragProcessor = true,
     collectAreas: this.editMode,
@@ -110,9 +120,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 6);}},
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 6);},
     edgeEditController: edge => {
-       edge.isClue = true;
-       edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
     },
     nodeEditController: node => node.dragProcessor = true,
     collectAreas: this.editMode,
