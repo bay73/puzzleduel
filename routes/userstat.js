@@ -7,12 +7,33 @@ const User = require('../models/User');
 router.get('/:userid',
   async (req, res, next) => {
   try {
+    var from = new Date(req.query.from);
+    var to = new Date(req.query.to);
+    from = isNaN(from) ? to : from;
+    to = isNaN(to) ? from : to;
+
+    var to_date = new Date();
+    to_date.setDate(to_date.getDate() +10);
+    to = isNaN(to) ? to_date : to;
+    var from_date = new Date();
+    from_date.setMonth(from_date.getMonth() - 6);
+    from = isNaN(from) ? from_date : from;
+    if (to < from) {
+      to = from;
+    }
+
     var typeData = await util.typeDataMap();
     Object.keys(typeData).forEach(type => {typeData[type].puzzleCount = 0; typeData[type].valueSum = 0;})
 
     const user = await User.findOne({_id: req.params.userid});
 
-    const rating = await Rating.find({userId: req.params.userid});
+    const rating = await Rating.find({
+      userId: req.params.userid,
+      $and : [
+          {date: {$gte: from}},
+          {date: {$lte: to}}
+        ]
+    });
     
     var categories = {};
     rating.forEach(week => {
@@ -29,7 +50,10 @@ router.get('/:userid',
 
     res.render('userstat', {
       user: req.user,
+      userId: user._id,
       userName: user.name,
+      from: from,
+      to: to,
       statdata: rating.map(ratingEntry => {
         return {
           date: ratingEntry.date,

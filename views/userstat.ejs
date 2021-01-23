@@ -10,6 +10,13 @@
         <h2 class="card-header"><%= __('Rating history') %></h2>
         <div class="card-body">
           <canvas id="ratingChart"></canvas>
+          <form class="form-inline" action="/userstat/<%= userId%>"method="get">
+            <label for="from-input"><%= __('Show history from') %></label>
+            <input class="form-control ml-1 mr-3 mb-1" type="date" value="<%= from.toISOString().split('T')[0] %>" id="from-input" name="from"></input>
+            <label for="to-input"><%= __('to') %></label>
+            <input class="form-control ml-1 mr-3 mb-1" type="date" value="<%= to.toISOString().split('T')[0] %>" id="to-input" name="to"></input>
+            <button type="submit" id="setDate" class="btn btn-primary  mb-1"><%= __('Set') %></button>
+          </form>
           <p>
             <%= __('Weekly performance shows the performance for daily puzzles solved during the corresponding week. It is nominated in universal scoring scale which allows to compare puzzles of different complexity.') %>
             <%= __('Rating is a cumulative value which is slowly adjusted every week towards the weekly performance. It shows long-term performance level.') %>
@@ -125,15 +132,6 @@
           pointBackgroundColor: weeklyColor,
           pointBorder: weeklyColor,
         }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }],
-        },
       }
     });
   })
