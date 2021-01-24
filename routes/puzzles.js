@@ -58,6 +58,7 @@ type_cheker["hexa_paint"] = require('../puzzle_types/hexa_paint')
 type_cheker["hitori"] = require('../puzzle_types/hitori')
 type_cheker["lits"] = require('../puzzle_types/lits')
 type_cheker["heyawake"] = require('../puzzle_types/heyawake')
+type_cheker["lighthouses"] = require('../puzzle_types/lighthouses')
 type_cheker["fence"] = require('../puzzle_types/fence')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {

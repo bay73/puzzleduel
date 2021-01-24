@@ -221,5 +221,6 @@
 	"Value in the grey cell should be bigger than value in the white cell": "Value in the grey cell should be bigger than value in the white cell",
 	"Show history from": "Show history from",
 	"to": "to",
-	"Sequence of white cells cannot span more than two outlined areas": "Sequence of white cells cannot span more than two outlined areas"
+	"Sequence of white cells cannot span more than two outlined areas": "Sequence of white cells cannot span more than two outlined areas",
+	"Cells with boats shouldn't touch each other and lighthouses": "Cells with boats shouldn't touch each other and lighthouses"
 }

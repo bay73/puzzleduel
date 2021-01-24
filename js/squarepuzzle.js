@@ -161,6 +161,13 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellEditController: cell => setNumberChooser(cell, 0, 4),
   }
 
+  typeProperties["lighthouses"] = {
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{image: "boat", returnValue: "boat"},{image: "cross"}]);
+    },
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 10);},
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
