@@ -200,8 +200,8 @@ gridElement.prototype.draw = function() {
   }
   this.clearElements();
   if (Array.isArray(this.pencilData)) {
-    this.elements.pencilText = this.drawPencilText();
     this.elements.pencilImage = this.drawPencilImage();
+    this.elements.pencilText = this.drawPencilText();
   } else {
     if (this.pencilData && this.pencilData.color) {
       this.elements.pencilColor = this.drawPencilColor();

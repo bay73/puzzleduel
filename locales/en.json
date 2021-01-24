@@ -220,5 +220,6 @@
 	"Below you can find the list of puzzle collections created by our authors.": "Below you can find the list of puzzle collections created by our authors.",
 	"Value in the grey cell should be bigger than value in the white cell": "Value in the grey cell should be bigger than value in the white cell",
 	"Show history from": "Show history from",
-	"to": "to"
+	"to": "to",
+	"Sequence of white cells cannot span more than two outlined areas": "Sequence of white cells cannot span more than two outlined areas"
 }

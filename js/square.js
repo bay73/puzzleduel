@@ -699,7 +699,7 @@ squarePuzzleConnector.prototype.drawText = function() {
   return null;
 }
 
-squarePuzzleConnector.prototype.drawPencilColor = function() { 
+squarePuzzleConnector.prototype.drawPencilColor = function() {
   var s = this.puzzle.size.unitSize;
   var base = this.baseCorner();
   var start = {x: base.x + s/2, y: base.y + s/2};

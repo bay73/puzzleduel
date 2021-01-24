@@ -62,6 +62,23 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     collectAreas: this.editMode,
   }
 
+  typeProperties["heyawake"] = {
+    needNodes: true,
+    cellController: cell => {
+      setClickSwitch(cell, true, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+    },
+    cellEditController: cell => setNumberChooser(cell, 0, 8),
+    edgeEditController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    collectAreas: this.editMode,
+  }
+
   typeProperties["snake_belarusian"] = {
     needNodes: true,
     cellController: cell => {

@@ -223,5 +223,6 @@
 	"Below you can find the list of puzzle collections created by our authors.": "Тут представлен список подборок задач, подготовленных нашими авторами.",
 	"Value in the grey cell should be bigger than value in the white cell": "Значение в серой клетке должно быть больше, чем значение в белой клетке",
 	"Show history from": "Показать историю с",
-	"to": "по"
+	"to": "по",
+	"Sequence of white cells cannot span more than two outlined areas": "Ряд из белых клеток не должен принадлежать более чем двум областям"
 }
