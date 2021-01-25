@@ -209,7 +209,6 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       future: onlyFuture,
       types: Object.entries(typeMap)
         .filter(([key, value]) => !value.properties || !value.properties.noEdit)
-        .filter(([key, value]) => !util.isHiddenType(value))
         .sort(([key1, value1],[key2, value2]) => key1.localeCompare(key2))
         .map(([key, value]) => {
           return {
@@ -233,7 +232,6 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
           };
       }),
       dailyQueue: Object.entries(typePuzzleCount)
-        .filter(([key, value]) => !util.isHiddenType(value))
         .map(([key, value]) => {
         return {
           code: key,
