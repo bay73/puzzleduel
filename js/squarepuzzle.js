@@ -168,6 +168,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 10);},
   }
 
+  typeProperties["loop_minesweeper"] = {
+    needConnectors: true,
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{image: "cross"},{image: "white_circle"}]);
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 8);},
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }

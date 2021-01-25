@@ -161,12 +161,23 @@ gridElement.prototype.switchOnChooser = function(index) {
 gridElement.prototype.getValue = function() {
   if (this.clickSwitch != null) {
     var currentIndex = this.findCurrent(this.clickSwitch);
-    return this.clickSwitch[currentIndex].returnValue;
+    if (this.clickSwitch[currentIndex].returnValue) {
+      return this.clickSwitch[currentIndex].returnValue;
+    }
   }
   if (this.chooserValues != null) {
     var currentIndex = this.findCurrent(this.chooserValues);
-    return this.chooserValues[currentIndex].returnValue;
+    if (this.chooserValues[currentIndex].returnValue) {
+      return this.chooserValues[currentIndex].returnValue;
+    }
   }
+  if (this.dragSwitch != null) {
+    var currentIndex = this.findCurrent(this.dragSwitch);
+    if (this.dragSwitch[currentIndex].returnValue) {
+      return this.dragSwitch[currentIndex].returnValue;
+    }
+  }
+  return null;
 }
 
 // Drawing utility

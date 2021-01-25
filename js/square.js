@@ -270,6 +270,7 @@ squarePuzzle.prototype.collectData = function() {
   var data = {};
   var edgeData = {};
   var nodeData = {};
+  var connectorData = {};
   this.elements.forEach(element => {
     var value = element.getValue();
     if (value != null) {
@@ -297,6 +298,9 @@ squarePuzzle.prototype.collectData = function() {
   }
   if (Object.keys(nodeData).length != 0) {
     data["nodes"] = nodeData;
+  }
+  if (Object.keys(connectorData).length != 0) {
+    data["connectors"] = connectorData;
   }
   return data;
 }

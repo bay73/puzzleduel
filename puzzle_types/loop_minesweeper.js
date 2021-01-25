@@ -1,4 +1,4 @@
-const util = require('./util');
+// const util = require('./util');
 
 const Checker = {
 check:function(dimension, clueData, data){
@@ -10,10 +10,25 @@ check:function(dimension, clueData, data){
 
   // Parse data.
   for (var [key, value] of Object.entries(data)) {
-    var pos = util.parseCoord(key);
-    if (v[pos.y]){
-      v[pos.y][pos.x] = (value.v=="true");
-      h[pos.y][pos.x] = (value.h=="true");
+    if (key=="connectors") {
+      for (var [cKey, cValue] of Object.entries(value)) {
+        if (cValue=="1") {
+          splittedKey = cKey.split("-");
+          var pos = util.parseCoord(splittedKey[0]);
+          if (splittedKey[1]=="v") {
+            v[pos.y][pos.x] = true;
+          }
+          if (splittedKey[1]=="h") {
+            h[pos.y][pos.x] = true;
+          }
+        }
+      }
+    } else {
+      var pos = util.parseCoord(key);
+      if (v[pos.y]){
+        v[pos.y][pos.x] = (value.v=="true");
+        h[pos.y][pos.x] = (value.h=="true");
+      }
     }
   }
   // Parse clues.

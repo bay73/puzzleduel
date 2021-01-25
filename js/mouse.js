@@ -34,6 +34,7 @@ mouseController.prototype.onMouseDown = function(event) {
   var element = this.eventElement(event);
   if (element != null) {
     this.mouseStartElement = element;
+    this.mouseDownElement = element;
     if (element.canDragStart()){
       self = this;
       this.dragHandler = {};
@@ -63,7 +64,7 @@ mouseController.prototype.onMouseUp = function(event) {
   if (this.mouseStartElement != null) {
     var element = this.eventElement(event);
     if (element) {
-      if (element == this.mouseStartElement) {
+      if (element == this.mouseDownElement) {
         element.processClick();
       } else {
         element.processDragEnd(this.mouseStartElement);
