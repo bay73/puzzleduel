@@ -225,5 +225,7 @@
 	"Show history from": "Показать историю с",
 	"to": "по",
 	"Sequence of white cells cannot span more than two outlined areas": "Ряд из белых клеток не должен принадлежать более чем двум областям",
-	"Cells with boats shouldn't touch each other and lighthouses": "Клетки с лодками не должны касаться друг друга и маяков"
+	"Cells with boats shouldn't touch each other and lighthouses": "Клетки с лодками не должны касаться друг друга и маяков",
+	"White cell should contain odd digit": "В белой клетке должна быть нечётная цифра",
+	"Shaded cell should contain even digit": "В серой клетке должна быть чётная цифра"
 }
