@@ -28,6 +28,25 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["sudoku_square_number"] = {
+    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
+    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
+    edgeEditController: edge => {
+      if (edge.allCells.length > 1) {
+        var clickSwitch = [{}, {image: "black_circle", returnValue: "black_circle"}];
+        edge.clickSwitch = clickSwitch.map(val => Object.assign({}, edge.data, val));
+      }
+    },
+    decodeClue: value => {
+      if (value=="black_circle") {
+        return {image: "black_circle"}
+      } else {
+        return {text: value}
+      }
+    },
+    cellMultiPencil: true,
+  }
+
   typeProperties["sudoku_fortress"] = {
     cellController: cell => {
       if (!cell.data.text) {

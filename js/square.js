@@ -567,7 +567,7 @@ var squarePuzzleEdge = function(puzzle, col, row, side) {
 Object.setPrototypeOf(squarePuzzleEdge.prototype, squareGridElement.prototype);
 
 squarePuzzleEdge.prototype.getCoordinates = function() {
-  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ this.side;
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ (this.side==1?'r':'b');
 }
 
 squarePuzzleEdge.prototype.center = function() {
@@ -599,11 +599,11 @@ squarePuzzleEdge.prototype.clearColor = function() {
 }
 
 squarePuzzleEdge.prototype.drawImage = function() {
-  return this.snapImage(this.center(), this.puzzle.size.unitSize*0.7, this.data.image)
+  return this.snapImage(this.center(), this.puzzle.size.unitSize*0.5, this.data.image)
 }
 
 squarePuzzleEdge.prototype.drawText = function() {
-  var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.5, this.data.text);
+  var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.4, this.data.text);
   text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor});
   return text;
 }
@@ -626,11 +626,11 @@ squarePuzzleEdge.prototype.clearPencilColor = function() {
 }
 
 squarePuzzleEdge.prototype.drawPencilImage = function() {
-  return this.snapImage(this.center(), this.puzzle.size.unitSize*0.4, this.pencilData.image);
+  return this.snapImage(this.center(), this.puzzle.size.unitSize*0.3, this.pencilData.image);
 }
 
 squarePuzzleEdge.prototype.drawPencilText = function() {
-  return this.snapText(this.center(), this.puzzle.size.unitSize*0.3, this.pencilData.text);
+  return this.snapText(this.center(), this.puzzle.size.unitSize*0.2, this.pencilData.text);
 }
 
 squarePuzzleEdge.prototype.isPointInside = function(position) {

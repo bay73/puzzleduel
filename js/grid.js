@@ -31,7 +31,11 @@ gridElement.prototype.clearData = function() {
 
 gridElement.prototype.setClue = function(clueData) {
   this.isClue = true;
-  this.data = Object.assign({text: null, image: null, color: null, textColor: null}, clueData);
+  if (this.isFinal) {
+    this.data = Object.assign(this.data, clueData);
+  } else {
+    this.data = Object.assign({text: null, image: null, color: null, textColor: null}, clueData);
+  }
   this.redraw();
 }
 
