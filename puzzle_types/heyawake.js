@@ -22,7 +22,11 @@ check:function(dimension, clues, data){
     } else {
       var pos = util.parseCoord(key);
       if (clue[pos.y]){
-        clue[pos.y][pos.x] = value;
+        if (value=="cross") {
+          cells[pos.y][pos.x] = false;
+        } else {
+          clue[pos.y][pos.x] = value;
+        }
       }
     }
   }

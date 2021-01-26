@@ -65,9 +65,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   typeProperties["heyawake"] = {
     needNodes: true,
     cellController: cell => {
-      setClickSwitch(cell, true, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      if (!cell.isClue || cell.data.image != "cross") {
+        setClickSwitch(cell, true, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      }
     },
-    cellEditController: cell => setNumberChooser(cell, 0, 8),
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{}, {image: "cross", returnValue: "cross"}];
+      for (var i=0; i<=10; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
     edgeEditController: edge => {
        if (edge.allCells.length > 1) {
          edge.isClue = true;
@@ -77,6 +86,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     nodeEditController: node => node.dragProcessor = true,
     collectAreas: this.editMode,
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
   typeProperties["snake_belarusian"] = {
@@ -165,7 +175,15 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellController: cell => {
       setClickSwitch(cell, false, [{},{image: "boat", returnValue: "boat"},{image: "cross"}]);
     },
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 10);},
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{},{image: "cross", returnValue: "cross"}];
+      for (var i=0; i<=10; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
   typeProperties["loop_minesweeper"] = {
