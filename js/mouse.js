@@ -32,11 +32,13 @@ mouseController.prototype.detachEvents = function() {
 mouseController.prototype.onMouseDown = function(event) {
   event.preventDefault();
   var element = this.eventElement(event);
+  this.dragRestarted = false;
   if (element != null) {
     this.mouseStartElement = element;
     this.mouseDownElement = element;
     if (element.canDragStart()){
       self = this;
+      this.clearDragHandler();
       this.dragHandler = {};
       this.dragHandler.listener = function(event){self.onMouseMove(event)};
       this.dragHandler.leaveListener = function(event){self.onMouseLeave(event)};
@@ -64,7 +66,7 @@ mouseController.prototype.onMouseUp = function(event) {
   if (this.mouseStartElement != null) {
     var element = this.eventElement(event);
     if (element) {
-      if (element == this.mouseDownElement) {
+      if (element == this.mouseDownElement && !this.dragRestarted) {
         element.processClick();
       } else {
         element.processDragEnd(this.mouseStartElement);
@@ -72,28 +74,12 @@ mouseController.prototype.onMouseUp = function(event) {
     }
     this.mouseStartElement = null;
   }
-  if (this.dragHandler) {
-    if (this.dragHandler.path) {
-      this.dragHandler.path.remove();
-    }
-    this.snap.node.removeEventListener("touchmove", this.dragHandler.listener);
-    this.snap.node.removeEventListener("mousemove", this.dragHandler.listener);
-    this.snap.node.removeEventListener("mouseleave", this.dragHandler.leaveListener);
-    this.dragHandler = null;
-  }
+  this.clearDragHandler();
 }
 
 mouseController.prototype.onMouseLeave = function(event) {
   this.mouseStartElement = null;
-  if (this.dragHandler) {
-    if (this.dragHandler.path) {
-      this.dragHandler.path.remove();
-    }
-    this.snap.node.removeEventListener("touchmove", this.dragHandler.listener);
-    this.snap.node.removeEventListener("mousemove", this.dragHandler.listener);
-    this.snap.node.removeEventListener("mouseleave", this.dragHandler.leaveListener);
-    this.dragHandler = null;
-  }
+  this.clearDragHandler();
 }
 
 mouseController.prototype.onMouseMove = function(event) {
@@ -102,6 +88,7 @@ mouseController.prototype.onMouseMove = function(event) {
   if (this.dragHandler) {
     if (this.dragHandler.path) {
       this.dragHandler.path.remove();
+      this.dragHandler.path = null;
     }
     var element = this.eventElement(event);
     if (element == null) {
@@ -110,9 +97,10 @@ mouseController.prototype.onMouseMove = function(event) {
     var moveResult = element.processDragMove(this.mouseStartElement);
     if (moveResult) {
       if (moveResult.stopDrag) {
-        this.dragHandler = null;
+        this.clearDragHandler();
         this.mouseStartElement = null;
       } else {
+        this.dragRestarted = true;
         this.mouseStartElement = moveResult.newMouseStartElement;
       }
     }
@@ -123,6 +111,19 @@ mouseController.prototype.onMouseMove = function(event) {
     var start = this.mouseStartElement.center();
     this.dragHandler.path = this.snap.line(start.x, start.y,  end.x, end.y);
     this.dragHandler.path.attr(Object.assign({stroke: this.mouseStartElement.puzzle.colorSchema.traceColor}, this.mouseStartElement.puzzle.gridProperty.edge));
+  }
+}
+
+mouseController.prototype.clearDragHandler = function() {
+  if (this.dragHandler) {
+    if (this.dragHandler.path) {
+      this.dragHandler.path.remove();
+      this.dragHandler.path = null;
+    }
+    this.snap.node.removeEventListener("touchmove", this.dragHandler.listener);
+    this.snap.node.removeEventListener("mousemove", this.dragHandler.listener);
+    this.snap.node.removeEventListener("mouseleave", this.dragHandler.leaveListener);
+    this.dragHandler = null;
   }
 }
 
