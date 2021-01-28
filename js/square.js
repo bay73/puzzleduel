@@ -515,8 +515,8 @@ squarePuzzleCell.prototype.pencilMarkAttribute = function(pencilMark) {
 
 squarePuzzleCell.prototype.isPointInside = function(position) {
   var center = this.center();
-  return 2*Math.abs(position.x - center.x) < this.puzzle.size.unitSize
-      && 2*Math.abs(position.y - center.y) < this.puzzle.size.unitSize;
+  return Math.abs(position.x - center.x) < this.puzzle.size.unitSize / 2
+      && Math.abs(position.y - center.y) < this.puzzle.size.unitSize / 2;
 }
 
 squarePuzzleCell.prototype.hasMultiPencil = function() {
@@ -635,7 +635,7 @@ squarePuzzleEdge.prototype.drawPencilText = function() {
 
 squarePuzzleEdge.prototype.isPointInside = function(position) {
   var middle = this.center();
-  return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/12;
+  return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/9;
 }
 
 
@@ -761,7 +761,7 @@ squarePuzzleNode.prototype.center = function() {
 
 squarePuzzleNode.prototype.isPointInside = function(position) {
   var point = this.center();
-  return this.distanceSquare(position, point) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/12;
+  return this.distanceSquare(position, point) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/10;
 }
 
 squarePuzzleNode.prototype.render = function() {

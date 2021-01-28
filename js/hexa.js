@@ -417,7 +417,7 @@ hexaPuzzleEdge.prototype.drawPencilText = function() {
 
 hexaPuzzleEdge.prototype.isPointInside = function(position) {
   var middle = this.center();
-  return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/8;
+  return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/6;
 }
 
 
