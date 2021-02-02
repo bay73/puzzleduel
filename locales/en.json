@@ -224,5 +224,8 @@
 	"Sequence of white cells cannot span more than two outlined areas": "Sequence of white cells cannot span more than two outlined areas",
 	"Cells with boats shouldn't touch each other and lighthouses": "Cells with boats shouldn't touch each other and lighthouses",
 	"White cell should contain odd digit": "White cell should contain odd digit",
-	"Shaded cell should contain even digit": "Shaded cell should contain even digit"
+	"Shaded cell should contain even digit": "Shaded cell should contain even digit",
+	"Contests": "Contests",
+	"dOubLESHOW 2": "dOubLESHOW 2",
+	"Best time": "Best time"
 }
