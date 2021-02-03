@@ -12,7 +12,6 @@ check:function(dimension, clues, data){
   if (!data.edges){
     return {status: "There should be single loop without bifurcations"};
   }
-
   for (var y = 0; y < dim.rows; y++) {
     cells[y] = new Array(dim.cols);
     nodes[y] = new Array(dim.cols);
@@ -22,7 +21,7 @@ check:function(dimension, clues, data){
       for (var i=0; i<4; i++){
         var node = Checker.getMainNodeName(x, y, i);
         if (node.x==x && node.y==y && node.i==i) {
-          nodes[y][x][i] = {edges: []}
+          nodes[y][x][i] = {edges: [], x:x, y:y, i:i}
         }
       }
     }
@@ -42,8 +41,19 @@ check:function(dimension, clues, data){
     var x = coord[0].charCodeAt(0) - 'a'.charCodeAt(0);
     var y = parseInt(coord[0].substring(1)) - 1;
     var s = parseInt(coord[1]);
+    if (!s) {
+      if (coord[1]=='b') {
+        s = 2;
+      } else if (coord[1]=='r') {
+        s = 1;
+      } else if (coord[1]=='t') {
+        s = 0;
+      } else if (coord[1]=='l') {
+        s = 3;
+      }
+    }
     if (s>=0 && s<4 && x>=0 && x<dim.cols && y>=0 && y<dim.rows) {
-      var edge = {used: false, nodes:[]};
+      var edge = {used: false, nodes:[], x:x, y:y, i:s};
       Checker.getEdgeCells(x,y,s,dim).forEach(cell => cells[cell.y][cell.x].count++);
       Checker.getEdgeNodes(x,y,s).forEach(node => {
         startNode = nodes[node.y][node.x][node.i];
@@ -53,7 +63,9 @@ check:function(dimension, clues, data){
       edges.push(edge);
     }  
   }
-
+  if (!startNode) {
+    return {status: "There should be single loop without bifurcations"};
+  }
   var prevNode = startNode;
   var prevEdge = startNode.edges[0];
   var nextNode = null;

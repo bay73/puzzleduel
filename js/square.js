@@ -567,7 +567,7 @@ var squarePuzzleEdge = function(puzzle, col, row, side) {
 Object.setPrototypeOf(squarePuzzleEdge.prototype, squareGridElement.prototype);
 
 squarePuzzleEdge.prototype.getCoordinates = function() {
-  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ (this.side==1?'r':'b');
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ this.side.toString();
 }
 
 squarePuzzleEdge.prototype.center = function() {
