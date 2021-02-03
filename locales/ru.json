@@ -230,5 +230,6 @@
 	"Shaded cell should contain even digit": "В серой клетке должна быть чётная цифра",
 	"Contests": "Конкурсы",
 	"dOubLESHOW 2": "dOubLESHOW 2",
-	"Best time": "Лучшее время"
+	"Best time": "Лучшее время",
+	"Shaded cell should contain odd digit": " серой клетке должна быть нечётная цифра"
 }

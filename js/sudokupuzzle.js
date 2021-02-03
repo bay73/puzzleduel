@@ -126,6 +126,43 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["sudoku_odd"] = {
+    cellController: cell => {
+      if (!cell.data.text) {
+        var chooserValues = [{color: cell.data.color}];
+        for (var i=1; i<=self.rows; i++) {
+          chooserValues.push({text: i.toString(), color: cell.data.color, returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      }
+    },
+    cellEditController: cell => {
+      var chooserValues = [{}];
+      for (var i=1; i<=self.rows; i++) {
+        chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      chooserValues.push({color: "grey", returnValue: "-"});
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {
+      if (value =="-") {
+        return {color: "grey"}
+      } else if (value.startsWith("-")) {
+        return {color: "grey", text: value.substring(1)}
+      } else {
+        return {text: value}
+      }
+    },
+    cellMultiPencil: true,
+    toChooserShow: value => {
+      showValue = Object.assign({}, value);
+      if (!self.editMode) {
+        delete showValue.color;
+      }
+      return showValue;
+    },
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
