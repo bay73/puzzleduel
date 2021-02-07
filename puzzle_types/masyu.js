@@ -27,7 +27,7 @@ check:function(dimension, clueData, data){
   if (lineRes.status != "OK") {
     return lineRes;
   }
-  var res = Checker.checkClues(lineRes.line, clues);
+  var res = Checker.checkClues(lineRes.line, clues, v, h);
   if (res.status != "OK") {
     return res;
   }
@@ -85,7 +85,7 @@ findStart: function(h) {
   }
   return null;
 },
-checkClues: function(line, clues) {
+checkClues: function(line, clues, v, h) {
   var used = util.create2DArray(clues.rows, clues.cols, false)
   var prevTurn = true;
   var prevDirection = 'h';
@@ -127,6 +127,15 @@ checkClues: function(line, clues) {
 
     prevTurn = turn;
     prevDirection = direction;
+  }
+  for (var x=0;x < clues.cols;x++) {
+    for (var y=0;y < clues.rows; y++) {
+      if (v[y][x] || h[y][x]){
+        if (!used[y][x]) {
+          return {status: "There should be single loop passing through some cells", errors: []};
+        }
+      }
+    }
   }
   for (var x=0;x < clues.cols;x++) {
     for (var y=0;y < clues.rows; y++) {
