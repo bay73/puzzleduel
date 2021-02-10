@@ -49,7 +49,7 @@ router.get('/:contestid', async (req, res, next) => {
     }
     var typeMap = await util.typeNameMap();
     var puzzleMap = {};
-    const puzzles = await Puzzle.find();
+    const puzzles = await Puzzle.find({'contest.contestId': req.params.contestid});
     puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();puzzleMap[puzzle.code].needLogging = puzzle.needLogging});
     var userTimes = {};
     if (req.user) {
