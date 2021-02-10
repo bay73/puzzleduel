@@ -228,5 +228,7 @@
 	"Contests": "Contests",
 	"dOubLESHOW 2": "dOubLESHOW 2",
 	"Best time": "Best time",
-	"Shaded cell should contain odd digit": "Shaded cell should contain odd digit"
+	"Shaded cell should contain odd digit": "Shaded cell should contain odd digit",
+	"Every second straight segment of the line should be marked": "Every second straight segment of the line should be marked with circle",
+	"The line should go straight at the cell with circle": "The line should go straight at the cell with circle"
 }
