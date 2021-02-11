@@ -41,6 +41,7 @@ app.use('/puzzles', require('./routes/puzzles.js'));
 app.use('/single', require('./routes/single.js'));
 app.use('/archive', require('./routes/archive.js'));
 app.use('/contest', require('./routes/contest.js'));
+app.use('/duel', require('./routes/duel.js'));
 app.use('/puzzleset', require('./routes/puzzleset.js'));
 app.use('/rating', require('./routes/rating.js'));
 app.use('/admin', require('./routes/admin.js'));
@@ -49,6 +50,7 @@ app.use('/userstat', require('./routes/userstat.js'));
 // Static content
 app.use('/images', express.static(__dirname + '/images', { maxage: '3d' }));
 app.use('/js', express.static(__dirname + '/js', { maxage: '3h' }));
+app.use('/.well-known',express.static(__dirname + '/.well-known'));
 
 const PORT = process.env.PORT || 5000;
 
