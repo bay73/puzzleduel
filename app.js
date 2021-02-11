@@ -41,7 +41,6 @@ app.use('/puzzles', require('./routes/puzzles.js'));
 app.use('/single', require('./routes/single.js'));
 app.use('/archive', require('./routes/archive.js'));
 app.use('/contest', require('./routes/contest.js'));
-app.use('/duel', require('./routes/duel.js'));
 app.use('/puzzleset', require('./routes/puzzleset.js'));
 app.use('/rating', require('./routes/rating.js'));
 app.use('/admin', require('./routes/admin.js'));
