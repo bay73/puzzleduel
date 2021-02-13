@@ -230,5 +230,9 @@
 	"Best time": "Best time",
 	"Shaded cell should contain odd digit": "Shaded cell should contain odd digit",
 	"Every second straight segment of the line should be marked": "Every second straight segment of the line should be marked with circle",
-	"The line should go straight at the cell with circle": "The line should go straight at the cell with circle"
+	"The line should go straight at the cell with circle": "The line should go straight at the cell with circle",
+	"Path shouldn't touch itself": "Path shouldn't touch itself",
+	"All black cells should be part of single path": "All black cells should be part of single path",
+	"Black cells should form single path without bifurcations": "Black cells should form single path without bifurcations",
+	"Path shouldn't turn in the cell with digit": "Path shouldn't turn in the cell with digit"
 }

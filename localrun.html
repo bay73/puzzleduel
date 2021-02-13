@@ -8,9 +8,9 @@
     <link rel="shortcut icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
-    <;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
     <;link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.min.css"/>
+    <;link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.min.css"/>
     <style>
       html {font-size: 100%;}
       svg text {cursor: default;}
@@ -114,16 +114,16 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "every_second_straight",
+      typeCode: "passage",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "8x8"
     };
     var settings = {
       local: true,
       
-      data:  {"b1":"white_circle","d1":"white_circle","c2":"white_circle","e2":"white_circle","a3":"white_circle","d3":"white_circle","f4":"white_circle","e5":"white_circle","c6":"white_circle"}
+      data:  {"a1":"black","f1":"4","c2":"3","h3":"5","c4":"4","a6":"3","c7":"4","h8":"black"}
     };
-    settings.theme = "default";
+    settings.theme = "white";
     var grid = "#mainGrid"
     requirejs(["squarepuzzle"], function() {
       puzzle = new squarePuzzleType(puzzleData, controls, settings);

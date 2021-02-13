@@ -17,9 +17,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   typeProperties["snake_dutch"] = {
     cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
       if (cell.isClue && cell.data.image != "cross") {
-        setClueClickSwitch(cell, [{},{color: "#606060", returnValue: "1"}], [{},{color: "#a0a0a0"}]);
+        setClueClickSwitch(cell, [{},{color: self.colorSchema.greyColor, returnValue: "1"}], [{},{color: "#a0a0a0"}]);
       }
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"},{image: "cross", returnValue: "cross"}];},
@@ -220,6 +220,25 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"}];},
     decodeClue: value => {return {image: value} },
+  }
+
+  typeProperties["passage"] = {
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{},{color: self.colorSchema.clueColor, returnValue: "black"},{image: "cross", returnValue: "cross"}];
+      for (var i=0; i<=10; i++) {
+       chooserValues.push({color: self.colorSchema.greyColor, text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {
+      if (value=="cross") return {image: "cross"};
+      else if (value=="black") return {color: self.colorSchema.clueColor, returnValue: "1"}
+      else return {color: self.colorSchema.greyColor, text: value};
+    },
   }
 
   if (typeCode in typeProperties) {

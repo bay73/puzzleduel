@@ -233,5 +233,9 @@
 	"Best time": "Лучшее время",
 	"Shaded cell should contain odd digit": "В серой клетке должна быть нечётная цифра",
 	"Every second straight segment of the line should be marked": "Каждый второй прямой участок должен быть отмечен кружком",
-	"The line should go straight at the cell with circle": "Через клетку с кружком линия должна проходить прямо"
+	"The line should go straight at the cell with circle": "Через клетку с кружком линия должна проходить прямо",
+	"Path shouldn't touch itself": "Дорожка не должна касаться себя",
+	"All black cells should be part of single path": "Все закрашеные клетки должны быть частью дорожки",
+	"Black cells should form single path without bifurcations": "Закрашеные клетки должны образовывать дорожку без разветвлений",
+	"Path shouldn't turn in the cell with digit": "Дорожка не должна поворачивать в клетке с числом"
 }
