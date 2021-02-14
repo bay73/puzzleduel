@@ -114,14 +114,14 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "passage",
+      typeCode: "maxi_loop",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "6x6"
     };
     var settings = {
       local: true,
       
-      data:  {"a1":"black","f1":"4","c2":"3","h3":"5","c4":"4","a6":"3","c7":"4","h8":"black"}
+      data:  {"a1":"3","d2":"4","a3":"2","e3":"2","d5":"3","e5":"4","areas":[["a1","b1","a2","b2"],["c1","d1","e1","c2"],["f1","e2","f2","f3"],["d2","c3","d3","c4"],["a3","a4","a5","a6"],["b3","b4","b5","c5"],["e3","d4","e4","f4"],["e5","f5","e6","f6"],["d5","b6","c6","d6"]]}
     };
     settings.theme = "white";
     var grid = "#mainGrid"

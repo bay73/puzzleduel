@@ -241,6 +241,27 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["maxi_loop"] = {
+    needNodes: true,
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 15);},
+    edgeEditController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    collectAreas: this.editMode,
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }

@@ -64,6 +64,7 @@ type_cheker["heyawake"] = require('../puzzle_types/heyawake')
 type_cheker["lighthouses"] = require('../puzzle_types/lighthouses')
 type_cheker["fence"] = require('../puzzle_types/fence')
 type_cheker["passage"] = require('../puzzle_types/passage')
+type_cheker["maxi_loop"] = require('../puzzle_types/maxi_loop')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({
