@@ -83,6 +83,16 @@ const ContestSchema = new mongoose.Schema({
       required: true
     }
   }],
+  participants: [{
+    userId: {
+      type: ObjectId,
+      required: true
+    },
+    userName: {
+      type: String,
+      required: true
+    },
+  }],
 });
 
 const Contest = mongoose.model('Contest', ContestSchema);

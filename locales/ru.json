@@ -237,5 +237,9 @@
 	"Path shouldn't touch itself": "Дорожка не должна касаться себя",
 	"All black cells should be part of single path": "Все закрашеные клетки должны быть частью дорожки",
 	"Black cells should form single path without bifurcations": "Закрашеные клетки должны образовывать дорожку без разветвлений",
-	"Path shouldn't turn in the cell with digit": "Дорожка не должна поворачивать в клетке с числом"
+	"Path shouldn't turn in the cell with digit": "Дорожка не должна поворачивать в клетке с числом",
+	"Current puzzle": "Current puzzle",
+	"Enroll": "Записаться",
+	"Leave": "Отказаться",
+	"Contest score": "Результат в конкурсе"
 }

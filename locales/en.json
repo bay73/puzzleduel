@@ -234,5 +234,9 @@
 	"Path shouldn't touch itself": "Path shouldn't touch itself",
 	"All black cells should be part of single path": "All black cells should be part of single path",
 	"Black cells should form single path without bifurcations": "Black cells should form single path without bifurcations",
-	"Path shouldn't turn in the cell with digit": "Path shouldn't turn in the cell with digit"
+	"Path shouldn't turn in the cell with digit": "Path shouldn't turn in the cell with digit",
+	"Current puzzle": "Current puzzle",
+	"Enroll": "Enroll",
+	"Leave": "Leave",
+	"Contest score": "Contest score"
 }

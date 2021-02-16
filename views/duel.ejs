@@ -1,0 +1,112 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <style>
+        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+          background-color: rgba(238,232,213,0.125);
+          border-bottom: 0;
+        }
+        .nav-tabs {
+          border-bottom: 0;
+        }
+      </style>
+      <div class="card">
+        <% if (typeof contest.logo != "undefined") { %>
+        <h1 class="card-header"><img src="<%= contest.logo %>" /></h1>
+        <% } else { %>
+        <h1 class="card-header"><%= contest.name %></h1>
+        <% }%>
+        <div class="card-body">
+          <%- contest.description %>
+        </div>
+      </div>
+      <ul class="nav nav-tabs">
+        <% if(currentPuzzle){ %>
+        <li class="nav-item">
+          <a class="nav-link pl-2 pr-2 active" data-toggle="tab" href="#current"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;"><%= __('Current puzzle') %></h1></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link pl-2 pr-2" data-toggle="tab" href="#standing"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;">Contest standing</h1></a>
+        </li>
+        <% } else { %>
+        <li class="nav-item">
+          <a class="nav-link pl-2 pr-2 active" data-toggle="tab" href="#standing"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;">Contest standing</h1></a>
+        </li>
+        <% } %>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <% if(currentPuzzle){ %>
+        <div class="tab-pane fade active show" id="current">
+          <div class="card" style="border: 0;">
+            <% puzzle = currentPuzzle; %>
+            <% prefix = ''; %>
+            <%- include ('./partials/puzzle') %>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="standing">
+        <% } else { %>
+        <div class="tab-pane fade active show" id="standing">
+        <% } %>
+          <div class="card" style="border: 0;">
+            <div class="card-body" style="border: 0;">
+              <% if (contest.status == 'registration') { %>
+              <p class="row">Here you can see the list of solvers who already registered for paricipation in the contest</p>
+              <div class="row justify-content-center">
+                <div class="col-auto">
+                  <table class="table table-responsive table-bordered table-hover table-condensed">
+                    <tbody>
+                      <tr class="table-secondary">
+                        <th>
+                        </th>
+                        <th class="text-center">
+                          <%= __('Rating') %>
+                        </th>
+                        <th class="text-center">
+                          <%= __('Contest score') %>
+                        </th>
+                      </tr>
+                      <% users.sort((u1, u2) => {if (u1.score==u2.score) {return u2.rating - u1.rating;} else {return u2.score - u1.score;}}).forEach(function(user) { %>
+                      <tr class="table-secondary">
+                        <td>
+                          <%= user.name %>
+                        </td>
+                        <td class="text-center">
+                          <%= user.rating > 0?Math.round(user.rating):"" %>
+                        </td>
+                        <td class="text-center">
+                          <%= user.score %>
+                        </td>
+                      </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <% if (userData.isRegistered) { %>
+                <a class="btn btn-primary" href="/duel/<%= contest.code %>/unregister"><%= __('Leave') %></a>
+                <% } else if (user) { %>
+                <a class="btn btn-primary" href="/duel/<%= contest.code %>/register"><%= __('Enroll') %></a>
+                <% } else { %>
+                <p class="text-info">You should <a href="/users/login">Login</a> first to be able to register for participation</p>
+                <% }%>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        $(document).ready(function () {
+          <% if(currentPuzzle){ %>
+          showPuzzle();
+          <% } %>
+        });
+      </script>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+
