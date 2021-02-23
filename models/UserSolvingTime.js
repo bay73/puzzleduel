@@ -26,6 +26,10 @@ const UserSolvingTimeSchema = new mongoose.Schema({
   hidden: {
     type: Boolean,
     required: false
+  },
+  date: {
+    type: Date,
+    default: Date.now
   }
 });
 

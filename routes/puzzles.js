@@ -128,6 +128,7 @@ async function writeSolvingTime(user, puzzleId, hidden) {
   newUserSolvingTime.userName = user.name;
   newUserSolvingTime.solvingTime = solveTime - startTime;
   newUserSolvingTime.errCount = errCount;
+  newUserSolvingTime.date = new Date();
   if (hidden) {
     newUserSolvingTime.hidden = true;
   }
