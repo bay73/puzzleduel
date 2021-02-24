@@ -256,5 +256,6 @@
 	" and finishes at ": " и закончится ",
 	"Contest finished at ": "Конкурс закончился ",
 	"Your opponent for the round: ": "Ваш оппонент на этот раунд: ",
-	"Awaiting seeding": "Ожидаем жеребьёвку"
+	"Awaiting seeding": "Ожидаем жеребьёвку",
+	"Results": "Результаты"
 }

@@ -226,6 +226,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
       var status = 'finished';
     }
     var currentPuzzleId = null;
+    var lastPuzzleNum = null;
     if (status != 'finished') {
       var nextTime = contest.start;
       var puzzleStatus = "";
@@ -239,11 +240,17 @@ router.get('/:contestid/standing', async (req, res, next) => {
           puzzleStatus = "solving";
           nextTime = puzzle.closeDate;
           currentPuzzleId = puzzle.puzzleId;
+          currentPuzzleNum = puzzle.puzzleNum;
+        }
+        if (puzzle.closeDate < new Date()) {
+          lastPuzzleNum = puzzle.puzzleNum;
         }
       })
       if (puzzleStatus == "" && status=="going") {
         nextTime = contest.finish;
       }
+    } else {
+      lastPuzzleNum = contest.puzzles.length;
     }
     var contestObj = {
       code: contest.code,
@@ -251,6 +258,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
       description: contest.description,
       logo: contest.logo,
       status: status,
+      lastPuzzleNum: lastPuzzleNum,
       puzzleStatus: puzzleStatus,
       nextTime: nextTime,
       timeLeft: nextTime?nextTime.getTime() - new Date().getTime():null
@@ -273,14 +281,42 @@ router.get('/:contestid/standing', async (req, res, next) => {
     var puzzleMap = {};
     const puzzles = await Puzzle.find({'contest.contestId': req.params.contestid});
     puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();puzzleMap[puzzle.code].needLogging = puzzle.needLogging});
+
+    var userNames = {};
+    contest.participants.forEach(participant => {
+      userNames[participant.userId.toString()] = participant.userName;
+    })
+
     var hasResults = {};
+    var detailResults = {};
     var users = [];
+    contest.puzzles.forEach(puzzle => {
+      if (typeof puzzle.results != 'undefined') {
+        puzzle.results.forEach(result => {
+          if (typeof detailResults[result.userId.toString()] == 'undefined') {
+            detailResults[result.userId.toString()] = {};
+          }
+          detailResults[result.userId.toString()][puzzle.puzzleNum] = result.score;
+        })
+      }
+    })
     contest.results.forEach(result => {
       hasResults[result.userId] = true;
+      var seedDetails = "";
+      if (typeof contest.seedData != 'undefined') {
+        contest.seedData.forEach(round => {
+          if (typeof round[result.userId.toString()] != 'undefined') {
+            seedDetails += round[result.userId.toString()] ? userNames[round[result.userId.toString()]]:"-";
+            seedDetails += "\n";
+          }
+        })
+      }
       users.push({
         id: result.userId,
         name: result.userName,
         score: result.score,
+        scoreSum: detailResults[result.userId.toString()],
+        seedDetails: seedDetails,
         rating: userRatings[result.userId]|0
       });
     })
@@ -290,6 +326,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
           id: participant.userId,
           name: participant.userName,
           score: 0,
+          scoreSum: null,
           rating: userRatings[participant.userId]|0
         });
       }

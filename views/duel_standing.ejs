@@ -1,11 +1,19 @@
+<style>
+  .tooltip-inner {
+    white-space:pre-wrap;
+    text-align:left;
+    line-height: 120%;
+    font-family: verdana;
+    font-size: small;
+  }
+</style>
 <div class="row">
-  <div class="col-sm-4">
-    <p class="row"><%= __('Puzzles') %></p>
+  <div class="col-sm-3">
+    <h3 class="row justify-content-center"><%= __('Puzzles') %></h3>
     <div class="row justify-content-left">
       <div class="col-auto">
-        <table class="table table-responsive table-hover table-condensed">
+        <table class="table table-responsive table-condensed">
           <tbody>
-            <% console.log(puzzles) %>
             <% puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puz) { %>
             <tr>
               <td>
@@ -28,15 +36,17 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-8">
+  <div class="col-sm-9">
     <% if (contest.status == 'registration') { %>
     <p class="row"><%= __('Here you can see the list of solvers who are already registered for paricipation in the contest') %></p>
+    <% } else {%>
+    <h3 class="row justify-content-center"><%= __('Results') %></h3>
     <% } %>
     <div class="row justify-content-center">
       <div class="col-auto">
         <table class="table table-responsive table-bordered table-hover table-condensed">
           <tbody>
-            <tr class="table-secondary">
+            <tr class="table">
               <th>
               </th>
               <th class="text-center">
@@ -49,7 +59,7 @@
               <% } %>
             </tr>
             <% users.sort((u1, u2) => {if (u1.score==u2.score) {return u2.rating - u1.rating;} else {return u2.score - u1.score;}}).forEach(function(user) { %>
-            <tr class="table-secondary">
+            <tr class="table">
               <td>
                 <%= user.name %>
               </td>
@@ -58,7 +68,12 @@
               </td>
               <% if (contest.status != 'registration') { %>
               <td class="text-center">
+                <span data-toggle="tooltip" title="<%= user.seedDetails %>">
                 <%= user.score %>
+                <% if (user.scoreSum) { %>
+                (<% for(var num=1; num<=contest.lastPuzzleNum; num++) { %><%= num>1?"+":"" %><%= user.scoreSum[num.toString()]?user.scoreSum[num.toString()]:0 %><% } %>)
+                <% } %>
+                </span>
               </td>
               <% } %>
             </tr>
@@ -82,4 +97,9 @@
     <% } %>
   </div>
 </div>
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip({placement: "auto"});
+  });
+</script>
 
