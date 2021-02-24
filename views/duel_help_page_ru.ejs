@@ -1,0 +1,102 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header">Регламент проведения дуэли</h1>
+        <div class="accordion" id="mainAccordion">
+          <div class="card">
+            <div class="card-header" id="seedingHeading">
+              <button class="btn btn-link" type="button"
+                data-toggle="collapse" data-target="#seedingCollapse"
+                aria-expanded="true" aria-controls="seedingCollapse"
+              >
+                <h2>Жеребьёвка</h2>
+              </button>
+            </div>
+            <div id="seedingCollapse" class="collapse show" aria-labelledby="seedingHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+                Турнир проходит в несколько туров по
+                <a href="https://ru.wikipedia.org/wiki/%D0%A8%D0%B2%D0%B5%D0%B9%D1%86%D0%B0%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0">швейцарской системе</a>. 
+                Количество туров определяется исходя из общего числа участников.
+                <br>
+                <br>
+                В рамках каждого тура участники разбиваются на пары и соперничают друг с другом.
+                <br>
+                a. Пары 1-го тура определяются жребием.
+                <br>
+                b. Пары остальных туров формируются исходя из текущего турнирного
+                положения, так, чтобы никакая пара ещё не играла между собой в предыдущих турах.
+                Поочередно определяется соперник для каждого игрока, пара для которого неизвестна,
+                начиная с лидера. Если с ближайшим игроком в текущей таблице он уже встречался, то
+                берется следующий, и так далее. Если при этом образуется ситуация, что все
+                находящиеся ниже в таблице игроки уже играли между собой, то в последней образованной
+                паре соперник изменяется на следующего в рейтинге, и так далее, пока все пары не будут
+                сформированы.
+                <br>
+                <br>
+                Если число участников нечётно, то в каждом туре один из участников соперника не имеет.
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="roundHeading">
+              <button class="btn btn-link" type="button"
+                data-toggle="collapse" data-target="#roundCollapse"
+                aria-expanded="true" aria-controls="roundCollapse"
+              >
+                <h2>Состав тура</h2>
+              </button>
+            </div>
+            <div id="roundCollapse" class="collapse" aria-labelledby="roundHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+                 В каждом туре участники решают одну головоломку. На тур отводится 5 минут. 
+                 <br>
+                 <br>
+                 Таймер, измеряюший время решения головоломки запускается, когда участник
+                 нажимает кнопку "Старт", но время тура не продлевается, если участник начал
+                 решение с опозданием.
+                 <br>
+                 <br>
+                 Решив задачу, участник нажимает кнопку "Проверить" и получает сообщение о 
+                 правильности решения. Число попыток не лимитируется и ошибочные попытки
+                 не штрафуются.
+                 <br>
+                 <br>
+                 По завершении времени тура, время, затраченое на решение головоломки сравнивается
+                 и участники получают баллы.
+                 <br>
+                 <br>
+                 Баллы начисляются следующим образом: в каждой паре первый верно решивший задание
+                 получает 2 балла, второй решивший – 1 балл. Отсутствие решения оцениваются в 0 баллов.
+                 <br>
+                 <br>
+                 Между двумя тура делается пауза в две минуты для подведения итогов и жеребьёвки.
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="resultsHeading">
+              <button class="btn btn-link collapsed" type="button"
+                data-toggle="collapse" data-target="#resultsCollapse"
+                aria-expanded="false" aria-controls="resultsCollapse"
+              >
+                <h2>Подведение итогов</h2>
+              </button>
+            </div>
+            <div id="resultsCollapse" class="collapse" aria-labelledby="resultsHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+                Для определения положения в таблице при формировании пар очередного раунда
+                участники сортируются по сумме набранных баллов (по убыванию) и при равенстве
+                баллов по суммарному времени решения головоломок (по возрастанию).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

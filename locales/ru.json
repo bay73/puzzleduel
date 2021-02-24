@@ -255,8 +255,9 @@
 	"Contest starts at ": "Турнир начнётся ",
 	" and finishes at ": " и закончится ",
 	"Contest finished at ": "Турнир закончился ",
-	"Your opponent for the round: ": "Ваш оппонент на этот раунд: ",
+	"Your opponent for the round: ": "Ваш соперник на этот раунд: ",
 	"Awaiting seeding": "Ожидаем жеребьёвку",
 	"Results": "Результаты",
-	"Your don't have opponent for the round": "В этом раунде у вас нет оппонента"
+	"Your don't have opponent for the round": "В этом раунде у вас нет соперника",
+	"duel_help_page": "duel_help_page_ru"
 }

@@ -82,6 +82,17 @@ router.get('/help', async (req, res, next) => {
   }
 });
 
+// Duel rules
+router.get('/help/duelrules', async (req, res, next) => {
+  try {
+    res.render(res.__('duel_help_page'), {
+      user: req.user,
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
 // Authors Page
 router.get('/help/authors', async (req, res, next) => {
   try {

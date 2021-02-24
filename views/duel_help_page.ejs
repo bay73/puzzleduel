@@ -1,0 +1,98 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header">Rules for duel tournament</h1>
+        <div class="accordion" id="mainAccordion">
+          <div class="card">
+            <div class="card-header" id="seedingHeading">
+              <button class="btn btn-link" type="button"
+                data-toggle="collapse" data-target="#seedingCollapse"
+                aria-expanded="true" aria-controls="seedingCollapse"
+              >
+                <h2>Seeding</h2>
+              </button>
+            </div>
+            <div id="seedingCollapse" class="collapse show" aria-labelledby="seedingHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+                Tournament consits of few rounds using 
+                <a href="https://en.wikipedia.org/wiki/Swiss-system_tournament">Swiss-system</a>. 
+                Number of rounds depends on number of participants.
+                <br>
+                <br>
+                For each round participants are divided into pairs and competing inside the pair.
+                <br>
+                a. Pairs for the firts round are random.
+                <br>
+                b. Pairs for other rounds created based on current contest results so that nobody played
+                against the same opponent again. Each participant, starting from the leader each, gets the
+                closest person in the result table as an opponent. If the participant alteady played
+                against the closest person in the table, then next one is used and so on.
+                If at some moment all participants below already played agains each other, then the last
+                formed pair is changed to unlock the process.
+                <br>
+                <br>
+                In case of off number of participants one player in each round doesn't have an opponent.
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="roundHeading">
+              <button class="btn btn-link" type="button"
+                data-toggle="collapse" data-target="#roundCollapse"
+                aria-expanded="true" aria-controls="roundCollapse"
+              >
+                <h2>Round</h2>
+              </button>
+            </div>
+            <div id="roundCollapse" class="collapse" aria-labelledby="roundHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+                 Each round consist of one puzzle and has 5 minutes duration. 
+                 <br>
+                 <br>
+                 Timer to measure solving time started when player presses "Start" button, but
+                 round duration is not extanded if Player started with a delay.
+                 <br>
+                 <br>
+                 After solving the puzzle player should press "Check" button and gets message
+                 about correctness of the solution. There is no limit for number of the submissions
+                 and no penalties for wrong submissions.
+                 <br>
+                 <br>
+                 When round is finished silving times are compared and participants get the score.
+                 <br>
+                 <br>
+                 Scoring points are distributed according to the next rule: in each pair fastest solver
+                 gets 2 points, second person solved the puzzle - 1 point. If player doesn't submit
+                 correct solution, then they get 0 points.
+                 <br>
+                 <br>
+                 There is 2-minutes pause between the rounds for scoring and seeding.
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="resultsHeading">
+              <button class="btn btn-link collapsed" type="button"
+                data-toggle="collapse" data-target="#resultsCollapse"
+                aria-expanded="false" aria-controls="resultsCollapse"
+              >
+                <h2>Results</h2>
+              </button>
+            </div>
+            <div id="resultsCollapse" class="collapse" aria-labelledby="resultsHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+                For seeding purposes participants are sorted by the number of scoring points (descending).
+                In case when numbers of scoring pounts are the same total solving time is considred (ascending).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

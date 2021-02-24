@@ -54,7 +54,7 @@ async function recountPuzzle(puzzle, pairs, acceptTime) {
           score = 1;
         }
       }
-      results.push({userId: result.userId, userName: result.userName, score: score});
+      results.push({userId: result.userId, userName: result.userName, score: score, time: result.solvingTime});
     }
   });
   return {
@@ -86,12 +86,13 @@ async function refreshResult(contestId) {
           userTotals[result.userId] = {userName: result.userName, score: 0 };
         }
         userTotals[result.userId].score += result.score;
+        userTotals[result.userId].time += result.time;
       });
     }
   }
   contest.results = [];
   for (let [userId, value] of Object.entries(userTotals)) {
-    contest.results.push({userId: userId, userName: value.userName, score: Math.round(value.score*10)/10});
+    contest.results.push({userId: userId, userName: value.userName, score: value.score});
   }
   await contest.save();
   return true;
@@ -138,7 +139,7 @@ async function seed(contestId, round, reseed) {
   if (typeof contest.seedData[roundIndex] != 'undefined' && !reseed) {
     return true;
   }
-  const participants = contest.results.sort((r1, r2) => r2.score - r1.score);
+  const participants = contest.results.sort((r1, r2) => {if(r2.score == r1.score) {return r1.time - r2.time} else {r2.score - r1.score});
   function checkAlreadyPaired(user1, user2) {
     for(var i=0; i<roundIndex; i++) {
       if (typeof contest.seedData[i] != 'undefined') {
