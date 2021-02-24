@@ -44,6 +44,207 @@ router.get('/:contestid', async (req, res, next) => {
         nextTime = contest.finish;
       }
     }
+    var timeLeft = null;
+    if (nextTime && nextTime < new Date(new Date().getTime()+ 86400000)) {
+      timeLeft = nextTime.getTime() - new Date().getTime();
+    }
+    var contestObj = {
+      code: contest.code,
+      name: contest.name,
+      description: contest.description,
+      logo: contest.logo,
+      start: contest.start,
+      finish: contest.finish,
+      status: status,
+      puzzleStatus: puzzleStatus,
+      nextTime: nextTime,
+      timeLeft: timeLeft
+    };
+
+    var locale = req.getLocale();
+    if (locale != 'en' && contest.translations) {
+      if (contest.translations[locale] && contest.translations[locale].name) {
+        contestObj.name = contest.translations[locale].name;
+      }
+      if (contest.translations[locale] && contest.translations[locale].description) {
+        contestObj.description = contest.translations[locale].description;
+      }
+    }
+
+    if (currentPuzzleId != null) {
+      var puzzle = await Puzzle.findOne({code: currentPuzzleId}, "-data");
+      if (puzzle) {
+        var puzzleObj = puzzle.toObject();
+        var type = await PuzzleType.findOne({ code: puzzleObj.type });
+        if (req.getLocale() != 'en') {
+          if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
+            type.rules = type.translations[req.getLocale()].rules;
+          }
+        }
+        if(type) {
+          puzzleObj.type = type.toObject();
+        }
+        if (puzzleObj.author) {
+          puzzleObj.authorId = puzzleObj.author;
+          var author = await User.findById(puzzleObj.author, "name");
+          if(author) {
+            puzzleObj.author = author.name;
+          }
+        }
+      }
+    }
+
+    res.render('duel', {
+      user: req.user,
+      contest: contestObj,
+      currentPuzzle: puzzleObj
+    })
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/:contestid/register', async (req, res, next) => {
+  try {
+    if (!req.user) {
+      res.redirect('/duel/' + req.params.contestid);
+      return;
+    }
+    const contest = await Contest.findOne({code: req.params.contestid});
+    if (!contest) {
+      res.sendStatus(404);
+      return;
+    }
+    if (contest.start < new Date()){
+      res.redirect('/duel/' + req.params.contestid);
+    }
+    var alreadyRegister = contest.participants.filter(user => user.userId.equals(req.user._id)).length > 0;
+    if (alreadyRegister){
+      res.redirect('/duel/' + req.params.contestid);
+      return;
+    }
+    contest.participants.push({userId: req.user._id, userName: req.user.name})
+    await contest.save();
+    res.redirect('/duel/' + req.params.contestid);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/:contestid/unregister', async (req, res, next) => {
+  try {
+    if (!req.user) {
+      res.redirect('/duel/' + req.params.contestid);
+      return;
+    }
+    const contest = await Contest.findOne({code: req.params.contestid});
+    if (!contest) {
+      res.sendStatus(404);
+      return;
+    }
+    if (contest.start < new Date()){
+      res.redirect('/duel/' + req.params.contestid);
+    }
+    var alreadyRegister = contest.participants.filter(user => user.userId.equals(req.user._id)).length > 0;
+    if (!alreadyRegister){
+      res.redirect('/duel/' + req.params.contestid);
+      return;
+    }
+    contest.participants = contest.participants.filter(user => !user.userId.equals(req.user._id))
+    await contest.save();
+    res.redirect('/duel/' + req.params.contestid);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/:contestid/opponent', async (req, res, next) => {
+  try {
+    const contest = await Contest.findOne({code: req.params.contestid});
+    if (!contest) {
+      res.sendStatus(404);
+      return;
+    }
+
+    if (contest.start > new Date()){
+      var status = 'registration';
+    } else if (contest.finish > new Date()){
+      var status = 'going';
+    } else {
+      var status = 'finished';
+    }
+    var opponent = {};
+    if (req.user) {
+      if (status == 'going') {
+        var nextTime = contest.start;
+        var round = null;
+        contest.puzzles.forEach(puzzle => {
+          if (nextTime < new Date() && puzzle.revealDate > new Date()) {
+            nextTime = puzzle.revealDate;
+            round = puzzle.puzzleNum - 1;
+          }
+          if (nextTime < new Date() && puzzle.closeDate > new Date()) {
+            nextTime = puzzle.closeDate;
+            round = puzzle.puzzleNum - 1;
+          }
+        })
+      }
+      var userId = req.user._id.toString();
+      if (typeof contest.seedData != 'undefined' && typeof contest.seedData[round] != 'undefined') {
+        var opponentId = contest.seedData[round][userId];
+        if (opponentId) {
+          opponentObj = contest.participants.filter(participant => participant.userId.equals(opponentId))[0];
+          opponent = {name: opponentObj.userName};
+        } else {
+          opponent = {skip: true};
+        }
+      }
+    }
+
+    res.render('duel_opponent', {
+      layout: "empty_layout",
+      opponent: opponent
+    })
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/:contestid/standing', async (req, res, next) => {
+  try {
+    const contest = await Contest.findOne({code: req.params.contestid});
+    if (!contest) {
+      res.sendStatus(404);
+      return;
+    }
+
+    if (contest.start > new Date()){
+      var status = 'registration';
+    } else if (contest.finish > new Date()){
+      var status = 'going';
+    } else {
+      var status = 'finished';
+    }
+    var currentPuzzleId = null;
+    if (status != 'finished') {
+      var nextTime = contest.start;
+      var puzzleStatus = "";
+      contest.puzzles.forEach(puzzle => {
+        if (nextTime < new Date() && puzzle.revealDate > new Date()) {
+          puzzleStatus = "waiting";
+          nextTime = puzzle.revealDate;
+          currentPuzzleId = puzzle.puzzleId;
+        }
+        if (nextTime < new Date() && puzzle.closeDate > new Date()) {
+          puzzleStatus = "solving";
+          nextTime = puzzle.closeDate;
+          currentPuzzleId = puzzle.puzzleId;
+        }
+      })
+      if (puzzleStatus == "" && status=="going") {
+        nextTime = contest.finish;
+      }
+    }
     var contestObj = {
       code: contest.code,
       name: contest.name,
@@ -99,40 +300,8 @@ router.get('/:contestid', async (req, res, next) => {
       userData.isRegistered = users.filter(user => user.id.equals(userId)).length > 0
     }
 
-    var locale = req.getLocale();
-    if (locale != 'en' && contest.translations) {
-      if (contest.translations[locale] && contest.translations[locale].name) {
-        contestObj.name = contest.translations[locale].name;
-      }
-      if (contest.translations[locale] && contest.translations[locale].description) {
-        contestObj.description = contest.translations[locale].description;
-      }
-    }
-
-    if (currentPuzzleId != null) {
-      var puzzle = await Puzzle.findOne({code: currentPuzzleId}, "-data");
-      if (puzzle) {
-        var puzzleObj = puzzle.toObject();
-        var type = await PuzzleType.findOne({ code: puzzleObj.type });
-        if (req.getLocale() != 'en') {
-          if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
-            type.rules = type.translations[req.getLocale()].rules;
-          }
-        }
-        if(type) {
-          puzzleObj.type = type.toObject();
-        }
-        if (puzzleObj.author) {
-          puzzleObj.authorId = puzzleObj.author;
-          var author = await User.findById(puzzleObj.author, "name");
-          if(author) {
-            puzzleObj.author = author.name;
-          }
-        }
-      }
-    }
-
-    res.render('duel', {
+    res.render('duel_standing', {
+      layout: "empty_layout",
       user: req.user,
       contest: contestObj,
       users: users,
@@ -146,62 +315,8 @@ router.get('/:contestid', async (req, res, next) => {
           revealDate: puzzle.revealDate
         };
       }),
-      currentPuzzle: puzzleObj,
-      userData: userData})
-  } catch (e) {
-    next(e);
-  }
-});
-
-router.get('/:contestid/register', async (req, res, next) => {
-  try {
-    if (!req.user) {
-      res.redirect('/duel/' + req.params.contestid);
-      return;
-    }
-    const contest = await Contest.findOne({code: req.params.contestid});
-    if (!contest) {
-      res.sendStatus(404);
-      return;
-    }
-    if (contest.start < new Date()){
-      res.redirect('/duel/' + req.params.contestid);
-    }
-    var alreadyRegister = contest.participants.filter(user => user.userId.equals(req.user._id)).length > 0;
-    if (alreadyRegister){
-      res.redirect('/duel/' + req.params.contestid);
-      return;
-    }
-    contest.participants.push({userId: req.user._id, userName: req.user.name})
-    await contest.save();
-    res.redirect('/duel/' + req.params.contestid);
-  } catch (e) {
-    next(e);
-  }
-});
-
-router.get('/:contestid/unregister', async (req, res, next) => {
-  try {
-    if (!req.user) {
-      res.redirect('/duel/' + req.params.contestid);
-      return;
-    }
-    const contest = await Contest.findOne({code: req.params.contestid});
-    if (!contest) {
-      res.sendStatus(404);
-      return;
-    }
-    if (contest.start < new Date()){
-      res.redirect('/duel/' + req.params.contestid);
-    }
-    var alreadyRegister = contest.participants.filter(user => user.userId.equals(req.user._id)).length > 0;
-    if (!alreadyRegister){
-      res.redirect('/duel/' + req.params.contestid);
-      return;
-    }
-    contest.participants = contest.participants.filter(user => !user.userId.equals(req.user._id))
-    await contest.save();
-    res.redirect('/duel/' + req.params.contestid);
+      userData: userData
+    })
   } catch (e) {
     next(e);
   }

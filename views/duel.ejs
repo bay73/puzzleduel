@@ -19,35 +19,28 @@
         <h1 class="card-header"><%= contest.name %></h1>
         <% }%>
         <div class="card-body">
-          <%- contest.description %>
-          <% console.log(contest.status) %>
-          <% console.log(contest.puzzleStatus) %>
-          <% if (contest.timeLeft) { var seconds = Math.round(contest.timeLeft/1000); var minutes = Math.round(seconds/60); seconds = seconds%60 %>
-            <p class="text-warning"><strong>
-              <% if (contest.status == 'registration') { %>
-              <%= __('Time till contest start ') %>
-              <% } else if (contest.status == 'going') { %>
-                <% if (contest.puzzleStatus == 'waiting') { %>
-                <%= __('Time till puzzle start ') %>
-                <% } else if (contest.puzzleStatus == 'solving') { %>
-                <%= __('Time till puzzle finish ') %>
-                <% } else { %>
-                <%= __('Time till contest finish ') %>
-                <% } %>
-              <% } %>
-              <span id="duelTimer"><%= minutes %>:<%= seconds %></span>
+          <p><%- contest.description %></p>
+          <% if (contest.timeLeft) { %>
+          <% var seconds = Math.round(contest.timeLeft/1000); var minutes = Math.round(seconds/60); seconds = seconds%60 %>
+            <p class="text-warning"><strong id="duelTimer">
+            </strong></p>
+            <p class="text-warning"><strong id="opponent">
             </strong></p>
             <script>
               function showTime(time) {
                 if (time <= 0) {
-                  <% if (contest.puzzleStatus == 'solving') { %>
-                  $('#duelTimer').text("<%= __('Time is over') %>");
-                  if (time <= -10000) {
+                  if (status=='waiting') {
+                    status = 'solving';
+                    timeLeft = 300000;
+                    timerText = "<%= __('Time till puzzle finish ') %>";
+                  } else if (status=='solving') {
+                    $('#duelTimer').text("<%= __('Time is over') %>");
+                    if (time <= -10000) {
+                      location.reload();
+                    }
+                  } else {
                     location.reload();
                   }
-                  <% } else { %>
-                  location.reload();
-                  <% } %>
                   return;
                 }
                 var formatNumber = function(num){
@@ -62,11 +55,62 @@
                 hours = hours > 0?formatNumber(hours)+":":"";
                 mins = formatNumber(mins) + ":";
                 secs = formatNumber(secs);
-                $('#duelTimer').text(hours + mins + secs);
+                $('#duelTimer').text(timerText + hours + mins + secs);
               }
+
+              <% if (contest.puzzleStatus == 'solving') { %>
+                var status = 'solving';
+              <% } else if (contest.puzzleStatus == 'waiting') { %>
+                var status = 'waiting';
+              <% } else  { %>
+                var status = 'idle';
+              <% } %>
+              <% if (contest.status == 'registration') { %>
+              var timerText = "<%= __('Time till contest start ') %>";
+              <% } else if (contest.status == 'going') { %>
+              <% if (contest.puzzleStatus == 'waiting') { %>
+              var timerText = "<%= __('Time till puzzle start ') %>";
+              <% } else if (contest.puzzleStatus == 'solving') { %>
+              var timerText = "<%= __('Time till puzzle finish ') %>";
+              <% } else { %>
+              var timerText = "<%= __('Time till contest finish ') %>";
+              <% } %>
+              <% } %>
+
+              function readOpponent() {
+                $('#opponent').load("/duel/<%= contest.code %>/opponent")
+              }
+
               var timeLeft = <%= contest.timeLeft %>
-              showTime(timeLeft);
-              setInterval(() => {timeLeft -= 1000; showTime(timeLeft);},1000);
+              $(document).ready(function () {
+                showTime(timeLeft);
+                setInterval(() => {timeLeft -= 1000; showTime(timeLeft);},1000);
+                <% if (contest.status == 'going') { %>
+                readOpponent();
+                setInterval(readOpponent,20000);
+                <% } %>
+              })
+
+            </script>
+          <% } else { %>
+            <p class="text-warning"><strong>
+            <% if(contest.status=='finished') { %>
+            <%= __('Contest finished at ') %>
+            <span id="finishDate"></span>
+            <% } else { %>
+            <%= __('Contest starts at ') %>
+            <span id="startDate"></span>
+            <%= __(' and finishes at ') %>
+            <span id="finishDate"></span>
+            <% } %>
+            </strong></p>
+            <script>
+              $(document).ready(function () {
+                var start = new Date("<%= contest.start.toISOString() %>").toLocaleString();
+                var finish = new Date("<%= contest.start.toISOString() %>").toLocaleString();
+                $('#startDate').text(start);
+                $('#finishDate').text(finish);
+              })
             </script>
           <% } %>
         </div>
@@ -77,11 +121,11 @@
           <a class="nav-link pl-2 pr-2 active" data-toggle="tab" href="#current"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;"><%= __('Current puzzle') %></h1></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link pl-2 pr-2" data-toggle="tab" href="#standing"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;">Contest standing</h1></a>
+          <a class="nav-link pl-2 pr-2" data-toggle="tab" href="#standing"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;"><%= __('Contest info') %></h1></a>
         </li>
         <% } else { %>
         <li class="nav-item">
-          <a class="nav-link pl-2 pr-2 active" data-toggle="tab" href="#standing"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;">Contest standing</h1></a>
+          <a class="nav-link pl-2 pr-2 active" data-toggle="tab" href="#standing"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;"><%= __('Contest info') %></h1></a>
         </li>
         <% } %>
       </ul>
@@ -99,85 +143,7 @@
         <div class="tab-pane fade active show" id="standing">
         <% } %>
           <div class="card" style="border: 0;">
-            <div class="card-body" style="border: 0;">
-              <div class="row">
-                <div class="col-sm-4">
-                  <p class="row"><%= __('Puzzles') %></p>
-                  <div class="row justify-content-left">
-                    <div class="col-auto">
-                      <table class="table table-responsive table-hover table-condensed">
-                        <tbody>
-                          <% console.log(puzzles) %>
-                          <% puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puz) { %>
-                          <tr>
-                            <td>
-                              <%= puz.num %>
-                            </td>
-                            <td>
-                              <% if (puz.revealDate < new Date) { %>
-                              <a href="/single/<%= puz.code %>">
-                              <% } %>
-                              <%= puz.type %>
-                              <%= puz.dimension?" ("+puz.dimension+")":"" %>
-                              <% if (puz.revealDate < new Date) { %>
-                              </a>
-                              <% } %>
-                            </td>
-                          </tr>
-                          <% }) %>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-8">
-                  <% if (contest.status == 'registration') { %>
-                  <p class="row">Here you can see the list of solvers who already registered for paricipation in the contest</p>
-                  <% } %>
-                  <div class="row justify-content-center">
-                    <div class="col-auto">
-                      <table class="table table-responsive table-bordered table-hover table-condensed">
-                        <tbody>
-                          <tr class="table-secondary">
-                            <th>
-                            </th>
-                            <th class="text-center">
-                              <%= __('Rating') %>
-                            </th>
-                            <th class="text-center">
-                              <%= __('Contest score') %>
-                            </th>
-                          </tr>
-                          <% users.sort((u1, u2) => {if (u1.score==u2.score) {return u2.rating - u1.rating;} else {return u2.score - u1.score;}}).forEach(function(user) { %>
-                          <tr class="table-secondary">
-                            <td>
-                              <%= user.name %>
-                            </td>
-                            <td class="text-center">
-                              <%= user.rating > 0?Math.round(user.rating):"" %>
-                            </td>
-                            <td class="text-center">
-                              <%= user.score %>
-                            </td>
-                          </tr>
-                          <% }) %>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <% if (contest.status == 'registration') { %>
-                  <div class="row">
-                    <% if (userData.isRegistered) { %>
-                    <a class="btn btn-primary" href="/duel/<%= contest.code %>/unregister"><%= __('Leave') %></a>
-                    <% } else if (user) { %>
-                    <a class="btn btn-primary" href="/duel/<%= contest.code %>/register"><%= __('Enroll') %></a>
-                    <% } else { %>
-                    <p class="text-info">You should <a href="/users/login">Login</a> first to be able to register for participation</p>
-                    <% }%>
-                  </div>
-                  <% } %>
-                </div>
-              </div>
+            <div class="card-body" id="standingPane" style="border: 0;">
             </div>
           </div>
         </div>
@@ -186,6 +152,10 @@
         $(document).ready(function () {
           <% if(currentPuzzle){ %>
           showPuzzle();
+          <% } %>
+          $('#standingPane').load("/duel/<%= contest.code %>/standing");
+          <% if (contest.status=='going'){ %>
+          setInterval(() => {$('#standingPane').load("/duel/<%= contest.code %>/standing");},20000);
           <% } %>
         });
       </script>

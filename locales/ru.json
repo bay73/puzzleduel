@@ -238,7 +238,7 @@
 	"All black cells should be part of single path": "Все закрашеные клетки должны быть частью дорожки",
 	"Black cells should form single path without bifurcations": "Закрашеные клетки должны образовывать дорожку без разветвлений",
 	"Path shouldn't turn in the cell with digit": "Дорожка не должна поворачивать в клетке с числом",
-	"Current puzzle": "Current puzzle",
+	"Current puzzle": "Очередная задача",
 	"Enroll": "Записаться",
 	"Leave": "Отказаться",
 	"Contest score": "Результат в конкурсе",
@@ -246,5 +246,15 @@
 	"Time till puzzle start ": "До начала решения задачи осталось ",
 	"Time till puzzle finish ": "До окончания решения задачи осталось ",
 	"Time is over": "Время вышло",
-	"Time till contest finish ": "До окончания конкурса осталось "
+	"Time till contest finish ": "До окончания конкурса осталось ",
+	"Contest info": "Информация о турнире",
+	"Here you can see the list of solvers who are already registered for paricipation in the contest": "Здесь вы видите список решателей зарегистрированных для участия в конкурсе",
+	"Press the button if you don't want to participate": "Нажмите кнопку, если вы не хотите участвовать",
+	"Presss the button if you want to paricipate": "ажмите кнопку, если вы хотите участвовать",
+	"You should <a href=\"/users/login\">Login</a> first to be able to register for participation": "Вы должны <a href=\"/users/login\">Войти</a> чтобы зарегистрироваться для участия",
+	"Contest starts at ": "Конкурс начнётся ",
+	" and finishes at ": " и закончится ",
+	"Contest finished at ": "Конкурс закончился ",
+	"Your opponent for the round: ": "Ваш оппонент на этот раунд: ",
+	"Awaiting seeding": "Ожидаем жеребьёвку"
 }

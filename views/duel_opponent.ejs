@@ -1,0 +1,8 @@
+<% if(opponent.name) { %>
+<%= __("Your opponent for the round: ") %><%= opponent.name %>
+<% } else if (opponent.skip) { %>
+<%= __("Your don't have opponent for the round") %>
+<% } else { %>
+<%= __("Awaiting seeding") %>
+<% } %>
+

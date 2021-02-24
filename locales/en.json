@@ -243,5 +243,15 @@
 	"Time till puzzle start ": "Time till puzzle start ",
 	"Time till puzzle finish ": "Time till puzzle finish ",
 	"Time is over": "Time is over",
-	"Time till contest finish ": "Time till contest finish "
+	"Time till contest finish ": "Time till contest finish ",
+	"Contest info": "Contest info",
+	"Here you can see the list of solvers who are already registered for paricipation in the contest": "Here you can see the list of solvers who are already registered for paricipation in the contest",
+	"Presss the button if you want to paricipate": "Presss the button if you want to paricipate",
+	"Press the button if you don't want to participate": "Press the button if you don't want to participate",
+	"You should <a href=\"/users/login\">Login</a> first to be able to register for participation": "You should <a href=\"/users/login\">Login</a> first to be able to register for participation",
+	"Contest starts at ": "Contest starts at ",
+	" and finishes at ": " and finishes at ",
+	"Contest finished at ": "Contest finished at ",
+	"Your opponent for the round: ": "Your opponent for the round: ",
+	"Awaiting seeding": "Awaiting seeding"
 }
