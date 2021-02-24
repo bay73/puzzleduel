@@ -3,6 +3,8 @@ const router = express.Router();
 
 const Contest = require('../models/Contest');
 const Puzzle = require('../models/Puzzle');
+const PuzzleType = require('../models/PuzzleType');
+const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const Rating = require('../models/Rating');
 const util = require('../utils/puzzle_util');
@@ -14,13 +16,45 @@ router.get('/:contestid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
+
     if (contest.start > new Date()){
       var status = 'registration';
-    } else if (contest.finish < new Date()){
+    } else if (contest.finish > new Date()){
       var status = 'going';
     } else {
       var status = 'finished';
     }
+    var currentPuzzleId = null;
+    if (status != 'finished') {
+      var nextTime = contest.start;
+      var puzzleStatus = "";
+      contest.puzzles.forEach(puzzle => {
+        if (nextTime < new Date() && puzzle.revealDate > new Date()) {
+          puzzleStatus = "waiting";
+          nextTime = puzzle.revealDate;
+          currentPuzzleId = puzzle.puzzleId;
+        }
+        if (nextTime < new Date() && puzzle.closeDate > new Date()) {
+          puzzleStatus = "solving";
+          nextTime = puzzle.closeDate;
+          currentPuzzleId = puzzle.puzzleId;
+        }
+      })
+      if (puzzleStatus == "" && status=="going") {
+        nextTime = contest.finish;
+      }
+    }
+    var contestObj = {
+      code: contest.code,
+      name: contest.name,
+      description: contest.description,
+      logo: contest.logo,
+      status: status,
+      puzzleStatus: puzzleStatus,
+      nextTime: nextTime,
+      timeLeft: nextTime?nextTime.getTime() - new Date().getTime():null
+    };
+
     if (contest.start > new Date()){
       var ratingDate = new Date();
     } else {
@@ -34,17 +68,37 @@ router.get('/:contestid', async (req, res, next) => {
     const ratingList = await Rating.find({date: ratingDate});
     var userRatings = {}
     ratingList.forEach(rating => userRatings[rating.userId] = rating.value);
-    var contestObj = {code: contest.code, name: contest.name, description: contest.description, logo: contest.logo, status: status};
-    if (contestObj.status == 'registration') {
-      var users = contest.participants.map(participant => {return {id: participant.userId, name: participant.userName, score: 0, rating: userRatings[participant.userId]|0};});
-    } else {
-      var users = contest.results.map(participant => {return {id: participant.userId, name: participant.userName, score: participant.score, rating: userRatings[participant.userId]|0};});
-    }
+    var typeMap = await util.typeNameMap();
+    var puzzleMap = {};
+    const puzzles = await Puzzle.find({'contest.contestId': req.params.contestid});
+    puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();puzzleMap[puzzle.code].needLogging = puzzle.needLogging});
+    var hasResults = {};
+    var users = [];
+    contest.results.forEach(result => {
+      hasResults[result.userId] = true;
+      users.push({
+        id: result.userId,
+        name: result.userName,
+        score: result.score,
+        rating: userRatings[result.userId]|0
+      });
+    })
+    contest.participants.forEach(participant => {
+      if (!hasResults[participant.userId]) {
+        users.push({
+          id: participant.userId,
+          name: participant.userName,
+          score: 0,
+          rating: userRatings[participant.userId]|0
+        });
+      }
+    })
     userData = {};
     if (req.user) {
       var userId = req.user._id;
       userData.isRegistered = users.filter(user => user.id.equals(userId)).length > 0
     }
+
     var locale = req.getLocale();
     if (locale != 'en' && contest.translations) {
       if (contest.translations[locale] && contest.translations[locale].name) {
@@ -54,8 +108,46 @@ router.get('/:contestid', async (req, res, next) => {
         contestObj.description = contest.translations[locale].description;
       }
     }
-    var puzzleObj = null;
-    res.render('duel', {user: req.user, contest: contestObj, users: users, currentPuzzle: puzzleObj, userData: userData})
+
+    if (currentPuzzleId != null) {
+      var puzzle = await Puzzle.findOne({code: currentPuzzleId}, "-data");
+      if (puzzle) {
+        var puzzleObj = puzzle.toObject();
+        var type = await PuzzleType.findOne({ code: puzzleObj.type });
+        if (req.getLocale() != 'en') {
+          if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
+            type.rules = type.translations[req.getLocale()].rules;
+          }
+        }
+        if(type) {
+          puzzleObj.type = type.toObject();
+        }
+        if (puzzleObj.author) {
+          puzzleObj.authorId = puzzleObj.author;
+          var author = await User.findById(puzzleObj.author, "name");
+          if(author) {
+            puzzleObj.author = author.name;
+          }
+        }
+      }
+    }
+
+    res.render('duel', {
+      user: req.user,
+      contest: contestObj,
+      users: users,
+      puzzles: contest.puzzles.map(puzzle => {
+        puz = puzzleMap[puzzle.puzzleId];
+        return {
+          num: puzzle.puzzleNum,
+          code: puzzle.puzzleId,
+          type: typeMap[puz.type],
+          dimension: puz.dimension,
+          revealDate: puzzle.revealDate
+        };
+      }),
+      currentPuzzle: puzzleObj,
+      userData: userData})
   } catch (e) {
     next(e);
   }

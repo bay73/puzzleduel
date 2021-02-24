@@ -241,5 +241,10 @@
 	"Current puzzle": "Current puzzle",
 	"Enroll": "Записаться",
 	"Leave": "Отказаться",
-	"Contest score": "Результат в конкурсе"
+	"Contest score": "Результат в конкурсе",
+	"Time till contest start ": "До начала конкурса осталось ",
+	"Time till puzzle start ": "До начала решения задачи осталось ",
+	"Time till puzzle finish ": "До окончания решения задачи осталось ",
+	"Time is over": "Время вышло",
+	"Time till contest finish ": "До окончания конкурса осталось "
 }

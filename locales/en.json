@@ -238,5 +238,10 @@
 	"Current puzzle": "Current puzzle",
 	"Enroll": "Enroll",
 	"Leave": "Leave",
-	"Contest score": "Contest score"
+	"Contest score": "Contest score",
+	"Time till contest start ": "Time till contest start ",
+	"Time till puzzle start ": "Time till puzzle start ",
+	"Time till puzzle finish ": "Time till puzzle finish ",
+	"Time is over": "Time is over",
+	"Time till contest finish ": "Time till contest finish "
 }

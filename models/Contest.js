@@ -54,6 +54,10 @@ const ContestSchema = new mongoose.Schema({
       type: Date,
       required: true
     },
+    closeDate: {
+      type: Date,
+      required: false
+    },
     results: [{
       userId: {
         type: ObjectId,
@@ -93,6 +97,10 @@ const ContestSchema = new mongoose.Schema({
       required: true
     },
   }],
+  seedData: {
+    type: Mixed,
+    required: false
+  }
 });
 
 const Contest = mongoose.model('Contest', ContestSchema);
