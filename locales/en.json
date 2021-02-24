@@ -254,5 +254,6 @@
 	"Contest finished at ": "Contest finished at ",
 	"Your opponent for the round: ": "Your opponent for the round: ",
 	"Awaiting seeding": "Awaiting seeding",
-	"Results": "Results"
+	"Results": "Results",
+	"Your don't have opponent for the round": "Your don't have opponent for the round"
 }

@@ -107,7 +107,7 @@
             <script>
               $(document).ready(function () {
                 var start = new Date("<%= contest.start.toISOString() %>").toLocaleString();
-                var finish = new Date("<%= contest.start.toISOString() %>").toLocaleString();
+                var finish = new Date("<%= contest.finish.toISOString() %>").toLocaleString();
                 $('#startDate').text(start);
                 $('#finishDate').text(finish);
               })

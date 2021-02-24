@@ -1,6 +1,7 @@
 const Contest = require('../models/Contest');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const Puzzle = require('../models/Puzzle');
+const mongoose = require('mongoose');
 
 
 function shuffle(array) {
@@ -92,7 +93,6 @@ async function refreshResult(contestId) {
   for (let [userId, value] of Object.entries(userTotals)) {
     contest.results.push({userId: userId, userName: value.userName, score: Math.round(value.score*10)/10});
   }
-  console.log(contest.results);
   await contest.save();
   return true;
 }
@@ -140,12 +140,19 @@ async function seed(contestId, round, reseed) {
   }
   const participants = contest.results.sort((r1, r2) => r2.score - r1.score);
   function checkAlreadyPaired(user1, user2) {
-    console.log('checkAlreadyPaired',user1, user2);
     for(var i=0; i<roundIndex; i++) {
       if (typeof contest.seedData[i] != 'undefined') {
-        console.log(i, contest.seedData[i][user1.toString()]);
         if (contest.seedData[i][user1.toString()]==user2.toString()) {
-          console.log('true');
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  function checkAlreadyMissed(user) {
+    for(var i=0; i<roundIndex; i++) {
+      if (typeof contest.seedData[i] != 'undefined') {
+        if (contest.seedData[i][user.toString()]=="") {
           return true;
         }
       }
@@ -163,17 +170,17 @@ async function seed(contestId, round, reseed) {
         return true;
       }
     } else {
-      console.log('user to pair',userId);
       if (Object.keys(pairs).length==participants.length-1){
+        if (checkAlreadyMissed(userId)) {
+          return false;
+        }
         pairs[userId.toString()] = "";
         return true;
       }
       for (var i=index+1;i<participants.length;i++){
         var otherUserId = participants[i].userId;
         if (!pairs[otherUserId.toString()]) {
-          console.log('otherUserId',otherUserId);
           if (!checkAlreadyPaired(userId, otherUserId)) {
-            console.log('Not paired');
             pairs[userId.toString()] = otherUserId.toString();
             pairs[otherUserId.toString()] = userId.toString();
             if (findNext(index+1)) {
@@ -269,6 +276,7 @@ async function rescheduleDuel(contestId) {
     if (typeof puzzleStorage.contest=="undefined" || puzzleStorage.contest.contestId == contestId) {
       puzzleStorage.contest = {contestId: contestId, puzzleDate: puzzle.revealDate};
       puzzleStorage.tag = 'contest';
+//      puzzleStorage.author = mongoose.Types.ObjectId('5e9af85aefc029cddc51fdbe');
       await puzzleStorage.save();
     }
   }
