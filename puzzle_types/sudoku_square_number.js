@@ -22,12 +22,12 @@ check:function(dimension, clues, data){
       for (var [edgeKey, edgeValue] of Object.entries(value)) {
         var part = edgeKey.split("-");
         var pos = util.parseCoord(part[0]);
-        if (part[1]=="b") {
+        if (part[1]=="b" || part[1]=="2") {
           if (bottomDots[pos.y]){
             bottomDots[pos.y][pos.x] = (edgeValue=="black_circle");
           }
         }
-        if (part[1]=="r") {
+        if (part[1]=="r" || part[1]=="1") {
           if (rightDots[pos.y]){
             rightDots[pos.y][pos.x] = (edgeValue=="black_circle");
           }

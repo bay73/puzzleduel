@@ -254,7 +254,13 @@ squarePuzzle.prototype.drawEdgeClues = function(edges) {
   for (const [key, value] of Object.entries(edges)) {
     var part = key.split("-");
     var coord = this.decodeCoordinate(part[0]);
-    var side = part[1]=="b" ? 2 : 1;
+    if (part[1]=="b") {
+      var side = 2;
+    } else if (part[1]=="r") {
+      var side = 1;
+    } else {
+      var side = parseInt(part[1]);
+    }
     this.edges[coord.y][coord.x][side].setClue(this.decodeClue(value));
   }
 }
