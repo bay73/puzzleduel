@@ -246,7 +246,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
           currentPuzzleId = puzzle.puzzleId;
           currentPuzzleNum = puzzle.puzzleNum;
         }
-        if (puzzle.closeDate < new Date()) {
+        if (puzzle.revealDate < new Date()) {
           lastPuzzleNum = puzzle.puzzleNum;
         }
       })
