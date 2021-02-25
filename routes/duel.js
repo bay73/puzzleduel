@@ -27,16 +27,19 @@ router.get('/:contestid', async (req, res, next) => {
     var currentPuzzleId = null;
     if (status != 'finished') {
       var nextTime = contest.start;
+      var nextDuration = 0;
       var puzzleStatus = "";
       contest.puzzles.forEach(puzzle => {
         if (nextTime < new Date() && puzzle.revealDate > new Date()) {
           puzzleStatus = "waiting";
           nextTime = puzzle.revealDate;
+          nextDuration = puzzle.closeDate.getTime() - puzzle.revealDate.getTime();
           currentPuzzleId = puzzle.puzzleId;
         }
         if (nextTime < new Date() && puzzle.closeDate > new Date()) {
           puzzleStatus = "solving";
           nextTime = puzzle.closeDate;
+          nextDuration = 0;
           currentPuzzleId = puzzle.puzzleId;
         }
       })
@@ -58,6 +61,7 @@ router.get('/:contestid', async (req, res, next) => {
       status: status,
       puzzleStatus: puzzleStatus,
       nextTime: nextTime,
+      nextDuration: nextDuration,
       timeLeft: timeLeft
     };
 

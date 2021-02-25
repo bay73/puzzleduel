@@ -31,7 +31,7 @@
                 if (time <= 0) {
                   if (status=='waiting') {
                     status = 'solving';
-                    timeLeft = 300000;
+                    timeLeft = <%= contest.nextDuration %>;
                     timerText = "<%= __('Time till puzzle finish ') %>";
                   } else if (status=='solving') {
                     $('#duelTimer').text("<%= __('Time is over') %>");
