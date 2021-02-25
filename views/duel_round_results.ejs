@@ -1,0 +1,31 @@
+<% console.log(results) %>
+<table class="table table-condensed text-left">
+  <tbody>
+    <% results.forEach(result => { %>
+    <tr>
+      <% if (result.user2) { %>
+      <td>
+        <span><strong><%= result.user1Name %></strong></span>
+        <span class="text-secondary">(<%= result.user1Time?result.user1Time:__("didn't finish") %>)</span>
+         vs
+        <span><strong><%= result.user2Name %></strong></span>
+        <span class="text-secondary">(<%= result.user2Time?result.user2Time:__("didn't finish") %>)</span>
+      </td>
+      <td>
+        <span><strong><%= result.user1Score?result.user1Score:0 %>&#8209;<%= result.user2Score?result.user2Score:0 %></strong></span>
+      </td>
+      <% } else { %>
+      <td>
+        <span><strong><%= result.user1Name %></strong></span>
+        <span class="text-secondary">(<%= result.user1Time?result.user1Time:__("didn't finish") %>)</span>
+        <span class="text-secondary"><%= __('without opponent') %></span>
+      </td>
+      <td>
+        <span><strong><%= result.user1Score?result.user1Score:0 %></strong></span>
+      </td>
+      <% } %>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+

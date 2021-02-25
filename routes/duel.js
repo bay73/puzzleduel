@@ -363,5 +363,77 @@ router.get('/:contestid/standing', async (req, res, next) => {
   }
 });
 
+router.get('/:contestid/results/:puzzlenum', async (req, res, next) => {
+  try {
+    const relaxSeconds = 10;
+    const contest = await Contest.findOne({code: req.params.contestid});
+    if (!contest) {
+      res.sendStatus(404);
+      return;
+    }
+    var roundNum = req.params.puzzlenum - 1;
+    if (typeof contest.seedData=="undefined" || typeof contest.seedData[roundNum]=="undefined") {
+      res.sendStatus(404);
+      return;
+    }
+    var pairs = contest.seedData[roundNum];
+    if (typeof contest.puzzles[roundNum]=="undefined" || typeof contest.puzzles[roundNum].results=="undefined") {
+      res.sendStatus(404);
+      return;
+    }
+    var puzzleId = contest.puzzles[roundNum].puzzleId;
+    var acceptTime = new Date(contest.puzzles[roundNum].closeDate.getTime() + relaxSeconds*1000);
+    var scores = contest.puzzles[roundNum].results;
+    var userScores = {};
+    scores.forEach(score => {
+      userScores[score.userId.toString()] = score.score;
+    });
+    const times = await UserSolvingTime.find({
+      puzzleId: puzzleId,
+      solvingTime: {$exists: true},
+      $or: [
+        {hidden: false},
+        {hidden: {$exists: false}}
+      ]
+    });
+    var userSolvingTime = {};
+    times.forEach(time => {
+      if (time.date < acceptTime) {
+        userSolvingTime[time.userId.toString()] = time.solvingTime;
+      }
+    });
+    var users = {};
+    contest.participants.forEach(participant => {
+      users[participant.userId.toString()] = participant.userName;
+    });
+    var isUsed = {};
+    var pairResults = [];
+    console.log(pairs)
+    Object.entries(pairs).forEach(([user1, user2]) => {
+      if (!isUsed[user1]) {
+        isUsed[user1] = true;
+        isUsed[user2] = true;
+        pairResults.push({
+          user1: user1,
+          user1Name: users[user1],
+          user1Time: util.timeToString(userSolvingTime[user1]),
+          user1Score: userScores[user1],
+          user2: user2,
+          user2Name: users[user2],
+          user2Time: util.timeToString(userSolvingTime[user2]),
+          user2Score: userScores[user2]
+        });
+      }
+    });
+    contest.puzzles[roundNum].results
+    res.render('duel_round_results', {
+      layout: "empty_layout",
+      results: pairResults
+    })
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = router;
 
