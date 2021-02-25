@@ -112,7 +112,7 @@ async function initialSeed(contestId, reseed) {
   for (var i = 0; i<randomizedParticipants.length; i++) {
     if (i%2==0) {
       if (i==randomizedParticipants.length-1) {
-        pairs[randomizedParticipants[i].userId.toString()] = null;
+        pairs[randomizedParticipants[i].userId.toString()] = "";
       } else {
         pairs[randomizedParticipants[i].userId.toString()] = randomizedParticipants[i+1].userId.toString();
       }
