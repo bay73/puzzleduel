@@ -8,22 +8,28 @@ require('dotenv').config();
 const db = require('../config/keys').mongoURI;
 
 recount = async function () {
-  await recountContest('40644z1kkzwt6iy');
+  result = await recountContest('40644z1kkzwt6iy');
+  if (result) {
+    setTimeout(run, 30000);
+  }
 }
 
+function run() {
 // Connect to MongoDB
-mongoose
-  .connect(
-    db,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
-  .then(() => {
-    console.log('MongoDB Connected')
-    recount().then(() => {
-      mongoose.disconnect();
-    });
-  })
-  .catch(err => console.log(err));
+  mongoose
+    .connect(
+      db,
+      { useNewUrlParser: true, useUnifiedTopology: true }
+    )
+    .then(() => {
+      console.log('MongoDB Connected')
+      recount().then(() => {
+        mongoose.disconnect();
+      });
+    })
+    .catch(err => { mongoose.disconnect(); console.log(err);});
+}
 
+run();
 
 

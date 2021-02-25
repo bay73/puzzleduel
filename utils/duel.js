@@ -139,7 +139,7 @@ async function seed(contestId, round, reseed) {
   if (typeof contest.seedData[roundIndex] != 'undefined' && !reseed) {
     return true;
   }
-  const participants = contest.results.sort((r1, r2) => {if(r2.score == r1.score) {return r1.time - r2.time} else {r2.score - r1.score});
+  const participants = contest.results.sort((r1, r2) => {if(r2.score == r1.score) {return r1.time - r2.time} else {return r2.score - r1.score}});
   function checkAlreadyPaired(user1, user2) {
     for(var i=0; i<roundIndex; i++) {
       if (typeof contest.seedData[i] != 'undefined') {
@@ -208,8 +208,13 @@ async function seed(contestId, round, reseed) {
 }
 
 async function recountContest(contestId) {
+  console.log('recountContest');
   const contest = await Contest.findOne({code: contestId});
   if (!contest) {
+    return false;
+  }
+  if (contest.start > new Date(new Date().getTime() + 3600000)){
+    console.log('recountContest too early', contest.start);
     return false;
   }
   if (contest.start > new Date()){
@@ -218,6 +223,10 @@ async function recountContest(contestId) {
     var status = 'going';
   } else {
     var status = 'finished';
+  }
+  if (status == 'finished') {
+    console.log('recountContest too late', contest.finish);
+    return false;
   }
   var puzzleStatus = "";
   var round = 0;
@@ -254,12 +263,13 @@ async function recountContest(contestId) {
 }
 
 async function rescheduleDuel(contestId) {
-  var pauseMinutes = 2;
+  var pauseMinutes = 1;
   var roundMinutes = 5;
   const contest = await Contest.findOne({code: contestId});
   if (!contest) {
     return false;
   }
+  console.log('contest.start',contest.start);
   if (contest.start <= new Date()) {
     return false;
   }
