@@ -24,8 +24,10 @@
           <% var seconds = Math.round(contest.timeLeft/1000); var minutes = Math.round(seconds/60); seconds = seconds%60 %>
             <p class="text-warning"><strong id="duelTimer">
             </strong></p>
+            <% if (contest.isUserRegistered) { %>
             <p class="text-warning"><strong id="opponent">
             </strong></p>
+            <% } %>
             <script>
               function showTime(time) {
                 if (time <= 0) {
@@ -77,17 +79,21 @@
               <% } %>
               <% } %>
 
+              <% if (contest.isUserRegistered) { %>
               function readOpponent() {
                 $('#opponent').load("/duel/<%= contest.code %>/opponent")
               }
+              <% } %>
 
               var timeLeft = <%= contest.timeLeft %>
               $(document).ready(function () {
                 showTime(timeLeft);
                 setInterval(() => {timeLeft -= 1000; showTime(timeLeft);},1000);
                 <% if (contest.status == 'going') { %>
+                <% if (contest.isUserRegistered) { %>
                 readOpponent();
                 setInterval(readOpponent,20000);
+                <% } %>
                 <% } %>
               })
 

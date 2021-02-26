@@ -51,6 +51,10 @@ router.get('/:contestid', async (req, res, next) => {
     if (nextTime && nextTime < new Date(new Date().getTime()+ 86400000)) {
       timeLeft = nextTime.getTime() - new Date().getTime();
     }
+    if (req.user) {
+      var userId = req.user._id;
+      var isRegistered = contest.participants.filter(participant => participant.userId.equals(userId)).length > 0;
+    }
     var contestObj = {
       code: contest.code,
       name: contest.name,
@@ -62,7 +66,8 @@ router.get('/:contestid', async (req, res, next) => {
       puzzleStatus: puzzleStatus,
       nextTime: nextTime,
       nextDuration: nextDuration,
-      timeLeft: timeLeft
+      timeLeft: timeLeft,
+      isUserRegistered: isRegistered
     };
 
     var locale = req.getLocale();
@@ -75,7 +80,8 @@ router.get('/:contestid', async (req, res, next) => {
       }
     }
 
-    if (currentPuzzleId != null) {
+
+    if (currentPuzzleId != null && isRegistered) {
       var puzzle = await Puzzle.findOne({code: currentPuzzleId}, "-data");
       if (puzzle) {
         var puzzleObj = puzzle.toObject();
@@ -408,7 +414,6 @@ router.get('/:contestid/results/:puzzlenum', async (req, res, next) => {
     });
     var isUsed = {};
     var pairResults = [];
-    console.log(pairs)
     Object.entries(pairs).forEach(([user1, user2]) => {
       if (!isUsed[user1]) {
         isUsed[user1] = true;

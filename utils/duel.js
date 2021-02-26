@@ -287,7 +287,7 @@ async function rescheduleDuel(contestId) {
     if (typeof puzzleStorage.contest=="undefined" || puzzleStorage.contest.contestId == contestId) {
       puzzleStorage.contest = {contestId: contestId, puzzleDate: puzzle.revealDate};
       puzzleStorage.tag = 'contest';
-//      puzzleStorage.author = mongoose.Types.ObjectId('5e9af85aefc029cddc51fdbe');
+//      puzzleStorage.author = mongoose.Types.ObjectId('5e7d1b5dbf549427b8cad9d8');
       await puzzleStorage.save();
     }
   }
