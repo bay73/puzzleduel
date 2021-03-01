@@ -29,11 +29,12 @@
             </strong></p>
             <% } %>
             <script>
-              function showTime(time) {
+              function showTime() {
+                var time = endTime - new Date().getTime();
                 if (time <= 0) {
                   if (status=='waiting') {
                     status = 'solving';
-                    timeLeft = <%= contest.nextDuration %>;
+                    endTime = endTime + <%= contest.nextDuration %>;
                     timerText = "<%= __('Time till puzzle finish ') %>";
                   } else if (status=='solving') {
                     $('#duelTimer').text("<%= __('Time is over') %>");
@@ -85,10 +86,10 @@
               }
               <% } %>
 
-              var timeLeft = <%= contest.timeLeft %>
+              var endTime = new Date().getTime() + <%= contest.timeLeft %>
               $(document).ready(function () {
-                showTime(timeLeft);
-                setInterval(() => {timeLeft -= 1000; showTime(timeLeft);},1000);
+                showTime();
+                setInterval(showTime,1000);
                 <% if (contest.status == 'going') { %>
                 <% if (contest.isUserRegistered) { %>
                 readOpponent();
