@@ -82,7 +82,9 @@
 
               <% if (contest.isUserRegistered) { %>
               function readOpponent() {
-                $('#opponent').load("/duel/<%= contest.code %>/opponent")
+                if (endTime > new Date().getTime()) {
+                  $('#opponent').load("/duel/<%= contest.code %>/opponent")
+                }
               }
               <% } %>
 
