@@ -205,6 +205,11 @@ router.get('/:contestid/opponent', async (req, res, next) => {
         if (opponentId) {
           opponentObj = contest.participants.filter(participant => participant.userId.equals(opponentId))[0];
           opponent = {name: opponentObj.userName};
+          contest.puzzles[round].results.forEach(result => {
+            if (result.userId.equals(opponentId)) {
+              opponent.time = util.timeToString(result.time);
+            }
+          });
         } else {
           opponent = {skip: true};
         }
@@ -325,6 +330,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
         id: result.userId,
         name: result.userName,
         score: result.score,
+        tiebreakScore: result.tiebreakScore,
         scoreSum: detailResults[result.userId.toString()],
         seedDetails: seedDetails,
         rating: userRatings[result.userId]|0
@@ -336,6 +342,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
           id: participant.userId,
           name: participant.userName,
           score: 0,
+          tiebreakScore: 0,
           scoreSum: null,
           rating: userRatings[participant.userId]|0
         });

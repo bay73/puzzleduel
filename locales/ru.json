@@ -261,5 +261,7 @@
 	"Your don't have opponent for the round": "В этом раунде у вас нет соперника",
 	"duel_help_page": "duel_help_page_ru",
 	"Go to puzzle": "К задаче",
-	"without opponent": "без соперника"
+	"without opponent": "без соперника",
+	"has finished solving in ": "завершил решение за ",
+	"Puzzle is not available yet": "Задача ещё не доступна"
 }

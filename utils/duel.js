@@ -72,7 +72,7 @@ async function refreshResult(contestId) {
   }
   var userTotals = {};
   contest.participants.forEach(participant => {
-    userTotals[participant.userId] = {userName: participant.userName, score: 0 };
+    userTotals[participant.userId.toString()] = {userName: participant.userName, score: 0, time: 0, started: false };
   });
   for (var i=0; i<contest.puzzles.length; i++) {
     if (contest.puzzles[i].revealDate > new Date()) continue;
@@ -81,18 +81,34 @@ async function refreshResult(contestId) {
     contest.puzzles[i].details = results.details;
     if (typeof results.results != 'undefined') {
       results.results.forEach(result => {
-        contest.puzzles[i].results.push({userId: result.userId, score: result.score});
-        if (typeof userTotals[result.userId]=='undefined'){
-          userTotals[result.userId] = {userName: result.userName, score: 0 };
+        if (typeof userTotals[result.userId.toString()] != 'undefined') {
+          contest.puzzles[i].results.push({userId: result.userId, score: result.score, time: result.time});
+          userTotals[result.userId.toString()].score += result.score;
+          userTotals[result.userId.toString()].time += result.time;
+          userTotals[result.userId.toString()].started = true;
         }
-        userTotals[result.userId].score += result.score;
-        userTotals[result.userId].time += result.time;
       });
     }
   }
+  contest.markModified('puzzles');
   contest.results = [];
   for (let [userId, value] of Object.entries(userTotals)) {
-    contest.results.push({userId: userId, userName: value.userName, score: value.score});
+    var buchholz = 0;
+    if (typeof contest.seedData != 'undefined'){
+      contest.seedData.forEach(seeds => {
+        if (seeds[userId] && typeof userTotals[seeds[userId]] != 'undefined') {
+          buchholz += userTotals[seeds[userId]].score;
+        }
+      })
+    }
+    contest.results.push({
+      userId: userId,
+      userName: value.userName,
+      score: value.score,
+      tiebreakScore: buchholz,
+      time: value.time,
+      started: value.started
+    });
   }
   await contest.save();
   return true;
@@ -139,7 +155,12 @@ async function seed(contestId, round, reseed) {
   if (typeof contest.seedData[roundIndex] != 'undefined' && !reseed) {
     return true;
   }
-  const participants = contest.results.sort((r1, r2) => {if(r2.score == r1.score) {return r1.time - r2.time} else {return r2.score - r1.score}});
+  function resultCompare(r1, r2) {
+    if (r1.score != r2.score) return r2.score - r1.score;
+    if (r1.tiebreakScore != r2.tiebreakScore) return r1.tiebreakScore - r2.tiebreakScore;
+    return r1.time - r2.time;
+  }
+  const participants = contest.results.sort(resultCompare);
   function checkAlreadyPaired(user1, user2) {
     for(var i=0; i<roundIndex; i++) {
       if (typeof contest.seedData[i] != 'undefined') {
@@ -172,7 +193,7 @@ async function seed(contestId, round, reseed) {
       }
     } else {
       if (Object.keys(pairs).length==participants.length-1){
-        if (checkAlreadyMissed(userId)) {
+        if (checkAlreadyMissed(userId) && participants[index].started) {
           return false;
         }
         pairs[userId.toString()] = "";
@@ -181,7 +202,7 @@ async function seed(contestId, round, reseed) {
       for (var i=index+1;i<participants.length;i++){
         var otherUserId = participants[i].userId;
         if (!pairs[otherUserId.toString()]) {
-          if (!checkAlreadyPaired(userId, otherUserId)) {
+          if (!checkAlreadyPaired(userId, otherUserId) || (!participants[index].started && !participants[i].started)) {
             pairs[userId.toString()] = otherUserId.toString();
             pairs[otherUserId.toString()] = userId.toString();
             if (findNext(index+1)) {

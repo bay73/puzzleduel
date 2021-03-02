@@ -66,6 +66,10 @@ const ContestSchema = new mongoose.Schema({
       score: {
         type: Number,
         required: true
+      },
+      time: {
+        type: Number,
+        required: false
       }
     }],
     details: {
@@ -85,6 +89,14 @@ const ContestSchema = new mongoose.Schema({
     score: {
       type: Number,
       required: true
+    },
+    tiebreakScore: {
+      type: Number,
+      required: false
+    },
+    started: {
+      type: Boolean,
+      required: false
     }
   }],
   participants: [{

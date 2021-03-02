@@ -58,7 +58,11 @@
               </th>
               <% } %>
             </tr>
-            <% users.sort((u1, u2) => {if (u1.score==u2.score) {return u2.rating - u1.rating;} else {return u2.score - u1.score;}}).forEach(function(user) { %>
+            <% function resultCompare(r1, r2) { %>
+            <% if (r1.score != r2.score) return r2.score - r1.score; %>
+            <%if (r1.tiebreakScore != r2.tiebreakScore) return r2.tiebreakScore - r1.tiebreakScore; %>
+            <% return r2.rating - r1.rating; } %>
+            <% users.sort(resultCompare).forEach(function(user) { %>
             <tr class="table">
               <td>
                 <%= user.name %>
@@ -97,26 +101,7 @@
     <% } %>
   </div>
 </div>
-<div class="modal" id="roundResults" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Results of round <span id="roundResultsNum"></span></h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-center container-fluid">
-        <h5 id="roundPuzzleName"></h5>
-        <a href="#" id="roundPuzzleLink"><%= __('Go to puzzle') %></a>
-        <p id="roundResultsTable"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div><script>
+<script>
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip({placement: "auto"});
   });

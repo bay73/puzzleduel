@@ -258,5 +258,7 @@
 	"Your don't have opponent for the round": "Your don't have opponent for the round",
 	"duel_help_page": "duel_help_page",
 	"Go to puzzle": "Go to puzzle",
-	"without opponent": "without opponent"
+	"without opponent": "without opponent",
+	"has finished solving in ": "has finished solving in ",
+	"Puzzle is not available yet": "Puzzle is not available yet"
 }

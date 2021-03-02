@@ -1,5 +1,8 @@
 <% if(opponent.name) { %>
 <%= __("Your opponent for the round: ") %><%= opponent.name %>
+<% if (opponent.time) {%>
+<%= __("has finished solving in ") %><%= opponent.time %>
+<% } %>
 <% } else if (opponent.skip) { %>
 <%= __("Your don't have opponent for the round") %>
 <% } else { %>
