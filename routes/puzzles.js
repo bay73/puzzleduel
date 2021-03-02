@@ -168,7 +168,7 @@ router.get('/:puzzleid/start', async (req, res, next) => {
         return;
       }
       if (!puzzle.author.equals(req.user._id) && req.user.role != 'test') {
-        res.sendStatus(404);
+        res.status(404).send(res.__('Puzzle is not available yet'));
         return;
       }
     }
