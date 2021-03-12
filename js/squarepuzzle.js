@@ -262,6 +262,26 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     collectAreas: this.editMode,
   }
 
+  typeProperties["snake_scope"] = {
+    needNodes: true,
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      if (cell.isClue && cell.data.image != "cross") {
+        setClueClickSwitch(cell, [{},{color: self.colorSchema.greyColor, returnValue: "1"}], [{},{color: "#a0a0a0"}]);
+      }
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
+    nodeEditController: node => {node.isClue = true; setNumberChooser(node, 0, 3);},
+    decodeClue: value => {
+      if (value=="cross") return {image: "cross"};
+      else if (this.editMode) {
+        return {text: value};
+      } else {
+        return {color: self.colorSchema.gridColor, text: value};
+      }
+    },
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }

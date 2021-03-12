@@ -114,16 +114,16 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "maxi_loop",
+      typeCode: "snake_scope",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "8x8"
     };
     var settings = {
       local: true,
       
-      data:  {"a1":"3","d2":"4","a3":"2","e3":"2","d5":"3","e5":"4","areas":[["a1","b1","a2","b2"],["c1","d1","e1","c2"],["f1","e2","f2","f3"],["d2","c3","d3","c4"],["a3","a4","a5","a6"],["b3","b4","b5","c5"],["e3","d4","e4","f4"],["e5","f5","e6","f6"],["d5","b6","c6","d6"]]}
+      data:  {"nodes":{"a1-2":"2","c1-2":"3","e1-2":"3","g1-2":"3","a3-2":"3","c3-2":"1","d3-2":"2","e3-2":"2","g3-2":"1","a5-2":"2","c5-2":"3","d5-2":"1","e5-2":"2","g5-2":"2","a7-2":"2","c7-2":"1","e7-2":"1","g7-2":"3"}}
     };
-    settings.theme = "white";
+    settings.theme = "contrast";
     var grid = "#mainGrid"
     requirejs(["squarepuzzle"], function() {
       puzzle = new squarePuzzleType(puzzleData, controls, settings);

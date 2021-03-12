@@ -265,10 +265,16 @@ squarePuzzle.prototype.drawEdgeClues = function(edges) {
   }
 }
 
-squarePuzzle.prototype.drawNodeClues = function() {
-  for (const [key, value] of Object.entries(this.nodes)) {
-    var coord = this.decodeCoordinate(key);
-    this.nodes[coord.y][coord.x][0].setClue(this.decodeClue(value));
+squarePuzzle.prototype.drawNodeClues = function(nodes) {
+  for (const [key, value] of Object.entries(nodes)) {
+    var part = key.split("-");
+    var coord = this.decodeCoordinate(part[0]);
+    if (typeof part[1]=="undefined") {
+      var side = 2;
+    } else {
+      var side = parseInt(part[1]);
+    }
+    this.nodes[coord.y][coord.x][side].setClue(this.decodeClue(value));
   }
 }
 
@@ -794,8 +800,14 @@ squarePuzzleNode.prototype.drawImage = function() {
 }
 
 squarePuzzleNode.prototype.drawText = function() {
-  var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.5, this.data.text);
-  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor});
+  var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.35, this.data.text);
+  var textColor = this.puzzle.colorSchema.textColor;
+  if (this.data.color && this.data.color != "#fff") {
+    textColor = "#fff";
+  } else if (this.isClue){
+    textColor = this.puzzle.colorSchema.clueColor;
+  }
+  text.attr({"fill": textColor});
   return text;
 }
 
