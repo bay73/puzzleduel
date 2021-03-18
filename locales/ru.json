@@ -263,5 +263,6 @@
 	"Go to puzzle": "К задаче",
 	"without opponent": "без соперника",
 	"has finished solving in ": "завершил решение за ",
-	"Puzzle is not available yet": "Задача ещё не доступна"
+	"Puzzle is not available yet": "Задача ещё не доступна",
+	"The circles along the line should alternate the color": "Цвет кружков должен чередоваться при следовании вдоль линии"
 }

@@ -282,6 +282,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["alternate_loop"] = {
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
+    decodeClue: value => {return {image: value} },
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }

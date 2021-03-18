@@ -114,14 +114,14 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "snake_scope",
+      typeCode: "alternate_loop",
       id: "puzzle.code",
       dimension: "8x8"
     };
     var settings = {
       local: true,
       
-      data:  {"nodes":{"a1-2":"2","c1-2":"3","e1-2":"3","g1-2":"3","a3-2":"3","c3-2":"1","d3-2":"2","e3-2":"2","g3-2":"1","a5-2":"2","c5-2":"3","d5-2":"1","e5-2":"2","g5-2":"2","a7-2":"2","c7-2":"1","e7-2":"1","g7-2":"3"}}
+      data:  {"b1":"white_circle","d1":"black_circle","e1":"black_circle","b2":"black_circle","c2":"black_circle","d2":"white_circle","g2":"white_circle","f3":"white_circle","h3":"white_circle","e4":"white_circle","g4":"black_circle","a5":"white_circle","b5":"black_circle","c5":"black_circle","f5":"black_circle","h5":"black_circle","b6":"black_circle","e6":"white_circle","g6":"white_circle","a7":"white_circle","g7":"white_circle","c8":"black_circle","e8":"white_circle","h8":"black_circle"}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
