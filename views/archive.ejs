@@ -6,10 +6,12 @@
       <div class="card">
         <h1 class="card-header"><%= __('Daily puzzles') %></h1>
           <% function getMonth(puzzle) {return puzzle.daily?puzzle.daily.getMonth():"None"; } %>
+          <% function getYear(puzzle) {return puzzle.daily?puzzle.daily.getFullYear():""; } %>
+          <% function getMonthAndYear(puzzle) {return puzzle.daily?(puzzle.daily.getMonth()+puzzle.daily.getFullYear()):"None"; } %>
           <div class="accordion" id="mainAccordion">
             <% var prevMonth = null; %>
             <% puzzles.forEach(function(puzzle) { %>
-            <% if (getMonth(puzzle) != prevMonth) { %>
+            <% if (getMonthAndYear(puzzle) != prevMonth) { %>
             <% if (prevMonth!=null) { %>
                   </tbody>
                 </table>
@@ -17,22 +19,25 @@
             </div>
             <% } %>
             <div class="card">
-              <div class="card-header" id="month<%= getMonth(puzzle) %>Heading">
+              <div class="card-header" id="month<%= getMonthAndYear(puzzle) %>Heading">
                 <button class="btn btn-link" type="button"
-                  data-toggle="collapse" data-target="#month<%= getMonth(puzzle) %>Collapse"
-                  aria-expanded="true" aria-controls="month<%= getMonth(puzzle) %>Collapse"
+                  data-toggle="collapse" data-target="#month<%= getMonthAndYear(puzzle) %>Collapse"
+                  aria-expanded="true" aria-controls="month<%= getMonthAndYear(puzzle) %>Collapse"
                 >
-                  <h2><%= __('month' + getMonth(puzzle)) %></h2>
+                  <h2><%= __('month' + getMonth(puzzle)) %> <%= getYear(puzzle) %></h2>
                 </button>
               </div>
-              <div id="month<%= getMonth(puzzle) %>Collapse" class="collapse <%= prevMonth==null?"show":"" %>" aria-labelledby="month<%= getMonth(puzzle) %>Heading" data-parent="#mainAccordion">
+              <div id="month<%= getMonthAndYear(puzzle) %>Collapse"
+                   class="collapse <%= prevMonth==null?"show":"" %>"
+                   aria-labelledby="month<%= getMonthAndYear(puzzle) %>Heading"
+                   data-parent="#mainAccordion">
                 <table class="card-body table table-hover table-condensed ml-5">
                   <tbody>
                     <tr>
                       <th><%= __('Date') %></th><th><%= __('Puzzle') %></th><th class="d-none d-sm-block"><%= __('Best score') %></th>
                     </tr>
             <% } %>
-            <% prevMonth = getMonth(puzzle); %>
+            <% prevMonth = getMonthAndYear(puzzle); %>
                     <tr>
                       <td>
                         <%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>
