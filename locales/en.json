@@ -261,5 +261,6 @@
 	"without opponent": "without opponent",
 	"has finished solving in ": "has finished solving in ",
 	"Puzzle is not available yet": "Puzzle is not available yet",
-	"The circles along the line should alternate the color": "The circles along the line should alternate the color"
+	"The circles along the line should alternate the color": "The circles along the line should alternate the color",
+	"Tie-break score": "Tie-break score"
 }

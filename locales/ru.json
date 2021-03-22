@@ -264,5 +264,6 @@
 	"without opponent": "без соперника",
 	"has finished solving in ": "завершил решение за ",
 	"Puzzle is not available yet": "Задача ещё не доступна",
-	"The circles along the line should alternate the color": "Цвет кружков должен чередоваться при следовании вдоль линии"
+	"The circles along the line should alternate the color": "Цвет кружков должен чередоваться при следовании вдоль линии",
+	"Tie-break score": "Доп.показатель"
 }
