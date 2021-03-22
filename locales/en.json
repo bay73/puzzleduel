@@ -70,7 +70,7 @@
 	"All cells should be painted": "All cells should be painted",
 	"Wrong max length of painted cell block in the column": "Wrong max length of painted cell block in the column",
 	"Wrong max length of painted cell block in the row": "Wrong max length of painted cell block in the row",
-	"There should be single loop passing through all cells": "There should be single loop passing through all cells",
+	"There should be single loop passing through all cells": "All cells should be visited and there should be a single loop",
 	"There should be single loop without bifurcations": "There should be single loop without bifurcations",
 	"The line should have turn at every circle": "The line should have turn at every circle",
 	"Every second turn of the line should be makred": "Every second turn of the line should be makred",

@@ -71,7 +71,7 @@
 	"All cells should be painted": "Все клетки должны быть закрашены",
 	"Wrong max length of painted cell block in the column": "Неверная максимальная длина закрашенного блока в столбце",
 	"Wrong max length of painted cell block in the row": "Неверная максимальная длина закрашенного блока в ряду",
-	"There should be single loop passing through all cells": "Один цикл должен проходить через все клетки",
+	"There should be single loop passing through all cells": "Необходимо посетить все клетки и цикл должен быть единым",
 	"There should be single loop without bifurcations": "Должен быть один цикл без разветвлений",
 	"The line should have turn at every circle": "Линия должна поворачивать в каждом кружке",
 	"Every second turn of the line should be makred": "Каждый второй поворот должен быть отмечен кружком",
