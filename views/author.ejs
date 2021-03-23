@@ -72,9 +72,13 @@
         <script>
           var squared = [];
           var needLetters = [];
+          var rows = [];
           <% types.forEach(function(type) { %>
           <% if (type.properties && type.properties.squared) { %>
           squared['<%= type.code %>'] = true;
+          <% } %>
+          <% if (type.properties && type.properties.rows) { %>
+          rows['<%= type.code %>'] = <%= type.properties.rows %>;
           <% } %>
           <% if (type.properties && type.properties.needLetters) { %>
           needLetters['<%= type.code %>'] = true;
@@ -85,14 +89,21 @@
           $("#type").change(function() {
             $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true);
             $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
+            $("#rows").parent().toggle(typeof rows[$("#type").children("option:selected").val()] == "undefined");
           });
           $("#createPuzzle").click(function () {
             var type = $("#type").children("option:selected").val();
-            if (squared[type]) {
-              var dimension = $("#rows").val() + "x" + $("#rows").val();
+            if (typeof rows[type] != "undefined") {
+              var rowN = rows[type];
             } else {
-              var dimension = $("#cols").val() + "x" + $("#rows").val();
+              var rowN = $("#rows").val();
             }
+            if (squared[type]) {
+              var colN = rowN;
+            } else {
+              var colN = $("#cols").val();
+            }
+            var dimension = colN + "x" + rowN;
             if (needLetters[type]) {
               var letters = $("#letters").val().replace(/[^ABCDE1234567890]/g, '');
               if (!letters) {
