@@ -66,3 +66,46 @@ module.exports.isHiddenType = function(type) {
   }
   return false;
 }
+
+function processRuleTags(rules, dimension) {
+  var part = dimension.split("-");
+  var dimensions = dimension.split("x");
+  var rows = parseInt(dimensions[1]);
+  var cols = parseInt(dimensions[0]);
+  var letters = [];
+  if (typeof part[1] != "undefined") {
+    for (var i=0;i<part[1].length;i++) {
+      letters.push(part[1].charAt(i));
+    }
+  }
+
+  while (rules.indexOf('{') >= 0) {
+    var open = rules.indexOf('{');
+    var close = rules.indexOf('}');
+    var value = eval(rules.substring(open + 1, close));
+    rules = rules.substring(0, open) + value + rules.substring(close+1);
+  }
+  return rules;
+}
+
+module.exports.puzzleToObj = async function(puzzle, locale) {
+  if (!puzzle) return null;
+  var puzzleObj = puzzle.toObject();
+  var type = await PuzzleType.findOne({ code: puzzleObj.type });
+  if (locale != 'en') {
+    if (type.translations[locale] && type.translations[locale].rules) {
+      type.rules = type.translations[locale].rules;
+    }
+  }
+  type.rules = processRuleTags(type.rules, puzzleObj.dimension);
+  if(type) {
+    puzzleObj.type = type.toObject();
+  }
+  if (puzzleObj.author) {
+    puzzleObj.authorId = puzzleObj.author;
+    var author = await User.findById(puzzleObj.author, "name");
+    puzzleObj.author = author.name;
+  }
+  return puzzleObj;
+}
+

@@ -35,23 +35,7 @@ router.get('/:puzzleid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    var puzzleObj = puzzle.toObject();
-    var type = await PuzzleType.findOne({ code: puzzleObj.type });
-    if (req.getLocale() != 'en') {
-      if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
-        type.rules = type.translations[req.getLocale()].rules;
-      }
-    }
-    if(type) {
-      puzzleObj.type = type.toObject();
-    }
-    if (puzzleObj.author) {
-      puzzleObj.authorId = puzzleObj.author;
-      var author = await User.findById(puzzleObj.author, "name");
-      if(author) {
-        puzzleObj.author = author.name;
-      }
-    }
+    var puzzleObj = await util.puzzleToObj(puzzle, req.getLocale());
     res.render('single', {
       user: req.user,
       puzzle: puzzleObj

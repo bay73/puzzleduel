@@ -8,26 +8,7 @@ const PuzzleType = require('../models/PuzzleType');
 const Contest = require('../models/Contest');
 // User model
 const User = require('../models/User');
-
-async function puzzleToObj(puzzle, locale) {
-  if (!puzzle) return null;
-  var puzzleObj = puzzle.toObject();
-  var type = await PuzzleType.findOne({ code: puzzleObj.type });
-  if (locale != 'en') {
-    if (type.translations[locale] && type.translations[locale].rules) {
-      type.rules = type.translations[locale].rules;
-    }
-  }
-  if(type) {
-    puzzleObj.type = type.toObject();
-  }
-  if (puzzleObj.author) {
-    puzzleObj.authorId = puzzleObj.author;
-    var author = await User.findById(puzzleObj.author, "name");
-    puzzleObj.author = author.name;
-  }
-  return puzzleObj;
-}
+const util = require('../utils/puzzle_util');
 
 // Welcome Page
 router.get('/', async (req, res, next) => {
@@ -35,7 +16,7 @@ router.get('/', async (req, res, next) => {
     var datetime = new Date();
     var dailyPuzzle = await Puzzle.findOne({daily: datetime.toISOString().slice(0,10)}, "-data");
     if (dailyPuzzle) {
-      var dailyPuzzleObj = await puzzleToObj(dailyPuzzle, req.getLocale());
+      var dailyPuzzleObj = await util.puzzleToObj(dailyPuzzle, req.getLocale());
       if (typeof dailyPuzzleObj.contest != "undefined") {
         dailyPuzzleObj.contest.link = "/contest/" + dailyPuzzleObj.contest.contestId;
         var contest = await Contest.findOne({code: dailyPuzzleObj.contest.contestId}, "name");
@@ -53,7 +34,7 @@ router.get('/', async (req, res, next) => {
       if (contestPuzzleId) {
         var contestPuzzle = await Puzzle.findOne({code: contestPuzzleId}, "-data");
         if (contestPuzzle) {
-          var contestPuzzleObj = await puzzleToObj(contestPuzzle, req.getLocale());
+          var contestPuzzleObj = await util.puzzleToObj(contestPuzzle, req.getLocale());
           contestPuzzleObj.contest = {
             name: contest.name,
             link: "/contest/" + contest.code
