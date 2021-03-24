@@ -277,7 +277,7 @@ async function recountContest(contestId) {
     if (round == 1) {
       await initialSeed(contestId, false);
     } else {
-      await seed(contestId, round, true);
+      await seed(contestId, round, false);
     }
   }
   return true;
