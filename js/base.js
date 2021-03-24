@@ -60,6 +60,7 @@ basePuzzle.prototype.render = function(snap) {
     },
     connector: {
       "strokeWidth": this.size.unitSize < 36 ? 6 : Math.round(this.size.unitSize/6),
+      "stroke-opacity": 0.8,
       "stroke-linecap": "round"
     },
     pencilConnector: {
