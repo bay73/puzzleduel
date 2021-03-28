@@ -380,7 +380,7 @@ squarePuzzle.prototype.showErrorCells = function(result) {
 
 
 // base element  of square grid ///////////////////////////////////////////
-var squareGridElement = function(puzzle, col, row) {
+squareGridElement = function(puzzle, col, row) {
   gridElement.call(this, puzzle);
   this.col = col;
   this.row = row;
@@ -408,7 +408,7 @@ squareGridElement.prototype.cellCorners = function() {
 }
 
 // cell of square grid ///////////////////////////////////////////
-var squarePuzzleCell = function(puzzle, col, row) {
+squarePuzzleCell = function(puzzle, col, row) {
   squareGridElement.call(this, puzzle, col, row);
 }
 
@@ -569,7 +569,7 @@ squarePuzzleCell.prototype.commonConnector = function(startElement) {
 
 
 // edge of square grid ///////////////////////////////////////////
-var squarePuzzleEdge = function(puzzle, col, row, side) {
+squarePuzzleEdge = function(puzzle, col, row, side) {
   squareGridElement.call(this, puzzle, col, row);
   this.side = side;
   this.allCells = [];
@@ -652,7 +652,7 @@ squarePuzzleEdge.prototype.isPointInside = function(position) {
 
 
 // connector of square grid ///////////////////////////////////////////
-var squarePuzzleConnector = function(puzzle, col, row, side) {
+squarePuzzleConnector = function(puzzle, col, row, side) {
   squareGridElement.call(this, puzzle, col, row);
   this.side = side;
   this.allCells = [];
@@ -754,7 +754,7 @@ squarePuzzleConnector.prototype.isPointInside = function(position) {
 }
 
 // node of square grid ///////////////////////////////////////////
-var squarePuzzleNode = function(puzzle, col, row, side) {
+squarePuzzleNode = function(puzzle, col, row, side) {
   squareGridElement.call(this, puzzle, col, row);
   this.side = side;
   this.allCells = [];

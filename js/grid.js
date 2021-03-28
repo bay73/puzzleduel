@@ -39,11 +39,18 @@ gridElement.prototype.setClue = function(clueData) {
   this.redraw();
 }
 
+gridElement.prototype.revertTo = function(oldData) {
+  this.data = oldData;
+  var coord = this.getCoordinates();
+  this.puzzle.logStep(coord, "revert");
+  this.redraw();
+}
+
 gridElement.prototype.switchToData = function(data) {
   var oldData = this.data;
   var self = this;
   var coord = this.getCoordinates();
-  this.puzzle.addStep(()=>{self.data = oldData; self.puzzle.logStep(coord, "revert"); self.redraw()});
+  this.puzzle.addStep(()=>self.revertTo(oldData));
   this.data = Object.assign({text: null, image: null, color: null, textColor: null}, data);
   this.puzzle.logStep(coord, this.diffToString(oldData, data))
   this.pencilData = null;
