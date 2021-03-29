@@ -114,19 +114,19 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "alternate_loop",
+      typeCode: "abc_division",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "8x5-ABCDE"
     };
     var settings = {
       local: true,
       
-      data:  {"b1":"white_circle","d1":"black_circle","e1":"black_circle","b2":"black_circle","c2":"black_circle","d2":"white_circle","g2":"white_circle","f3":"white_circle","h3":"white_circle","e4":"white_circle","g4":"black_circle","a5":"white_circle","b5":"black_circle","c5":"black_circle","f5":"black_circle","h5":"black_circle","b6":"black_circle","e6":"white_circle","g6":"white_circle","a7":"white_circle","g7":"white_circle","c8":"black_circle","e8":"white_circle","h8":"black_circle"}
+      data:  {"a1":"A","b1":"B","c1":"B","d1":"A","e1":"C","f1":"C","g1":"B","h1":"A","a2":"A","b2":"C","c2":"B","d2":"C","e2":"D","f2":"D","g2":"A","h2":"C","a3":"D","b3":"D","c3":"E","d3":"A","e3":"E","f3":"E","g3":"B","h3":"C","a4":"C","b4":"B","c4":"C","d4":"D","e4":"E","f4":"E","g4":"D","h4":"D","a5":"B","b5":"E","c5":"D","d5":"A","e5":"E","f5":"E","g5":"A","h5":"B"}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

@@ -135,6 +135,7 @@
 	"snakes": "Змеиные задачи",
 	"latin_square": "Другие латинские квадраты",
 	"sudoku": "Судоку",
+	"division": "Задачи на разрезание",
 	"other": "Другие задачи",
 	"Wrong length of blackened fragment in the column": "Неверная длина закрашенного фрагмента в столбце",
 	"Wrong length of blackened fragment in the row": "Неверная длина закрашенного фрагмента в ряду",
@@ -265,5 +266,6 @@
 	"has finished solving in ": "завершил решение за ",
 	"Puzzle is not available yet": "Задача ещё не доступна",
 	"The circles along the line should alternate the color": "Цвет кружков должен чередоваться при следовании вдоль линии",
-	"Tie-break score": "Доп.показатель"
+	"Tie-break score": "Доп.показатель",
+	"Each area should contain all letters exactly once": "Каждая область должна содержать все буквы по одному разу"
 }

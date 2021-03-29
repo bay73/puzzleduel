@@ -73,17 +73,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "alternate_loop",
+      typeCode: "abc_division",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "8x5-ABC"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

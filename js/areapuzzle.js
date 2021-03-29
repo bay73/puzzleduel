@@ -138,7 +138,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
   var typeProperties = {}
 
-  typeProperties["abcde_division"] = {
+  typeProperties["abc_division"] = {
     needNodes: true,
     needConnectors: true,
     edgeController: edge => {
@@ -154,12 +154,29 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     connectorController: connector => {
       setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
     },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{text: "A", returnValue: "A"},{text: "B", returnValue: "B"},{text: "C", returnValue: "C"},{text: "D", returnValue: "D"},{text: "E", returnValue: "E"}];},
+    cellEditController: cell => {
+      cell.isClue = true;
+      cell.chooserValues = [{}];
+      for (var i = 0; i < self.letters.length; i++) {
+        cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
+      }
+    },
     collectAreas: !this.editMode,
   }
 
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
+  }
+}
+
+areaPuzzleType.prototype.parseDimension = function(dimension) {
+  if (this.typeCode == "abc_division") {
+    // Parse dimension string to values.
+    var part = dimension.split("-");
+    squarePuzzle.prototype.parseDimension.call(this, part[0]);
+    this.letters = part[1];
+  } else {
+    squarePuzzle.prototype.parseDimension.call(this, dimension);
   }
 }
 
