@@ -96,20 +96,7 @@ router.get('/:setid/show/:puzzleid', async (req, res, next) => {
         res.sendStatus(404);
         return;
       }
-      var showPuzzleObj = puzzle.toObject();
-      var type = typeMap[showPuzzleObj.type];
-      if (req.getLocale() != 'en') {
-        if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
-          type.rules = type.translations[req.getLocale()].rules;
-        }
-      }
-      if(type) {
-        showPuzzleObj.type = type;
-      }
-      var author = userMap[showPuzzleObj.author];
-      if(author) {
-        showPuzzleObj.author = author;
-      }
+      var showPuzzleObj = await util.puzzleToObj(puzzle, req.getLocale());
     }
     res.render('puzzleset', {user: req.user, set: setObj, puzzles: puzzleList, puzzle: showPuzzleObj})
   } catch (e) {

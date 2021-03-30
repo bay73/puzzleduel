@@ -93,8 +93,13 @@ module.exports.puzzleToObj = async function(puzzle, locale) {
   var puzzleObj = puzzle.toObject();
   var type = await PuzzleType.findOne({ code: puzzleObj.type });
   if (locale != 'en') {
-    if (type.translations[locale] && type.translations[locale].rules) {
-      type.rules = type.translations[locale].rules;
+    if (type.translations[locale]) {
+      if (type.translations[locale].rules) {
+        type.rules = type.translations[locale].rules;
+      }
+      if (type.translations[locale].gridControl) {
+        type.gridControl = type.translations[locale].gridControl;
+      }
     }
   }
   type.rules = processRuleTags(type.rules, puzzleObj.dimension);

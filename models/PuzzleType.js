@@ -16,6 +16,10 @@ const PuzzleTypeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  gridControl: {
+    type: String,
+    required: false
+  },
   puzzleJs: {
     type: String,
     required: true
