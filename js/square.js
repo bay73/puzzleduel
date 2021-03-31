@@ -535,34 +535,51 @@ squarePuzzleCell.prototype.hasMultiPencil = function() {
   return this.puzzle.typeProperties.cellMultiPencil;
 }
 
-squarePuzzleCell.prototype.processDragMove = function(startElement) {
+squarePuzzleCell.prototype.processDragEnd = function(startElement) {
   if (startElement.constructor.name != this.constructor.name) {
     return false;
   }
-  var commonConnector = this.commonConnector(startElement);
-  if (!commonConnector) {
+  var commonConnectors = this.commonConnectors(startElement);
+  if (!commonConnectors) {
     return false;
   }
-  commonConnector.switchOnDrag();
+  commonConnectors.forEach(connector => connector.switchOnDrag());
+  return true;
+}
+
+squarePuzzleCell.prototype.processDragMove = function(startElement) {
+  if (!this.processDragEnd(startElement)) {
+    return false;
+  }
   return {newMouseStartElement: this};
 }
 
-squarePuzzleCell.prototype.commonConnector = function(startElement) {
+squarePuzzleCell.prototype.commonConnectors = function(startElement) {
   if (this == startElement) {
     return null;
   }
-  if (this.col == startElement.col && Math.abs(this.row - startElement.row) == 1) {
+  if (this.col == startElement.col) {
     var col = this.col;
-    var row = this.row < startElement.row ? this.row : startElement.row;
+    var row1 = this.row < startElement.row ? this.row : startElement.row;
+    var row2 = this.row < startElement.row ? startElement.row : this.row;
     var side = 'v';
+    var connectors = [];
+    for (var r=row1; r<row2; r++) {
+      connectors.push(this.puzzle.connectors[r][col][side])
+    }
   }
-  if (this.row == startElement.row && Math.abs(this.col - startElement.col) == 1) {
-    var col = this.col < startElement.col ? this.col : startElement.col;
+  if (this.row == startElement.row) {
+    var col1 = this.col < startElement.col ? this.col : startElement.col;
+    var col2 = this.col < startElement.col ? startElement.col: this.col;
     var row = this.row;
     var side = 'h';
+    var connectors = [];
+    for (var c=col1; c<col2; c++) {
+      connectors.push(this.puzzle.connectors[row][c][side])
+    }
   }
-  if (side) {
-    return this.puzzle.connectors[row][col][side];
+  if (connectors) {
+    return connectors;
   }
   return null;
 }
@@ -837,50 +854,70 @@ squarePuzzleNode.prototype.processDragEnd = function(startElement) {
   if (startElement.constructor.name != this.constructor.name) {
     return false;
   }
-  var commonEdge = this.commonEdge(startElement);
-  if (!commonEdge) {
+  var commonEdges = this.commonEdges(startElement);
+  if (!commonEdges) {
     return false;
   }
-  commonEdge.switchOnDrag();
+  commonEdges.forEach(edge => edge.switchOnDrag());
+  return true;
 }
 
 squarePuzzleNode.prototype.processDragMove = function(startElement) {
-  if (startElement.constructor.name != this.constructor.name) {
+  if (!this.processDragEnd(startElement)) {
     return false;
   }
-  var commonEdge = this.commonEdge(startElement);
-  if (!commonEdge) {
-    return false;
-  }
-  commonEdge.switchOnDrag();
   return {newMouseStartElement: this};
 }
 
-squarePuzzleNode.prototype.commonEdge = function(otherNode) {
-  for (var i=0; i < this.allCells.length; i++) {
-    for (var j=0; j < otherNode.allCells.length; j++) {
-      var one = this.allCells[i];
-      var two = otherNode.allCells[j];
-      if (one.row == two.row && one.col == two.col) {
-        // two nodes have common cell
-        if (one.side == two.side) {
-          // the same node
-          return null;
-        }
-        if (one.side == two.side - 1) {
-          return this.puzzle.edges[one.row][one.col][one.side];
-        }
-        if (one.side == two.side + 1) {
-          return this.puzzle.edges[two.row][two.col][two.side];
-        }
-        if (one.side == 0 && two.side == 3) {
-          return this.puzzle.edges[two.row][two.col][two.side];
-        }
-        if (one.side == 3 && two.side == 0) {
-          return this.puzzle.edges[one.row][one.col][one.side];
-        }
-      }
+squarePuzzleNode.prototype.position = function() {
+  switch (this.side) {
+    case 0:
+      return {row: this.row-1, col: this.col-1};
+    case 1:
+      return {row: this.row-1, col: this.col};
+    case 2:
+      return {row: this.row, col: this.col};
+    case 3:
+      return {row: this.row, col: this.col-1};
+  }
+}
+
+squarePuzzleNode.prototype.commonEdges = function(otherNode) {
+  if (this == otherNode) {
+    return null;
+  }
+  var thisPosition = this.position();
+  var otherPosition = otherNode.position();
+  if (thisPosition.col == otherPosition.col) {
+    var col = thisPosition.col;
+    var row1 = thisPosition.row < otherPosition.row ? thisPosition.row : otherPosition.row;
+    var row2 = thisPosition.row < otherPosition.row ? otherPosition.row : thisPosition.row;
+    var side = 1;
+    if (col == -1) {
+       col = 0;
+       side = 3;
     }
+    var edges = [];
+    for (var r=row1; r<row2; r++) {
+      edges.push(this.puzzle.edges[r+1][col][side])
+    }
+  }
+  if (thisPosition.row == otherPosition.row) {
+    var col1 = thisPosition.col < otherPosition.col ? thisPosition.col : otherPosition.col;
+    var col2 = thisPosition.col < otherPosition.col ? otherPosition.col: thisPosition.col;
+    var row = thisPosition.row;
+    var side = 2;
+    if (row == -1) {
+       row = 0;
+       side = 0;
+    }
+    var edges = [];
+    for (var c=col1; c<col2; c++) {
+      edges.push(this.puzzle.edges[row][c+1][side])
+    }
+  }
+  if (edges) {
+    return edges;
   }
   return null;
 }
