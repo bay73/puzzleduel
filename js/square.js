@@ -628,7 +628,7 @@ squarePuzzleEdge.prototype.clearColor = function() {
 }
 
 squarePuzzleEdge.prototype.drawImage = function() {
-  return this.snapImage(this.center(), this.puzzle.size.unitSize*0.5, this.data.image)
+  return this.snapImage(this.center(), this.puzzle.size.unitSize*0.7, this.data.image)
 }
 
 squarePuzzleEdge.prototype.drawText = function() {

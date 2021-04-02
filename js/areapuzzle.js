@@ -80,7 +80,8 @@ squarePuzzleConnector.prototype.switchToData = function(data) {
       if (edge) {
         for (var c=0; c<edge.allCells.length; c++) {
           if (edge.allCells[c].col==cell2.col && edge.allCells[c].row==cell2.row) {
-            edge.clearData();
+            edge.data.color = null;
+            edge.redraw();
           }
         }
       }
@@ -105,7 +106,8 @@ squarePuzzleEdge.prototype.switchToData = function(data) {
       if (connector) {
         for (var c=0; c<connector.allCells.length; c++) {
           if (connector.allCells[c].col==cell2.col && connector.allCells[c].row==cell2.row) {
-            connector.clearData();
+            connector.data.color = null;
+            connector.redraw();
             this.puzzle.recountConnectorAreas();
           }
         }
@@ -123,13 +125,11 @@ squarePuzzleEdge.prototype.getValue = function() {
 
 squarePuzzleEdge.prototype.setGray = function(needGray) {
   if (needGray && !this.data.color) {
-    this.data = Object.assign(
-       {text: null, image: null, color: null, textColor: null},
-       {color: this.puzzle.colorSchema.greyColor});
+    this.data.color = this.puzzle.colorSchema.greyColor;
     this.redraw();
   }
   if (!needGray && this.data.color == this.puzzle.colorSchema.greyColor) {
-    this.data = {text: null, image: null, color: null, textColor: null};
+    this.data.color = null;
     this.redraw();
   }
 }
@@ -161,6 +161,34 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
         cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
       }
     },
+    collectAreas: !this.editMode,
+  }
+
+  typeProperties["spiral_galaxies"] = {
+    needNodes: true,
+    needConnectors: true,
+    edgeController: edge => {
+       if (edge.allCells.length > 1) {
+         if (edge.isClue && edge.data.image == "black_circle") {
+           edge.clickSwitch = [{image: "black_circle"},{image: "black_circle", color: self.colorSchema.gridColor, returnValue: "1"}];
+           edge.dragSwitch = [{image: "black_circle"},{image: "black_circle", color: self.colorSchema.gridColor, returnValue: "1"}];
+         } else {
+           edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+           edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         }
+       }
+    },
+    nodeController: node => node.dragProcessor = true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "small_circle", returnValue: "small_circle"}];},
+    nodeEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "black_circle", returnValue: "black_circle"}];},
+    edgeEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "black_circle", returnValue: "black_circle"}];},
+    decodeClue: value => {return {image: value} },
     collectAreas: !this.editMode,
   }
 
