@@ -267,5 +267,6 @@
 	"Puzzle is not available yet": "Задача ещё не доступна",
 	"The circles along the line should alternate the color": "Цвет кружков должен чередоваться при следовании вдоль линии",
 	"Tie-break score": "Доп.показатель",
-	"Each area should contain all letters exactly once": "Каждая область должна содержать все буквы по одному разу"
+	"Each area should contain all letters exactly once": "Каждая область должна содержать все буквы по одному разу",
+	"Anniversary duel": "Anniversary duel"
 }
