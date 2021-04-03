@@ -126,7 +126,7 @@
     settings.theme = "contrast";
     var grid = "#mainGrid"
     requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, controls, settings);
+      puzzle = new galaxiesType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

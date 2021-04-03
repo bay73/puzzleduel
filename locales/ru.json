@@ -268,5 +268,8 @@
 	"The circles along the line should alternate the color": "Цвет кружков должен чередоваться при следовании вдоль линии",
 	"Tie-break score": "Доп.показатель",
 	"Each area should contain all letters exactly once": "Каждая область должна содержать все буквы по одному разу",
-	"Anniversary duel": "Anniversary duel"
+	"Anniversary duel": "Anniversary duel",
+	"Each area should contain exactly one circle": "В каждой области должен быть один кружок",
+	"Each cell should belong to exactly one area": "Каждая ячейка должна принадлежать ровно одной области",
+	"Circle should be at the center of rotational symmetry the area": "Кружок должен быть центром вращательной симметрии для области"
 }

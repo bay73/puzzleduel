@@ -6,7 +6,16 @@ areaPuzzleType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(areaPuzzleType.prototype, squarePuzzle.prototype);
 
+galaxiesType = function(puzzleData, controls, settings) {
+  areaPuzzleType.call(this, puzzleData, controls, settings);
+}
+
+Object.setPrototypeOf(galaxiesType.prototype, areaPuzzleType.prototype);
+
 areaPuzzleType.prototype.recountConnectorAreas = function() {
+  if (!this.typeProperties.recountConnector) {
+    return;
+  }
   var areaData = []
   var root = function(area) {
     if (areaData[area].parent == area) return area;
@@ -51,8 +60,11 @@ areaPuzzleType.prototype.recountConnectorAreas = function() {
         var cellAreas = [];
         for (var c=0; c<edge.allCells.length; c++) {
           var cellArea = root(areaLink[edge.allCells[c].row][edge.allCells[c].col]);
-          if (areaData[cellArea].volume > 1 && !cellAreas.includes(cellArea)) {
-            cellAreas.push(cellArea);
+          if (!cellAreas.includes(cellArea)) {
+            if (areaData[cellArea].volume > 1
+               || this.isAreaRoot(this.cells[edge.allCells[c].row][edge.allCells[c].col])) {
+              cellAreas.push(cellArea);
+            }
           }
         }
         if (cellAreas.length > 1) {
@@ -63,6 +75,14 @@ areaPuzzleType.prototype.recountConnectorAreas = function() {
       }
     }
   }
+}
+
+areaPuzzleType.prototype.isAreaRoot = function(cell) {
+  return false;
+}
+
+galaxiesType.prototype.isAreaRoot = function(cell) {
+  return cell.isClue;
 }
 
 squarePuzzleConnector.prototype.revertTo = function(oldData) {
@@ -162,6 +182,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       }
     },
     collectAreas: !this.editMode,
+    recountConnector: !this.editMode,
   }
 
   typeProperties["spiral_galaxies"] = {
@@ -190,6 +211,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     edgeEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "black_circle", returnValue: "black_circle"}];},
     decodeClue: value => {return {image: value} },
     collectAreas: !this.editMode,
+    recountConnector: !this.editMode,
   }
 
   if (typeCode in typeProperties) {
