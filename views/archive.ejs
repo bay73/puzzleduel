@@ -34,7 +34,12 @@
                 <table class="card-body table table-hover table-condensed ml-5">
                   <tbody>
                     <tr>
-                      <th><%= __('Date') %></th><th><%= __('Puzzle') %></th><th class="d-none d-sm-block"><%= __('Best score') %></th>
+                      <th><%= __('Date') %></th>
+                      <th><%= __('Puzzle') %></th>
+                      <% if (user) { %>
+                      <th class="d-none d-sm-table-cell"><%= __('Your time') %></th>
+                      <% } %>
+                      <th class="d-none d-sm-table-cell"><%= __('Best score') %></th>
                     </tr>
             <% } %>
             <% prevMonth = getMonthAndYear(puzzle); %>
@@ -51,7 +56,12 @@
                           <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
                         </a>
                       </td>
-                      <td class="d-none d-sm-block">
+                      <% if (user) { %>
+                      <td class="d-none d-sm-table-cell">
+                        <%= puzzle.userTime %>
+                      </td>
+                      <% } %>
+                      <td class="d-none d-sm-table-cell">
                         <a href="/archive/<%= puzzle.code %>/scores">
                           <%= puzzle.time %>
                         </a>

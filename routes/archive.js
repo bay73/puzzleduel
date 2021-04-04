@@ -19,6 +19,11 @@ router.get(['/','/daily'],
     if (req.user && req.user.role == "test") {
       filter = {};
     }
+    if (req.user) {
+      var userTimesMap = await util.userSolvingTimeMap(req.user._id, false);
+    } else {
+      var userTimesMap = {};
+    }
     const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
     res.render('archive', {
       user: req.user,
@@ -29,6 +34,8 @@ router.get(['/','/daily'],
           dimension: puzzle.dimension,
           daily: puzzle.daily,
           competitive: puzzle.needLogging,
+          userTime: userTimesMap[puzzle.code]?util.timeToString(userTimesMap[puzzle.code].time):"",
+          userErr: userTimesMap[puzzle.code]?userTimesMap[puzzle.code].errors:0,
           time: util.timeToString(timesMap[puzzle.code])
         };
       })
