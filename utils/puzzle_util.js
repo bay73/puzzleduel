@@ -39,6 +39,27 @@ module.exports.bestSolvingTimeMap = async function(includeHidden) {
   return timesMap;
 }
 
+module.exports.userSolvingTimeMap = async function(userId, includeHidden) {
+  var filter = {};
+  if (!includeHidden) {
+    filter = {
+      userId : userId,
+      $or: [
+        {hidden: false},
+        {hidden: {$exists: false}}
+      ]
+    }
+  } else {
+    filter = {
+      userId : userId
+    }
+  }
+  const times = await UserSolvingTime.find(filter);
+  var timesMap = {};
+  times.forEach(time => timesMap[time.puzzleId] = {time: time.solvingTime, errors: time.errCount});
+  return timesMap;
+}
+
 module.exports.typeNameMap = async function() {
   const types = await PuzzleType.find({}, "code name");
   var typeMap = {};
