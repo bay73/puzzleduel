@@ -115,6 +115,29 @@ squarePuzzleEdge.prototype.revertTo = function(oldData) {
   this.puzzle.recountConnectorAreas();
 }
 
+squarePuzzleCell.prototype.chooserData = function() {
+  if (this.puzzle.typeCode == "shikaku") {
+    var values = this.chooserValues.slice(0, 10);
+    values.push({text: "+10"});
+    return values;
+  } else {
+    return squareGridElement.prototype.chooserData.call(this);
+  }
+}
+
+squarePuzzleCell.prototype.switchOnChooser = function(index) {
+  if (this.puzzle.typeCode == "shikaku" && index == 10) {
+    var currentIndex = this.findCurrent(this.chooserValues);
+    var newIndex = currentIndex + 10;
+    if (newIndex >= this.chooserValues.length) {
+      newIndex -= this.chooserValues.length;
+    }
+    return squareGridElement.prototype.switchOnChooser.call(this, newIndex);
+  } else  {
+    return squareGridElement.prototype.switchOnChooser.call(this, index);
+  }
+}
+
 squarePuzzleEdge.prototype.switchToData = function(data) {
   squareGridElement.prototype.switchToData.call(this, data);
   if (this.allCells.length >= 2) {
@@ -181,6 +204,27 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
         cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
       }
     },
+    collectAreas: !this.editMode,
+    recountConnector: !this.editMode,
+  }
+
+  typeProperties["shikaku"] = {
+    needNodes: true,
+    needConnectors: true,
+    edgeController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
+    },
+    nodeController: node => node.dragProcessor = true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+    },
+    cellEditController: cell => setNumberChooser(cell, 1, 99),
     collectAreas: !this.editMode,
     recountConnector: !this.editMode,
   }

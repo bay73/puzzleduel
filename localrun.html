@@ -114,19 +114,19 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "spiral_galaxies",
+      typeCode: "shikaku",
       id: "puzzle.code",
       dimension: "9x9"
     };
     var settings = {
       local: true,
       
-      data:  {"b2":"small_circle","e2":"small_circle","h3":"small_circle","g4":"small_circle","f6":"small_circle","b7":"small_circle","g9":"small_circle","edges":{"a1-2":"black_circle","c2-2":"black_circle","d2-2":"black_circle","d6-2":"black_circle","c7-2":"black_circle","a9-1":"black_circle"},"nodes":{"f2-2":"black_circle","h6-2":"black_circle"},"tag":""}
+      data: {"f1":"6","d2":"2","g2":"6","c3":"6","h3":"4","b4":"6","i4":"6","a5":"5","h5":"8","b6":"8","g6":"8","f7":"8","e8":"8","tag":""}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
     requirejs(["areapuzzle"], function() {
-      puzzle = new galaxiesType(puzzleData, controls, settings);
+      puzzle = new areaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

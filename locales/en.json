@@ -268,5 +268,8 @@
 	"Anniversary duel": "Anniversary duel",
 	"Each area should contain exactly one circle": "Each area should contain exactly one circle",
 	"Each cell should belong to exactly one area": "Each cell should belong to exactly one area",
-	"Circle should be at the center of rotational symmetry the area": "Circle should be at the center of rotational symmetry the area"
+	"Circle should be at the center of rotational symmetry the area": "Circle should be at the center of rotational symmetry the area",
+	"Clue should show the size of the area": "Clue should show the size of the area",
+	"Each area should have recatangular shape": "Each area should have recatangular shape",
+	"Each area should contain exactly one clue": "Each area should contain exactly one clue"
 }

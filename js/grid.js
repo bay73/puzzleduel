@@ -308,6 +308,10 @@ gridElement.prototype.useChooser = function() {
   return this.chooserValues != null;
 }
 
+gridElement.prototype.chooserData = function() {
+  return this.chooserValues;
+}
+
 gridElement.prototype.center = function() {
   // Returns the center point of the element.
   throw 'center is not implemented for ' + this.constructor.name + '!';

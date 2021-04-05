@@ -73,7 +73,7 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "spiral_galaxies",
+      typeCode: "shikaku",
       id: "puzzle.code",
       dimension: "9x9"
     };
@@ -83,7 +83,7 @@
     };
     settings.theme = "default";
     requirejs(["areapuzzle"], function() {
-      puzzle = new galaxiesType(puzzleData, "#editControls", settings);
+      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

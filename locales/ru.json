@@ -271,5 +271,8 @@
 	"Anniversary duel": "Anniversary duel",
 	"Each area should contain exactly one circle": "В каждой области должен быть один кружок",
 	"Each cell should belong to exactly one area": "Каждая ячейка должна принадлежать ровно одной области",
-	"Circle should be at the center of rotational symmetry the area": "Кружок должен быть центром вращательной симметрии для области"
+	"Circle should be at the center of rotational symmetry the area": "Кружок должен быть центром вращательной симметрии для области",
+	"Clue should show the size of the area": "Число должно показывать размер область",
+	"Each area should have recatangular shape": "Каждая область должна иметь прямоугольную форму",
+	"Each area should contain exactly one clue": "В каждой области долждно быть ровно одно число"
 }

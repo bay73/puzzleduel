@@ -34,7 +34,7 @@ chooserBuilder.prototype.drawChooser = function(element, chooserSize){
   var background = new chooserBackground(this, center, chooserSize);
   background.draw(center, chooserSize);
   this.chooserElements.push(background);
-  var values = element.chooserValues;
+  var values = element.chooserData();
   var angle = Math.PI * 2 / values.length;
   var distance = 1. / (1. + Math.sin(angle/2));
   for (var i=0;i<values.length;i++){
