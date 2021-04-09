@@ -54,4 +54,9 @@ app.use('/.well-known',express.static(__dirname + '/.well-known'));
 
 const PORT = process.env.PORT || 5000;
 
+setInterval(()=>{
+  const used = process.memoryUsage().heapUsed / 1024 / 1024;
+  console.log('used ' + (Math.round(used * 100) / 100) + ' MB');
+},5000)
+
 app.listen(PORT, console.log(`Server started on port ${PORT} at ` + new Date().toString()));
