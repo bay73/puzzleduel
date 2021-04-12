@@ -3,10 +3,12 @@ const router = express.Router();
 const util = require('../utils/puzzle_util');
 const Rating = require('../models/Rating');
 const User = require('../models/User');
+const profiler = require('../utils/profiler');
 
 router.get('/:userid',
   async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     var from = new Date(req.query.from);
     var to = new Date(req.query.to);
     from = isNaN(from) ? to : from;
@@ -84,6 +86,7 @@ router.get('/:userid',
           };
       })
     });
+    profiler.log('userStatistics', processStart);
   } catch (e) {
     next(e)
   }

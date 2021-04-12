@@ -8,9 +8,11 @@ const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const Rating = require('../models/Rating');
 const util = require('../utils/puzzle_util');
+const profiler = require('../utils/profiler');
 
 router.get('/:contestid', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const contest = await Contest.findOne({code: req.params.contestid});
     if (!contest) {
       res.sendStatus(404);
@@ -109,6 +111,7 @@ router.get('/:contestid', async (req, res, next) => {
       contest: contestObj,
       currentPuzzle: puzzleObj
     })
+    profiler.log('duelMainPage', processStart);
   } catch (e) {
     next(e);
   }
@@ -116,6 +119,7 @@ router.get('/:contestid', async (req, res, next) => {
 
 router.get('/:contestid/register', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user) {
       res.redirect('/duel/' + req.params.contestid);
       return;
@@ -131,11 +135,13 @@ router.get('/:contestid/register', async (req, res, next) => {
     var alreadyRegister = contest.participants.filter(user => user.userId.equals(req.user._id)).length > 0;
     if (alreadyRegister){
       res.redirect('/duel/' + req.params.contestid);
+      profiler.log('duelRegister', processStart);
       return;
     }
     contest.participants.push({userId: req.user._id, userName: req.user.name})
     await contest.save();
     res.redirect('/duel/' + req.params.contestid);
+    profiler.log('duelRegister', processStart);
   } catch (e) {
     next(e);
   }
@@ -143,6 +149,7 @@ router.get('/:contestid/register', async (req, res, next) => {
 
 router.get('/:contestid/unregister', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user) {
       res.redirect('/duel/' + req.params.contestid);
       return;
@@ -158,11 +165,13 @@ router.get('/:contestid/unregister', async (req, res, next) => {
     var alreadyRegister = contest.participants.filter(user => user.userId.equals(req.user._id)).length > 0;
     if (!alreadyRegister){
       res.redirect('/duel/' + req.params.contestid);
+      profiler.log('duelUnregister', processStart);
       return;
     }
     contest.participants = contest.participants.filter(user => !user.userId.equals(req.user._id))
     await contest.save();
     res.redirect('/duel/' + req.params.contestid);
+    profiler.log('duelUnregister', processStart);
   } catch (e) {
     next(e);
   }
@@ -170,6 +179,7 @@ router.get('/:contestid/unregister', async (req, res, next) => {
 
 router.get('/:contestid/opponent', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const contest = await Contest.findOne({code: req.params.contestid});
     if (!contest) {
       res.sendStatus(404);
@@ -220,6 +230,7 @@ router.get('/:contestid/opponent', async (req, res, next) => {
       layout: "empty_layout",
       opponent: opponent
     })
+    profiler.log('duelOpponentData', processStart);
   } catch (e) {
     next(e);
   }
@@ -227,6 +238,7 @@ router.get('/:contestid/opponent', async (req, res, next) => {
 
 router.get('/:contestid/standing', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const contest = await Contest.findOne({code: req.params.contestid});
     if (!contest) {
       res.sendStatus(404);
@@ -371,6 +383,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
       }),
       userData: userData
     })
+    profiler.log('duelStanding', processStart);
   } catch (e) {
     next(e);
   }
@@ -378,6 +391,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
 
 router.get('/:contestid/results/:puzzlenum', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const relaxSeconds = 10;
     const contest = await Contest.findOne({code: req.params.contestid});
     if (!contest) {
@@ -442,6 +456,7 @@ router.get('/:contestid/results/:puzzlenum', async (req, res, next) => {
       layout: "empty_layout",
       results: pairResults
     })
+    profiler.log('duelPuzzleResults', processStart);
   } catch (e) {
     next(e);
   }

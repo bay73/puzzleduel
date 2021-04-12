@@ -3,9 +3,11 @@ const router = express.Router();
 
 const Rating = require('../models/Rating');
 const computeRating = require('../utils/rating');
+const profiler = require('../utils/profiler');
 
 router.get('/:ratingdate', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     var d = new Date(Date.parse(req.params.ratingdate));
     if (d.getUTCDay() != 0) {
       d.setDate(d.getDate() - d.getUTCDay());
@@ -37,6 +39,7 @@ router.get('/:ratingdate', async (req, res, next) => {
       }),
       sortColumn: req.query.sort || "rating"
     }); 
+    profiler.log('ratingList', processStart);
   } catch (e) {
     next(e);
   }
@@ -50,6 +53,7 @@ router.get('/', (req, res) => {
 
 router.get('/:ratingdate/recount', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "admin") {
       res.sendStatus(404);
       return;
@@ -60,6 +64,7 @@ router.get('/:ratingdate/recount', async (req, res, next) => {
     }
     await computeRating(d);
     res.redirect('/rating/' + d.toISOString().split('T')[0]);
+    profiler.log('ratingRecount', processStart);
   } catch (e) {
     next(e);
   }

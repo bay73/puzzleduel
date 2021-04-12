@@ -8,6 +8,7 @@ const PuzzleType = require('../models/PuzzleType');
 const UserActionLog = require('../models/UserActionLog');
 // UserSolvingTime model
 const UserSolvingTime = require('../models/UserSolvingTime');
+const profiler = require('../utils/profiler');
 
 const type_cheker = {};
 
@@ -143,9 +144,11 @@ async function writeSolvingTime(user, puzzleId, hidden) {
 // Read puzzle header
 router.get('/:puzzleid', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-_id -data -code");
     if (!puzzle) {
       res.sendStatus(404);
+      profiler.log('puzzleHeaderFailed', processStart);
       return;
     }
     var returnObj = puzzle.toObject();
@@ -154,6 +157,7 @@ router.get('/:puzzleid', async (req, res, next) => {
       returnObj.type = type.toObject();
     }
     res.json(returnObj);
+    profiler.log('puzzleHeader', processStart);
   } catch (e) {
     next(e);
   }
@@ -162,18 +166,22 @@ router.get('/:puzzleid', async (req, res, next) => {
 // Read puzzle data
 router.get('/:puzzleid/start', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
     if (!puzzle) {
       res.sendStatus(404);
+      profiler.log('puzzleStartFailed', processStart);
       return;
     }
     if (puzzle.hidden) {
       if (!req.user) {
         res.sendStatus(404);
+        profiler.log('puzzleStartFailed', processStart);
         return;
       }
       if (!puzzle.author.equals(req.user._id) && req.user.role != 'test') {
         res.status(404).send(res.__('Puzzle is not available yet'));
+        profiler.log('puzzleStartFailed', processStart);
         return;
       }
     }
@@ -181,14 +189,17 @@ router.get('/:puzzleid/start', async (req, res, next) => {
       if (!req.user) {
         res.status(403).send(res.__('This puzzle is competitive and you should log in to solve it! ' +
                              'Check our <a href="/archive">archive</a> to try puzzles without registration'));
+        profiler.log('puzzleStartFailed', processStart);
         return;
       }
       if (req.user.role == "blocked") {
         res.status(403).send('Your account is blocked. Please contact the side admin');
+        profiler.log('puzzleStartFailed', processStart);
         return;
       }
       if (req.user.role == "admin") {
         res.status(403).send('Admin account cannot solve contest puzzles');
+        profiler.log('puzzleStartFailed', processStart);
         return;
       }
       if (req.user.role != "test") {
@@ -196,6 +207,7 @@ router.get('/:puzzleid/start', async (req, res, next) => {
       }
     }
     res.json(JSON.parse(puzzle.data));
+    profiler.log('puzzleStart', processStart);
   } catch (e) {
     next(e);
   }
@@ -204,6 +216,7 @@ router.get('/:puzzleid/start', async (req, res, next) => {
 // Read puzzle data
 router.get('/:puzzleid/get', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user) {
       res.sendStatus(403);
       return;
@@ -211,14 +224,17 @@ router.get('/:puzzleid/get', async (req, res, next) => {
     const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
     if (!puzzle) {
       res.sendStatus(404);
+      profiler.log('puzzleReadFailed', processStart);
       return;
     }
     var puzzleObj = puzzle.toObject();
     if (!puzzleObj.author || !puzzleObj.author.equals(req.user._id)) {
       res.sendStatus(404);
+      profiler.log('puzzleReadFailed', processStart);
       return;
     }
     res.json(JSON.parse(puzzle.data));
+    profiler.log('puzzleRead', processStart);
   } catch (e) {
     next(e);
   }
@@ -227,15 +243,18 @@ router.get('/:puzzleid/get', async (req, res, next) => {
 // Check puzzle solution
 router.post('/:puzzleid/check', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
     if (!puzzle) {
       res.sendStatus(404);
+      profiler.log('puzzleSubmitFailed', processStart);
       return;
     }
     var result = type_cheker[puzzle.type].check(puzzle.dimension, JSON.parse(puzzle.data), req.body);
     if (puzzle.needLogging) {
       if (!req.user) {
         res.status(403).send(res.__('You should log in to solve this puzzle!'));
+        profiler.log('puzzleSubmitFailed', processStart);
         return;
       }
       if (req.user.role != "test") {
@@ -254,6 +273,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
     }
     result.status = res.__(result.status);
     res.json(result);
+    profiler.log('puzzleSubmit', processStart);
   } catch (e) {
     next(e);
   }
@@ -262,6 +282,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
 // Save puzzle data
 router.post('/:puzzleid/edit', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user) {
       res.sendStatus(403);
       return;
@@ -269,15 +290,18 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
     const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
     if (!puzzle) {
       res.sendStatus(404);
+      profiler.log('puzzleEditFailed', processStart);
       return;
     }
     var puzzleObj = puzzle.toObject();
     if (!puzzleObj.author || !puzzleObj.author.equals(req.user._id)) {
       res.sendStatus(404);
+      profiler.log('puzzleEditFailed', processStart);
       return;
     }
     if (puzzle.published) {
       res.status(403).send(res.__('Puzzle is already published, changes are not allowed!'));
+      profiler.log('puzzleEditFailed', processStart);
       return;
     }
     var tag = req.body["tag"];
@@ -295,6 +319,7 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
     puzzle.difficulty = difficulty;
     await puzzle.save();
     res.json({status: "OK"});
+    profiler.log('puzzleEdit', processStart);
   } catch (e) {
     next(e);
   }
@@ -303,6 +328,7 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
 // Delete puzzle
 router.post('/:puzzleid/delete', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user) {
       res.sendStatus(403);
       return;
@@ -310,26 +336,31 @@ router.post('/:puzzleid/delete', async (req, res, next) => {
     const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
     if (!puzzle) {
       res.sendStatus(404);
+      profiler.log('puzzleDeleteFailed', processStart);
       return;
     }
     var puzzleObj = puzzle.toObject();
     if (!puzzleObj.author || !puzzleObj.author.equals(req.user._id)) {
       res.sendStatus(404);
+      profiler.log('puzzleDeleteFailed', processStart);
       return;
     }
     if (puzzle.tag == 'daily') {
       if (puzzle.daily) {
         res.status(403).send(res.__('Puzzle is already planned for publishing, deletion is not allowed!'));
+        profiler.log('puzzleDeleteFailed', processStart);
         return;
       }
     } else if (puzzle.tag && puzzle.tag != 'temporary') {
       res.status(403).send(res.__('Puzzle is already used, deletion is not allowed!'));
+      profiler.log('puzzleDeleteFailed', processStart);
       return;
     }
     await UserSolvingTime.deleteMany({puzzleId: puzzle.code});
     await UserActionLog.deleteMany({puzzleId: puzzle.code});
     await puzzle.delete();
     res.json({status: "OK"});
+    profiler.log('puzzleDelete', processStart);
   } catch (e) {
     next(e);
   }

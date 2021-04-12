@@ -12,6 +12,7 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 // UserActionLog model
 const UserActionLog = require('../models/UserActionLog');
 const util = require('../utils/puzzle_util');
+const profiler = require('../utils/profiler');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
@@ -30,6 +31,7 @@ function timeToString(millis) {
 // Single puzzle page
 router.get('/:puzzleid', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     var puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-data");
     if (!puzzle) {
       res.sendStatus(404);
@@ -40,6 +42,7 @@ router.get('/:puzzleid', async (req, res, next) => {
       user: req.user,
       puzzle: puzzleObj
     });
+    profiler.log('singlePuzzle', processStart);
   } catch (e) {
     next(e);
   }
@@ -48,6 +51,7 @@ router.get('/:puzzleid', async (req, res, next) => {
 // Author puzzle page show
 router.get('/:puzzleid/author', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user) {
       res.sendStatus(404);
       return;
@@ -78,6 +82,7 @@ router.get('/:puzzleid/author', ensureAuthenticated, async (req, res, next) => {
         };
       })
     });
+    profiler.log('singleAuthor', processStart);
   } catch (e) {
     next(e);
   }
@@ -86,6 +91,7 @@ router.get('/:puzzleid/author', ensureAuthenticated, async (req, res, next) => {
 // Create new puzzle and show author page
 router.get('/:typeid/:dimension/new', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "author") {
       res.sendStatus(404);
     }
@@ -105,6 +111,7 @@ router.get('/:typeid/:dimension/new', ensureAuthenticated, async (req, res, next
     });
     await puzzle.save();
     res.redirect("/single/" + puzzleid + "/author/");
+    profiler.log('singleNew', processStart);
   } catch (e) {
     next(e);
   }
@@ -113,6 +120,7 @@ router.get('/:typeid/:dimension/new', ensureAuthenticated, async (req, res, next
 // Author puzzle page show
 router.get('/:puzzleid/answers', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role!="admin") {
       res.sendStatus(404);
       return;
@@ -134,6 +142,7 @@ router.get('/:puzzleid/answers', ensureAuthenticated, async (req, res, next) => 
       puzzle: puzzleObj,
       answers: log.map(item => {return {date: item.date, data: item.data, userName: userMap[item.userId]};})
     });
+    profiler.log('singleAnswers', processStart);
   } catch (e) {
     next(e);
   }

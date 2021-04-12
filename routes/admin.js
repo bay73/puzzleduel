@@ -5,11 +5,13 @@ const User = require('../models/User');
 const Puzzle = require('../models/Puzzle');
 const Rating = require('../models/Rating');
 const util = require('../utils/puzzle_util');
+const profiler = require('../utils/profiler');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
 router.get('/actionlog', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "admin") {
       res.sendStatus(404);
       return;
@@ -22,6 +24,7 @@ router.get('/actionlog', ensureAuthenticated, async (req, res, next) => {
       users: userData.map(user => user.toObject()),
       logData: log.map(logItem => logItem.toObject())
     });
+    profiler.log('adminActionLog', processStart);
   } catch (e) {
     next(e)
   }
@@ -29,6 +32,7 @@ router.get('/actionlog', ensureAuthenticated, async (req, res, next) => {
 
 router.get('/actionlog/:puzzleid/:userid', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "admin") {
       res.sendStatus(404);
       return;
@@ -51,6 +55,7 @@ router.get('/actionlog/:puzzleid/:userid', ensureAuthenticated, async (req, res,
         };
       })
     });
+    profiler.log('adminUserActionLog', processStart);
   } catch (e) {
     next(e)
   }
@@ -58,6 +63,7 @@ router.get('/actionlog/:puzzleid/:userid', ensureAuthenticated, async (req, res,
 
 router.get('/userips', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "admin") {
       res.sendStatus(404);
       return;
@@ -91,6 +97,7 @@ router.get('/userips', ensureAuthenticated, async (req, res, next) => {
         };
       })
     });
+    profiler.log('adminUserIps', processStart);
   } catch (e) {
     next(e)
   }
@@ -98,6 +105,7 @@ router.get('/userips', ensureAuthenticated, async (req, res, next) => {
 
 router.get('/daily', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "admin") {
       res.sendStatus(404);
       return;
@@ -135,6 +143,7 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
         };
       })
     });
+    profiler.log('adminDailySetup', processStart);
   } catch (e) {
     next(e)
   }
@@ -142,6 +151,7 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
 
 router.get('/daily/:puzzleid/up', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "admin") {
       res.sendStatus(404);
       return;
@@ -166,6 +176,7 @@ router.get('/daily/:puzzleid/up', ensureAuthenticated, async (req, res, next) =>
       await nextPuzzle.save();
     }
     res.redirect('/admin/daily');
+    profiler.log('adminDailyUp', processStart);
   } catch (e) {
     next(e)
   }
@@ -173,6 +184,7 @@ router.get('/daily/:puzzleid/up', ensureAuthenticated, async (req, res, next) =>
 
 router.get('/daily/:puzzleid/top', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "admin") {
       res.sendStatus(404);
       return;
@@ -213,6 +225,7 @@ router.get('/daily/:puzzleid/top', ensureAuthenticated, async (req, res, next) =
     puzzle.daily = lastDate;
     await puzzle.save();
     res.redirect('/admin/daily');
+    profiler.log('adminDailyTop', processStart);
   } catch (e) {
     next(e)
   }
@@ -220,6 +233,7 @@ router.get('/daily/:puzzleid/top', ensureAuthenticated, async (req, res, next) =
 
 router.get('/instantrating', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "admin") {
       res.sendStatus(404);
       return;
@@ -262,6 +276,7 @@ router.get('/instantrating', ensureAuthenticated, async (req, res, next) => {
       dates: dates,
       data: allData
     });
+    profiler.log('adminInstantRating', processStart);
   } catch (e) {
     next(e)
   }

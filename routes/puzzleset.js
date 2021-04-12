@@ -5,9 +5,11 @@ const uniqid = require('uniqid');
 const PuzzleSet = require('../models/PuzzleSet');
 const Puzzle = require('../models/Puzzle');
 const util = require('../utils/puzzle_util');
+const profiler = require('../utils/profiler');
 
 router.get('/', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const userMap = await util.userNameMap();
     const sets = await PuzzleSet.find({});
     res.render('puzzlesets', {
@@ -22,6 +24,7 @@ router.get('/', async (req, res, next) => {
           };
       })
     })
+    profiler.log('setList', processStart);
   } catch (e) {
     next(e);
   }
@@ -29,6 +32,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/create', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "author") {
       res.sendStatus(404);
       return;
@@ -42,6 +46,7 @@ router.get('/create', async (req, res, next) => {
     });
     await set.save();
     res.redirect("/puzzleset/" + setid + "/show/0");
+    profiler.log('setCreate', processStart);
  } catch (e) {
     next(e);
   }
@@ -53,14 +58,17 @@ router.get('/:setid', async (req, res, next) => {
 
 router.get('/:setid/show/:puzzleid', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const set = await PuzzleSet.findOne({code: req.params.setid});
     if (!set) {
       res.sendStatus(404);
+      profiler.log('setShowFailed', processStart);
       return;
     }
     if (set.tag.includes("hidden")) {
       if (!req.user || !set.author.equals(req.user._id)) {
         res.sendStatus(404);
+        profiler.log('setShowFailed', processStart);
         return;
       }
     }
@@ -94,11 +102,13 @@ router.get('/:setid/show/:puzzleid', async (req, res, next) => {
       var puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-data");
       if (!puzzle) {
         res.sendStatus(404);
+        profiler.log('setShowFailed', processStart);
         return;
       }
       var showPuzzleObj = await util.puzzleToObj(puzzle, req.getLocale());
     }
     res.render('puzzleset', {user: req.user, set: setObj, puzzles: puzzleList, puzzle: showPuzzleObj})
+    profiler.log('setShow', processStart);
   } catch (e) {
     next(e);
   }
@@ -110,6 +120,7 @@ router.get('/:setid/single/:puzzleid', async (req, res, next) => {
 
 router.post('/:setid/edit', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const set = await PuzzleSet.findOne({code: req.params.setid});
     if (!set) {
       res.sendStatus(404);
@@ -138,6 +149,7 @@ router.post('/:setid/edit', async (req, res, next) => {
     }
     await set.save();
     res.redirect('/puzzleset/' + req.params.setid);
+    profiler.log('setEdit', processStart);
   } catch (e) {
     next(e);
   }
@@ -145,6 +157,7 @@ router.post('/:setid/edit', async (req, res, next) => {
 
 router.post('/:setid/delete', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const set = await PuzzleSet.findOne({code: req.params.setid});
     if (!set) {
       res.sendStatus(404);
@@ -156,6 +169,7 @@ router.post('/:setid/delete', async (req, res, next) => {
     }
     await set.delete();
     res.json({status: "OK"});
+    profiler.log('setDelete', processStart);
   } catch (e) {
     next(e);
   }
@@ -163,6 +177,7 @@ router.post('/:setid/delete', async (req, res, next) => {
 
 router.get('/:setid/add/:puzzleid', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const set = await PuzzleSet.findOne({code: req.params.setid});
     if (!set) {
       res.sendStatus(404);
@@ -185,6 +200,7 @@ router.get('/:setid/add/:puzzleid', async (req, res, next) => {
       }
     }
     res.redirect('/puzzleset/' + req.params.setid);
+    profiler.log('setAddPuzzle', processStart);
   } catch (e) {
     next(e);
   }
@@ -192,6 +208,7 @@ router.get('/:setid/add/:puzzleid', async (req, res, next) => {
 
 router.get('/:setid/up/:puzzleid', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const set = await PuzzleSet.findOne({code: req.params.setid});
     if (!set) {
       res.sendStatus(404);
@@ -211,6 +228,7 @@ router.get('/:setid/up/:puzzleid', async (req, res, next) => {
       }
     }
     res.redirect('/puzzleset/' + req.params.setid);
+    profiler.log('setMovePuzzle', processStart);
   } catch (e) {
     next(e);
   }
@@ -218,6 +236,7 @@ router.get('/:setid/up/:puzzleid', async (req, res, next) => {
 
 router.get('/:setid/delete/:puzzleid', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const set = await PuzzleSet.findOne({code: req.params.setid});
     if (!set) {
       res.sendStatus(404);
@@ -241,6 +260,7 @@ router.get('/:setid/delete/:puzzleid', async (req, res, next) => {
       await set.save();
     }
     res.redirect('/puzzleset/' + req.params.setid);
+    profiler.log('setDeletePuzzle', processStart);
   } catch (e) {
     next(e);
   }

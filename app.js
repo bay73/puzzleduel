@@ -5,6 +5,7 @@ const passport = require('passport');
 const session = require('express-session');
 const expressip = require('express-ip');
 const cookieParser = require('cookie-parser');
+const profiler = require('./utils/profiler');
 
 const app = express();
 
@@ -57,6 +58,7 @@ const PORT = process.env.PORT || 5000;
 setInterval(()=>{
   const used = process.memoryUsage().heapUsed / 1024 / 1024;
   console.log('used ' + (Math.round(used * 100) / 100) + ' MB');
-},5000)
+  profiler.dump(console.log);
+},60000)
 
 app.listen(PORT, console.log(`Server started on port ${PORT} at ` + new Date().toString()));

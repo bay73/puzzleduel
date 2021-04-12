@@ -5,6 +5,7 @@ const PuzzleType = require('../models/PuzzleType');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const User = require('../models/User');
 const util = require('../utils/puzzle_util');
+const profiler = require('../utils/profiler');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
@@ -12,6 +13,7 @@ const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 router.get(['/','/daily'],
   async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     var timesMap = await util.bestSolvingTimeMap(false);
     var typeMap = await util.typeNameMap();
 
@@ -40,6 +42,7 @@ router.get(['/','/daily'],
         };
       })
     });
+    profiler.log('archiveDaily', processStart);
   } catch (e) {
     next(e)
   }
@@ -48,6 +51,7 @@ router.get(['/','/daily'],
 // List of all old puzzles
 router.get('/types', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     var typeMap = await util.typeDataMap();
 
     const puzzles = await Puzzle.find({}, "-data");
@@ -66,6 +70,7 @@ router.get('/types', async (req, res, next) => {
         };
       })
     });
+    profiler.log('archiveByType', processStart);
   } catch (e) {
     next(e)
   }
@@ -75,6 +80,7 @@ router.get('/types', async (req, res, next) => {
 // List of all old puzzles by author
 router.get('/types/author/:authorid', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     var typeMap = await util.typeDataMap();
     var author = await User.findById(req.params.authorid, "name");
 
@@ -95,6 +101,7 @@ router.get('/types/author/:authorid', async (req, res, next) => {
         };
       })
     });
+    profiler.log('archiveByAuthor', processStart);
   } catch (e) {
     next(e)
   }
@@ -103,6 +110,7 @@ router.get('/types/author/:authorid', async (req, res, next) => {
 // List of example puzzles
 router.get('/examples', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     var typeMap = await util.typeDataMap();
 
     const puzzles = await Puzzle.find({tag: "example" }, "-data");
@@ -119,6 +127,7 @@ router.get('/examples', async (req, res, next) => {
         };
       })
     });
+    profiler.log('archiveExamples', processStart);
   } catch (e) {
     next(e)
   }
@@ -128,6 +137,7 @@ router.get('/examples', async (req, res, next) => {
 router.get(['/:puzzleid/scores','/:puzzleid/times'],
   async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     var date = Date.parse(req.params.puzzleid);
     var filter = {code: req.params.puzzleid};
     if (date) {
@@ -166,6 +176,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
         }),
       notFinished: notFinished
     });
+    profiler.log('archiveScores', processStart);
   } catch (e) {
     next(e)
   }
@@ -180,6 +191,7 @@ router.get('/scores', (req, res) => {
 // Author puzzle list
 router.get('/author', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "author") {
       res.sendStatus(404);
       return;
@@ -247,6 +259,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
         };
       })
     });
+    profiler.log('authorPuzzleList', processStart);
   } catch (e) {
     next(e);
   }

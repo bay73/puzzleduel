@@ -5,6 +5,7 @@ const passport = require('passport');
 const uniqid = require('uniqid');
 const nodemailer = require('nodemailer');
 const Recaptcha = require('express-recaptcha').RecaptchaV2;
+const profiler = require('../utils/profiler');
 
 // Config recaptcha
 const recaptchaKeys = require('./../config/keys').recaptcha;
@@ -29,21 +30,28 @@ router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
 
 // Register Page
 router.get('/register', forwardAuthenticated, recaptcha.middleware.render, (req, res) => {
+  const processStart = new Date().getTime();
   res.render('register', { captcha:res.recaptcha });
+  profiler.log('userRegister', processStart);
 });
 
 // Reset password page
 router.get('/reset', forwardAuthenticated, recaptcha.middleware.render, (req, res) => {
+  const processStart = new Date().getTime();
   res.render('reset_password', { captcha:res.recaptcha });
+  profiler.log('userResetPage', processStart);
 });
 
 // Reset password page
 router.get('/reset/:token', forwardAuthenticated, (req, res) => {
+  const processStart = new Date().getTime();
   res.render('reset_password', {token: req.params.token});
+  profiler.log('userResetPageWithToken', processStart);
 });
 
 // Edit Page
 router.get('/edit', ensureAuthenticated, (req, res) => {
+  const processStart = new Date().getTime();
   if (!req.user) {
     res.sendStatus(403);
     return;
@@ -53,11 +61,13 @@ router.get('/edit', ensureAuthenticated, (req, res) => {
     name: req.user.name,
     email: req.user.email
   });
+  profiler.log('userEditPage', processStart);
 });
 
 // Register
 router.post('/register', recaptcha.middleware.verify, recaptcha.middleware.render, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const { name, email, password, password2 } = req.body;
     let errors = [];
 
@@ -112,6 +122,7 @@ router.post('/register', recaptcha.middleware.verify, recaptcha.middleware.rende
 
     req.flash('success_msg', 'You are now registered and can log in');
     res.redirect('/users/login');
+    profiler.log('userNewPage', processStart);
   } catch (e) {
     next(e);
   }
@@ -120,6 +131,7 @@ router.post('/register', recaptcha.middleware.verify, recaptcha.middleware.rende
 // Edit
 router.post('/edit', ensureAuthenticated, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user) {
       res.sendStatus(403);
       return;
@@ -169,6 +181,7 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
         password2: password2,
         oldpassword: oldpassword
       });
+      profiler.log('userSaveFailed', processStart);
       return;
     }
 
@@ -191,6 +204,7 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
 
     req.flash('success_msg', 'You are succesfully changed the data');
     res.redirect('/users/edit');
+    profiler.log('userSave', processStart);
   } catch (e) {
     next(e);
   }
@@ -199,6 +213,7 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
 // Reset password
 router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const {email, password, password2, token} = req.body;
     let errors = [];
 
@@ -223,6 +238,7 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
         password2: password2,
         token: token
       });
+      profiler.log('userResetFailed', processStart);
       return;
     }
 
@@ -238,6 +254,7 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
           password2: password2,
           token: token
         });
+        profiler.log('userResetFailed', processStart);
         return;
       } else {
         var isMatch = await bcrypt.compare(token, user.resetToken);
@@ -258,6 +275,7 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
           password2: password2,
           token: token
         });
+        profiler.log('userResetFailed', processStart);
         return;
       }
 
@@ -279,6 +297,7 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
           email: email,
           captcha:res.recaptcha
         });
+        profiler.log('userResetFailed', processStart);
         return;
       }
 
@@ -318,6 +337,7 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
                 + 'Contact puzzleduel.club@gmail.com in case of problems.');
       res.redirect('/');
     }
+    profiler.log('userReset', processStart);
   } catch (e) {
     next(e);
   }

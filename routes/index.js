@@ -9,10 +9,12 @@ const Contest = require('../models/Contest');
 // User model
 const User = require('../models/User');
 const util = require('../utils/puzzle_util');
+const profiler = require('../utils/profiler');
 
 // Welcome Page
 router.get('/', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     var datetime = new Date();
     var dailyPuzzle = await Puzzle.findOne({daily: datetime.toISOString().slice(0,10)}, "-data");
     if (dailyPuzzle) {
@@ -47,6 +49,7 @@ router.get('/', async (req, res, next) => {
       dailyPuzzle: dailyPuzzleObj,
       contestPuzzle: contestPuzzleObj
     });
+    profiler.log('welcomePage', processStart);
   } catch (e) {
     next(e);
   }
@@ -55,9 +58,11 @@ router.get('/', async (req, res, next) => {
 // Help Page
 router.get('/help', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     res.render(res.__('help_page'), {
       user: req.user,
     });
+    profiler.log('helpPage', processStart);
   } catch (e) {
     next(e);
   }
@@ -66,9 +71,11 @@ router.get('/help', async (req, res, next) => {
 // Duel rules
 router.get('/help/duelrules', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     res.render(res.__('duel_help_page'), {
       user: req.user,
     });
+    profiler.log('helpDuel', processStart);
   } catch (e) {
     next(e);
   }
@@ -77,6 +84,7 @@ router.get('/help/duelrules', async (req, res, next) => {
 // Authors Page
 router.get('/help/authors', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const allPuzzles = await Puzzle.find({tag: {$ne: "example"}}, "-data");
     var byAuthorCountMap = {};
     allPuzzles.filter(puzzle => !puzzle.needLogging).forEach(puzzle => {
@@ -110,6 +118,7 @@ router.get('/help/authors', async (req, res, next) => {
         }
       })
     });
+    profiler.log('helpAuthors', processStart);
   } catch (e) {
     next(e);
   }

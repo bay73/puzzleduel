@@ -6,6 +6,7 @@ const Puzzle = require('../models/Puzzle');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const recountContest = require('../utils/contest');
 const util = require('../utils/puzzle_util');
+const profiler = require('../utils/profiler');
 
 function getUserScore(puzzleDesc, userId) {
   var userScore = null;
@@ -19,6 +20,7 @@ function getUserScore(puzzleDesc, userId) {
 
 router.get('/:contestid/results', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const contest = await Contest.findOne({code: req.params.contestid});
     if (!contest || contest.start > new Date()) {
       res.sendStatus(404);
@@ -35,6 +37,7 @@ router.get('/:contestid/results', async (req, res, next) => {
       }
     }
     res.render('contest_result', {user: req.user, contest: contestObj})
+    profiler.log('contestResult', processStart);
   } catch (e) {
     next(e);
   }
@@ -42,6 +45,7 @@ router.get('/:contestid/results', async (req, res, next) => {
 
 router.get('/:contestid', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     const contest = await Contest.findOne({code: req.params.contestid});
     if (!contest || contest.start > new Date()) {
       res.sendStatus(404);
@@ -85,6 +89,7 @@ router.get('/:contestid', async (req, res, next) => {
         };
       });
     res.render('contest', {user: req.user, contest: contestObj, puzzles: puzzleList})
+    profiler.log('contestView', processStart);
   } catch (e) {
     next(e);
   }
@@ -92,6 +97,7 @@ router.get('/:contestid', async (req, res, next) => {
 
 router.get('/:contestid/recount', async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     if (!req.user || req.user.role != "admin") {
       res.sendStatus(404);
       return;
@@ -102,6 +108,7 @@ router.get('/:contestid/recount', async (req, res, next) => {
       return;
     }
     res.redirect('/contest/' + req.params.contestid + "/results");
+    profiler.log('contestRecount', processStart);
   } catch (e) {
     next(e);
   }
