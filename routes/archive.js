@@ -143,19 +143,19 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
     if (date) {
       filter = {daily: date};
     }
-    puzzle = await Puzzle.findOne(filter, "-data");
+    puzzle = await Puzzle.findOne(filter, "-data").lean();
     if (!puzzle || puzzle.hiddenScore) {
       res.sendStatus(404);
       return;
     }
     var puzzleType = puzzle.type;
-    const type = await PuzzleType.findOne({code: puzzle.type}, "name");
+    const type = await PuzzleType.findOne({code: puzzle.type}, "name").lean();
     if (type) {
       puzzleType = type.name;
     }
 
-    const times = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: true}}).sort("solvingTime");
-    const notFinished = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: false}}, "userName").distinct("userName");;
+    const times = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: true}}).lean().sort("solvingTime");
+    const notFinished = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: false}}, "userName").lean().distinct("userName");;
     res.render('times', {
       user: req.user,
       puzzle: {
