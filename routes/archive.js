@@ -154,8 +154,9 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
       puzzleType = type.name;
     }
 
-    const times = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: true}}).lean().sort("solvingTime");
-    const notFinished = await UserSolvingTime.find({puzzleId: puzzle.code, solvingTime: {$exists: false}}, "userName").lean().distinct("userName");;
+    const times = await UserSolvingTime.find({puzzleId: puzzle.code}, "-date").lean();
+    const notFinished = times.filter(time => typeof time.solvingTime=="undefined").map(time => time.userName);
+
     res.render('times', {
       user: req.user,
       puzzle: {
@@ -165,7 +166,9 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
         daily: puzzle.daily,
       },
       times: times
+        .filter(time => typeof time.solvingTime!="undefined")
         .filter(time => typeof time.hidden=="undefined" || time.hidden==false)
+        .sort((time1, time2) => time1.solvingTime-time2.solvingTime)
         .map(time => {
           return {
             userId: time.userId,
