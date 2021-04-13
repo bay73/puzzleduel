@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const Contest = require('../models/Contest');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
@@ -79,9 +80,9 @@ router.get('/:contestid', async (req, res, next) => {
     }
 
     if (currentPuzzleId != null && isRegistered) {
-      var puzzle = await cache.readPuzzle(currentPuzzleId);
+      var puzzle = Object.assign({}, await cache.readPuzzle(currentPuzzleId));
       if (puzzle) {
-        var type = await cache.readPuzzleType(puzzle.type);
+        var type = Object.assign({}, await cache.readPuzzleType(puzzle.type));
         if (req.getLocale() != 'en') {
           if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
             type.rules = type.translations[req.getLocale()].rules;
@@ -115,7 +116,7 @@ router.get('/:contestid/register', async (req, res, next) => {
       res.redirect('/duel/' + req.params.contestid);
       return;
     }
-    const contest = await cache.readContest(req.params.contestid);
+    const contest = await Contest.findOne({code: req.params.contestid});
     if (!contest) {
       res.sendStatus(404);
       return;
@@ -145,7 +146,7 @@ router.get('/:contestid/unregister', async (req, res, next) => {
       res.redirect('/duel/' + req.params.contestid);
       return;
     }
-    const contest = await cache.readContest(req.params.contestid);
+    const contest = await Contest.findOne({code: req.params.contestid});
     if (!contest) {
       res.sendStatus(404);
       return;
