@@ -1,19 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const Contest = require('../models/Contest');
-const Puzzle = require('../models/Puzzle');
-const PuzzleType = require('../models/PuzzleType');
-const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
-const Rating = require('../models/Rating');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 router.get('/:contestid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const contest = await Contest.findOne({code: req.params.contestid});
+    const contest = await cache.readContest(req.params.contestid);
     if (!contest) {
       res.sendStatus(404);
       return;
@@ -82,12 +78,11 @@ router.get('/:contestid', async (req, res, next) => {
       }
     }
 
-
     if (currentPuzzleId != null && isRegistered) {
-      var puzzle = await Puzzle.findOne({code: currentPuzzleId}, "-data");
+      var puzzle = await cache.readPuzzle(currentPuzzleId);
       if (puzzle) {
         var puzzleObj = puzzle.toObject();
-        var type = await PuzzleType.findOne({ code: puzzleObj.type });
+        var type = await cache.readPuzzleType(puzzleObj.type);
         if (req.getLocale() != 'en') {
           if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
             type.rules = type.translations[req.getLocale()].rules;
@@ -98,10 +93,7 @@ router.get('/:contestid', async (req, res, next) => {
         }
         if (puzzleObj.author) {
           puzzleObj.authorId = puzzleObj.author;
-          var author = await User.findById(puzzleObj.author, "name");
-          if(author) {
-            puzzleObj.author = author.name;
-          }
+          puzzleObj.author = await cache.readUserName(puzzleObj.author);
         }
       }
     }
@@ -124,7 +116,7 @@ router.get('/:contestid/register', async (req, res, next) => {
       res.redirect('/duel/' + req.params.contestid);
       return;
     }
-    const contest = await Contest.findOne({code: req.params.contestid});
+    const contest = await cache.readContest(req.params.contestid);
     if (!contest) {
       res.sendStatus(404);
       return;
@@ -154,7 +146,7 @@ router.get('/:contestid/unregister', async (req, res, next) => {
       res.redirect('/duel/' + req.params.contestid);
       return;
     }
-    const contest = await Contest.findOne({code: req.params.contestid});
+    const contest = await cache.readContest(req.params.contestid);
     if (!contest) {
       res.sendStatus(404);
       return;
@@ -180,7 +172,7 @@ router.get('/:contestid/unregister', async (req, res, next) => {
 router.get('/:contestid/opponent', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const contest = await Contest.findOne({code: req.params.contestid});
+    const contest = await cache.readContest(req.params.contestid);
     if (!contest) {
       res.sendStatus(404);
       return;
@@ -239,7 +231,7 @@ router.get('/:contestid/opponent', async (req, res, next) => {
 router.get('/:contestid/standing', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const contest = await Contest.findOne({code: req.params.contestid});
+    const contest = await cache.readContest(req.params.contestid);
     if (!contest) {
       res.sendStatus(404);
       return;
@@ -301,13 +293,15 @@ router.get('/:contestid/standing', async (req, res, next) => {
     ratingDate.setUTCMinutes(0);
     ratingDate.setUTCSeconds(0);
     ratingDate.setUTCMilliseconds(0);
-    const ratingList = await Rating.find({date: ratingDate});
+    const ratingList = await cache.readRating(ratingDate);
     var userRatings = {}
     ratingList.forEach(rating => userRatings[rating.userId] = rating.value);
-    var typeMap = await util.typeNameMap();
-    var puzzleMap = {};
-    const puzzles = await Puzzle.find({'contest.contestId': req.params.contestid});
-    puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();puzzleMap[puzzle.code].needLogging = puzzle.needLogging});
+    var typeMap = await cache.readPuzzleTypes();
+
+    var puzzleMap = {}
+    await Promise.all(contest.puzzles.map(async (puzzle) => {
+      puzzleMap[puzzle.puzzleId] = await cache.readPuzzle(puzzle.puzzleId)
+    }));    
 
     var userNames = {};
     contest.participants.forEach(participant => {
@@ -376,7 +370,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
         return {
           num: puzzle.puzzleNum,
           code: puzzle.puzzleId,
-          type: typeMap[puz.type],
+          type: typeMap[puz.type].name,
           dimension: puz.dimension,
           revealDate: puzzle.revealDate
         };
@@ -393,7 +387,7 @@ router.get('/:contestid/results/:puzzlenum', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
     const relaxSeconds = 10;
-    const contest = await Contest.findOne({code: req.params.contestid});
+    const contest = await cache.readContest(req.params.contestid);
     if (!contest) {
       res.sendStatus(404);
       return;
