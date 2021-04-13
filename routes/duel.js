@@ -81,19 +81,18 @@ router.get('/:contestid', async (req, res, next) => {
     if (currentPuzzleId != null && isRegistered) {
       var puzzle = await cache.readPuzzle(currentPuzzleId);
       if (puzzle) {
-        var puzzleObj = puzzle.toObject();
-        var type = await cache.readPuzzleType(puzzleObj.type);
+        var type = await cache.readPuzzleType(puzzle.type);
         if (req.getLocale() != 'en') {
           if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
             type.rules = type.translations[req.getLocale()].rules;
           }
         }
         if(type) {
-          puzzleObj.type = type.toObject();
+          puzzle.type = type;
         }
-        if (puzzleObj.author) {
-          puzzleObj.authorId = puzzleObj.author;
-          puzzleObj.author = await cache.readUserName(puzzleObj.author);
+        if (puzzle.author) {
+          puzzle.authorId = puzzle.author;
+          puzzle.author = await cache.readUserName(puzzle.author);
         }
       }
     }
@@ -101,7 +100,7 @@ router.get('/:contestid', async (req, res, next) => {
     res.render('duel', {
       user: req.user,
       contest: contestObj,
-      currentPuzzle: puzzleObj
+      currentPuzzle: puzzle
     })
     profiler.log('duelMainPage', processStart);
   } catch (e) {
@@ -301,7 +300,7 @@ router.get('/:contestid/standing', async (req, res, next) => {
     var puzzleMap = {}
     await Promise.all(contest.puzzles.map(async (puzzle) => {
       puzzleMap[puzzle.puzzleId] = await cache.readPuzzle(puzzle.puzzleId)
-    }));    
+    }));
 
     var userNames = {};
     contest.participants.forEach(participant => {
