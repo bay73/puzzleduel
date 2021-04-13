@@ -2,6 +2,7 @@ const Contest = require('../models/Contest');
 const Puzzle = require('../models/Puzzle');
 const PuzzleType = require('../models/PuzzleType');
 const Rating = require('../models/Rating');
+const User = require('../models/User');
 
 const CONTEST_CACHE_TTL = 20*1000; // 20 seconds
 const PUZZLETYPE_CACHE_TTL = 60*60*1000; // 1 hour
