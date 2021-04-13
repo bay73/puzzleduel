@@ -4,7 +4,7 @@ const PuzzleType = require('../models/PuzzleType');
 const Rating = require('../models/Rating');
 const User = require('../models/User');
 
-const CONTEST_CACHE_TTL = 20*1000; // 20 seconds
+const CONTEST_CACHE_TTL = 10*1000; // 20 seconds
 const PUZZLETYPE_CACHE_TTL = 60*60*1000; // 1 hour
 const PUZZLE_CACHE_TTL = 60*60*1000; // 1 hour
 const RATING_CACHE_TTL = 60*60*1000; // 1 hour
@@ -25,18 +25,46 @@ module.exports.readContest = async function(contestId) {
   return contestCache[contestId].contest;
 }
 
+module.exports.readDailyShadowContest = async function() {
+  const currentTime = new Date().getTime();
+  if (typeof contestCache["_daily"]=='undefined' || currentTime > contestCache["_daily"].fresheness) {
+    const datetime = new Date();
+    const contest = await Contest.findOne({type: "daily_shadow", start: {$lt: datetime}, finish: {$gt: datetime} }, "code name puzzles");
+    var endOfHour = new Date();
+    endOfHour.setMinutes(59,59,999);
+    contestCache["_daily"] = {contest: contest, fresheness: endOfHour.getTime()};
+  }
+  return contestCache["_daily"].contest;
+}
+
+var puzzleToObj = function(puzzle) {
+  const puzzleObj = puzzle.toObject();
+  puzzleObj.needLogging = puzzle.needLogging;
+  puzzleObj.hidden = puzzle.hidden;
+  puzzleObj.hiddenScore = puzzle.hiddenScore;
+  puzzleObj.published = puzzle.published;
+  return puzzleObj;
+}
+
 module.exports.readPuzzle = async function(puzzleId) {
   const currentTime = new Date().getTime();
   if (typeof puzzleCache[puzzleId]=='undefined' || currentTime > puzzleCache[puzzleId].fresheness) {
     const puzzle = await Puzzle.findOne({code: puzzleId});
-    const puzzleObj = puzzle.toObject();
-    puzzleObj.needLogging = puzzle.needLogging;
-    puzzleObj.hidden = puzzle.hidden;
-    puzzleObj.hiddenScore = puzzle.hiddenScore;
-    puzzleObj.published = puzzle.published;
-    puzzleCache[puzzleId] = {puzzle: puzzleObj, fresheness: new Date().getTime() + PUZZLE_CACHE_TTL};
+    puzzleCache[puzzleId] = {puzzle: puzzleToObj(puzzle), fresheness: new Date().getTime() + PUZZLE_CACHE_TTL};
   }
   return puzzleCache[puzzleId].puzzle;
+}
+
+module.exports.readDailyPuzzle = async function() {
+  const currentTime = new Date().getTime();
+  if (typeof puzzleCache["_daily"]=='undefined' || currentTime > puzzleCache["_daily"].fresheness) {
+    const datetime = new Date();
+    const puzzle = await Puzzle.findOne({daily: datetime.toISOString().slice(0,10)});
+    var endOfHour = new Date();
+    endOfHour.setMinutes(59,59,999);
+    puzzleCache["_daily"] = {puzzle: puzzleToObj(puzzle), fresheness: endOfHour.getTime()};
+  }
+  return puzzleCache["_daily"].puzzle;
 }
 
 module.exports.readPuzzleTypes = async function() {

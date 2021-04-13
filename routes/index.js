@@ -1,31 +1,25 @@
 const express = require('express');
 const router = express.Router();
-// Puzzle model
-const Puzzle = require('../models/Puzzle');
-// PuzzleType model
-const PuzzleType = require('../models/PuzzleType');
-// Puzzle model
-const Contest = require('../models/Contest');
 // User model
 const User = require('../models/User');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 // Welcome Page
 router.get('/', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var datetime = new Date();
-    var dailyPuzzle = await Puzzle.findOne({daily: datetime.toISOString().slice(0,10)}, "-data");
+    var dailyPuzzle = await cache.readDailyPuzzle();
     if (dailyPuzzle) {
-      var dailyPuzzleObj = await util.puzzleToObj(dailyPuzzle, req.getLocale());
+      var dailyPuzzleObj = await util.puzzleToPresent(dailyPuzzle, req.getLocale());
       if (typeof dailyPuzzleObj.contest != "undefined") {
         dailyPuzzleObj.contest.link = "/contest/" + dailyPuzzleObj.contest.contestId;
-        var contest = await Contest.findOne({code: dailyPuzzleObj.contest.contestId}, "name");
+        var contest = await cache.readContest(dailyPuzzleObj.contest.contestId);
         dailyPuzzleObj.contest.name = contest.name;
       }
     }
-    var contest = await Contest.findOne({type: "daily_shadow", start: {$lt: datetime}, finish: {$gt: datetime} }, "code name puzzles");
+    var contest = await cache.readDailyShadowContest();
     if (contest) {
       var contestPuzzleId = null;
       contest.puzzles.forEach(puzzle => {
@@ -34,9 +28,9 @@ router.get('/', async (req, res, next) => {
         }
       })
       if (contestPuzzleId) {
-        var contestPuzzle = await Puzzle.findOne({code: contestPuzzleId}, "-data");
+        var contestPuzzle = await cache.readPuzzle(contestPuzzleId);
         if (contestPuzzle) {
-          var contestPuzzleObj = await util.puzzleToObj(contestPuzzle, req.getLocale());
+          var contestPuzzleObj = await util.puzzleToPresent(contestPuzzle, req.getLocale());
           contestPuzzleObj.contest = {
             name: contest.name,
             link: "/contest/" + contest.code

@@ -80,22 +80,7 @@ router.get('/:contestid', async (req, res, next) => {
     }
 
     if (currentPuzzleId != null && isRegistered) {
-      var puzzle = Object.assign({}, await cache.readPuzzle(currentPuzzleId));
-      if (puzzle) {
-        var type = Object.assign({}, await cache.readPuzzleType(puzzle.type));
-        if (req.getLocale() != 'en') {
-          if (type.translations[req.getLocale()] && type.translations[req.getLocale()].rules) {
-            type.rules = type.translations[req.getLocale()].rules;
-          }
-        }
-        if(type) {
-          puzzle.type = type;
-        }
-        if (puzzle.author) {
-          puzzle.authorId = puzzle.author;
-          puzzle.author = await cache.readUserName(puzzle.author);
-        }
-      }
+      var puzzle = await util.puzzleToPresent(await cache.readPuzzle(currentPuzzleId), req.getLocale());
     }
 
     res.render('duel', {

@@ -1,6 +1,7 @@
 const PuzzleType = require('../models/PuzzleType');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const User = require('../models/User');
+const cache = require('./cache');
 
 module.exports.timeToString = function(millis) {
   if (!millis) return "";
@@ -131,6 +132,31 @@ module.exports.puzzleToObj = async function(puzzle, locale) {
     puzzleObj.authorId = puzzleObj.author;
     var author = await User.findById(puzzleObj.author, "name");
     puzzleObj.author = author.name;
+  }
+  return puzzleObj;
+}
+
+module.exports.puzzleToPresent = async function(puzzle, locale) {
+  if (!puzzle) return null;
+  var puzzleObj = Object.assign({}, puzzle);
+  var type = Object.assign({}, await cache.readPuzzleType(puzzleObj.type));
+  if (locale != 'en') {
+    if (type.translations[locale]) {
+      if (type.translations[locale].rules) {
+        type.rules = type.translations[locale].rules;
+      }
+      if (type.translations[locale].gridControl) {
+        type.gridControl = type.translations[locale].gridControl;
+      }
+    }
+  }
+  type.rules = processRuleTags(type.rules, puzzleObj.dimension);
+  if(type) {
+    puzzleObj.type = type;
+  }
+  if (puzzleObj.author) {
+    puzzleObj.authorId = puzzle.author;
+    puzzleObj.author = await cache.readUserName(puzzleObj.author);
   }
   return puzzleObj;
 }
