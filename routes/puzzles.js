@@ -226,8 +226,7 @@ router.get('/:puzzleid/get', async (req, res, next) => {
       profiler.log('puzzleReadFailed', processStart);
       return;
     }
-    var puzzleObj = puzzle.toObject();
-    if (!puzzleObj.author || !puzzleObj.author.equals(req.user._id)) {
+    if (!puzzle.author || !puzzle.author.equals(req.user._id)) {
       res.sendStatus(404);
       profiler.log('puzzleReadFailed', processStart);
       return;
