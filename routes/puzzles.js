@@ -220,7 +220,7 @@ router.get('/:puzzleid/get', async (req, res, next) => {
       res.sendStatus(403);
       return;
     }
-    const puzzle = await cacje.readPuzzle(req.params.puzzleid);
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
     if (!puzzle) {
       res.sendStatus(404);
       profiler.log('puzzleReadFailed', processStart);
