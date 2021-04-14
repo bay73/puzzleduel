@@ -3,18 +3,21 @@ const Puzzle = require('../models/Puzzle');
 const PuzzleType = require('../models/PuzzleType');
 const Rating = require('../models/Rating');
 const User = require('../models/User');
+const UserSolvingTime = require('../models/UserSolvingTime');
 
-const CONTEST_CACHE_TTL = 10*1000; // 20 seconds
+const CONTEST_CACHE_TTL = 10*1000; // 10 seconds
 const PUZZLETYPE_CACHE_TTL = 60*60*1000; // 1 hour
 const PUZZLE_CACHE_TTL = 60*60*1000; // 1 hour
 const RATING_CACHE_TTL = 60*60*1000; // 1 hour
 const USER_CACHE_TTL = 60*60*1000; // 1 hour
+const SOLVINGTIME_CACHE_TTL = 20*1000; // 20 seconds
 
 const contestCache = {}
 const puzzleTypeCache = {fresheness: undefined, puzzleTypes: {}}
 const puzzleCache = {}
 const ratingCache = {}
 const userCache = {}
+const solvingTimeCache = {}
 
 module.exports.readContest = async function(contestId) {
   const currentTime = new Date().getTime();
@@ -102,10 +105,26 @@ module.exports.readUserName = async function(userId) {
   return userCache[userId].userName;
 }
 
+module.exports.readSolvingTime = async function(puzzleId) {
+  const currentTime = new Date().getTime();
+  if (typeof solvingTimeCache[puzzleId]=='undefined' || currentTime > solvingTimeCache[puzzleId].fresheness) {
+    const times = await UserSolvingTime.find({
+      puzzleId: puzzleId,
+      $or: [
+        {hidden: false},
+        {hidden: {$exists: false}}
+      ]
+    }).lean();
+    solvingTimeCache[puzzleId] = {times: times, fresheness: new Date().getTime() + SOLVINGTIME_CACHE_TTL};
+  }
+  return solvingTimeCache[puzzleId].times;
+}
+
 module.exports.clearCache = function() {
   Object.keys(contestCache).forEach(function(key) { delete contestCache[key]; });
   Object.keys(puzzleCache).forEach(function(key) { delete puzzleCache[key]; });
   Object.keys(ratingCache).forEach(function(key) { delete ratingCache[key]; });
   Object.keys(userCache).forEach(function(key) { delete userCache[key]; });
+  Object.keys(solvingTimeCache).forEach(function(key) { delete solvingTimeCache[key]; });
 }
 

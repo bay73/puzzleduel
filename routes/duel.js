@@ -394,17 +394,10 @@ router.get('/:contestid/results/:puzzlenum', async (req, res, next) => {
     scores.forEach(score => {
       userScores[score.userId.toString()] = score.score;
     });
-    const times = await UserSolvingTime.find({
-      puzzleId: puzzleId,
-      solvingTime: {$exists: true},
-      $or: [
-        {hidden: false},
-        {hidden: {$exists: false}}
-      ]
-    });
+    const times = await cache.readSolvingTime(puzzleId);
     var userSolvingTime = {};
     times.forEach(time => {
-      if (time.date < acceptTime) {
+      if (typeof time.solvingTime != 'undefined' && time.date < acceptTime) {
         userSolvingTime[time.userId.toString()] = time.solvingTime;
       }
     });
