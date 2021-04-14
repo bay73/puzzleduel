@@ -316,6 +316,7 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
     puzzle.tag = tag;
     puzzle.difficulty = difficulty;
     await puzzle.save();
+    cache.refreshPuzzle(puzzle.code);
     res.json({status: "OK"});
     profiler.log('puzzleEdit', processStart);
   } catch (e) {

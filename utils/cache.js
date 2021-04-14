@@ -49,6 +49,12 @@ var puzzleToObj = function(puzzle) {
   return puzzleObj;
 }
 
+module.exports.refreshPuzzle = async function(puzzleId) {
+  const puzzle = await Puzzle.findOne({code: puzzleId});
+  puzzleCache[puzzleId] = {puzzle: puzzleToObj(puzzle), fresheness: new Date().getTime() + PUZZLE_CACHE_TTL};
+  return puzzleCache[puzzleId].puzzle;
+}
+
 module.exports.readPuzzle = async function(puzzleId) {
   const currentTime = new Date().getTime();
   if (typeof puzzleCache[puzzleId]=='undefined' || currentTime > puzzleCache[puzzleId].fresheness) {
