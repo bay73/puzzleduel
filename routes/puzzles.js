@@ -308,14 +308,18 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
     delete data["tag"];
     delete data["difficulty"];
     var newData = JSON.stringify(data);
-    if (puzzle.data != newData) {
-      await UserSolvingTime.deleteMany({puzzleId: puzzle.code});
-      await UserActionLog.deleteMany({puzzleId: puzzle.code});
-    }
-    puzzle.data = newData;
     puzzle.tag = tag;
     puzzle.difficulty = difficulty;
-    await puzzle.save();
+    if (puzzle.data != newData) {
+      puzzle.data = newData;
+      await Promise.all([
+        UserSolvingTime.deleteMany({puzzleId: puzzle.code}),
+        UserActionLog.deleteMany({puzzleId: puzzle.code}),
+        puzzle.save()
+      ]);
+    } else {
+      await puzzle.save();
+    }
     cache.refreshPuzzle(puzzle.code);
     res.json({status: "OK"});
     profiler.log('puzzleEdit', processStart);
