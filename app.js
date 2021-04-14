@@ -6,6 +6,7 @@ const session = require('express-session');
 const expressip = require('express-ip');
 const cookieParser = require('cookie-parser');
 const profiler = require('./utils/profiler');
+const cache = require('./utils/cache');
 
 const app = express();
 
@@ -60,5 +61,7 @@ setInterval(()=>{
   console.log('used ' + (Math.round(used * 100) / 100) + ' MB');
   profiler.dump(console.log);
 },60000)
+
+setInterval(cache.clearCache, 24*60*60*1000)
 
 app.listen(PORT, console.log(`Server started on port ${PORT} at ` + new Date().toString()));

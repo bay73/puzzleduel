@@ -102,4 +102,10 @@ module.exports.readUserName = async function(userId) {
   return userCache[userId].userName;
 }
 
+module.exports.clearCache = function() {
+  Object.keys(contestCache).forEach(function(key) { delete contestCache[key]; });
+  Object.keys(puzzleCache).forEach(function(key) { delete puzzleCache[key]; });
+  Object.keys(ratingCache).forEach(function(key) { delete ratingCache[key]; });
+  Object.keys(userCache).forEach(function(key) { delete userCache[key]; });
+}
 
