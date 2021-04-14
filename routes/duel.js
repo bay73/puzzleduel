@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const Contest = require('../models/Contest');
-const UserSolvingTime = require('../models/UserSolvingTime');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
@@ -46,6 +45,7 @@ router.get('/:contestid', async (req, res, next) => {
         nextTime = contest.finish;
       }
     }
+    nextTime = new Date(nextTime.getTime() + Math.floor(Math.random()*5000));
     var timeLeft = null;
     if (nextTime && nextTime < new Date(new Date().getTime()+ 86400000)) {
       timeLeft = nextTime.getTime() - new Date().getTime();
@@ -191,7 +191,7 @@ router.get('/:contestid/opponent', async (req, res, next) => {
         var opponentId = contest.seedData[round][userId];
         if (opponentId) {
           opponentObj = contest.participants.filter(participant => participant.userId.equals(opponentId))[0];
-          opponent = {name: opponentObj.userName};
+          opponent = {name: opponentObj.userName, status: status};
           contest.puzzles[round].results.forEach(result => {
             if (result.userId.equals(opponentId)) {
               opponent.time = util.timeToString(result.time);

@@ -5,7 +5,7 @@
 <% } %>
 <% } else if (opponent.skip) { %>
 <%= __("Your don't have opponent for the round") %>
-<% } else { %>
+<% } else if (status != 'finished') { %>
 <%= __("Awaiting seeding") %>
 <% } %>
 
