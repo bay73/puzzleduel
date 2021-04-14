@@ -13,6 +13,7 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 const UserActionLog = require('../models/UserActionLog');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
@@ -32,12 +33,12 @@ function timeToString(millis) {
 router.get('/:puzzleid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-data");
+    var puzzle = await cache.readPuzzle(req.params.puzzleid);
     if (!puzzle) {
       res.sendStatus(404);
       return;
     }
-    var puzzleObj = await util.puzzleToObj(puzzle, req.getLocale());
+    var puzzleObj = await util.puzzleToPresent(puzzle, req.getLocale());
     res.render('single', {
       user: req.user,
       puzzle: puzzleObj

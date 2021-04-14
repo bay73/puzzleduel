@@ -2,13 +2,12 @@ const express = require('express');
 const router = express.Router();
 // Puzzle model
 const Puzzle = require('../models/Puzzle');
-// PuzzleType model
-const PuzzleType = require('../models/PuzzleType');
 // UserActionLog model
 const UserActionLog = require('../models/UserActionLog');
 // UserSolvingTime model
 const UserSolvingTime = require('../models/UserSolvingTime');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 const type_cheker = {};
 
@@ -145,14 +144,14 @@ async function writeSolvingTime(user, puzzleId, hidden) {
 router.get('/:puzzleid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const puzzle = await Puzzle.findOne({code: req.params.puzzleid}, "-_id -data -code");
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
     if (!puzzle) {
       res.sendStatus(404);
       profiler.log('puzzleHeaderFailed', processStart);
       return;
     }
     var returnObj = puzzle.toObject();
-    type = await PuzzleType.findOne({ code: returnObj.type }, "-_id -code -puzzleJs -puzzleObj");
+    type = await cache.readPuzzleType(returnObj.type);
     if(type) {
       returnObj.type = type.toObject();
     }
@@ -167,7 +166,7 @@ router.get('/:puzzleid', async (req, res, next) => {
 router.get('/:puzzleid/start', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
     if (!puzzle) {
       res.sendStatus(404);
       profiler.log('puzzleStartFailed', processStart);
@@ -221,7 +220,7 @@ router.get('/:puzzleid/get', async (req, res, next) => {
       res.sendStatus(403);
       return;
     }
-    const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
+    const puzzle = await cacje.readPuzzle(req.params.puzzleid);
     if (!puzzle) {
       res.sendStatus(404);
       profiler.log('puzzleReadFailed', processStart);
@@ -244,7 +243,7 @@ router.get('/:puzzleid/get', async (req, res, next) => {
 router.post('/:puzzleid/check', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const puzzle = await Puzzle.findOne({code: req.params.puzzleid});
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
     if (!puzzle) {
       res.sendStatus(404);
       profiler.log('puzzleSubmitFailed', processStart);
