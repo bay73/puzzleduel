@@ -10,7 +10,7 @@ const cache = require('../utils/cache');
 router.get('/', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var dailyPuzzle = await cache.readDailyPuzzle();
+    var dailyPuzzle = await cache.readPuzzleByDate(new Date().toISOString().slice(0,10));
     if (dailyPuzzle) {
       var dailyPuzzleObj = await util.puzzleToPresent(dailyPuzzle, req.getLocale());
       if (typeof dailyPuzzleObj.contest != "undefined") {

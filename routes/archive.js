@@ -6,6 +6,7 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 const User = require('../models/User');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
@@ -139,22 +140,22 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
   try {
     const processStart = new Date().getTime();
     var date = Date.parse(req.params.puzzleid);
-    var filter = {code: req.params.puzzleid};
     if (date) {
-      filter = {daily: date};
+      var puzzle = await cache.readPuzzleByDate(date);
+    } else {
+      var puzzle = await cache.readPuzzle(req.params.puzzleid);
     }
-    puzzle = await Puzzle.findOne(filter, "-data").lean();
     if (!puzzle || puzzle.hiddenScore) {
       res.sendStatus(404);
       return;
     }
     var puzzleType = puzzle.type;
-    const type = await PuzzleType.findOne({code: puzzle.type}, "name").lean();
+    const type = await cache.readPuzzleType(puzzle.type);
     if (type) {
       puzzleType = type.name;
     }
 
-    const times = await UserSolvingTime.find({puzzleId: puzzle.code}, "-date").lean();
+    const times = await cache.readSolvingTime(puzzle.code);
     const notFinished = times.filter(time => typeof time.solvingTime=="undefined").map(time => time.userName);
 
     res.render('times', {

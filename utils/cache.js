@@ -64,16 +64,13 @@ module.exports.readPuzzle = async function(puzzleId) {
   return puzzleCache[puzzleId].puzzle;
 }
 
-module.exports.readDailyPuzzle = async function() {
+module.exports.readPuzzleByDate = async function(date) {
   const currentTime = new Date().getTime();
-  if (typeof puzzleCache["_daily"]=='undefined' || currentTime > puzzleCache["_daily"].fresheness) {
-    const datetime = new Date();
-    const puzzle = await Puzzle.findOne({daily: datetime.toISOString().slice(0,10)});
-    var endOfHour = new Date();
-    endOfHour.setMinutes(59,59,999);
-    puzzleCache["_daily"] = {puzzle: puzzleToObj(puzzle), fresheness: endOfHour.getTime()};
+  if (typeof puzzleCache[date]=='undefined' || currentTime > puzzleCache[date].fresheness) {
+    const puzzle = await Puzzle.findOne({daily: date});
+    puzzleCache[date] = {puzzle: puzzleToObj(puzzle), fresheness: new Date().getTime() + PUZZLE_CACHE_TTL};
   }
-  return puzzleCache["_daily"].puzzle;
+  return puzzleCache[date].puzzle;
 }
 
 module.exports.readPuzzleTypes = async function() {
