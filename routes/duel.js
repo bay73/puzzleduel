@@ -44,8 +44,8 @@ router.get('/:contestid', async (req, res, next) => {
       if (puzzleStatus == "" && status=="going") {
         nextTime = contest.finish;
       }
+      nextTime = new Date(nextTime.getTime() + Math.floor(Math.random()*5000));
     }
-    nextTime = new Date(nextTime.getTime() + Math.floor(Math.random()*5000));
     var timeLeft = null;
     if (nextTime && nextTime < new Date(new Date().getTime()+ 86400000)) {
       timeLeft = nextTime.getTime() - new Date().getTime();
