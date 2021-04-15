@@ -61,25 +61,11 @@ module.exports.userSolvingTimeMap = async function(userId, includeHidden) {
   return timesMap;
 }
 
-module.exports.typeNameMap = async function() {
-  const types = await PuzzleType.find({}, "code name");
-  var typeMap = {};
-  types.forEach(type => typeMap[type.code] = type.name);
-  return typeMap;
-}
-
 module.exports.userNameMap = async function() {
   const users = await User.find({}, "_id name");
   var userMap = {};
   users.forEach(user => userMap[user._id] = user.name);
   return userMap;
-}
-
-module.exports.typeDataMap = async function() {
-  const types = await PuzzleType.find({});
-  var typeMap = {};
-  types.forEach(type => typeMap[type.code] = type.toObject());
-  return typeMap;
 }
 
 module.exports.isHiddenType = function(type) {

@@ -6,6 +6,7 @@ const Puzzle = require('../models/Puzzle');
 const Rating = require('../models/Rating');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
@@ -113,12 +114,6 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
 
     var d = new Date();
     d.setDate(d.getDate() - 20);
-    var userMap = {}
-    var userData = await User.find();
-    userData.forEach(user => userMap[user._id] = user.name);
-    var typeMap = await util.typeNameMap();
-    var timesMap = await util.bestSolvingTimeMap(true);
-
     var filter = {
       tag: {$regex : ".*daily.*"},
       $or: [
@@ -127,13 +122,23 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
       ]
     };
 
-    const puzzles = await Puzzle.find(filter, "code type dimension tag daily author").sort({daily: -1});
+
+    const [userData, typeMap, timesMap, puzzles] = await Promise.all([
+      User.find(),
+      cache.readPuzzleTypes(),
+      util.bestSolvingTimeMap(true),
+      Puzzle.find(filter, "code type dimension tag daily author").sort({daily: -1})
+    ])
+
+    var userMap = {}
+    userData.forEach(user => userMap[user._id] = user.name);
+
     res.render('dailysetup', {
       user: req.user,
       puzzles: puzzles.map(puzzle => {
         return {
           code: puzzle.code,
-          type: typeMap[puzzle.type],
+          type: typeMap[puzzle.type].name,
           dimension: puzzle.dimension,
           tag: puzzle.tag,
           daily: puzzle.daily,

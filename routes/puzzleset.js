@@ -72,10 +72,12 @@ router.get('/:setid/show/:puzzleid', async (req, res, next) => {
         return;
       }
     }
-    var typeMap = await util.typeDataMap();
-    var userMap = await util.userNameMap();
+    const [typeMap, userMap, puzzles] = await Promise.all([
+      cache.readPuzzleTypes(),
+      util.userNameMap(),
+      Puzzle.find()
+    ]);
     var puzzleMap = {};
-    const puzzles = await Puzzle.find();
     puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();});
     var setObj = {code: set.code, name: set.name, description: set.description, authorId: set.author, author: userMap[set.author]};
     var locale = req.getLocale();

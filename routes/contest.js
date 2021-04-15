@@ -51,9 +51,11 @@ router.get('/:contestid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    var typeMap = await util.typeNameMap();
+    const [typeMap, puzzles] = await Promise.all([
+      cache.readPuzzleTypes(),
+      Puzzle.find({'contest.contestId': req.params.contestid})
+    ]);
     var puzzleMap = {};
-    const puzzles = await Puzzle.find({'contest.contestId': req.params.contestid});
     puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();puzzleMap[puzzle.code].needLogging = puzzle.needLogging});
     var userTimes = {};
     if (req.user) {
@@ -78,7 +80,7 @@ router.get('/:contestid', async (req, res, next) => {
         return {
           num: puzzle.puzzleNum,
           code: puzzle.puzzleId,
-          type: typeMap[puzzleObj.type],
+          type: typeMap[puzzleObj.type].name,
           dimension: puzzleObj.dimension,
           puzzleDate: puzzleObj.contest.puzzleDate,
           competitive: puzzleObj.needLogging,

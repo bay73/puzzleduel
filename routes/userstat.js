@@ -4,6 +4,7 @@ const util = require('../utils/puzzle_util');
 const Rating = require('../models/Rating');
 const User = require('../models/User');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 router.get('/:userid',
   async (req, res, next) => {
@@ -24,18 +25,19 @@ router.get('/:userid',
       to = from;
     }
 
-    var typeData = await util.typeDataMap();
+    const [typeData, userName, rating] = await Promise.all([
+      cache.readPuzzleTypes(),
+      cache.readUserName(req.params.userid),
+      Rating.find({
+        userId: req.params.userid,
+        $and : [
+            {date: {$gte: from}},
+            {date: {$lte: to}}
+          ]
+      })
+    ]);
+
     Object.keys(typeData).forEach(type => {typeData[type].puzzleCount = 0; typeData[type].valueSum = 0;})
-
-    const user = await User.findOne({_id: req.params.userid});
-
-    const rating = await Rating.find({
-      userId: req.params.userid,
-      $and : [
-          {date: {$gte: from}},
-          {date: {$lte: to}}
-        ]
-    });
     
     var categories = {};
     rating.forEach(week => {
@@ -52,8 +54,8 @@ router.get('/:userid',
 
     res.render('userstat', {
       user: req.user,
-      userId: user._id,
-      userName: user.name,
+      userId: req.params.userid,
+      userName: userName,
       from: from,
       to: to,
       statdata: rating.map(ratingEntry => {
