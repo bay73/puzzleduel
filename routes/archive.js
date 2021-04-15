@@ -15,25 +15,29 @@ router.get(['/','/daily'],
   async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var timesMap = await util.bestSolvingTimeMap(false);
-    var typeMap = await util.typeNameMap();
-
     var filter = {daily: {$lte: new Date()} };
     if (req.user && req.user.role == "test") {
       filter = {};
     }
     if (req.user) {
-      var userTimesMap = await util.userSolvingTimeMap(req.user._id, false);
+      var userTimesPromise = util.userSolvingTimeMap(req.user._id, false);
     } else {
-      var userTimesMap = {};
+      var userTimesPromise = Promise.resolve({});
     }
-    const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
+
+    const [userTimesMap, timesMap, typeMap, puzzles] = await Promise.all([
+      userTimesPromise,
+      util.bestSolvingTimeMap(false),
+      cache.readPuzzleTypes(),
+      Puzzle.find(filter, "-data").sort({daily: -1})
+    ]);
+
     res.render('archive', {
       user: req.user,
       puzzles: puzzles.map(puzzle => {
         return {
           code: puzzle.code,
-          type: typeMap[puzzle.type],
+          type: typeMap[puzzle.type].name,
           dimension: puzzle.dimension,
           daily: puzzle.daily,
           competitive: puzzle.needLogging,
@@ -53,9 +57,10 @@ router.get(['/','/daily'],
 router.get('/types', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var typeMap = await util.typeDataMap();
-
-    const puzzles = await Puzzle.find({}, "-data");
+    const [typeMap, puzzles] = await Promise.all([
+      cache.readPuzzleTypes(),
+      Puzzle.find({}, "-data")
+    ]);
     res.render('by_type', {
       user: req.user,
       puzzles: puzzles
@@ -82,13 +87,15 @@ router.get('/types', async (req, res, next) => {
 router.get('/types/author/:authorid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var typeMap = await util.typeDataMap();
-    var author = await User.findById(req.params.authorid, "name");
+    const [typeMap, author, puzzles] = await Promise.all([
+      cache.readPuzzleTypes(),
+      cache.readUserName(req.params.authorid),
+      Puzzle.find({author: req.params.authorid}, "-data").sort({daily: -1})
+    ]);
 
-    const puzzles = await Puzzle.find({author: req.params.authorid}, "-data").sort({daily: -1});
     res.render('by_type', {
       user: req.user,
-      author: author.name,
+      author: author,
       puzzles: puzzles
         .filter(puzzle => !puzzle.needLogging)
         .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
@@ -112,9 +119,10 @@ router.get('/types/author/:authorid', async (req, res, next) => {
 router.get('/examples', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var typeMap = await util.typeDataMap();
-
-    const puzzles = await Puzzle.find({tag: "example" }, "-data");
+    const [typeMap, puzzles] = await Promise.all([
+      cache.readPuzzleTypes(),
+      Puzzle.find({tag: "example" }, "-data")
+    ]);
     res.render('examples', {
       user: req.user,
       puzzles: puzzles
@@ -202,7 +210,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     }
     var onlyFuture = req.query.future=="true" || typeof req.query.future=="undefined";
 
-    var typeMap = await util.typeDataMap();
+    var typeMap = await cache.readPuzzleTypes();
     var timesMap = await util.bestSolvingTimeMap(true);
 
     var filter = {author: req.user._id};

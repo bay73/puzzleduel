@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-// User model
 const User = require('../models/User');
+const Puzzle = require('../models/Puzzle');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
