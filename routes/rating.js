@@ -4,6 +4,7 @@ const router = express.Router();
 const Rating = require('../models/Rating');
 const computeRating = require('../utils/rating');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 router.get('/:ratingdate', async (req, res, next) => {
   try {
@@ -16,7 +17,7 @@ router.get('/:ratingdate', async (req, res, next) => {
     }
     var ld = new Date();
     ld.setDate(ld.getDate() - 4);
-    const ratingList = await Rating.find({date: d});
+    const ratingList = await cache.readRating(d);
     res.render('rating', {
       user: req.user,
       ratingDate: d,
