@@ -117,6 +117,7 @@ router.get('/:contestid/register', async (req, res, next) => {
     }
     contest.participants.push({userId: req.user._id, userName: req.user.name})
     await contest.save();
+    await cache.refreshContest(req.params.contestid);
     res.redirect('/duel/' + req.params.contestid);
     profiler.log('duelRegister', processStart);
   } catch (e) {
@@ -147,6 +148,7 @@ router.get('/:contestid/unregister', async (req, res, next) => {
     }
     contest.participants = contest.participants.filter(user => !user.userId.equals(req.user._id))
     await contest.save();
+    await cache.refreshContest(req.params.contestid);
     res.redirect('/duel/' + req.params.contestid);
     profiler.log('duelUnregister', processStart);
   } catch (e) {

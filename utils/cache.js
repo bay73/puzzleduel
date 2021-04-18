@@ -28,6 +28,12 @@ module.exports.readContest = async function(contestId) {
   return contestCache[contestId].contest;
 }
 
+module.exports.refreshContest = async function(contestId) {
+  const contest = await Contest.findOne({code: contestId}).lean();
+  contestCache[contestId] = {contest: contest, fresheness: new Date().getTime() + CONTEST_CACHE_TTL};
+  return contestCache[contestId].contest;
+}
+
 module.exports.readDailyShadowContest = async function() {
   const currentTime = new Date().getTime();
   if (typeof contestCache["_daily"]=='undefined' || currentTime > contestCache["_daily"].fresheness) {
