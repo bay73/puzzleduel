@@ -187,6 +187,9 @@ router.get('/:contestid/opponent', async (req, res, next) => {
             round = puzzle.puzzleNum - 1;
           }
         })
+        if (!round) {
+          opponent.status = 'finished';
+        }
       }
       var userId = req.user._id.toString();
       if (typeof contest.seedData != 'undefined' && typeof contest.seedData[round] != 'undefined') {
