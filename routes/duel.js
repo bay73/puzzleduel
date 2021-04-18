@@ -200,7 +200,7 @@ router.get('/:contestid/opponent', async (req, res, next) => {
             }
           });
         } else {
-          opponent.skip: true;
+          opponent.skip = true;
         }
       }
     }
