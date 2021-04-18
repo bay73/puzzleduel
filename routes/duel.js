@@ -172,7 +172,7 @@ router.get('/:contestid/opponent', async (req, res, next) => {
     } else {
       var status = 'finished';
     }
-    var opponent = {};
+    var opponent = {status: status};
     if (req.user) {
       if (status == 'going') {
         var nextTime = contest.start;
@@ -193,14 +193,14 @@ router.get('/:contestid/opponent', async (req, res, next) => {
         var opponentId = contest.seedData[round][userId];
         if (opponentId) {
           opponentObj = contest.participants.filter(participant => participant.userId.equals(opponentId))[0];
-          opponent = {name: opponentObj.userName, status: status};
+          opponent.name = opponentObj.userName;
           contest.puzzles[round].results.forEach(result => {
             if (result.userId.equals(opponentId)) {
               opponent.time = util.timeToString(result.time);
             }
           });
         } else {
-          opponent = {skip: true};
+          opponent.skip: true;
         }
       }
     }
