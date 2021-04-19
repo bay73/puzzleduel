@@ -34,12 +34,33 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     edgeEditController: edge => {
       if (edge.allCells.length > 1) {
         var clickSwitch = [{}, {image: "black_circle", returnValue: "black_circle"}];
-        edge.clickSwitch = clickSwitch.map(val => Object.assign({}, edge.data, val));
+        edge.isClue = true;
+        edge.clickSwitch = clickSwitch.map(val => Object.assign({color: edge.data.color}, val));
       }
     },
     decodeClue: value => {
       if (value=="black_circle") {
         return {image: "black_circle"}
+      } else {
+        return {text: value}
+      }
+    },
+    cellMultiPencil: true,
+  }
+
+  typeProperties["sudoku_consecutive"] = {
+    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
+    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
+    edgeEditController: edge => {
+      if (edge.allCells.length > 1) {
+        var clickSwitch = [{}, {image: "white_dot", returnValue: "white_dot"}];
+        edge.isClue = true;
+        edge.clickSwitch = clickSwitch.map(val => Object.assign({color: edge.data.color}, val));
+      }
+    },
+    decodeClue: value => {
+      if (value=="white_dot") {
+        return {image: "white_dot"}
       } else {
         return {text: value}
       }

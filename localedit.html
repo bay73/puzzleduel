@@ -73,17 +73,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "shikaku",
+      typeCode: "sudoku_consecutive",
       id: "puzzle.code",
-      dimension: "9x9"
+      dimension: "6x6"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

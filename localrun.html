@@ -114,19 +114,36 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "shikaku",
+      typeCode: "sudoku_consecutive",
       id: "puzzle.code",
-      dimension: "9x9"
+      dimension: "6x6"
     };
     var settings = {
       local: true,
       
-      data: {"f1":"6","d2":"2","g2":"6","c3":"6","h3":"4","b4":"6","i4":"6","a5":"5","h5":"8","b6":"8","g6":"8","f7":"8","e8":"8","tag":""}
+      data: {
+    "a1": "1",
+    "edges": {
+        "b1-1": "white_dot",
+        "e1-1": "white_dot",
+        "a2-2": "white_dot",
+        "b2-1": "white_dot",
+        "d2-1": "white_dot",
+        "e2-1": "white_dot",
+        "f2-2": "white_dot",
+        "a3-1": "white_dot",
+        "d3-1": "white_dot",
+        "e4-1": "white_dot",
+        "c5-1": "white_dot",
+        "c5-2": "white_dot"
+    },
+    "tag": ""
+    }
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, controls, settings);
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
