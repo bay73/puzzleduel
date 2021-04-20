@@ -7,6 +7,7 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 const recountContest = require('../utils/contest');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 function getUserScore(puzzleDesc, userId) {
   var userScore = null;
