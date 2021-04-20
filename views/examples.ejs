@@ -11,7 +11,14 @@
           </p>
           <div class="accordion" id="mainAccordion">
             <% var prevCategory = null; %>
-            <% puzzles.sort((p1,p2) => (""+p1.category).localeCompare(p2.category)).forEach(function(puzzle) { %>
+            <% function comparePuzzles(p1, p2) {
+              if (p1.category==p2.category) {
+                return p1.type.localeCompare(p2.type);
+              } else {
+                return p1.category.localeCompare(p2.category);
+              }
+            } %>
+            <% puzzles.sort((p1,p2) => comparePuzzles(p1, p2)).forEach(function(puzzle) { %>
             <% if (puzzle.category != prevCategory) { %>
             <% if (prevCategory!=null) { %>
                   </tbody>
