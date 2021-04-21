@@ -15,7 +15,7 @@
         <table class="table table-responsive table-condensed">
           <tbody>
             <% puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puz) { %>
-            <tr>
+            <tr class="table <%= (contest.status=='active' && puz.num==contest.lastPuzzleNum)?"table-active":"" %>">
               <td>
                 <%= puz.num %>
               </td>
@@ -62,22 +62,22 @@
             <% if (r1.score != r2.score) return r2.score - r1.score; %>
             <%if (r1.tiebreakScore != r2.tiebreakScore) return r2.tiebreakScore - r1.tiebreakScore; %>
             <% return r2.rating - r1.rating; } %>
-            <% users.sort(resultCompare).forEach(function(user) { %>
-            <tr class="table">
+            <% users.sort(resultCompare).forEach(function(u) { %>
+            <tr class="table <%= u.id.equals(user._id)?"table-active":"" %>">
               <td>
-                <%= user.name %>
+                <%= u.name %>
               </td>
               <td class="text-center">
-                <%= user.rating > 0?Math.round(user.rating):"" %>
+                <%= u.rating > 0?Math.round(u.rating):"" %>
               </td>
               <% if (contest.status != 'registration') { %>
               <td class="text-center">
-                <span data-toggle="tooltip" title="<%= user.seedDetails %>">
-                <%= user.score %>
-                <% if (user.scoreSum) { %>
-                (<% for(var num=1; num<=contest.lastPuzzleNum; num++) { %><%= num>1?"+":"" %><%= user.scoreSum[num.toString()]?user.scoreSum[num.toString()]:0 %><% } %>)
+                <span data-toggle="tooltip" title="<%= u.seedDetails %>">
+                <%= u.score %>
+                <% if (u.scoreSum) { %>
+                (<% for(var num=1; num<=contest.lastPuzzleNum; num++) { %><%= num>1?"+":"" %><%= u.scoreSum[num.toString()]?u.scoreSum[num.toString()]:0 %><% } %>)
                 <% } %>
-                / <%= user.tiebreakScore %>
+                / <%= u.tiebreakScore %>
                 </span>
               </td>
               <% } %>
