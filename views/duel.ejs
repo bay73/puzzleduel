@@ -38,9 +38,11 @@
                     timerText = "<%= __('Time till puzzle finish ') %>";
                   } else if (status=='solving') {
                     $('#duelTimer').text("<%= __('Time is over') %>");
+                    <% if (contest.isUserRegistered) { %>
                     if (time <= -10000) {
                       location.reload();
                     }
+                    <% } %>
                   } else {
                     location.reload();
                   }
@@ -164,7 +166,11 @@
           <% } %>
           $('#standingPane').load("/duel/<%= contest.code %>/standing");
           <% if (contest.status=='going'){ %>
+          <% if (contest.isUserRegistered) { %>
           setInterval(() => {$('#standingPane').load("/duel/<%= contest.code %>/standing");},20000);
+          <% } else { %>
+          setInterval(() => {$('#standingPane').load("/duel/<%= contest.code %>/standing");},120000);
+          <% } %>
           <% } %>
         });
       </script>
