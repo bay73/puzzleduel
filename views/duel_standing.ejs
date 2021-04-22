@@ -63,7 +63,7 @@
             <%if (r1.tiebreakScore != r2.tiebreakScore) return r2.tiebreakScore - r1.tiebreakScore; %>
             <% return r2.rating - r1.rating; } %>
             <% users.sort(resultCompare).forEach(function(u) { %>
-            <tr class="table <%= u.id.equals(user._id)?"table-active":"" %>">
+            <tr class="table <%= (typeof user != "undefined" && u.id.equals(user._id))?"table-active":"" %>">
               <td>
                 <%= u.name %>
               </td>
