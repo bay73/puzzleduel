@@ -71,6 +71,7 @@ type_cheker["alternate_loop"] = require('../puzzle_types/alternate_loop')
 type_cheker["abc_division"] = require('../puzzle_types/abc_division')
 type_cheker["spiral_galaxies"] = require('../puzzle_types/spiral_galaxies')
 type_cheker["shikaku"] = require('../puzzle_types/shikaku')
+type_cheker["foseruzu"] = require('../puzzle_types/foseruzu')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({

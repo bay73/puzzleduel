@@ -73,17 +73,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "sudoku_consecutive",
+      typeCode: "foseruzu",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "6x6-4"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

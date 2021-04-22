@@ -80,6 +80,7 @@ function processRuleTags(rules, dimension) {
   var dimensions = dimension.split("x");
   var rows = parseInt(dimensions[1]);
   var cols = parseInt(dimensions[0]);
+  var quantity = part[1];
   var letters = [];
   if (typeof part[1] != "undefined") {
     for (var i=0;i<part[1].length;i++) {

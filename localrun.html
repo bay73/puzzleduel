@@ -114,36 +114,19 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "sudoku_consecutive",
+      typeCode: "foseruzu",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "6x6-4"
     };
     var settings = {
       local: true,
       
-      data: {
-    "a1": "1",
-    "edges": {
-        "b1-1": "white_dot",
-        "e1-1": "white_dot",
-        "a2-2": "white_dot",
-        "b2-1": "white_dot",
-        "d2-1": "white_dot",
-        "e2-1": "white_dot",
-        "f2-2": "white_dot",
-        "a3-1": "white_dot",
-        "d3-1": "white_dot",
-        "e4-1": "white_dot",
-        "c5-1": "white_dot",
-        "c5-2": "white_dot"
-    },
-    "tag": ""
-    }
+      data: {"b1":"1","b2":"3","e2":"3","f2":"1","c3":"2","d3":"2","c4":"2","d4":"2","a5":"3","b5":"2","e5":"3","e6":"1","tag":""}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

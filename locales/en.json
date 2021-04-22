@@ -271,5 +271,6 @@
 	"Circle should be at the center of rotational symmetry the area": "Circle should be at the center of rotational symmetry the area",
 	"Clue should show the size of the area": "Clue should show the size of the area",
 	"Each area should have recatangular shape": "Each area should have recatangular shape",
-	"Each area should contain exactly one clue": "Each area should contain exactly one clue"
+	"Each area should contain exactly one clue": "Each area should contain exactly one clue",
+	"Each area should have the required size": "Each area should have the required size"
 }

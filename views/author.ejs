@@ -64,6 +64,10 @@
                 <input class="form-control" width="5" id="letters">
               </div>
               <div class="form-group pr-4 pb-2">
+                <label class="col-form-label pr-1" for="size">Quantity</label>
+                <input type="number" min="0" max="99" class="form-control" id="quantity">
+              </div>
+              <div class="form-group pr-4 pb-2">
                 <button type="submit" id="createPuzzle" class="btn btn-primary">Create</button>
               </div>
             </div>
@@ -72,6 +76,7 @@
         <script>
           var squared = [];
           var needLetters = [];
+          var needQuantity = [];
           var rows = [];
           <% types.forEach(function(type) { %>
           <% if (type.properties && type.properties.squared) { %>
@@ -83,11 +88,15 @@
           <% if (type.properties && type.properties.needLetters) { %>
           needLetters['<%= type.code %>'] = true;
           <% } %>
+          <% if (type.properties && type.properties.needQuantity) { %>
+          needQuantity['<%= type.code %>'] = true;
+          <% } %>
           <% }) %>
           $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true);
           $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
           $("#type").change(function() {
             $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true);
+            $("#quantity").parent().toggle(needQuantity[$("#type").children("option:selected").val()]==true);
             $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
             $("#rows").parent().toggle(typeof rows[$("#type").children("option:selected").val()] == "undefined");
           });
@@ -111,6 +120,14 @@
                 return;
               }
               dimension = dimension + "-" + letters;
+            }
+            if (needQuantity[type]) {
+              var quantity = $("#quantity").val();
+              if (!quantity) {
+                window.alert('Specify the value for quantity field!');
+                return;
+              }
+              dimension = dimension + "-" + quantity;
             }
             var url = "/single/" + type + "/" + dimension + "/new";
             window.location = url;

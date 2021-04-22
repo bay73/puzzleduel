@@ -274,5 +274,6 @@
 	"Circle should be at the center of rotational symmetry the area": "Кружок должен быть центром вращательной симметрии для области",
 	"Clue should show the size of the area": "Число должно показывать размер область",
 	"Each area should have recatangular shape": "Каждая область должна иметь прямоугольную форму",
-	"Each area should contain exactly one clue": "В каждой области долждно быть ровно одно число"
+	"Each area should contain exactly one clue": "В каждой области должно быть ровно одно число",
+	"Each area should have the required size": "Размер области должен соответствовать указанному"
 }
