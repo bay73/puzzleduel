@@ -294,6 +294,27 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return {image: value} },
   }
 
+  typeProperties["kropki"] = {
+    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, self.rows);}},
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.rows);},
+    edgeEditController: edge => {
+      if (edge.allCells.length > 1) {
+        edge.isClue = true;
+        edge.clickSwitch = [{}, {image: "white_dot", returnValue: "white"}, {image: "small_circle", returnValue: "black"}];;
+      }
+    },
+    decodeClue: value => {
+      if (value=="white") {
+        return {image: "white_dot"}
+      } else if (value=="black") {
+        return {image: "small_circle"}
+      } else {
+        return {text: value}
+      }
+    },
+    cellMultiPencil: true,
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }

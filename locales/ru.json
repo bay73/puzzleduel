@@ -275,5 +275,9 @@
 	"Clue should show the size of the area": "Число должно показывать размер область",
 	"Each area should have recatangular shape": "Каждая область должна иметь прямоугольную форму",
 	"Each area should contain exactly one clue": "В каждой области должно быть ровно одно число",
-	"Each area should have the required size": "Размер области должен соответствовать указанному"
+	"Each area should have the required size": "Размер области должен соответствовать указанному",
+	"The digits should be consecutive": "Цифры должны быть последовательными",
+	"The digits shouldn't be consecutive": "Цифры не должны быть последовательными",
+	"The digits shouldn't be two times bigger one another": "Цифры не должны быть одна вдвое больше другой",
+	"The digits should be two times bigger one another": "Одна цифра должна быть вдвое больше другой"
 }

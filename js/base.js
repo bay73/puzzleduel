@@ -253,8 +253,9 @@ basePuzzle.prototype.check = function() {
     var dimension = this.dimension;
     var puzzleData = this.settings.data;
     module = {};
-    requirejs(['puzzle_types/util.js','puzzle_types/' + this.typeCode + '.js'], function() {
+    requirejs(['puzzle_types/util.js','puzzle_types/sudoku_util.js','puzzle_types/' + this.typeCode + '.js'], function() {
       window.util=Util;
+      window.sudoku_util=SudokuUtil;
       response = Checker.check(dimension, puzzleData, data);
       self.showResult(response);
     });

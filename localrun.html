@@ -114,19 +114,19 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "foseruzu",
+      typeCode: "kropki",
       id: "puzzle.code",
-      dimension: "6x6-4"
+      dimension: "6x6"
     };
     var settings = {
       local: true,
       
-      data: {"b1":"1","b2":"3","e2":"3","f2":"1","c3":"2","d3":"2","c4":"2","d4":"2","a5":"3","b5":"2","e5":"3","e6":"1","tag":""}
+      data: {"edges":{"b1-1":"white","b1-2":"black","c1-2":"white","e1-1":"white","f1-2":"white","a2-1":"black","a2-2":"white","b2-1":"black","c2-1":"white","c2-2":"white","d2-1":"white","e2-1":"black","e2-2":"white","f2-2":"white","a3-2":"white","b3-1":"black","b3-2":"white","e3-1":"white","c4-2":"white","d4-1":"black","e4-2":"black","a5-2":"white","b5-1":"white","e5-2":"white","d6-1":"white"},"tag":""}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
