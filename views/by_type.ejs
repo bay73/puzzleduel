@@ -13,6 +13,22 @@
      -webkit-mask-repeat: repeat-x;
      -webkit-mask-size: 15px 15px;
    }
+   @media (max-width: 767px) {
+    .btn-xs-block {
+        display: block;
+        width: 100%;
+    }
+    input[type="submit"].btn-xs-block,
+    input[type="reset"].btn-xs-block,
+    input[type="button"].btn-xs-block {
+        width: 100%;
+    }
+    .btn-block + .btn-xs-block,
+    .btn-xs-block + .btn-block,
+    .btn-xs-block + .btn-xs-block {
+        margin-top: 0.5rem;
+    }
+  }
 </style>
 <script src="/js/accordion.js"></script>
 <script>
@@ -52,7 +68,7 @@
             <% } %>
             <div class="card">
               <div class="card-header" id="<%= puzzle.category.substr(3) %>Heading">
-                <button class="btn btn-link" type="button"
+                <button class="btn btn-link btn-xs-block" type="button"
                   data-toggle="collapse" data-target="#<%= puzzle.category.substr(3) %>Collapse"
                   aria-expanded="true" aria-controls="<%= puzzle.category.substr(3) %>Collapse"
                 >
