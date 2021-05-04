@@ -34,7 +34,6 @@ check:function(dimension, clues, data){
 },
 
 checkAreas: function(cells, areas, requiredLetters) {
-  var areaMap = util.create2DArray(cells.rows, cells.cols, -1)
   for (var a=0; a<areas.length; a++) {
     var letters = Checker.getLetersInArea(cells, areas[a]);
     if (letters != requiredLetters) {

@@ -8,9 +8,7 @@ const BOTTOM = 4;
 const Checker = {
 check:function(dimension, clues, data){
   // Create array
-  var part = dimension.split("-");
-  var requiredLetters = part[1];
-  var dim = util.parseDimension(part[0]);
+  var dim = util.parseDimension(dimension);
   var cluecells = util.create2DArray(dim.rows, dim.cols, 0)
   var areas = [];
 
@@ -64,7 +62,6 @@ check:function(dimension, clues, data){
 },
 
 checkAreas: function(cells, areas) {
-  var areaMap = util.create2DArray(cells.rows, cells.cols, -1)
   for (var a=0; a<areas.length; a++) {
     var circle = Checker.getCircleInArea(cells, areas[a]);
     if (circle.length != 1) {

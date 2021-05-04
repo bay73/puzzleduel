@@ -34,7 +34,6 @@ check:function(dimension, clues, data){
 },
 
 checkAreas: function(cells, areas) {
-  var areaMap = util.create2DArray(cells.rows, cells.cols, -1)
   for (var a=0; a<areas.length; a++) {
     if (!Checker.isRectangle(cells, areas[a])) {
       return {status: "Each area should have recatangular shape", errors: areas[a]};
