@@ -229,6 +229,27 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     recountConnector: !this.editMode,
   }
 
+  typeProperties["neighbors"] = {
+    needNodes: true,
+    needConnectors: true,
+    edgeController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
+    },
+    nodeController: node => node.dragProcessor = true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+    },
+    cellEditController: cell => setNumberChooser(cell, 1, 10),
+    collectAreas: !this.editMode,
+    recountConnector: !this.editMode,
+  }
+
   typeProperties["shikaku"] = {
     needNodes: true,
     needConnectors: true,

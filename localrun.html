@@ -114,19 +114,19 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "kropki",
+      typeCode: "neighbors",
       id: "puzzle.code",
       dimension: "6x6"
     };
     var settings = {
       local: true,
       
-      data: {"edges":{"b1-1":"white","b1-2":"black","c1-2":"white","e1-1":"white","f1-2":"white","a2-1":"black","a2-2":"white","b2-1":"black","c2-1":"white","c2-2":"white","d2-1":"white","e2-1":"black","e2-2":"white","f2-2":"white","a3-2":"white","b3-1":"black","b3-2":"white","e3-1":"white","c4-2":"white","d4-1":"black","e4-2":"black","a5-2":"white","b5-1":"white","e5-2":"white","d6-1":"white"},"tag":""}
+      data: {"b1":"3","b2":"3","b4":"4","c4":"3","d4":"4","f4":"1","tag":""}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

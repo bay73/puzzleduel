@@ -72,6 +72,7 @@ type_cheker["abc_division"] = require('../puzzle_types/abc_division')
 type_cheker["spiral_galaxies"] = require('../puzzle_types/spiral_galaxies')
 type_cheker["shikaku"] = require('../puzzle_types/shikaku')
 type_cheker["foseruzu"] = require('../puzzle_types/foseruzu')
+type_cheker["neighbors"] = require('../puzzle_types/neighbors')
 type_cheker["kropki"] = require('../puzzle_types/kropki')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {
