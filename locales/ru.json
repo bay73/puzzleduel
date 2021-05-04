@@ -279,5 +279,6 @@
 	"The digits should be consecutive": "Цифры должны быть последовательными",
 	"The digits shouldn't be consecutive": "Цифры не должны быть последовательными",
 	"The digits shouldn't be two times bigger one another": "Цифры не должны быть одна вдвое больше другой",
-	"The digits should be two times bigger one another": "Одна цифра должна быть вдвое больше другой"
+	"The digits should be two times bigger one another": "Одна цифра должна быть вдвое больше другой",
+	"Clear cache": "Clear cache"
 }

@@ -276,5 +276,6 @@
 	"The digits should be consecutive": "The digits should be consecutive",
 	"The digits shouldn't be consecutive": "The digits shouldn't be consecutive",
 	"The digits shouldn't be two times bigger one another": "The digits shouldn't be two times bigger one another",
-	"The digits should be two times bigger one another": "The digits should be two times bigger one another"
+	"The digits should be two times bigger one another": "The digits should be two times bigger one another",
+	"Clear cache": "Clear cache"
 }

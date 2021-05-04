@@ -31,6 +31,21 @@ router.get('/actionlog', ensureAuthenticated, async (req, res, next) => {
   }
 });
 
+router.get('/clearcache', ensureAuthenticated, async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    if (!req.user || req.user.role != "admin") {
+      res.sendStatus(404);
+      return;
+    }
+    cache.clearCache();
+    res.redirect('/');
+    profiler.log('adminClearCache', processStart);
+  } catch (e) {
+    next(e)
+  }
+});
+
 router.get('/actionlog/:puzzleid/:userid', ensureAuthenticated, async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
