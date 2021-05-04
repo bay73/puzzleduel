@@ -52,20 +52,29 @@ var puzzleToObj = function(puzzle) {
   puzzleObj.hidden = puzzle.hidden;
   puzzleObj.hiddenScore = puzzle.hiddenScore;
   puzzleObj.published = puzzle.published;
+  puzzleObj.changeDate = puzzle.changeDate;
   return puzzleObj;
 }
 
+var readPuzzleFromDb = async function(cacheId, condition) {
+  const puzzle = await Puzzle.findOne(condition);
+  const puzzleObj = puzzleToObj(puzzle);
+  var fresheness = new Date().getTime() + PUZZLE_CACHE_TTL;
+  if (puzzleObj.changeDate && puzzleObj.changeDate.getTime() > new Date().getTime() && puzzleObj.changeDate.getTime() < fresheness) {
+    fresheness = puzzleObj.changeDate.getTime()
+  }
+  puzzleCache[cacheId] = {puzzle: puzzleObj, fresheness: fresheness};
+  return puzzleCache[cacheId].puzzle;
+}
+
 module.exports.refreshPuzzle = async function(puzzleId) {
-  const puzzle = await Puzzle.findOne({code: puzzleId});
-  puzzleCache[puzzleId] = {puzzle: puzzleToObj(puzzle), fresheness: new Date().getTime() + PUZZLE_CACHE_TTL};
-  return puzzleCache[puzzleId].puzzle;
+  return await readPuzzleFromDb(puzzleId, {code: puzzleId});
 }
 
 module.exports.readPuzzle = async function(puzzleId) {
   const currentTime = new Date().getTime();
   if (typeof puzzleCache[puzzleId]=='undefined' || currentTime > puzzleCache[puzzleId].fresheness) {
-    const puzzle = await Puzzle.findOne({code: puzzleId});
-    puzzleCache[puzzleId] = {puzzle: puzzleToObj(puzzle), fresheness: new Date().getTime() + PUZZLE_CACHE_TTL};
+    await readPuzzleFromDb(puzzleId, {code: puzzleId});
   }
   return puzzleCache[puzzleId].puzzle;
 }
@@ -73,8 +82,7 @@ module.exports.readPuzzle = async function(puzzleId) {
 module.exports.readPuzzleByDate = async function(date) {
   const currentTime = new Date().getTime();
   if (typeof puzzleCache[date]=='undefined' || currentTime > puzzleCache[date].fresheness) {
-    const puzzle = await Puzzle.findOne({daily: date});
-    puzzleCache[date] = {puzzle: puzzleToObj(puzzle), fresheness: new Date().getTime() + PUZZLE_CACHE_TTL};
+    await readPuzzleFromDb(date, {daily: date})
   }
   return puzzleCache[date].puzzle;
 }
@@ -135,5 +143,19 @@ module.exports.clearCache = function() {
   Object.keys(ratingCache).forEach(function(key) { delete ratingCache[key]; });
   Object.keys(userCache).forEach(function(key) { delete userCache[key]; });
   Object.keys(solvingTimeCache).forEach(function(key) { delete solvingTimeCache[key]; });
+}
+
+module.exports.printCache = function() {
+  console.log(new Date().getTime());
+  console.log("contests:");
+  Object.keys(contestCache).forEach(function(key) { console.log(key, contestCache[key].fresheness);});
+  console.log("puzzles:");
+  Object.keys(puzzleCache).forEach(function(key) { console.log(key, puzzleCache[key].fresheness); });
+  console.log("ratings:");
+  Object.keys(ratingCache).forEach(function(key) { console.log(key, ratingCache[key].fresheness); });
+  console.log("users:");
+  Object.keys(userCache).forEach(function(key) { console.log(key, userCache[key].fresheness);; });
+  console.log("solvingTimes:");
+  Object.keys(solvingTimeCache).forEach(function(key) { console.log(key, solvingTimeCache[key].fresheness);; });
 }
 

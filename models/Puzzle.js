@@ -47,6 +47,22 @@ const PuzzleSchema = new mongoose.Schema({
   }
 });
 
+PuzzleSchema.virtual('changeDate').get(function() {
+  if (!this.tag) return null;
+  var date = null;
+  if (this.tag.includes("daily")) {
+    date = this.daily;
+  } else if (this.tag.includes("contest")) {
+    if (this.contest && this.contest.puzzleDate) {
+      date = this.contest.puzzleDate;
+    }
+  }
+  if (date && date <= new Date()) {
+    date.setDate(date.getDate()+5);
+  }
+  return date;
+});
+
 PuzzleSchema.virtual('needLogging').get(function() {
   if (!this.tag) return true;
   if (this.tag.includes("daily")) {
