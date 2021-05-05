@@ -71,6 +71,9 @@ checkCluesInArea: function(cells, area, areaMap) {
   if (typeof clue == "undefined") {
     return {status: "Each area should contain exactly one clue", errors: area};
   }
+  if (clue=='?') {
+    return {status: "OK"};
+  }
   uniqueNeighbours = neighbours.filter(function(item, pos) {
     return neighbours.indexOf(item) == pos;
   });

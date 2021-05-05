@@ -245,7 +245,14 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     connectorController: connector => {
       setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
     },
-    cellEditController: cell => setNumberChooser(cell, 1, 10),
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{},{text: '?', returnValue: '?'}];
+      for (var i=1; i<=10; i++) {
+        chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
     collectAreas: !this.editMode,
     recountConnector: !this.editMode,
   }
