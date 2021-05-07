@@ -114,14 +114,14 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "neighbors",
+      typeCode: "black_white",
       id: "puzzle.code",
       dimension: "6x6"
     };
     var settings = {
       local: true,
       
-      data: {"b1":"3","b2":"3","b4":"4","c4":"3","d4":"4","f4":"1","tag":""}
+      data: {"a1":"white_circle","c1":"black_circle","f1":"black_circle","b2":"black_circle","d2":"white_circle","a3":"black_circle","e3":"white_circle","c4":"white_circle","e5":"black_circle","b5":"black_circle","a6":"white_circle","d6":"white_circle","tag":""}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
