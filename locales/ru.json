@@ -282,5 +282,6 @@
 	"The digits should be two times bigger one another": "Одна цифра должна быть вдвое больше другой",
 	"Clear cache": "Clear cache",
 	"All areas should have the same size": "Все области должны быть одного размера",
-	"Each area should contain exactly one white circle and one black circle": "В каждой области должен быть один белый и один черный кружок"
+	"Each area should contain exactly one white circle and one black circle": "В каждой области должен быть один белый и один черный кружок",
+	"Loop should visit the area exactly two times": "Цикл должен посещать область ровно два раза"
 }

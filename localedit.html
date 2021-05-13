@@ -73,7 +73,7 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "black_white",
+      typeCode: "double_back",
       id: "puzzle.code",
       dimension: "6x6"
     };
@@ -82,8 +82,8 @@
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

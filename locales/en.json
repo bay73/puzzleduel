@@ -279,5 +279,6 @@
 	"The digits should be two times bigger one another": "The digits should be two times bigger one another",
 	"Clear cache": "Clear cache",
 	"All areas should have the same size": "All areas should have the same size",
-	"Each area should contain exactly one white circle and one black circle": "Each area should contain exactly one white circle and one black circle"
+	"Each area should contain exactly one white circle and one black circle": "Each area should contain exactly one white circle and one black circle",
+	"Loop should visit the area exactly two times": "Loop should visit the area exactly two times"
 }

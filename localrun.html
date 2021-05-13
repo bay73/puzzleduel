@@ -114,19 +114,73 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "black_white",
+      typeCode: "double_back",
       id: "puzzle.code",
       dimension: "6x6"
     };
     var settings = {
       local: true,
       
-      data: {"a1":"white_circle","c1":"black_circle","f1":"black_circle","b2":"black_circle","d2":"white_circle","a3":"black_circle","e3":"white_circle","c4":"white_circle","e5":"black_circle","b5":"black_circle","a6":"white_circle","d6":"white_circle","tag":""}
+      data: {
+  "areas": [
+    [
+      "a1",
+      "b1",
+      "a2",
+      "b2",
+      "a3",
+      "b3",
+      "a4",
+      "b4"
+    ],
+    [
+      "c1",
+      "d1",
+      "d2",
+      "d3",
+      "c4",
+      "d4"
+    ],
+    [
+      "e1",
+      "f1",
+      "e2",
+      "f2"
+    ],
+    [
+      "c2",
+      "c3"
+    ],
+    [
+      "e3",
+      "e4",
+      "c5",
+      "d5",
+      "e5"
+    ],
+    [
+      "f3",
+      "f4"
+    ],
+    [
+      "a5",
+      "b5",
+      "f5",
+      "a6",
+      "b6",
+      "c6",
+      "d6",
+      "e6",
+      "f6"
+    ]
+  ],
+  "tag": ""
+}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
