@@ -142,6 +142,13 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["chaos"] = {
+    needNodes: false,
+    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 4);}},
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 4);},
+    cellMultiPencil: true,
+  }
+
   typeProperties["ripple_effect"] = {
     needNodes: true,
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 6);}},

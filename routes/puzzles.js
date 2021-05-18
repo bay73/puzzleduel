@@ -76,6 +76,7 @@ type_cheker["neighbors"] = require('../puzzle_types/neighbors')
 type_cheker["kropki"] = require('../puzzle_types/kropki')
 type_cheker["black_white"] = require('../puzzle_types/black_white')
 type_cheker["double_back"] = require('../puzzle_types/double_back')
+type_cheker["chaos"] = require('../puzzle_types/chaos')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({
