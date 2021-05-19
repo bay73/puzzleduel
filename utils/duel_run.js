@@ -8,7 +8,7 @@ require('dotenv').config();
 const db = require('../config/keys').mongoURI;
 
 recount = async function () {
-  result = await recountContest('40645v1knnk0dug');
+  result = await recountContest('4064521kovcexz9');
   if (result) {
     setTimeout(run, 30000);
   }
