@@ -281,5 +281,6 @@
 	"All areas should have the same size": "All areas should have the same size",
 	"Each area should contain exactly one white circle and one black circle": "Each area should contain exactly one white circle and one black circle",
 	"Loop should visit the area exactly two times": "Loop should visit the area exactly two times",
-	"Three cells in a row shouldn't contain the same digits": "Three cells in a row shouldn't contain the same digits"
+	"Three cells in a row shouldn't contain the same digits": "Three cells in a row shouldn't contain the same digits",
+	"6x6 duel": "6x6 duel"
 }
