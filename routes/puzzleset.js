@@ -6,6 +6,7 @@ const PuzzleSet = require('../models/PuzzleSet');
 const Puzzle = require('../models/Puzzle');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 router.get('/', async (req, res, next) => {
   try {
