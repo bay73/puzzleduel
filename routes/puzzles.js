@@ -102,7 +102,7 @@ async function logAction(user, puzzleId, action, ipInfo, data) {
   await newUserSolvingTime.save();
 }
 
-async function writeSolvingTime(user, puzzleId, hidden) {
+async function writeSolvingTime(user, puzzleId, hidden, clientTime) {
   const time = await UserSolvingTime.findOne({userId: user._id, puzzleId: puzzleId});
   if (time != null && time.solvingTime != null) {
     return;
@@ -134,11 +134,15 @@ async function writeSolvingTime(user, puzzleId, hidden) {
       userName: user.name,
       puzzleId: puzzleId,
       solvingTime: solveTime - startTime,
+      serverTime: solveTime - startTime,
+      clientTime: clientTime,
       errCount: errCount
     });
   }
   newUserSolvingTime.userName = user.name;
   newUserSolvingTime.solvingTime = solveTime - startTime;
+  newUserSolvingTime.serverTime = solveTime - startTime;
+  newUserSolvingTime.clientTime = clientTime;
   newUserSolvingTime.errCount = errCount;
   newUserSolvingTime.date = new Date();
   if (hidden) {
@@ -272,7 +276,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
         );
         var hidden = puzzle.author.equals(req.user._id);
         if (result.status == "OK") {
-          await writeSolvingTime(req.user, req.params.puzzleid, hidden);
+          await writeSolvingTime(req.user, req.params.puzzleid, hidden, req.body.time);
         }
       }
     }

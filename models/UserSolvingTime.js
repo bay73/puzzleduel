@@ -19,6 +19,14 @@ const UserSolvingTimeSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
+  clientTime: {
+    type: Number,
+    required: false
+  },
+  serverTime: {
+    type: Number,
+    required: false
+  },
   errCount: {
     type: Number,
     required: true

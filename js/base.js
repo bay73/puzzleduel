@@ -247,6 +247,7 @@ basePuzzle.prototype.check = function() {
   var self = this;
   this.log.push({time: new Date() - this.startTime, data: 'check'});
   var data = this.collectData();
+  data.time = new Date() - this.startTime;
   data.log = this.log;
   this.removeMessages();
   if (typeof this.settings != 'undefined' && this.settings.local) {
