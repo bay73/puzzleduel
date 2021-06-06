@@ -2,6 +2,17 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
+      <% if (new Date() < new Date('2021-06-06T15:55:00.000+00:00')) { %>
+      <div class="card card-body bg-info text-white">
+        <p>
+        <a class="text-warning" href='/duel/4064521kovcexz9'>6x6 Duel Contest</a> is held on 06.06.
+        The contest consists of few Mini-Sudoku puzzles and uses duel rules - all participants solve puzzles simultaneously.
+        In each round a solver competes with the only opponent which changes for every puzzle.
+        <p>Registration is required before the contest starts for seeding participants.
+        Registration link and more details about the contest rules are <a class="text-warning" href='/duel/4064521kovcexz9'>here</a>.
+        </p>
+      </div>
+      <% } %>
       <% if (contestPuzzle){ %>
         <% if (user) { %>
         <div class="card card-body">
@@ -89,14 +100,6 @@
           <% } %>
           <% if(contestPuzzle){ %>
           showcontestPuzzle();
-          <% } %>
-          <% if (new Date() < new Date('2021-06-06T15:55:00.000+00:00')) { %>
-           showMessage("<br><a href='/duel/4064521kovcexz9'>6x6 Duel Contest</a> will be held on 06.06. " +
-           "<br>The contest consists of few Mini-Sudoku puzzles and uses duel rules - all participants solve puzzles simultaneously. "+
-           "<br>In each round a solver competes with the only opponent which changes for every puzzle." +
-           "<br><br>Registration is required before the contest starts for seeding participants." +
-           "<br>Registration link and more details about the contest rules are <a href='/duel/4064521kovcexz9'>here</a>.",
-          null,"2021-05-24");
           <% } %>
         });
       </script>
