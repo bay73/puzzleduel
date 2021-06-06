@@ -160,6 +160,13 @@ gridElement.prototype.switchOnDrag = function() {
 
 gridElement.prototype.switchOnChooser = function(index) {
   if (this.chooserValues != null) {
+    if (this.chooserValues.length > 10 && this.puzzle.typeProperties.usePlus10 && index == 10) {
+      var currentIndex = this.findCurrent(this.chooserValues);
+      var index = currentIndex + 10;
+      if (index >= this.chooserValues.length) {
+        index -= this.chooserValues.length;
+      }
+    }
     if (this.puzzle.pencilMarkMode) {
       this.setPencilData(this.chooserValues[index]);
     } else {
@@ -309,7 +316,13 @@ gridElement.prototype.useChooser = function() {
 }
 
 gridElement.prototype.chooserData = function() {
-  return this.chooserValues;
+  if (this.chooserValues.length > 10 && this.puzzle.typeProperties.usePlus10) {
+    var values = this.chooserValues.slice(0, 10);
+    values.push({text: "+10"});
+    return values;
+  } else {
+    return this.chooserValues;
+  }
 }
 
 gridElement.prototype.center = function() {
