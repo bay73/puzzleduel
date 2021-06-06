@@ -342,6 +342,15 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["kuromasu"] = {
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      setClueClickSwitch(cell, [{},{image: "cross"}], [{},{image: "cross"}]);
+    },
+    cellEditController: cell => setNumberChooser(cell, 1, 29),
+    usePlus10: this.editMode,
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
