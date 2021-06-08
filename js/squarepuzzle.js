@@ -6,13 +6,24 @@ squarePuzzleType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(squarePuzzleType.prototype, squarePuzzle.prototype);
 
+squarePuzzleType.prototype.parseDimension = function(dimension) {
+  if (this.typeCode == "top_heavy") {
+    // Parse dimension string to values.
+    var part = dimension.split("-");
+    squarePuzzle.prototype.parseDimension.call(this, part[0]);
+    this.maxChooserValue = parseInt(part[1]);
+  } else {
+    squarePuzzle.prototype.parseDimension.call(this, dimension);
+  }
+}
+
 squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
   var typeProperties = {}
 
   typeProperties["hitori"] = {
     cellController: cell => setClickSwitch(cell, true, [{},{color: "#303030", returnValue: "1"},{image: "white_circle"}], [{},{color: "#808080"},{image: "white_circle"}]),
-    cellEditController: cell => setNumberChooser(cell, 0, 16),
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 16);},
   }
 
   typeProperties["snake_dutch"] = {
@@ -175,7 +186,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       setDragSwitch(edge, false, [{},{color: self.colorSchema.lineColor}]);
     },
     nodeController: node => node.dragProcessor = true,
-    cellEditController: cell => setNumberChooser(cell, 0, 4),
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 4);},
   }
 
   typeProperties["lighthouses"] = {
@@ -347,8 +358,22 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       setClickSwitch(cell, false, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
       setClueClickSwitch(cell, [{},{image: "cross"}], [{},{image: "cross"}]);
     },
-    cellEditController: cell => setNumberChooser(cell, 1, 29),
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 29);},
     usePlus10: this.editMode,
+  }
+
+  typeProperties["top_heavy"] = {
+    needNodes: false,
+    cellController: cell => {if (!cell.isClue) {
+      var chooserValues = [{}];
+      for (var i=1; i<=self.maxChooserValue; i++) {
+        chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      chooserValues.push({image: "white_circle"}, {image: "cross"});
+      cell.chooserValues = chooserValues;
+    }},
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.maxChooserValue);},
+    cellMultiPencil: true,
   }
 
   if (typeCode in typeProperties) {
@@ -390,7 +415,6 @@ function setNumberClues(cell, start, end) {
 }
 
 function setNumberChooser(cell, start, end) {
-  cell.isClue = true;
   var chooserValues = [{}];
   for (var i=start; i<=end; i++) {
     chooserValues.push({text: i.toString(), returnValue: i.toString()});
