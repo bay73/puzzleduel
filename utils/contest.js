@@ -1,5 +1,5 @@
 const Contest = require('../models/Contest');
-const UserSolvingTime = require('../models/UserSolvingTime');
+const Puzzle = require('../models/Puzzle');
 
 async function recountPuzzle(puzzle, scoring) {
   var puzzleId = puzzle.toObject().puzzleId;
@@ -85,5 +85,43 @@ async function recountContest(contestId) {
   return true;
 }
 
-module.exports = recountContest;
+
+async function reschedulePuzzles(contestId) {
+  var pauseMinutes = 60*24*5;
+  var roundMinutes = 60*24;
+  const contest = await Contest.findOne({code: contestId});
+  if (!contest) {
+    return false;
+  }
+  console.log('contest.start',contest.start);
+  if (contest.start <= new Date()) {
+    return false;
+  }
+  var num = 0;
+  var time = contest.start;
+  for(var i=0; i<contest.puzzles.length; i++) {
+    puzzle = contest.puzzles[i];
+    num++;
+    puzzle.puzzleNum = num;
+    puzzle.revealDate = time;
+    if (puzzle.puzzleId) {
+      var puzzleStorage = await Puzzle.findOne({code: puzzle.puzzleId});
+      if (puzzleStorage) {
+        if (typeof puzzleStorage.contest=="undefined" || puzzleStorage.contest.contestId == contestId) {
+          puzzleStorage.contest = {contestId: contestId, puzzleDate: puzzle.revealDate};
+          puzzleStorage.tag = 'contest';
+          await puzzleStorage.save();
+        }
+      }
+    }
+    time = new Date(time.getTime() + roundMinutes*60000);
+  }
+  contest.markModified('puzzles');
+  contest.finish = new Date(time.getTime() + pauseMinutes*60000);
+  await contest.save();
+  return true;
+}
+
+module.exports.recountContest = recountContest;
+module.exports.reschedulePuzzles = reschedulePuzzles;
 

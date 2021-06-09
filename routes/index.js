@@ -23,7 +23,7 @@ router.get('/', async (req, res, next) => {
     if (contest) {
       var contestPuzzleId = null;
       contest.puzzles.forEach(puzzle => {
-        if (puzzle.revealDate.toISOString().slice(0,10) == datetime.toISOString().slice(0,10)) {
+        if (puzzle.revealDate.toISOString().slice(0,10) == new Date().toISOString().slice(0,10)) {
           contestPuzzleId = puzzle.puzzleId;
         }
       })
