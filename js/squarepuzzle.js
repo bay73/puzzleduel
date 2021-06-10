@@ -268,7 +268,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     connectorController: connector => {
       setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
     },
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 15);},
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 99);},
     edgeEditController: edge => {
        if (edge.allCells.length > 1) {
          edge.isClue = true;
@@ -278,6 +278,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     nodeEditController: node => node.dragProcessor = true,
     collectAreas: this.editMode,
+    usePlus10: this.editMode,
   }
 
   typeProperties["double_back"] = {
