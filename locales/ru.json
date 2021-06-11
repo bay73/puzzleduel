@@ -287,5 +287,6 @@
 	"Three cells in a row shouldn't contain the same digits": "Три ячейки подряд не должны содержать одинаковые цифры",
 	"6x6 duel": "6x6 duel",
 	"Bigger number can't be in the below adjacent cell": "В соседней ячейке ниже не может быть большего числа",
-	"Puzzle XL 2021": "Puzzle XL 2021"
+	"Puzzle XL 2021": "Puzzle XL 2021",
+	"Start and end of the snake should be in the shaded areas": "Начало и конец змеи должны быть в отмеченных областях"
 }

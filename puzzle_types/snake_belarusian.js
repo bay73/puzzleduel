@@ -25,7 +25,7 @@ check:function(dimension, clues, data){
       }
     }
   }
-  var res = Checker.checkSnake(cells, clue);
+  var res = Checker.checkSnake(cells, clue, areas);
   if (res.status != "OK") {
     return res;
   }
@@ -36,7 +36,7 @@ check:function(dimension, clues, data){
   return {status: "OK"};
 },
 
-checkSnake: function(cells, clues) {
+checkSnake: function(cells, clues, areas) {
   var snake = util.create2DArray(cells.rows, cells.cols, 0);
   var length = 1;
   var head = Checker.findHead(cells);
@@ -92,11 +92,21 @@ checkSnake: function(cells, clues) {
       }
     }
   }
+  var headCoord = util.coord(head.x,head.y);
+  var tailCoord = util.coord(tail.x,tail.y);
   if (!clues[head.y][head.x]) {
-    return {status: "Start and end of the snake should be in the shaded areas", errors: [util.coord(head.x,head.y)]};
+    return {status: "Start and end of the snake should be in the shaded areas", errors: [headCoord]};
   }
   if (!clues[tail.y][tail.x]) {
-    return {status: "Start and end of the snake should be in the shaded areas", errors: [util.coord(tail.x,tail.y)]};
+    return {status: "Start and end of the snake should be in the shaded areas", errors: [tailCoord]};
+  }
+  for (var a=0; a<areas.length; a++) {
+    var pos = util.parseCoord(areas[a][0]);
+    if (clues[pos.y][pos.x]) {
+      if (!areas[a].includes(headCoord) && !areas[a].includes(tailCoord)) {
+        return {status: "Start and end of the snake should be in the shaded areas", errors: areas[a]};
+      }
+    }
   }
   return {status: "OK"};
 },
