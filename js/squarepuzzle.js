@@ -316,7 +316,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       else if (this.editMode) {
         return {text: value};
       } else {
-        return {color: self.colorSchema.gridColor, text: value};
+        return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
       }
     },
   }
@@ -377,6 +377,43 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["chat_room"] = {
+    needConnectors: !this.editMode,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.textColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{}];
+      chooserValues.push({image: 'phone', returnValue: 'phone'});
+      chooserValues.push({image: 'big_white_circle', returnValue: 'white_circle'});
+      chooserValues.push({image: 'big_black_circle', returnValue: 'black_circle'});
+      for (var i=1; i<=99; i++) {
+        chooserValues.push({text: i.toString(), image: 'big_white_circle', returnValue: 'white_'+i.toString()});
+        chooserValues.push({text: i.toString(), image: 'big_black_circle', textColor: "#fff", returnValue: 'black_'+i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {
+      if (value=="phone") {
+        return {image: "phone"}
+      } else if (value=="black_circle") {
+        return {image: "big_black_circle"}
+      } else if (value=="white_circle") {
+        return {image: "big_white_circle"}
+      } else if (value.startsWith("black_")) {
+        return {image: "big_black_circle", text: value.substring(6), textColor: "#fff"}
+      } else if (value.startsWith("white_")) {
+        return {image: "big_white_circle", text: value.substring(6)}
+      } else {
+        return {text: value}
+      }
+    },
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
@@ -432,6 +469,29 @@ function setDragSwitch(element, withClues, dragSwitch, pencilDragSwitch) {
     element.pencilDragSwitch = pencilDragSwitch;
   } else {
     element.pencilDragSwitch = dragSwitch.map(val => {var clone = Object.assign({}, val); delete clone.returnValue; return clone});
+  }
+}
+
+squarePuzzleCell.prototype.chooserData = function() {
+  if (this.puzzle.typeCode == "chat_room") {
+    var values = this.chooserValues.slice(0, 22);
+    values.push({text: "+10"});
+    return values;
+  } else {
+    return squareGridElement.prototype.chooserData.call(this);
+  }
+}
+
+squarePuzzleCell.prototype.switchOnChooser = function(index) {
+  if (this.puzzle.typeCode == "chat_room" && index == 22) {
+    var currentIndex = this.findCurrent(this.chooserValues);
+    var newIndex = currentIndex + 20;
+    if (newIndex >= this.chooserValues.length) {
+      newIndex -= this.chooserValues.length;
+    }
+    return squareGridElement.prototype.switchOnChooser.call(this, newIndex);
+  } else  {
+    return squareGridElement.prototype.switchOnChooser.call(this, index);
   }
 }
 

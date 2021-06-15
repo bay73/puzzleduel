@@ -1,7 +1,7 @@
 chooserBuilder = function(mouseController) {
   this.mouseController = mouseController;
   this.snap = mouseController.snap;
-  this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/>");
+  this.chooserFilter = this.snap.filter("<feColorMatrix type='matrix' values='-.17 -.17 -.17 0 1 -.22 -.22 -.22 0 1 -.33 -.33 -.33 0 1 0 0 0 1 0'/>");
   this.element = null;
   this.chooserElements = [];
   this.highlighted = null;
@@ -142,7 +142,14 @@ chooserToggler.prototype.draw = function(value) {
     var togglerText = this.snap.text(
       this.center.x-width/2, this.center.y + this.size*0.4, showValue.text);
     var attr = Object.assign({}, puzzle.gridProperty.font);
-    Object.assign(attr, {"fill": "white", "font-size": this.size*1.2,"textLength": width });
+    var textColor = showValue.textColor;
+    if (typeof textColor == 'undefined'){
+      textColor = "white";
+      var filter = "";
+    } else {
+      var filter = this.chooserBuilder.chooserFilter;
+    }
+    Object.assign(attr, {"fill": textColor, "filter": filter, "font-size": this.size*1.2,"textLength": width });
     togglerText.attr(attr);
     this.drawElements.push(togglerText);
   }

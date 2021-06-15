@@ -449,7 +449,11 @@ squarePuzzleCell.prototype.drawImage = function() {
 
 squarePuzzleCell.prototype.drawText = function() {
   var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.7, this.data.text);
-  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor});
+  var textColor = this.data.textColor;
+  if (typeof textColor=='undefined') {
+    textColor = this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor;
+  }
+  text.attr({"fill": textColor});
   return text;
 }
 
@@ -633,7 +637,11 @@ squarePuzzleEdge.prototype.drawImage = function() {
 
 squarePuzzleEdge.prototype.drawText = function() {
   var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.4, this.data.text);
-  text.attr({"fill": this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor});
+  var textColor = this.data.textColor;
+  if (typeof textColor=='undefined') {
+    textColor = this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor;
+  }
+  text.attr({"fill": textColor});
   return text;
 }
 
@@ -828,11 +836,9 @@ squarePuzzleNode.prototype.drawImage = function() {
 
 squarePuzzleNode.prototype.drawText = function() {
   var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.35, this.data.text);
-  var textColor = this.puzzle.colorSchema.textColor;
-  if (this.data.color && this.data.color != "#fff") {
-    textColor = "#fff";
-  } else if (this.isClue){
-    textColor = this.puzzle.colorSchema.clueColor;
+  var textColor = this.data.textColor;
+  if (typeof textColor=='undefined') {
+    textColor = this.isClue ? this.puzzle.colorSchema.clueColor: this.puzzle.colorSchema.textColor;
   }
   text.attr({"fill": textColor});
   return text;
