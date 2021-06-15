@@ -259,6 +259,25 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["simple_loop"] = {
+    needNodes: false,
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.textColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{color: self.colorSchema.textColor, returnValue: "black"}];},
+    decodeClue: value => {
+      if (value=="black") {
+        return {color: self.colorSchema.textColor}
+      } else {
+        return {text: value}
+      }
+    },
+  }
+
   typeProperties["maxi_loop"] = {
     needNodes: true,
     needConnectors: true,
@@ -322,6 +341,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   }
 
   typeProperties["alternate_loop"] = {
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
+    decodeClue: value => {return {image: value} },
+  }
+
+  typeProperties["masyu"] = {
     needConnectors: true,
     cellController: cell => {
       cell.dragProcessor = true;
