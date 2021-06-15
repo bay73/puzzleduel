@@ -10,10 +10,25 @@ check:function(dimension, clueData, data){
 
   // Parse data.
   for (var [key, value] of Object.entries(data)) {
-    var pos = util.parseCoord(key);
-    if (v[pos.y]){
-      v[pos.y][pos.x] = (value.v=="true");
-      h[pos.y][pos.x] = (value.h=="true");
+    if (key=='connectors') {
+      for (var [cKey, cValue] of Object.entries(value)) {
+        if (cValue=='1') {
+          var part = cKey.split("-");
+          var pos = util.parseCoord(part[0]);
+          if (part[1]=="v") {
+            v[pos.y][pos.x] = true;
+          }
+          if (part[1]=="h") {
+            h[pos.y][pos.x] = true;
+          }
+        }
+      }
+    } else {
+      var pos = util.parseCoord(key);
+      if (v[pos.y]){
+        v[pos.y][pos.x] = (value.v=="true");
+        h[pos.y][pos.x] = (value.h=="true");
+      }
     }
   }
   // Parse clues.

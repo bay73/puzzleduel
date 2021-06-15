@@ -391,7 +391,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       chooserValues.push({image: 'phone', returnValue: 'phone'});
       chooserValues.push({image: 'big_white_circle', returnValue: 'white_circle'});
       chooserValues.push({image: 'big_black_circle', returnValue: 'black_circle'});
-      for (var i=1; i<=99; i++) {
+      for (var i=0; i<=99; i++) {
         chooserValues.push({text: i.toString(), image: 'big_white_circle', returnValue: 'white_'+i.toString()});
         chooserValues.push({text: i.toString(), image: 'big_black_circle', textColor: "#fff", returnValue: 'black_'+i.toString()});
       }
@@ -474,7 +474,7 @@ function setDragSwitch(element, withClues, dragSwitch, pencilDragSwitch) {
 
 squarePuzzleCell.prototype.chooserData = function() {
   if (this.puzzle.typeCode == "chat_room") {
-    var values = this.chooserValues.slice(0, 22);
+    var values = this.chooserValues.slice(0, 24);
     values.push({text: "+10"});
     return values;
   } else {
@@ -483,7 +483,7 @@ squarePuzzleCell.prototype.chooserData = function() {
 }
 
 squarePuzzleCell.prototype.switchOnChooser = function(index) {
-  if (this.puzzle.typeCode == "chat_room" && index == 22) {
+  if (this.puzzle.typeCode == "chat_room" && index == 24) {
     var currentIndex = this.findCurrent(this.chooserValues);
     var newIndex = currentIndex + 20;
     if (newIndex >= this.chooserValues.length) {
