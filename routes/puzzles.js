@@ -79,6 +79,7 @@ type_cheker["double_back"] = require('../puzzle_types/double_back')
 type_cheker["chaos"] = require('../puzzle_types/chaos')
 type_cheker["kuromasu"] = require('../puzzle_types/kuromasu')
 type_cheker["top_heavy"] = require('../puzzle_types/top_heavy')
+type_cheker["country_road"] = require('../puzzle_types/country_road')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({

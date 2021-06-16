@@ -285,5 +285,7 @@
 	"6x6 duel": "6x6 duel",
 	"Bigger number can't be in the below adjacent cell": "Bigger number can't be in the below adjacent cell",
 	"Puzzle XL 2021": "Puzzle XL 2021",
-	"Start and end of the snake should be in the shaded areas": "Start and end of the snake should be in the shaded areas"
+	"Start and end of the snake should be in the shaded areas": "Start and end of the snake should be in the shaded areas",
+	"Two neigbouring cells in different areas can't both be unused by the loop": "Two neigbouring cells in different areas can't both be unused by the loop",
+	"Loop should visit the area exactly one time": "Loop should visit the area exactly one time"
 }

@@ -300,6 +300,29 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     usePlus10: this.editMode,
   }
 
+  typeProperties["country_road"] = {
+    needNodes: true,
+    needConnectors: true,
+    cellController: cell => {
+      setClickSwitch(cell, true, [{},{image: "cross"}]);
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 99);},
+    edgeEditController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    collectAreas: this.editMode,
+    usePlus10: this.editMode,
+  }
+
   typeProperties["double_back"] = {
     needNodes: true,
     needConnectors: true,

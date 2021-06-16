@@ -114,14 +114,94 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "simple_loop",
+      typeCode: "country_road",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "7x7"
     };
     var settings = {
       local: true,
       
-      data: {"d1":"black","h1":"black","c3":"black","f4":"black","c5":"black","f6":"black","a8":"black","e8":"black"}
+      data: {
+    "a1": "4",
+    "g1": "1",
+    "c2": "4",
+    "g4": "3",
+    "c5": "3",
+    "areas": [
+        [
+            "a1",
+            "b1",
+            "c1",
+            "d1",
+            "e1",
+            "f1"
+        ],
+        [
+            "a2",
+            "b2",
+            "a3",
+            "b3",
+            "a4",
+            "b4"
+        ],
+        [
+            "c2",
+            "d2",
+            "c3",
+            "d3",
+            "c4",
+            "d4"
+        ],
+        [
+            "e2",
+            "f2",
+            "e3",
+            "f3",
+            "e4",
+            "f4"
+        ],
+        [
+            "g1",
+            "g2",
+            "g3"
+        ],
+        [
+            "c5",
+            "d5",
+            "c6",
+            "d6"
+        ],
+        [
+            "e5",
+            "f5",
+            "e6",
+            "f6"
+        ],
+        [
+            "g4",
+            "g5",
+            "g6",
+            "g7"
+        ],
+        [
+            "a5",
+            "a6",
+            "a7"
+        ],
+        [
+            "b5",
+            "b6"
+        ],
+        [
+            "b7",
+            "c7",
+            "d7",
+            "e7",
+            "f7"
+        ]
+    ],
+    "tag": ""
+}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
