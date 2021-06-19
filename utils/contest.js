@@ -1,5 +1,6 @@
 const Contest = require('../models/Contest');
 const Puzzle = require('../models/Puzzle');
+const UserSolvingTime = require('../models/UserSolvingTime');
 
 async function recountPuzzle(puzzle, scoring) {
   var puzzleId = puzzle.toObject().puzzleId;
