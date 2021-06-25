@@ -165,6 +165,8 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
        if (edge.allCells.length > 1) {
          edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
          edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
+         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
        }
     },
     nodeController: node => node.dragProcessor = true,
@@ -192,6 +194,8 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
        if (edge.allCells.length > 1) {
          edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
          edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
+         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
        }
     },
     nodeController: node => node.dragProcessor = true,
@@ -213,6 +217,8 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
        if (edge.allCells.length > 1) {
          edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
          edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
+         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
        }
     },
     nodeController: node => node.dragProcessor = true,
@@ -241,6 +247,8 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
        if (edge.allCells.length > 1) {
          edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
          edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
+         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
        }
     },
     nodeController: node => node.dragProcessor = true,
@@ -263,6 +271,8 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
        if (edge.allCells.length > 1) {
          edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
          edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
+         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
        }
     },
     nodeController: node => node.dragProcessor = true,
@@ -290,6 +300,8 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
            edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
            edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
          }
+         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
+         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
        }
     },
     nodeController: node => node.dragProcessor = true,
