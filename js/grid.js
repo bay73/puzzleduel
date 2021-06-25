@@ -131,7 +131,7 @@ gridElement.prototype.processClick = function() {
   if (this.puzzle.pencilMarkMode) {
     if (this.pencilClickSwitch != null) {
       var currentIndex = this.findCurrentPencil(this.pencilClickSwitch);
-      this.setPencilData(this.pencilClickSwitch[(currentIndex + 1)%this.clickSwitch.length]);
+      this.setPencilData(this.pencilClickSwitch[(currentIndex + 1)%this.pencilClickSwitch.length]);
     }
   } else {
     if (this.clickSwitch != null) {
@@ -145,9 +145,9 @@ gridElement.prototype.processClick = function() {
 gridElement.prototype.switchOnDrag = function() {
   // Switch state of element when it's drag over (initiated by anothe elements).
   if (this.puzzle.pencilMarkMode) {
-    if (this.dragSwitch != null) {
+    if (this.pencilDragSwitch != null) {
       var currentIndex = this.findCurrentPencil(this.pencilDragSwitch);
-      this.setPencilData(this.pencilDragSwitch[(currentIndex + 1)%this.dragSwitch.length]);
+      this.setPencilData(this.pencilDragSwitch[(currentIndex + 1)%this.pencilDragSwitch.length]);
     }
   } else {
     if (this.dragSwitch != null) {
@@ -224,7 +224,8 @@ gridElement.prototype.snapText = function(center, size, text) {
 // render - creates element frame
 // draw - creates all snap elements needed for data
 gridElement.prototype.draw = function() {
-  if (typeof this.elements.path == "undefined") {
+  if (typeof this.elements.group == "undefined") {
+    this.elements.group = this.puzzle.snap.g();
     this.elements.path = this.render();
   }
   this.clearElements();
@@ -251,6 +252,25 @@ gridElement.prototype.draw = function() {
   if (this.data.text) {
     this.elements.text = this.drawText();
   }
+  var group = this.elements.group;
+  var addElementIfExists = function(element) {
+    if (typeof element != "undefined" && element != null) {
+      if (typeof element === "object") {
+        group.add(element);
+      } else if  (typeof element === "array") {
+        element.forEach(item => {
+          group.add(item);
+        });
+      }
+    }
+  }
+  addElementIfExists(this.elements.path);
+  addElementIfExists(this.elements.pencilColor);
+  addElementIfExists(this.elements.pencilImage);
+  addElementIfExists(this.elements.pencilText);
+  addElementIfExists(this.elements.color);
+  addElementIfExists(this.elements.image);
+  addElementIfExists(this.elements.text);
 }
 
 gridElement.prototype.redraw = function() {
@@ -259,6 +279,7 @@ gridElement.prototype.redraw = function() {
 
 gridElement.prototype.clearElements = function() {
   // Removes all visual elements.
+  var group = this.elements.group;
   var clearElementIfExists = function(element) {
     if (typeof element != "undefined" && element != null) {
       if (typeof element === "object") {

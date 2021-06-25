@@ -381,6 +381,7 @@ hexaPuzzleEdge.prototype.drawColor = function() {
 hexaPuzzleEdge.prototype.clearColor = function() {
   if (this.elements.color) {
     this.elements.color.remove();
+    this.elements.color = null;
   }
 }
 
@@ -412,6 +413,7 @@ hexaPuzzleEdge.prototype.drawPencilColor = function() {
 hexaPuzzleEdge.prototype.clearPencilColor = function() {
   if (this.elements.pencilColor) {
     this.elements.pencilColor.remove();
+    this.elements.pencilColor = null;
   }
 }
 
@@ -468,6 +470,7 @@ hexaPuzzleNode.prototype.drawColor = function() {
 hexaPuzzleNode.prototype.clearColor = function() {
   if (this.elements.color) {
     this.elements.color.remove();
+    this.elements.color = null;
   }
 }
 
@@ -496,6 +499,7 @@ hexaPuzzleNode.prototype.drawPencilColor = function() {
 hexaPuzzleNode.prototype.clearPencilColor = function() {
   if (this.elements.pencilColor) {
     this.elements.pencilColor.remove();
+    this.elements.pencilColor = null;
   }
 }
 

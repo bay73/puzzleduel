@@ -628,6 +628,7 @@ squarePuzzleEdge.prototype.drawColor = function() {
 squarePuzzleEdge.prototype.clearColor = function() {
   if (this.elements.color) {
     this.elements.color.remove();
+    this.elements.color = null;
   }
 }
 
@@ -659,6 +660,7 @@ squarePuzzleEdge.prototype.drawPencilColor = function() {
 squarePuzzleEdge.prototype.clearPencilColor = function() {
   if (this.elements.pencilColor) {
     this.elements.pencilColor.remove();
+    this.elements.pencilColor = null;
   }
 }
 
@@ -737,7 +739,8 @@ squarePuzzleConnector.prototype.drawColor = function() {
 squarePuzzleConnector.prototype.clearColor = function() {
   if (this.elements.color) {
     this.elements.color.remove();
-  }
+    this.elements.color = null;
+ }
 }
 
 squarePuzzleConnector.prototype.drawImage = function() {
@@ -770,6 +773,7 @@ squarePuzzleConnector.prototype.drawPencilColor = function() {
 squarePuzzleConnector.prototype.clearPencilColor = function() {
   if (this.elements.pencilColor) {
     this.elements.pencilColor.remove();
+    this.elements.pencilColor = null;
   }
 }
 
@@ -827,6 +831,7 @@ squarePuzzleNode.prototype.drawColor = function() {
 squarePuzzleNode.prototype.clearColor = function() {
   if (this.elements.color) {
     this.elements.color.remove();
+    this.elements.color = null;
   }
 }
 
@@ -855,6 +860,7 @@ squarePuzzleNode.prototype.drawPencilColor = function() {
 squarePuzzleNode.prototype.clearPencilColor = function() {
   if (this.elements.pencilColor) {
     this.elements.pencilColor.remove();
+    this.elements.pencilColor = null;
   }
 }
 
