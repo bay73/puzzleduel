@@ -352,7 +352,14 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       }
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
-    nodeEditController: node => {node.isClue = true; setNumberChooser(node, 0, 3);},
+    nodeEditController: node => {
+      node.isClue = true;
+      var chooserValues = [{}];
+      for (var i=0; i<=3; i++) {
+        chooserValues.push({color: self.colorSchema.gridColor, text: i.toString(), textColor: "#fff", returnValue: i.toString()});
+      }
+      node.chooserValues = chooserValues;
+    },
     decodeClue: value => {
       if (value=="cross") return {image: "cross"};
       else if (this.editMode) {
@@ -465,6 +472,29 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       } else {
         return {text: value}
       }
+    },
+  }
+
+  typeProperties["slalom"] = {
+    needNodes: true,
+    needConnectors: false,
+    cellController: cell => {
+      cell.dragProcessor = null;
+      setClickSwitch(cell, false, [{},{image: "slash", returnValue: "/"},{image: "backslash", returnValue: "\\"}]);
+      if (cell.isClue && cell.data.image != "cross") {
+        setClueClickSwitch(cell, [{},{color: self.colorSchema.greyColor, returnValue: "1"}], [{},{color: "#a0a0a0"}]);
+      }
+    },
+    nodeEditController: node => {
+      node.isClue = true;
+      var chooserValues = [{}];
+      for (var i=0; i<=4; i++) {
+        chooserValues.push({color: self.colorSchema.gridColor, text: i.toString(), textColor: "#fff", returnValue: i.toString()});
+      }
+      node.chooserValues = chooserValues;
+    },
+    decodeClue: value => {
+      return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
     },
   }
 

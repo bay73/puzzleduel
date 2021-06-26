@@ -290,5 +290,6 @@
 	"Puzzle XL 2021": "Puzzle XL 2021",
 	"Start and end of the snake should be in the shaded areas": "Начало и конец змеи должны быть в отмеченных областях",
 	"Two neigbouring cells in different areas can't both be unused by the loop": "Соседние клетки в разных областях не должны одновременно быть пустыми",
-	"Loop should visit the area exactly one time": "Цикл должен посещать область ровно один раз"
+	"Loop should visit the area exactly one time": "Цикл должен посещать область ровно один раз",
+	"Diagonal lines shouldn't form a loop": "Диагонали не должны формировать замкнутый цикл"
 }
