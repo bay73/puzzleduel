@@ -19,7 +19,7 @@ router.get('/:userid',
     to_date.setDate(to_date.getDate() +10);
     to = isNaN(to) ? to_date : to;
     var from_date = new Date();
-    from_date.setMonth(from_date.getMonth() - 6);
+    from_date.setMonth(from_date.getMonth() - 12);
     from = isNaN(from) ? from_date : from;
     if (to < from) {
       to = from;
