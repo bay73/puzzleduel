@@ -10,7 +10,7 @@
      class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
   <%= __('Sorry, but your browser is not supported. Try to setup the new version.') %>
 </svg>
-<div class="row card-body">
+<div class="row card-body pb-0">
   <div class="col-8">
     <div class="d-flex flex-row flex-wrap">
       <div class="modal" name="restartModal">
@@ -46,17 +46,29 @@
       <span name="timer" class="align-top" style="font-family: Lucida Console; font-size: 130%; display: none;"></span>
     </div>
   </div>
-  <p class="card-text text-left mt-2"><%= puzzle.type.rules %></p>
-  <% if (typeof puzzle.type.example != 'undefined' && puzzle.type.example.puzzleId) { %>
-  <p class="card-text text-left mt-2"><a href="/single/<%= puzzle.type.example.puzzleId %>"><b><%= __('Example puzzle') %></b></a></p>
-  <% } %>
-  <p class="card-text text-left mt-1"><b><%= __('Grid control') %></b>:
-    <%= puzzle.type.gridControl?puzzle.type.gridControl:__('Click the mouse button at the selected cell to change the filling of the cell.') + __('To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.') %>
-    <%= __('More details about grid control are at the') %> <a href='/help'><%= __('help page') %></a>.
-  </p>
+</div>
+<div class="d-flex flex-wrap card-body pt-0" id="puzzleRules">
+  <% if (typeof puzzle.type.properties != 'undefined' && typeof puzzle.type.properties.figuresAttribute != 'undefined') { %>
+  <div class="col-lg-4">
+    <span class="puzzle-figures w-100 d-block" theme="<%= (typeof theme != "undefined")?theme:"" %>" figures="<%=puzzle.type.properties.figuresAttribute %>"></span>
+  </div>
+  <div class="col-lg-8">
+  <% } else { %>
+  <div>
+  <% }%>
+    <p class="card-text text-left mt-2"><%= puzzle.type.rules %></p>
+    <% if (typeof puzzle.type.example != 'undefined' && puzzle.type.example.puzzleId) { %>
+    <p class="card-text text-left mt-2"><a href="/single/<%= puzzle.type.example.puzzleId %>"><b><%= __('Example puzzle') %></b></a></p>
+    <% } %>
+    <p class="card-text text-left mt-1"><b><%= __('Grid control') %></b>:
+      <%= puzzle.type.gridControl?puzzle.type.gridControl:__('Click the mouse button at the selected cell to change the filling of the cell.') + __('To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.') %>
+      <%= __('More details about grid control are at the') %> <a href='/help'><%= __('help page') %></a>.
+    </p>
+  </div>
 </div>
 </div>
 <script src="/js/locale_<%= getLocale() %>.js"></script>
+<script src="/js/puzzle_figures.js"></script>
 <script>
   function show<%= (typeof prefix != undefined)?prefix+'Puzzle':'Puzzle' %>() {
     var controls = "#<%= (typeof prefix != undefined)?prefix+'Controls':'puzzleControls' %>";
