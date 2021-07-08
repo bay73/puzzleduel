@@ -361,9 +361,34 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       node.chooserValues = chooserValues;
     },
     decodeClue: value => {
-      if (value=="cross") return {image: "cross"};
-      else if (this.editMode) {
-        return {text: value};
+      if (value=="cross") {
+        return {image: "cross"};
+      } else {
+        return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
+      }
+    },
+  }
+
+  typeProperties["tetro_scope"] = {
+    needNodes: true,
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      if (cell.isClue && cell.data.image != "cross") {
+        setClueClickSwitch(cell, [{},{color: self.colorSchema.greyColor, returnValue: "1"}], [{},{color: "#a0a0a0"}]);
+      }
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
+    nodeEditController: node => {
+      node.isClue = true;
+      var chooserValues = [{}];
+      for (var i=0; i<=4; i++) {
+        chooserValues.push({color: self.colorSchema.gridColor, text: i.toString(), textColor: "#fff", returnValue: i.toString()});
+      }
+      node.chooserValues = chooserValues;
+    },
+    decodeClue: value => {
+      if (value=="cross") {
+        return {image: "cross"};
       } else {
         return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
       }

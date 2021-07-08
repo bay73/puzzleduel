@@ -291,5 +291,8 @@
 	"Start and end of the snake should be in the shaded areas": "Начало и конец змеи должны быть в отмеченных областях",
 	"Two neigbouring cells in different areas can't both be unused by the loop": "Соседние клетки в разных областях не должны одновременно быть пустыми",
 	"Loop should visit the area exactly one time": "Цикл должен посещать область ровно один раз",
-	"Diagonal lines shouldn't form a loop": "Диагонали не должны формировать замкнутый цикл"
+	"Diagonal lines shouldn't form a loop": "Диагонали не должны формировать замкнутый цикл",
+	"Each element should be used exactly once": "Каждый элемент должен быть использован ровно один раз",
+	"Each marked area should form a tetromino": "Каждая отмеченая область должна образовывать тетромино",
+	"Elements shouldn't touch": "Элементы не должны касаться"
 }

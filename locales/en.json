@@ -288,5 +288,8 @@
 	"Start and end of the snake should be in the shaded areas": "Start and end of the snake should be in the shaded areas",
 	"Two neigbouring cells in different areas can't both be unused by the loop": "Two neigbouring cells in different areas can't both be unused by the loop",
 	"Loop should visit the area exactly one time": "Loop should visit the area exactly one time",
-	"Diagonal lines shouldn't form a loop": "Diagonal lines shouldn't form a loop"
+	"Diagonal lines shouldn't form a loop": "Diagonal lines shouldn't form a loop",
+	"Each element should be used exactly once": "Each element should be used exactly once",
+	"Each marked area should form a tetromino": "Each marked area should form a tetromino",
+	"Elements shouldn't touch": "Elements shouldn't touch"
 }

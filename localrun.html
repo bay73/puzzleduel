@@ -8,9 +8,9 @@
     <link rel="shortcut icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
     <;link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css"/>
-    <;link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.min.css"/>
     <style>
       html {font-size: 100%;}
       svg text {cursor: default;}
@@ -67,7 +67,7 @@
      class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
   Sorry, but your browser is not supported. Try to setup the new version.
 </svg>
-<div class="row card-body" id="puzzleControls">
+<div class="row card-body pb-1" id="puzzleControls">
   <div class="col-8">
     <div class="d-flex flex-row flex-wrap">
       <div class="modal" name="restartModal">
@@ -103,46 +103,48 @@
       <span name="timer" class="align-top" style="font-family: Lucida Console; font-size: 130%; display: none;"></span>
     </div>
   </div>
-  <p class="card-text text-left mt-2"><%= puzzle.type.rules %></p>
-  <p class="card-text text-left mt-1"><b>Grid control</b>:
-    Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.
-    More details about grid control are at the <a href='/help'>help page</a>.
-  </p>
+</div>
+<div class="d-flex flex-wrap card-body pt-0" id="puzzleRules">
+  <div class="col-lg-4">
+    <span class="puzzle-figures w-100 d-block" theme="default" figures="tetro7"></span>
+  </div>
+  <div class="col-lg-8">
+    <p class="card-text text-left mt-2 w-100">Shade some empty cells black to create a single connected wall. No 2x2 square can be completely shaded. Numbers in a cell indicate the length of consecutive shaded blocks in the neighboring cells. If there is more than one number in a cell, then there must be at least one white (unshaded) cell between the black cell groups.></p>
+    <p class="card-text text-left mt-1"><b>Grid control</b>:
+      Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.
+      More details about grid control are at the <a href='/help'>help page</a>.
+    </p>
+  </div>
 </div>
 <script src="js/locale_ru.js"></script>
+<script src="js/puzzle_figures.js"></script>
 <script>
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "slalom",
+      typeCode: "tetro_scope",
       id: "puzzle.code",
-      dimension: "7x7"
+      dimension: "10x7"
     };
     var settings = {
       local: true,
       
       data: {
     "nodes": {
-        "a1-2": "4",
+        "a1-2": "1",
+        "b1-2": "2",
         "c1-2": "2",
-        "d1-2": "3",
-        "f1-2": "3",
-        "b2-2": "1",
-        "e2-2": "3",
-        "a3-2": "3",
-        "c3-2": "3",
-        "d3-2": "1",
-        "f3-2": "3",
-        "a4-2": "2",
-        "c4-2": "2",
-        "d4-2": "1",
-        "f4-2": "2",
-        "b5-2": "4",
-        "e5-2": "1",
-        "a6-2": "1",
-        "c6-2": "3",
-        "d6-2": "2",
-        "f6-2": "3"
+        "g1-2": "3",
+        "h1-2": "3",
+        "i1-2": "1",
+        "e3-2": "4",
+        "e4-2": "2",
+        "a6-2": "3",
+        "b6-2": "1",
+        "c6-2": "1",
+        "g6-2": "0",
+        "h6-2": "2",
+        "i6-2": "2"
     },
     "tag": ""
 }
