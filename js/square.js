@@ -559,6 +559,9 @@ squarePuzzleCell.prototype.processDragMove = function(startElement) {
 }
 
 squarePuzzleCell.prototype.commonConnectors = function(startElement) {
+  if (!this.puzzle.typeProperties.needConnectors) {
+    return null;
+  }
   if (this == startElement) {
     return null;
   }
