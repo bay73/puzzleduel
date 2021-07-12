@@ -48,21 +48,23 @@ drawLetter: function(snap, x, y, size, letter){
 },
 
 drawFigure: function(snap,coord,figure,size,withLetter) {
+  let toggle = function() {
+    let isMarked = (group.attr("isMarked")!="true");
+    group.attr({"isMarked": isMarked});
+    group.children().forEach(function(item) {
+      item.attr({fill: isMarked?puzzleFigures.markedColor:puzzleFigures.color})
+    });
+  }
   console.log(withLetter);
   let group = snap.g();
   figure.cells.forEach(function(cell) {
     let item = puzzleFigures.drawSquare(snap,coord.x+cell.x,coord.y+cell.y,size);
     group.add(item);
-    item.click(function() {
-      let isMarked = (group.attr("isMarked")!="true");
-      group.attr({"isMarked": isMarked});
-      group.children().forEach(function(item) {
-        item.attr({fill: isMarked?puzzleFigures.markedColor:puzzleFigures.color})
-      });
-    });
+    item.click(toggle);
   });
   if (withLetter) {
-    puzzleFigures.drawLetter(snap, coord.x+figure.letterPos.x, coord.y+figure.letterPos.y, size, figure.letter);
+    let item = puzzleFigures.drawLetter(snap, coord.x+figure.letterPos.x, coord.y+figure.letterPos.y, size, figure.letter);
+    item.click(toggle);
   }
   group.attr({"isMarked": false})
 },
