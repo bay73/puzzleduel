@@ -33,14 +33,14 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellEditController: cell => setNumberChooser(cell, 1, self.rows),
     edgeEditController: edge => {
       if (edge.allCells.length > 1) {
-        var clickSwitch = [{}, {image: "black_circle", returnValue: "black_circle"}];
+        var clickSwitch = [{}, {image: "small_circle", returnValue: "black_circle"}];
         edge.isClue = true;
         edge.clickSwitch = clickSwitch.map(val => Object.assign({color: edge.data.color}, val));
       }
     },
     decodeClue: value => {
       if (value=="black_circle") {
-        return {image: "black_circle"}
+        return {image: "small_circle"}
       } else {
         return {text: value}
       }
