@@ -520,11 +520,12 @@ squarePuzzleCell.prototype.pencilMarkAttribute = function(pencilMark) {
   if (this.chooserValues.length == 3 && pencilIndex == 2) {
     row = 1;
   }
+  var innerSize = this.puzzle.size.unitSize*0.75;
   return {
     rows: markRows,
     center: {
-      x: this.center().x + this.puzzle.size.unitSize*(col - (markRows-1)/2)/markRows,
-      y: this.center().y + this.puzzle.size.unitSize*(row - (markRows-1)/2)/markRows
+      x: this.center().x + innerSize*(col - (markRows-1)/2)/markRows,
+      y: this.center().y + innerSize*(row - (markRows-1)/2)/markRows
     }
   }
 }
