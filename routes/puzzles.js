@@ -82,6 +82,7 @@ type_cheker["top_heavy"] = require('../puzzle_types/top_heavy')
 type_cheker["country_road"] = require('../puzzle_types/country_road')
 type_cheker["slalom"] = require('../puzzle_types/slalom')
 type_cheker["tetro_scope"] = require('../puzzle_types/tetro_scope')
+type_cheker["pentomino_touch"] = require('../puzzle_types/pentomino_touch')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({

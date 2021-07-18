@@ -395,6 +395,21 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["pentomino_touch"] = {
+    needNodes: true,
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+    },
+    nodeEditController: node => {node.isClue = true; node.clickSwitch = [{},{image: "battenberg_small", returnValue: "1"}];},
+    decodeClue: value => {
+      if (value=="1") {
+        return {image: "battenberg_small"};
+      } else {
+        return {text: value};
+      }
+    },
+  }
+
   typeProperties["alternate_loop"] = {
     needConnectors: true,
     cellController: cell => {

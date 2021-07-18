@@ -293,6 +293,8 @@
 	"Loop should visit the area exactly one time": "Цикл должен посещать область ровно один раз",
 	"Diagonal lines shouldn't form a loop": "Диагонали не должны формировать замкнутый цикл",
 	"Each element should be used exactly once": "Каждый элемент должен быть использован ровно один раз",
-	"Each marked area should form a tetromino": "Каждая отмеченая область должна образовывать тетромино",
-	"Elements shouldn't touch": "Элементы не должны касаться"
+	"Each marked area should form a tetromino": "Каждая отмеченная область должна образовывать тетрамино",
+	"Elements shouldn't touch": "Элементы не должны касаться",
+	"Each marked area should form a pentomino": "Каждая отмеченная область должна образовывать пентамино",
+	"Elements should touch at marked nodes": "Элементы должны касаться в отмеченных вершинах"
 }

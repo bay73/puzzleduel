@@ -291,5 +291,7 @@
 	"Diagonal lines shouldn't form a loop": "Diagonal lines shouldn't form a loop",
 	"Each element should be used exactly once": "Each element should be used exactly once",
 	"Each marked area should form a tetromino": "Each marked area should form a tetromino",
-	"Elements shouldn't touch": "Elements shouldn't touch"
+	"Elements shouldn't touch": "Elements shouldn't touch",
+	"Each marked area should form a pentomino": "Each marked area should form a pentomino",
+	"Elements should touch at marked nodes": "Elements should touch at marked nodes"
 }

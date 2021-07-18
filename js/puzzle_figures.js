@@ -68,7 +68,6 @@ drawFigure: function(snap,coord,figure,size,withLetter) {
       item.attr({fill: isMarked?puzzleFigures.markedColor:puzzleFigures.color})
     });
   }
-  console.log(withLetter);
   let group = snap.g();
   figure.cells.forEach(function(cell) {
     let item = puzzleFigures.drawSquare(snap,coord.x+cell.x,coord.y+cell.y,size);
@@ -118,7 +117,7 @@ createTetro7: function(snap, withLetters) {
   }
 },
 
-createPenta12: function(snap, withLetters) {
+createPento12: function(snap, withLetters) {
   let width = $(snap.node).parent().width();
   const viewportWidth = Math.max(
     document.documentElement.clientWidth,
@@ -181,8 +180,8 @@ init: function(element) {
   if (figures=="tetro7") {
     puzzleFigures.createTetro7(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures=="penta12") {
-    puzzleFigures.createPenta12(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
+  if (figures=="pento12") {
+    puzzleFigures.createPento12(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
 },
 

@@ -106,7 +106,7 @@
 </div>
 <div class="d-flex flex-wrap card-body pt-0" id="puzzleRules">
   <div class="col-lg-4">
-    <span class="puzzle-figures w-100 d-block" theme="default" figures="tetro7"></span>
+    <span class="puzzle-figures w-100 d-block" theme="default" figures="penta12" letters="false"></span>
   </div>
   <div class="col-lg-8">
     <p class="card-text text-left mt-2 w-100">Shade some empty cells black to create a single connected wall. No 2x2 square can be completely shaded. Numbers in a cell indicate the length of consecutive shaded blocks in the neighboring cells. If there is more than one number in a cell, then there must be at least one white (unshaded) cell between the black cell groups.></p>
@@ -122,34 +122,40 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "tetro_scope",
+      typeCode: "pentomino_touch",
       id: "puzzle.code",
-      dimension: "10x7"
+      dimension: "11x11"
     };
     var settings = {
       local: true,
       
       data: {
     "nodes": {
-        "a1-2": "1",
-        "b1-2": "2",
-        "c1-2": "2",
-        "g1-2": "3",
-        "h1-2": "3",
-        "i1-2": "1",
-        "e3-2": "4",
-        "e4-2": "2",
-        "a6-2": "3",
-        "b6-2": "1",
+        "f2-2": "1",
+        "g2-2": "1",
+        "h2-2": "1",
+        "d3-2": "1",
+        "e3-2": "1",
+        "h3-2": "1",
+        "b4-2": "1",
+        "h4-2": "1",
+        "c5-2": "1",
+        "d5-2": "1",
+        "f5-2": "1",
+        "j5-2": "1",
+        "a6-2": "1",
         "c6-2": "1",
-        "g6-2": "0",
-        "h6-2": "2",
-        "i6-2": "2"
+        "d6-2": "1",
+        "b8-2": "1",
+        "e8-2": "1",
+        "f8-2": "1",
+        "a10-2": "1",
+        "f10-2": "1"
     },
     "tag": ""
 }
     };
-    settings.theme = "contrast";
+    settings.theme = "default";
     var grid = "#mainGrid"
     requirejs(["squarepuzzle"], function() {
       puzzle = new squarePuzzleType(puzzleData, controls, settings);
