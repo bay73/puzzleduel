@@ -122,43 +122,39 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "pentomino_touch",
+      typeCode: "araf",
       id: "puzzle.code",
-      dimension: "11x11"
+      dimension: "8x8"
     };
     var settings = {
       local: true,
       
       data: {
-    "nodes": {
-        "f2-2": "1",
-        "g2-2": "1",
-        "h2-2": "1",
-        "d3-2": "1",
-        "e3-2": "1",
-        "h3-2": "1",
-        "b4-2": "1",
-        "h4-2": "1",
-        "c5-2": "1",
-        "d5-2": "1",
-        "f5-2": "1",
-        "j5-2": "1",
-        "a6-2": "1",
-        "c6-2": "1",
-        "d6-2": "1",
-        "b8-2": "1",
-        "e8-2": "1",
-        "f8-2": "1",
-        "a10-2": "1",
-        "f10-2": "1"
-    },
+    "d1": "2",
+    "e1": "1",
+    "d2": "3",
+    "e2": "2",
+    "a4": "7",
+    "b4": "5",
+    "d4": "2",
+    "g4": "6",
+    "h4": "8",
+    "a5": "5",
+    "b5": "3",
+    "e5": "4",
+    "g5": "8",
+    "h5": "15",
+    "d7": "10",
+    "e7": "6",
+    "d8": "10",
+    "e8": "2",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

@@ -293,5 +293,7 @@
 	"Each marked area should form a tetromino": "Each marked area should form a tetromino",
 	"Elements shouldn't touch": "Elements shouldn't touch",
 	"Each marked area should form a pentomino": "Each marked area should form a pentomino",
-	"Elements should touch at marked nodes": "Elements should touch at marked nodes"
+	"Elements should touch at marked nodes": "Elements should touch at marked nodes",
+	"Each area should contain exactly two clues": "Each area should contain exactly two clues",
+	"The size of an area should be strictly between numbers in area": "The size of an area should be strictly between numbers in area"
 }

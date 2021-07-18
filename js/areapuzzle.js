@@ -264,6 +264,30 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     usePlus10: this.editMode,
   }
 
+  typeProperties["araf"] = {
+    needNodes: true,
+    needConnectors: true,
+    edgeController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
+         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
+       }
+    },
+    nodeController: node => node.dragProcessor = true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+    },
+    cellEditController: cell => setNumberChooser(cell, 1, 99),
+    collectAreas: !this.editMode,
+    recountConnector: !this.editMode,
+    usePlus10: this.editMode,
+  }
+
   typeProperties["black_white"] = {
     needNodes: true,
     needConnectors: true,

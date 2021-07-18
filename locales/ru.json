@@ -296,5 +296,7 @@
 	"Each marked area should form a tetromino": "Каждая отмеченная область должна образовывать тетрамино",
 	"Elements shouldn't touch": "Элементы не должны касаться",
 	"Each marked area should form a pentomino": "Каждая отмеченная область должна образовывать пентамино",
-	"Elements should touch at marked nodes": "Элементы должны касаться в отмеченных вершинах"
+	"Elements should touch at marked nodes": "Элементы должны касаться в отмеченных вершинах",
+	"Each area should contain exactly two clues": "В каждой области должно быть ровно два числа",
+	"The size of an area should be strictly between numbers in area": "Размер области должен быть строго между значений чисел в этой области."
 }

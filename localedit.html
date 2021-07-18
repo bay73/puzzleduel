@@ -73,17 +73,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "pentomino_touch",
+      typeCode: "araf",
       id: "puzzle.code",
-      dimension: "11x11"
+      dimension: "8x8"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });
