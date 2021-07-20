@@ -83,6 +83,11 @@ hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
     cellEditController:  cell => setNumberChooser(cell, 0, 7),
   }
 
+  typeProperties["hexa_minesweeper"] = {
+    cellController: cell => setClickSwitch(cell, false, [{},{image: "mine", returnValue: 1},{image: "cross"}]),
+    cellEditController:  cell => setNumberChooser(cell, 0, 6),
+  }
+
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties, typeProperties[typeCode]);
   }

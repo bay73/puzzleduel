@@ -122,39 +122,33 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "araf",
+      typeCode: "hexa_minesweeper",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "4x4"
     };
     var settings = {
       local: true,
       
       data: {
-    "d1": "2",
-    "e1": "1",
-    "d2": "3",
-    "e2": "2",
-    "a4": "7",
-    "b4": "5",
-    "d4": "2",
-    "g4": "6",
-    "h4": "8",
-    "a5": "5",
-    "b5": "3",
+    "b1": "1",
+    "d1": "3",
+    "a2": "1",
+    "d3": "1",
+    "f3": "3",
+    "a4": "2",
+    "c4": "2",
     "e5": "4",
-    "g5": "8",
-    "h5": "15",
-    "d7": "10",
-    "e7": "6",
-    "d8": "10",
-    "e8": "2",
+    "g5": "3",
+    "c6": "2",
+    "e7": "2",
+    "g7": "2",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, controls, settings);
+    requirejs(["hexapuzzle"], function() {
+      puzzle = new hexaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
