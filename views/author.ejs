@@ -5,7 +5,7 @@
       <%- include ('./partials/messages') %>
       <div class="card">
         <div class="d-flex flex-row flex-wrap justify-content-between card-header">
-          <h1 class="">You puzzles</h1>
+          <h1 class="">Your puzzles</h1>
           <div class="p-2 align-bottom text-right">
             <% if (future) { %>
             <a href="/archive/author?future=false">Show old puzzles</a>
@@ -22,7 +22,7 @@
         <div class="collapse" id="newform">
           <div class="card card-body">
             <a data-toggle="collapse" href="#dailyqueue" aria-expanded="false" aria-controls="Collapse">
-              Show current queue
+              Show/hide current queue
             </a><br>
             <div class="collapse bg-light" style="position: absolute; top: 45px; left: -30px; z-index: 100;" id="dailyqueue">
               <div class="card card-body">
@@ -92,14 +92,14 @@
           needQuantity['<%= type.code %>'] = true;
           <% } %>
           <% }) %>
-          $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true);
-          $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
-          $("#type").change(function() {
+          function showFields() {
             $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true);
             $("#quantity").parent().toggle(needQuantity[$("#type").children("option:selected").val()]==true);
             $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
             $("#rows").parent().toggle(typeof rows[$("#type").children("option:selected").val()] == "undefined");
-          });
+          }
+          $("#type").change(showFields);
+          $(document).ready(showFields);
           $("#createPuzzle").click(function () {
             var type = $("#type").children("option:selected").val();
             if (typeof rows[type] != "undefined") {
