@@ -27,6 +27,31 @@ penta_X: {letter: "X", letterPos: {x:0,y:1}, cells: [{x:0,y:0},{x:-1,y:1},{x:0,y
 penta_Y: {letter: "Y", letterPos: {x:0,y:1}, cells: [{x:0,y:0},{x:0,y:1},{x:1,y:1},{x:0,y:2},{x:0,y:3}]},
 penta_Z: {letter: "Z", letterPos: {x:1,y:1}, cells: [{x:0,y:0},{x:1,y:0},{x:1,y:1},{x:1,y:2},{x:2,y:2}]},
 
+ship: function(length) {
+  let cells = [];
+  for( let i=0;i<length;i++) {
+    cells.push({x:i, y:0});
+  }
+  return {letter: "", letterPos: {x:0,y:0}, cells: cells };
+},
+
+shipSet: function(code) {
+  if (code=="ship3") {
+    return [3,2,1];
+  }
+  if (code=="ship4") {
+    return [4,3,2,1];
+  }
+  if (code=="ship5") {
+    return [5,4,3,2,1];
+  }
+  let counts = [];
+  for(let i=0;i<code.length;i++) {
+    counts.push(parseInt(code.charAt(i)));
+  }
+  return counts;
+},
+
 drawSquare: function(snap, x, y, size){
   var border = size/14;
   let path = snap.polygon([
@@ -159,6 +184,73 @@ createPento12: function(snap, withLetters) {
   }
 },
 
+createBattleship: function(snap, counts) {
+  let width = $(snap.node).parent().width();
+  const viewportWidth = Math.max(
+    document.documentElement.clientWidth,
+    window.innerWidth || 0
+  )
+  snap.node.setAttribute("width", width);
+  if (viewportWidth < 992) {
+    let totalLength = 0;
+    for (let i=0;i<counts.length;i++){
+      totalLength += (i+1.5)*counts[i];
+    }
+    var horizontal = totalLength;
+    if (totalLength > 16) {
+      var horizontal = 0;
+      for (let i=0;i<counts.length;i++){
+        let next = horizontal+(i+1.5)*counts[i];
+        if (next > totalLength/2.) {
+          if (next-totalLength/2. < totalLength/2-horizontal) {
+            horizontal = next;
+          }
+          break;
+        }
+        horizontal = next;
+      }
+      horizontal = Math.max(totalLength - horizontal, horizontal);
+    }
+    var cellSize = width/horizontal;
+    if (totalLength > 16) {
+      snap.node.setAttribute("height", cellSize * 2.5 + puzzleFigures.gapTop*2);
+    } else {
+      snap.node.setAttribute("height", cellSize + puzzleFigures.gapTop*2);
+    }
+    puzzleFigures.gapLeft = (width - cellSize*(horizontal-0.5))/2
+    let x = 0;
+    let y = 0;
+    for (let i=counts.length-1;i>=0;i--){
+      for (let j=0;j<counts[i];j++) {
+        puzzleFigures.drawFigure(snap,{x:x,y:y}, puzzleFigures.ship(i+1), cellSize, false);
+        x+=i+1.5;
+        if (x+i+1>=horizontal) {
+          x=0;
+          y+=1.5;
+        }
+      }
+    }
+  } else {
+    let totalLength = 0;
+    for (let i=0;i<counts.length;i++){
+      totalLength = Math.max(totalLength, (i+1.5)*counts[i]);
+    }
+    var cellSize = width/totalLength;
+    snap.node.setAttribute("height", cellSize * counts.length * 1.5 - 0.5 + puzzleFigures.gapTop*2);
+    puzzleFigures.gapLeft = (width - cellSize*(totalLength-0.5))/2
+    let x = 0;
+    let y = 0;
+    for (let i=counts.length-1;i>=0;i--){
+      for (let j=0;j<counts[i];j++) {
+        puzzleFigures.drawFigure(snap,{x:x,y:y}, puzzleFigures.ship(i+1), cellSize, false);
+        x+=i+1.5;
+      }
+      x=0;
+      y+=1.5;
+    }
+  }
+},
+
 init: function(element) {
   puzzleFigures.theme = element.attr('theme')?element.attr('theme'):'default';
   puzzleFigures.color = "#000";
@@ -182,6 +274,15 @@ init: function(element) {
   }
   if (figures=="pento12") {
     puzzleFigures.createPento12(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
+  }
+  if (figures=="ship4") {
+    puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship4"));
+  }
+  if (figures=="ship5") {
+    puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship5"));
+  }
+  if (figures=="ship") {
+    puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet(element.attr('set')?element.attr('set'):'ship4'));
   }
 },
 
