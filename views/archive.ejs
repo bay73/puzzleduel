@@ -53,7 +53,7 @@
                       <td>
                         <a href="/single/<%= puzzle.code %>">
                           <%= puzzle.type %>
-                          <%= puzzle.dimension?" ("+puzzle.dimension+")":"" %>
+                          <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
                         </a>
                       </td>
                       <% if (user) { %>

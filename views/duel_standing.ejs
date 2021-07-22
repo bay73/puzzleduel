@@ -21,10 +21,10 @@
               </td>
               <td>
                 <% if (puz.revealDate < new Date) { %>
-                <a href="javascript:void(0);" onclick="showRoundResults('<%= puz.num %>','<%= puz.code %>','<%= puz.type %><%= puz.dimension?" ("+puz.dimension+")":"" %>')" >
+                <a href="javascript:void(0);" onclick="showRoundResults('<%= puz.num %>','<%= puz.code %>','<%= puz.type %><%= puz.dimension?" ("+puz.dimension.split('-')[0]+")":"" %>')" >
                 <% } %>
                 <%= puz.type %>
-                <%= puz.dimension?" ("+puz.dimension+")":"" %>
+                <%= puz.dimension?" ("+puz.dimension.split('-')[0]+")":"" %>
                 <% if (puz.revealDate < new Date) { %>
                 </a>
                 <% } %>

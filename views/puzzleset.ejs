@@ -110,7 +110,7 @@
                   <% var stars=puzzleItem.difficulty>0?(1+Math.round(10*Math.log(puzzleItem.difficulty/30000))/10):0; %>
                   <a class="puzzlelink" href="/puzzleset/<%= set.code %>/show/<%= puzzleItem.code %>" >
                     <%= puzzleItem.type %>
-                    <%= puzzleItem.dimension?" ("+puzzleItem.dimension+")":"" %>
+                    <%= puzzleItem.dimension?" ("+puzzleItem.dimension.split('-')[0]+")":"" %>
                     <span class="stars" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>">
                     </span>
                   </a>
