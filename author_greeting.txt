@@ -1,0 +1,18 @@
+I'm happy to welcome all puzzle authors. If you want to create puzzles for the site (only of supported types, so no innovations are possible), then I will share authoring UI with you.
+Unfortunately this contribution is totally free - the site is not profitable and I don't plan to collect money from solvers 
+Besides publishing at puzzleduel site I also post some of the puzzles (the toughest puzzle of a week) to one Russian speaking Facebook group, but only when they become noncompetitive. I'm always mention the author.
+
+I've added you to the authors list and now you should have corresponding link at the site menu bar. 
+At the author's page you can see the list of puzzles you already created and add new puzzles without my participation. Only types which are supported by site can be added (you can see the list of types at the author's page). New types are added regularly, but I can't promise any specific dates.
+
+To create new puzzle you should click on "Create new" button and specify the dimensions. Some puzzles also require additional data (list of available letters for Easy As ABC for example). Be careful - dimensions can't be changed later (but you can delete the puzzle). After choosing dimensions you go to the edit page where can put puzzle clues. Drawing tools is not very convenient for some puzzles, but I hope that authors don't have time pressure. :)
+When adding new puzzle you cam also see the current "daily queue" - this can help to decide which types are more requested.
+After setting all the clues you can set the puzzle tag. I would suggest to use "Temporary" for puzzles which you don't want to publish now and "Daily" for puzzles which can be published. You should also open the solving window and try to solve the puzzle to check that author's answer is accepted by the system.
+All puzzles having "Daily" tag and accepted answer go to the admin pool and I distribute them for specific dates. If you change the clues in you puzzle, then solving time is deleted and you should resubmit the answer.  The authors solving time is visible only to author (and site admin) and didn't appear in the result list. Puzzles which are already assigned to nearest dates can't be modified.
+Puzzles with "Temporary" flag are visible only to author and admin can't see it - you can keep puzzle as temporary as long as you want.
+
+I'm trying to keep the site suitable for using with a phone. And this limits the possible size of a grid. For number placing puzzles like Sudoku (where chooser appears on touch) sizes more than 10x10 are uncomfortable. For other puzzles a bit bigger sizes are OK, but still not too much.
+
+I hope the process is very simple but write me if you have any questions.
+
+When your first puzzle is published your name appears at the contributors page (http://www.puzzleduel.club/help/authors). If you want you can send me additional info which I will put there: photo (or avatar), few sentences about you (you can put links to your sites or email). Also inform me if you want your real name be visible there.
