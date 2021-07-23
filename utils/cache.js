@@ -143,6 +143,7 @@ module.exports.clearCache = function() {
   Object.keys(ratingCache).forEach(function(key) { delete ratingCache[key]; });
   Object.keys(userCache).forEach(function(key) { delete userCache[key]; });
   Object.keys(solvingTimeCache).forEach(function(key) { delete solvingTimeCache[key]; });
+  puzzleTypeCache.fresheness = undefined;
 }
 
 module.exports.printCache = function() {
