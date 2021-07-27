@@ -75,7 +75,7 @@ module.exports.isHiddenType = function(type) {
   return false;
 }
 
-function processRuleTags(rules, dimension) {
+function processTags(text, dimension) {
   var part = dimension.split("-");
   var dimensions = dimension.split("x");
   var rows = parseInt(dimensions[1]);
@@ -88,31 +88,35 @@ function processRuleTags(rules, dimension) {
     }
   }
 
-  while (rules.indexOf('{') >= 0) {
-    var open = rules.indexOf('{');
-    var close = rules.indexOf('}');
-    var value = eval(rules.substring(open + 1, close));
-    rules = rules.substring(0, open) + value + rules.substring(close+1);
+  while (text.indexOf('{') >= 0) {
+    var open = text.indexOf('{');
+    var close = text.indexOf('}');
+    var value = eval(text.substring(open + 1, close));
+    text = text.substring(0, open) + value + text.substring(close+1);
   }
-  return rules;
+  return text;
 }
 
 module.exports.puzzleToObj = async function(puzzle, locale) {
   if (!puzzle) return null;
   var puzzleObj = puzzle.toObject();
   var type = await PuzzleType.findOne({ code: puzzleObj.type });
-  if (locale != 'en') {
-    if (type.translations[locale]) {
-      if (type.translations[locale].rules) {
-        type.rules = type.translations[locale].rules;
-      }
-      if (type.translations[locale].gridControl) {
-        type.gridControl = type.translations[locale].gridControl;
+  if(type) {
+    if (locale != 'en') {
+      if (type.translations[locale]) {
+        if (type.translations[locale].rules) {
+          type.rules = type.translations[locale].rules;
+        }
+        if (type.translations[locale].gridControl) {
+          type.gridControl = type.translations[locale].gridControl;
+        }
       }
     }
-  }
-  type.rules = processRuleTags(type.rules, puzzleObj.dimension);
-  if(type) {
+    type.rules = processTags(type.rules, puzzleObj.dimension);
+    type.gridControl = processTags(type.gridControl, puzzleObj.dimension);
+    if (type.properties && type.properties.figuresAttribute) {
+      type.properties.figuresAttribute = processTags(type.properties.figuresAttribute, puzzleObj.dimension);
+    }
     puzzleObj.type = type.toObject();
   }
   if (puzzleObj.author) {
@@ -127,18 +131,22 @@ module.exports.puzzleToPresent = async function(puzzle, locale) {
   if (!puzzle) return null;
   var puzzleObj = Object.assign({}, puzzle);
   var type = Object.assign({}, await cache.readPuzzleType(puzzleObj.type));
-  if (locale != 'en') {
-    if (type.translations[locale]) {
-      if (type.translations[locale].rules) {
-        type.rules = type.translations[locale].rules;
-      }
-      if (type.translations[locale].gridControl) {
-        type.gridControl = type.translations[locale].gridControl;
+  if(type) {
+    if (locale != 'en') {
+      if (type.translations[locale]) {
+        if (type.translations[locale].rules) {
+          type.rules = type.translations[locale].rules;
+        }
+        if (type.translations[locale].gridControl) {
+          type.gridControl = type.translations[locale].gridControl;
+        }
       }
     }
-  }
-  type.rules = processRuleTags(type.rules, puzzleObj.dimension);
-  if(type) {
+    type.rules = processTags(type.rules, puzzleObj.dimension);
+    type.gridControl = processTags(type.gridControl, puzzleObj.dimension);
+    if (type.properties && type.properties.figuresAttribute) {
+      type.properties.figuresAttribute = processTags(type.properties.figuresAttribute, puzzleObj.dimension);
+    }
     puzzleObj.type = type;
   }
   if (puzzleObj.author) {
