@@ -117,7 +117,7 @@ outerCluePuzzle.prototype.initImages = function() {
   }
   if(this.typeCode == "paint_battenberg") {
     this.useTopColor = true;
-    this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "13", "14", "15", "battenberg"];
+    this.clues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "13", "14", "15", "battenberg", "cross"];
     this.togglers = ["white", "black", "cross"];
   }
   if(this.typeCode == "point_a_star") {
