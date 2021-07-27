@@ -68,6 +68,14 @@
                 <input type="number" min="0" max="99" class="form-control" id="quantity">
               </div>
               <div class="form-group pr-4 pb-2">
+                <label class="col-form-label pr-1" for="shipset">Ship set</label>
+                <select class="custom-select" id="shipset">
+                  <option value="ship3">Ships 1-3</option>
+                  <option value="ship4">Ships 1-4</option>
+                  <option value="ship5">Ships 1-5</option>
+                </select>
+              </div>
+              <div class="form-group pr-4 pb-2">
                 <button type="submit" id="createPuzzle" class="btn btn-primary">Create</button>
               </div>
             </div>
@@ -77,6 +85,7 @@
           var squared = [];
           var needLetters = [];
           var needQuantity = [];
+          var needShipset = [];
           var rows = [];
           <% types.forEach(function(type) { %>
           <% if (type.properties && type.properties.squared) { %>
@@ -91,10 +100,14 @@
           <% if (type.properties && type.properties.needQuantity) { %>
           needQuantity['<%= type.code %>'] = true;
           <% } %>
+          <% if (type.properties && type.properties.needShipset) { %>
+          needShipset['<%= type.code %>'] = true;
+          <% } %>
           <% }) %>
           function showFields() {
             $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true);
             $("#quantity").parent().toggle(needQuantity[$("#type").children("option:selected").val()]==true);
+            $("#shipset").parent().toggle(needShipset[$("#type").children("option:selected").val()]==true);
             $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
             $("#rows").parent().toggle(typeof rows[$("#type").children("option:selected").val()] == "undefined");
           }
@@ -128,6 +141,14 @@
                 return;
               }
               dimension = dimension + "-" + quantity;
+            }
+            if (needShipset[type]) {
+              var shipset = $("#shipset").val();
+              if (!shipset) {
+                window.alert('Specify the set of ships!');
+                return;
+              }
+              dimension = dimension + "-" + shipset;
             }
             var url = "/single/" + type + "/" + dimension + "/new";
             window.location = url;

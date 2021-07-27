@@ -275,6 +275,9 @@ init: function(element) {
   if (figures=="pento12") {
     puzzleFigures.createPento12(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
+  if (figures=="ship3") {
+    puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship3"));
+  }
   if (figures=="ship4") {
     puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship4"));
   }
