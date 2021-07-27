@@ -76,12 +76,12 @@ module.exports.isHiddenType = function(type) {
 }
 
 function processTags(text, dimension) {
-  var part = dimension.split("-");
-  var dimensions = dimension.split("x");
-  var rows = parseInt(dimensions[1]);
-  var cols = parseInt(dimensions[0]);
-  var quantity = part[1];
-  var letters = [];
+  let part = dimension.split("-");
+  let dimensions = dimension.split("x");
+  let rows = parseInt(dimensions[1]);
+  let cols = parseInt(dimensions[0]);
+  let quantity = part[1];
+  let letters = [];
   if (typeof part[1] != "undefined") {
     for (var i=0;i<part[1].length;i++) {
       letters.push(part[1].charAt(i));
@@ -89,9 +89,9 @@ function processTags(text, dimension) {
   }
 
   while (text.indexOf('{') >= 0) {
-    var open = text.indexOf('{');
-    var close = text.indexOf('}');
-    var value = eval(text.substring(open + 1, close));
+    let open = text.indexOf('{');
+    let close = text.indexOf('}');
+    let value = eval(text.substring(open + 1, close));
     text = text.substring(0, open) + value + text.substring(close+1);
   }
   return text;
@@ -99,8 +99,8 @@ function processTags(text, dimension) {
 
 module.exports.puzzleToObj = async function(puzzle, locale) {
   if (!puzzle) return null;
-  var puzzleObj = puzzle.toObject();
-  var type = await PuzzleType.findOne({ code: puzzleObj.type });
+  let puzzleObj = puzzle.toObject();
+  let type = await PuzzleType.findOne({ code: puzzleObj.type });
   if(type) {
     if (locale != 'en') {
       if (type.translations[locale]) {
@@ -114,8 +114,11 @@ module.exports.puzzleToObj = async function(puzzle, locale) {
     }
     type.rules = processTags(type.rules, puzzleObj.dimension);
     type.gridControl = processTags(type.gridControl, puzzleObj.dimension);
-    if (type.properties && type.properties.figuresAttribute) {
-      type.properties.figuresAttribute = processTags(type.properties.figuresAttribute, puzzleObj.dimension);
+    if (type.properties) {
+      type.properties = Object.assign({}, type.properties);
+      if (type.properties.figuresAttribute) {
+        type.properties.figuresAttribute = processTags(type.properties.figuresAttribute, puzzleObj.dimension);
+      }
     }
     puzzleObj.type = type.toObject();
   }
@@ -129,8 +132,8 @@ module.exports.puzzleToObj = async function(puzzle, locale) {
 
 module.exports.puzzleToPresent = async function(puzzle, locale) {
   if (!puzzle) return null;
-  var puzzleObj = Object.assign({}, puzzle);
-  var type = Object.assign({}, await cache.readPuzzleType(puzzleObj.type));
+  let puzzleObj = Object.assign({}, puzzle);
+  let type = Object.assign({}, await cache.readPuzzleType(puzzleObj.type));
   if(type) {
     if (locale != 'en') {
       if (type.translations[locale]) {
@@ -144,8 +147,11 @@ module.exports.puzzleToPresent = async function(puzzle, locale) {
     }
     type.rules = processTags(type.rules, puzzleObj.dimension);
     type.gridControl = processTags(type.gridControl, puzzleObj.dimension);
-    if (type.properties && type.properties.figuresAttribute) {
-      type.properties.figuresAttribute = processTags(type.properties.figuresAttribute, puzzleObj.dimension);
+    if (type.properties) {
+      type.properties = Object.assign({}, type.properties);
+      if (type.properties.figuresAttribute) {
+        type.properties.figuresAttribute = processTags(type.properties.figuresAttribute, puzzleObj.dimension);
+      }
     }
     puzzleObj.type = type;
   }
