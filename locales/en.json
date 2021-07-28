@@ -298,5 +298,6 @@
 	"The size of an area should be strictly between numbers in area": "The size of an area should be strictly between numbers in area",
 	"Number of the ships should correspond to the given set": "Number of the ships should correspond to the given set",
 	"Each marked area should form a ship from the set": "Each marked area should form a ship from the set",
-	"Ships shouldn't touch": "Ships shouldn't touch"
+	"Ships shouldn't touch": "Ships shouldn't touch",
+	"dOubLESHOW 3": "dOubLESHOW 3"
 }

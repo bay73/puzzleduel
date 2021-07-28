@@ -301,5 +301,6 @@
 	"The size of an area should be strictly between numbers in area": "Размер области должен быть строго между значений чисел в этой области.",
 	"Number of the ships should correspond to the given set": "Число кораблей долдно соответствовать данному набору",
 	"Each marked area should form a ship from the set": "Каждая отмеченная облпсть должна быть кораблём из набора",
-	"Ships shouldn't touch": "Корабли не должны касаться"
+	"Ships shouldn't touch": "Корабли не должны касаться",
+	"dOubLESHOW 3": "dOubLESHOW 3"
 }
