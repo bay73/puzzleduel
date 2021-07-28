@@ -85,6 +85,8 @@ type_cheker["slalom"] = require('../puzzle_types/slalom')
 type_cheker["tetro_scope"] = require('../puzzle_types/tetro_scope')
 type_cheker["pentomino_touch"] = require('../puzzle_types/pentomino_touch')
 type_cheker["araf"] = require('../puzzle_types/araf')
+type_cheker["battleships_minesweeper"] = require('../puzzle_types/battleships_minesweeper')
+type_cheker["battleships_knight"] = require('../puzzle_types/battleships_knight')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({

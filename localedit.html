@@ -73,17 +73,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "hexa_minesweeper",
+      typeCode: "battleships_knight",
       id: "puzzle.code",
-      dimension: "4x4"
+      dimension: "7x7-ship3"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["hexapuzzle"], function() {
-      puzzle = new hexaPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

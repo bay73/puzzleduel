@@ -410,6 +410,38 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["battleships_minesweeper"] = {
+    needNodes: false,
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "wave"}], [{},{color: "#a0a0a0"},{image: "wave"}]);
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{},{image: "wave", returnValue: "wave"}];
+      for (var i=0; i<=8; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
+  }
+
+  typeProperties["battleships_knight"] = {
+    needNodes: false,
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "wave"}], [{},{color: "#a0a0a0"},{image: "wave"}]);
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{},{image: "wave", returnValue: "wave"}];
+      for (var i=0; i<=8; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
+  }
+
   typeProperties["alternate_loop"] = {
     needConnectors: true,
     cellController: cell => {

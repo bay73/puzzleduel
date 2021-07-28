@@ -106,7 +106,7 @@
 </div>
 <div class="d-flex flex-wrap card-body pt-0" id="puzzleRules">
   <div class="col-lg-4">
-    <span class="puzzle-figures w-100 d-block" theme="default" figures="penta12" letters="false"></span>
+    <span class="puzzle-figures w-100 d-block" theme="default" figures="ship4"></span>
   </div>
   <div class="col-lg-8">
     <p class="card-text text-left mt-2 w-100">Shade some empty cells black to create a single connected wall. No 2x2 square can be completely shaded. Numbers in a cell indicate the length of consecutive shaded blocks in the neighboring cells. If there is more than one number in a cell, then there must be at least one white (unshaded) cell between the black cell groups.></p>
@@ -122,33 +122,26 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "hexa_minesweeper",
+      typeCode: "battleships_knight",
       id: "puzzle.code",
-      dimension: "4x4"
+      dimension: "7x7-ship3"
     };
     var settings = {
       local: true,
       
       data: {
-    "b1": "1",
-    "d1": "3",
-    "a2": "1",
-    "d3": "1",
-    "f3": "3",
-    "a4": "2",
-    "c4": "2",
-    "e5": "4",
-    "g5": "3",
-    "c6": "2",
-    "e7": "2",
-    "g7": "2",
-    "tag": ""
+    "f2": "0",
+    "d3": "3",
+    "d4": "3",
+    "d5": "0",
+    "b6": "3",
+    "g6": "0",
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["hexapuzzle"], function() {
-      puzzle = new hexaPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

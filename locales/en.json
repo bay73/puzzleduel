@@ -295,5 +295,8 @@
 	"Each marked area should form a pentomino": "Each marked area should form a pentomino",
 	"Elements should touch at marked nodes": "Elements should touch at marked nodes",
 	"Each area should contain exactly two clues": "Each area should contain exactly two clues",
-	"The size of an area should be strictly between numbers in area": "The size of an area should be strictly between numbers in area"
+	"The size of an area should be strictly between numbers in area": "The size of an area should be strictly between numbers in area",
+	"Number of the ships should correspond to the given set": "Number of the ships should correspond to the given set",
+	"Each marked area should form a ship from the set": "Each marked area should form a ship from the set",
+	"Ships shouldn't touch": "Ships shouldn't touch"
 }
