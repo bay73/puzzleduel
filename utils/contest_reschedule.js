@@ -1,4 +1,4 @@
-const reschedulePuzzles = require('../utils/contest').reschedulePuzzles;
+const rescheduleDailyContest = require('../utils/contest').rescheduleDailyContest;
 
 const mongoose = require('mongoose');
 
@@ -8,7 +8,7 @@ require('dotenv').config();
 const db = require('../config/keys').mongoURI;
 
 recount = async function () {
-  await reschedulePuzzles('40644y1kpokjatr');
+  await rescheduleDailyContest('5177acdef9fty');
 }
 
 // Connect to MongoDB

@@ -123,6 +123,45 @@ async function reschedulePuzzles(contestId) {
   return true;
 }
 
+async function rescheduleDailyContest(contestId) {
+  const contest = await Contest.findOne({code: contestId});
+  if (!contest) {
+    return false;
+  }
+  console.log('contest.start',contest.start);
+  if (contest.start <= new Date()) {
+    return false;
+  }
+  let puzzles = [];
+  for(var i=0; i<contest.puzzles.length; i++) {
+    puzzle = contest.puzzles[i];
+    if (puzzle.puzzleId) {
+      var puzzleStorage = await Puzzle.findOne({code: puzzle.puzzleId});
+      if (puzzleStorage) {
+        if (typeof puzzleStorage.contest=="undefined" || puzzleStorage.contest.contestId == contestId) {
+          puzzleStorage.contest = {contestId: contestId, puzzleDate: puzzleStorage.daily};
+          await puzzleStorage.save();
+        }
+      }
+    }
+    puzzles.push({id: puzzle.puzzleId, date: puzzleStorage.daily});
+  }
+  puzzles.sort((p1, p2)=>(p1.date - p2.date));
+  let num = 0;
+  for(var i=0; i<contest.puzzles.length; i++) {
+    num++;
+    puzzle = contest.puzzles[i];
+    puzzle.num = num;
+    puzzle.puzzleId = puzzles[i].id;
+    puzzle.revealDate = puzzles[i].date;
+  }
+  console.log(puzzles);
+  contest.markModified('puzzles');
+  await contest.save();
+  return true;
+}
+
 module.exports.recountContest = recountContest;
 module.exports.reschedulePuzzles = reschedulePuzzles;
+module.exports.rescheduleDailyContest = rescheduleDailyContest;
 
