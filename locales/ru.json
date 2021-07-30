@@ -299,7 +299,7 @@
 	"Elements should touch at marked nodes": "Элементы должны касаться в отмеченных вершинах",
 	"Each area should contain exactly two clues": "В каждой области должно быть ровно два числа",
 	"The size of an area should be strictly between numbers in area": "Размер области должен быть строго между значений чисел в этой области.",
-	"Number of the ships should correspond to the given set": "Число кораблей долдно соответствовать данному набору",
+	"Number of the ships should correspond to the given set": "Число кораблей должно соответствовать данному набору",
 	"Each marked area should form a ship from the set": "Каждая отмеченная облпсть должна быть кораблём из набора",
 	"Ships shouldn't touch": "Корабли не должны касаться",
 	"dOubLESHOW 3": "dOubLESHOW 3"
