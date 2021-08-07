@@ -122,20 +122,27 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "battleships_knight",
+      typeCode: "russian_loop",
       id: "puzzle.code",
-      dimension: "7x7-ship3"
+      dimension: "6x6"
     };
     var settings = {
       local: true,
       
       data: {
-    "f2": "0",
-    "d3": "3",
-    "d4": "3",
-    "d5": "0",
-    "b6": "3",
-    "g6": "0",
+    "edges": {
+        "c1-1": "dot",
+        "b2-1": "dot",
+        "e2-1": "dot",
+        "d3-1": "dot",
+        "e3-1": "dot",
+        "c4-1": "dot",
+        "a5-1": "dot",
+        "a6-1": "dot",
+        "b6-1": "dot",
+        "d6-1": "dot"
+    },
+    "tag": ""
 }
     };
     settings.theme = "default";

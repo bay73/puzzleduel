@@ -302,5 +302,7 @@
 	"Number of the ships should correspond to the given set": "Число кораблей должно соответствовать данному набору",
 	"Each marked area should form a ship from the set": "Каждая отмеченная облпсть должна быть кораблём из набора",
 	"Ships shouldn't touch": "Корабли не должны касаться",
-	"dOubLESHOW 3": "dOubLESHOW 3"
+	"dOubLESHOW 3": "dOubLESHOW 3",
+	"Cells without dot between should be of different types": "Ячейки без точки между ними должны быть разного вида",
+	"Cells with dot between should be of the same type": "Ячейки с точкой между ними должны быть одного вида"
 }

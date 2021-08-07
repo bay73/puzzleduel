@@ -466,6 +466,32 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return {image: value} },
   }
 
+  typeProperties["russian_loop"] = {
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
+    },
+    edgeController: edge => {
+      setClickSwitch(edge, false, [{},{image: "cross"}]);
+    },
+    edgeEditController: edge => {
+      if (edge.allCells.length > 1 && edge.side%2==1) {
+        edge.isClue = true;
+        edge.clickSwitch = [{}, {image: "small_circle", returnValue: "dot"}];;
+      }
+    },
+    decodeClue: value => {
+      if (value=="dot") {
+        return {image: "small_circle"}
+      } else {
+        return {text: value}
+      }
+    },
+  }
+
   typeProperties["kropki"] = {
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, self.rows);}},
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.rows);},

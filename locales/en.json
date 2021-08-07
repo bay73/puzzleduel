@@ -299,5 +299,7 @@
 	"Number of the ships should correspond to the given set": "Number of the ships should correspond to the given set",
 	"Each marked area should form a ship from the set": "Each marked area should form a ship from the set",
 	"Ships shouldn't touch": "Ships shouldn't touch",
-	"dOubLESHOW 3": "dOubLESHOW 3"
+	"dOubLESHOW 3": "dOubLESHOW 3",
+	"Cells without dot between should be of different types": "Cells without dot between should be of different types",
+	"Cells with dot between should be of the same type": "Cells with dot between should be of the same type"
 }
