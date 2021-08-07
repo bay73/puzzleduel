@@ -7,10 +7,16 @@
         <div class="d-flex flex-row flex-wrap justify-content-between card-header">
           <h1 class="">Your puzzles</h1>
           <div class="p-2 align-bottom text-right">
-            <% if (future) { %>
-            <a href="/archive/author?future=false">Show old puzzles</a>
-            <% } else { %>
-            <a href="/archive/author?future=true">Hide old puzzles</a>
+            <% if (publish!="false") { %>
+            <a href="/archive/author?publish=false">Show unpublished puzzles</a>
+            &nbsp;&nbsp;
+            <% } %>
+            <% if (publish!="true") { %>
+            <a href="/archive/author?publish=true">Show published puzzles</a>
+            &nbsp;&nbsp;
+            <% } %>
+            <% if (publish!="all") { %>
+            <a href="/archive/author?publish=all">Show All puzzles</a>
             <% } %>
           </div>
         </div>

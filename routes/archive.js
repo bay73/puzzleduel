@@ -208,24 +208,50 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    var onlyFuture = req.query.future=="true" || typeof req.query.future=="undefined";
+    var publishFilter = req.query.publish;
+    if (typeof publishFilter=="undefined") {
+      if (req.query.future=="true") {
+        publishFilter = "false";
+      }
+      if (req.query.future=="false") {
+        publishFilter = "all";
+      }
+    }
+    if (typeof publishFilter=="undefined") {
+      publishFilter = "false";
+    }
 
     var typeMap = await cache.readPuzzleTypes();
     var timesMap = await util.bestSolvingTimeMap(true);
 
     var filter = {author: req.user._id};
-
-    if (onlyFuture) {
+    if (publishFilter == "true") {
       filter = {
         author: req.user._id,
-        $and : [
-          {tag: {$ne: "example"}},
-          {tag: {$ne: "public"}}
-        ],
-        $or: [
-          {daily: {$gt: new Date()}},
-          {daily: {$exists: false}}
+        $or : [
+          {tag: {$eq: "example"}},
+          {tag: {$eq: "public"}},
+          {daily: {$lte: new Date()}},
+          {'contest.puzzleDate': {$lte: new Date()}}
         ]
+      }
+    }
+    if (publishFilter == "false") {
+      filter = {
+        author: req.user._id,
+        $or : [
+          {$and: [
+            {tag: {$eq: "contest"}},
+            {'contest.puzzleDate': {$gt: new Date()}}
+          ]},
+          {$and: [
+            {tag: {$eq: "daily"}},
+            {$or: [
+              {daily: {$gt: new Date()}},
+              {daily: {$exists: false}},
+            ]},
+          ]},
+        ],
       }
     }
     const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
@@ -237,7 +263,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     futurePuzzles.forEach(puzzle => typePuzzleCount[puzzle.type].puzzleCount++);
     res.render('author', {
       user: req.user,
-      future: onlyFuture,
+      publish: publishFilter,
       types: Object.entries(typeMap)
         .filter(([key, value]) => !value.properties || !value.properties.noEdit)
         .sort(([key1, value1],[key2, value2]) => key1.localeCompare(key2))
@@ -249,7 +275,6 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
           };
       }),
       puzzles: puzzles
-        .filter(puzzle => !onlyFuture || typeof puzzle.contest=="undefined" || puzzle.contest.puzzleDate > new Date())
         .map(puzzle => {
           return {
             code: puzzle.code,
