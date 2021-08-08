@@ -251,6 +251,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
               {daily: {$exists: false}},
             ]},
           ]},
+          {tag: {$eq: "temporary"}},
         ],
       }
     }
