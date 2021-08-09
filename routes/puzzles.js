@@ -293,10 +293,12 @@ router.post('/:puzzleid/check', async (req, res, next) => {
       }
     }
     result.status = res.__(result.status);
-    const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid});
-    if (comment != null) {
-      result.rating = comment.rating;
-      result.comment = comment.comment;
+    if (req.user) {
+      const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid});
+      if (comment != null) {
+        result.rating = comment.rating;
+        result.comment = comment.comment;
+      }
     }
     res.json(result);
     profiler.log('puzzleSubmit', processStart);
