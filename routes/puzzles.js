@@ -6,6 +6,7 @@ const Puzzle = require('../models/Puzzle');
 const UserActionLog = require('../models/UserActionLog');
 // UserSolvingTime model
 const UserSolvingTime = require('../models/UserSolvingTime');
+const PuzzleComment = require('../models/PuzzleComment');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
 
@@ -292,6 +293,11 @@ router.post('/:puzzleid/check', async (req, res, next) => {
       }
     }
     result.status = res.__(result.status);
+    const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid});
+    if (comment != null) {
+      result.rating = comment.rating;
+      result.comment = comment.comment;
+    }
     res.json(result);
     profiler.log('puzzleSubmit', processStart);
   } catch (e) {
@@ -345,6 +351,46 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
     cache.refreshPuzzle(puzzle.code);
     res.json({status: "OK"});
     profiler.log('puzzleEdit', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Save puzzle data
+router.post('/:puzzleid/comment', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    let rating = parseInt(req.body.rating);
+    let commentText = req.body.comment;
+    if (rating > 0 || commentText.length > 0) {
+      const puzzle = await cache.readPuzzle(req.params.puzzleid);
+      if (!req.user) {
+        res.status(403).send(res.__('You should log in to rate the puzzle!'));
+        profiler.log('puzzleCommentFailed', processStart);
+        return;
+      }
+      if (!puzzle) {
+        res.sendStatus(404);
+        profiler.log('puzzleCommentFailed', processStart);
+        return;
+      }
+      const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid});
+      if (comment != null) {
+        var newComment = comment;
+      } else {
+        var newComment = new PuzzleComment({
+        userId: req.user._id,
+        userName: req.user.name,
+        puzzleId: req.params.puzzleid
+        });
+      }
+      newComment.userName = req.user.name;
+      newComment.rating = rating;
+      newComment.comment = commentText;
+      newComment.save();
+    }
+    res.json(null);
+    profiler.log('puzzleComment', processStart);
   } catch (e) {
     next(e);
   }

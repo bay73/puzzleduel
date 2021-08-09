@@ -474,7 +474,9 @@ commonPuzzle.prototype.showResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
     this.stopTimer();
-    this.showSuccess(__["Congratulations! The puzzle has been solved correctly!"]);
+    $(this.controls.voteRating).rateit('value', result.rating);
+    $(this.controls.voteComment).val(result.comment);
+    $(this.controls.voteModal).modal();
   } else {
     this.showError(__["Sorry, there is a mistake. "] + result.status + ". " + __["Try again."]);
     this.showErrorCells(result);
@@ -511,6 +513,11 @@ commonPuzzle.prototype.initControls = function (controls) {
   this.controls.restartModal = controls + " [name=restartModal]";
   this.controls.restartYes = this.controls.restartModal + " [name=confirmYes]";
   this.controls.restartNo = this.controls.restartModal + " [name=confirmNo]";
+  this.controls.voteModal = controls + " [name=voteModal]";
+  this.controls.voteSave = this.controls.voteModal + " [name=voteSave]";
+  this.controls.voteClose = this.controls.voteModal + " [name=voteClose]";
+  this.controls.voteRating = this.controls.voteModal + " [name=voteRating]";
+  this.controls.voteComment = this.controls.voteModal + " [name=voteComment]";
   this.controls.revertBtn = controls + " [name=revertBtn]";
   this.controls.saveBtn = controls + " [name=saveBtn]";
   this.controls.checkBtn = controls + " [name=checkBtn]";
@@ -528,6 +535,14 @@ commonPuzzle.prototype.initControls = function (controls) {
   $(this.controls.restartYes).click(() => {
     $(this.controls.restartModal).modal('hide');
     self.start();
+  });
+  $(this.controls.voteSave).click(() => {
+    $(this.controls.voteModal).modal('hide');
+    var commentData = {
+      rating: $(this.controls.voteRating).rateit('value'),
+      comment: $(this.controls.voteComment).val()
+    }
+    $.post("/puzzles/" + this.id + "/comment", commentData);
   });
   $(this.controls.revertBtn).hide().click(() => self.revertStep());
   $(this.controls.checkBtn).prop('disabled', true).click(() => self.check());

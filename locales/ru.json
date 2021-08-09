@@ -304,5 +304,10 @@
 	"Ships shouldn't touch": "Корабли не должны касаться",
 	"dOubLESHOW 3": "dOubLESHOW 3",
 	"Cells without dot between should be of different types": "Ячейки без точки между ними должны быть разного вида",
-	"Cells with dot between should be of the same type": "Ячейки с точкой между ними должны быть одного вида"
+	"Cells with dot between should be of the same type": "Ячейки с точкой между ними должны быть одного вида",
+	"Congratulations! The puzzle has been solved correctly!!": "Поздравляем! Задача решена верно!",
+	"Save": "Сохранить",
+	"Close": "Закрыть",
+	"You can rate the quality of the puzzle": "Вы можете оценить качество задачи",
+	"You can add a comment for the puzzle author. It will be shown anonymously.": "Вы можете написать комментарий автору задачи. Он будет показан анонимно."
 }

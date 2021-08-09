@@ -301,5 +301,10 @@
 	"Ships shouldn't touch": "Ships shouldn't touch",
 	"dOubLESHOW 3": "dOubLESHOW 3",
 	"Cells without dot between should be of different types": "Cells without dot between should be of different types",
-	"Cells with dot between should be of the same type": "Cells with dot between should be of the same type"
+	"Cells with dot between should be of the same type": "Cells with dot between should be of the same type",
+	"Congratulations! The puzzle has been solved correctly!!": "Congratulations! The puzzle has been solved correctly!!",
+	"Save": "Save",
+	"Close": "Close",
+	"You can rate the quality of the puzzle": "You can rate the quality of the puzzle",
+	"You can add a comment for the puzzle author. It will be shown anonymously.": "You can add a comment for the puzzle author. It will be shown anonymously."
 }

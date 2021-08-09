@@ -15,14 +15,41 @@
     <div class="d-flex flex-row flex-wrap">
       <div class="modal" name="restartModal">
         <div class="modal-dialog" role="document">
-           <div class="modal-content">
-             <div class="modal-body">
+          <div class="modal-content">
+            <div class="modal-body">
               <p><%= __('Do you want to restart the puzzle? All progress will be lost!') %></p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" name="confirmYes"><%= __('Yes') %></button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= __('No') %></button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" name="confirmNo"><%= __('No') %></button>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal" name="voteModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content alert-success show" '>
+            <div class="modal-header">
+               <p class="mb-0"><%= __('Congratulations! The puzzle has been solved correctly!!') %></p>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <% if(user) { %>
+            <div class="modal-body">
+              <p><%= __('You can rate the quality of the puzzle') %><br>
+              <span name="voteRating" class="rateit" data-rateit-resetable="false" data-rateit-step="1" data-rateit-starwidth="32" data-rateit-starheight="32"></span>
+              </p>
+              <div class="form-group">
+                <label><%= __('You can add a comment for the puzzle author. It will be shown anonymously.') %></label>
+                <textarea class="form-control rounded-0" name="voteComment" rows="3"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" name="voteSave"><%= __('Save') %></button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" name="voteClose"><%= __('Close') %></button>
+            </div>
+            <% } %>
           </div>
         </div>
       </div>
