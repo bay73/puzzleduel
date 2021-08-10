@@ -173,6 +173,8 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
         type: puzzleType,
         dimension: puzzle.dimension,
         daily: puzzle.daily,
+        rating: puzzle.needLogging?null:puzzle.rating,
+        difficulty: puzzle.needLogging?null:puzzle.difficulty
       },
       times: times
         .filter(time => typeof time.solvingTime!="undefined")

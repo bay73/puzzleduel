@@ -18,12 +18,26 @@
       <div class="card">
         <div class="d-flex flex-row flex-wrap justify-content-between card-header">
           <% if(puzzle) { %>
-          <h1 class="">
-            <a href="/single/<%= puzzle.code %>">
-              <%= puzzle.type %>
-              <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
-            </a>
-          </h1>
+          <div>
+            <h1 class="">
+              <a href="/single/<%= puzzle.code %>">
+                <%= puzzle.type %>
+                <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
+              </a>
+            </h1>
+            <div>
+              <% if (puzzle.difficulty) { %>
+              <% var stars=puzzle.difficulty>0?(1+Math.round(10*Math.log(puzzle.difficulty/30000))/10):0; %>
+              <%= __('Difficulty:') %>
+              <span class="stars mr-5" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>"></span>
+              <% } %>
+              <% if (puzzle.rating && puzzle.rating.rating>0) { %>
+              <% var rating=Math.round(puzzle.rating.rating*20); %>
+              <%= __('Rating:') %>
+              <span class="hearts" style="width: calc(15px * <%= rating/20 %>)" data-toggle="tooltip" title="<%= rating %>% / <%= puzzle.rating.count %>"></span>
+              <% } %>
+            </div>
+          </div>
           <div class="p-2 align-bottom text-right" style="position: relative;">
             <h2>
               <%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>

@@ -306,5 +306,7 @@
 	"Save": "Save",
 	"Close": "Close",
 	"You can rate the quality of the puzzle": "You can rate the quality of the puzzle",
-	"You can add a comment for the puzzle author. It will be shown anonymously.": "You can add a comment for the puzzle author. It will be shown anonymously."
+	"You can add a comment for the puzzle author. It will be shown anonymously.": "You can add a comment for the puzzle author. It will be shown anonymously.",
+	"Difficulty:": "Difficulty:",
+	"Rating:": "Rating:"
 }

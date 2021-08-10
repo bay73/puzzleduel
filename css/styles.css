@@ -1,0 +1,54 @@
+.dropdown-submenu{
+    position: relative;
+}
+.dropdown-submenu a::after{
+    transform: rotate(-90deg);
+    position: absolute;
+    right: 3px;
+    top: 40%;
+}
+.dropdown-submenu:hover .dropdown-menu, .dropdown-submenu:focus .dropdown-menu{
+    display: flex;
+    flex-direction: column;
+    position: absolute !important;
+    margin-top: -50px;
+    left: 100%;
+}
+@media (max-width: 992px) {
+    .dropdown-menu{
+        width: 50%;
+    }
+    .dropdown-menu .dropdown-submenu{
+        width: auto;
+    }
+}
+
+.stars {
+   display: inline-block;
+   background-color: goldenRod;
+   top: 0;
+   left: 0;
+   height: 15px;
+   mask-image: url(/images/star.png);
+   mask-repeat: repeat-x;
+   mask-size: 15px 15px;
+   vertical-align: -0.1em;
+   -webkit-mask-image: url(/images/star.png);
+   -webkit-mask-repeat: repeat-x;
+   -webkit-mask-size: 15px 15px;
+}
+.hearts {
+   display: inline-block;
+   background-color: red;
+   top: 0;
+   left: 0;
+   height: 15px;
+   mask-image: url(/images/heart.png);
+   mask-repeat: repeat-x;
+   mask-size: 15px 15px;
+   vertical-align: -0.2em;
+   -webkit-mask-image: url(/images/heart.png);
+   -webkit-mask-repeat: repeat-x;
+   -webkit-mask-size: 15px 15px;
+}
+
