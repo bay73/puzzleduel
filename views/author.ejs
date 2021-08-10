@@ -179,6 +179,12 @@
                     <%= puzzle.time %>
                   </a>
                 </td>
+                <td>
+                  <% if (puzzle.rating && puzzle.rating.rating>0) { %>
+                  <% var rating=Math.round(puzzle.rating.rating*20); %>
+                  <span class="hearts" style="width: calc(15px * <%= rating/20 %>)" data-toggle="tooltip" title="<%= rating %>% / <%= puzzle.rating.count %>"></span>
+                  <% } %>
+                </td>
                 <td><% if(!puzzle.published) { %>
                   <a href="/single/<%= puzzle.code %>/author/">
                     Edit
