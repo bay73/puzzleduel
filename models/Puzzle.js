@@ -44,6 +44,16 @@ const PuzzleSchema = new mongoose.Schema({
   difficulty: {
     type: Number,
     required: false
+  },
+  rating: {
+    rating: {
+      type: Number,
+      required: false
+    },
+    count: {
+      type: Number,
+      required: false
+    },
   }
 });
 
