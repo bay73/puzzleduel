@@ -181,8 +181,9 @@
                 </td>
                 <td>
                   <% if (puzzle.rating && puzzle.rating.rating>0) { %>
-                  <% var rating=Math.round(puzzle.rating.rating*20); %>
-                  <span class="hearts" style="width: calc(15px * <%= rating/20 %>)" data-toggle="tooltip" title="<%= rating %>% / <%= puzzle.rating.count %>"></span>
+                  <% var rating=Math.round(puzzle.rating.rating*25-25); %>
+                  <% var hearts=Math.round(5+rating*rating/223)/10; %>
+                  <span class="hearts" style="width: calc(15px * <%= hearts %>)" data-toggle="tooltip" title="<%= rating %>% / <%= puzzle.rating.count %>"></span>
                   <% } %>
                 </td>
                 <td><% if(!puzzle.published) { %>

@@ -142,7 +142,7 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
       User.find(),
       cache.readPuzzleTypes(),
       util.bestSolvingTimeMap(true),
-      Puzzle.find(filter, "code type dimension tag daily author").sort({daily: -1})
+      Puzzle.find(filter, "code type dimension tag daily author rating").sort({daily: -1})
     ])
 
     var userMap = {}
@@ -159,7 +159,8 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
           daily: puzzle.daily,
           time: util.timeToString(timesMap[puzzle.code]),
           author: userMap[puzzle.author],
-          published: puzzle.published
+          published: puzzle.published,
+          rating: puzzle.rating
         };
       })
     });

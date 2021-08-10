@@ -32,9 +32,10 @@
               <span class="stars mr-5" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>"></span>
               <% } %>
               <% if (puzzle.rating && puzzle.rating.rating>0) { %>
-              <% var rating=Math.round(puzzle.rating.rating*20); %>
+              <% var rating=Math.round(puzzle.rating.rating*25-25); %>
+              <% var hearts=Math.round(5+rating*rating/223)/10; %>
               <%= __('Rating:') %>
-              <span class="hearts" style="width: calc(15px * <%= rating/20 %>)" data-toggle="tooltip" title="<%= rating %>% / <%= puzzle.rating.count %>"></span>
+              <span class="hearts" style="width: calc(15px * <%= hearts %>)" data-toggle="tooltip" title="<%= rating %>% / <%= puzzle.rating.count %>"></span>
               <% } %>
             </div>
           </div>
