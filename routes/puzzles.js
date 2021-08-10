@@ -376,6 +376,11 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
         profiler.log('puzzleCommentFailed', processStart);
         return;
       }
+      if (puzzle.author.equals(req.user._id)) {
+        res.status(403).send(res.__('Author can not rate own puzzles!'));;
+        profiler.log('puzzleEditFailed', processStart);
+        return;
+      }
       const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid});
       if (comment != null) {
         var newComment = comment;

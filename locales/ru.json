@@ -311,5 +311,6 @@
 	"You can rate the quality of the puzzle": "Вы можете оценить качество задачи",
 	"You can add a comment for the puzzle author. It will be shown anonymously.": "Вы можете написать комментарий автору задачи. Он будет показан анонимно.",
 	"Difficulty:": "Сложность:",
-	"Rating:": "Рейтинг:"
+	"Rating:": "Рейтинг:",
+	"Author can not rate own puzzles!": "Author can not rate own puzzles!"
 }

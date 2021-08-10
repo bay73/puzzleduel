@@ -308,5 +308,6 @@
 	"You can rate the quality of the puzzle": "You can rate the quality of the puzzle",
 	"You can add a comment for the puzzle author. It will be shown anonymously.": "You can add a comment for the puzzle author. It will be shown anonymously.",
 	"Difficulty:": "Difficulty:",
-	"Rating:": "Rating:"
+	"Rating:": "Rating:",
+	"Author can not rate own puzzles!": "Author can not rate own puzzles!"
 }

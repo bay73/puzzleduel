@@ -35,7 +35,7 @@
                <span aria-hidden="true">&times;</span>
                </button>
             </div>
-            <% if(user) { %>
+            <% if(user && !puzzle.authorId.equals(user._id) ) { %>
             <div class="modal-body">
               <p><%= __('You can rate the quality of the puzzle') %><br>
               <span name="voteRating" class="rateit" data-rateit-resetable="false" data-rateit-step="1" data-rateit-starwidth="32" data-rateit-starheight="32"></span>
