@@ -1,0 +1,25 @@
+<% if(comments.length > 0){ %>
+<strong><%= __('Solvers comments:') %></strong>
+<table class="table table-condensed text-left">
+  <tbody>
+    <% comments.forEach(comment => { %>
+    <tr>
+      <% if(showAll){ %>
+      <td>
+        <%= comment.userName %>
+      </td>
+      <td>
+        <%= comment.rating>0?comment.rating:"" %>
+      </td>
+      <% } %>
+      <td>
+        <%= comment.comment %>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+<% } else { %>
+<strong><%= __('Nobody left comments for this puzzle') %></strong>
+<% } %>
+

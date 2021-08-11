@@ -358,7 +358,7 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
   }
 });
 
-// Save puzzle data
+// Save rating and comment
 router.post('/:puzzleid/comment', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
@@ -397,6 +397,33 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
       newComment.save();
     }
     res.json(null);
+    profiler.log('puzzleComment', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Read all comments
+router.get('/:puzzleid/comments', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    const comments = await PuzzleComment.find({puzzleId: req.params.puzzleid});
+    let showAll = req.user && req.user.role == "admin";
+    res.render('puzzle_comments', {
+      layout: "empty_layout",
+      showAll: showAll,
+      comments: comments
+        .filter(comment => {
+          return comment.comment.length > 0 || showAll
+        })
+        .map(comment => {
+          return {
+            userName: showAll?comment.userName:"",
+            rating: showAll?comment.rating:null,
+            comment: comment.comment
+          }
+      })
+    })
     profiler.log('puzzleComment', processStart);
   } catch (e) {
     next(e);
