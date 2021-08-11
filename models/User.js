@@ -38,6 +38,10 @@ const UserSchema = new mongoose.Schema({
     type: Mixed,
     required: false
   },
+  isTester: {
+    type: Boolean,
+    required: false
+  }
 });
 
 const User = mongoose.model('User', UserSchema);

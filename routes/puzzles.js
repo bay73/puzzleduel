@@ -201,7 +201,7 @@ router.get('/:puzzleid/start', async (req, res, next) => {
         profiler.log('puzzleStartFailed', processStart);
         return;
       }
-      if (!puzzle.author.equals(req.user._id) && req.user.role != 'test') {
+      if (!puzzle.author.equals(req.user._id) && req.user.role != 'test' && !req.user.isTester) {
         res.status(404).send(res.__('Puzzle is not available yet'));
         profiler.log('puzzleStartFailed', processStart);
         return;

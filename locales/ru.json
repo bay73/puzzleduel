@@ -313,6 +313,7 @@
 	"Difficulty:": "Сложность:",
 	"Rating:": "Рейтинг:",
 	"Author can not rate own puzzles!": "Author can not rate own puzzles!",
-	"Nobody left comments for this puzzle": "Nobody left comments for this puzzle",
-	"Solvers comments:": "Solvers comments:"
+	"Nobody left comments for this puzzle": "Никто не написал комментария к этой задаче",
+	"Solvers comments:": "Комментарии решателей:",
+	"Puzzles to test": "Задачи для тестирования"
 }

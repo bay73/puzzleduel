@@ -1,0 +1,34 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header"><%= __('Puzzles to test') %></h1>
+        <table class="card-body table table-hover table-condensed ml-5">
+          <tbody>
+            <tr>
+              <th><%= __('Puzzle') %></th>
+              <th class="d-none d-sm-table-cell"><%= __('Your time') %></th>
+            </tr>
+            <% puzzles.forEach(function(puzzle) { %>
+            <tr>
+              <td>
+                <a href="/single/<%= puzzle.code %>">
+                  <%= puzzle.type %>
+                  <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
+                </a>
+              </td>
+              <td class="d-none d-sm-table-cell">
+                <%= puzzle.userTime %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

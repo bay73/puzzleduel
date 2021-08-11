@@ -53,6 +53,47 @@ router.get(['/','/daily'],
   }
 });
 
+// List of puzzles for testing
+router.get(['/','/tester'],
+  async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    if (!req.user || !req.user.isTester) {
+      res.sendStatus(404);
+      return;
+    }
+    let from = new Date();
+    from.setDate(from.getDate() + 1);
+    let to = new Date();
+    to.setDate(to.getDate() + 6);
+    var filter = {daily: {$gte: from, $lte: to} };
+    if (req.user) {
+      var userTimesPromise = util.userSolvingTimeMap(req.user._id, true);
+    }
+
+    const [userTimesMap, typeMap, puzzles] = await Promise.all([
+      userTimesPromise,
+      cache.readPuzzleTypes(),
+      Puzzle.find(filter, "-data")
+    ]);
+
+    res.render('tester', {
+      user: req.user,
+      puzzles: puzzles.map(puzzle => {
+        return {
+          code: puzzle.code,
+          type: typeMap[puzzle.type].name,
+          dimension: puzzle.dimension,
+          userTime: userTimesMap[puzzle.code]?util.timeToString(userTimesMap[puzzle.code].time):""
+        };
+      })
+    });
+    profiler.log('tester', processStart);
+  } catch (e) {
+    next(e)
+  }
+});
+
 // List of all old puzzles
 router.get('/types', async (req, res, next) => {
   try {
