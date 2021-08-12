@@ -75,6 +75,32 @@ router.get('/help/duelrules', async (req, res, next) => {
   }
 });
 
+// Vide links page
+router.get('/help/videos', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    var types = await cache.readPuzzleTypes();
+    res.render(res.__('video_links'), {
+      user: req.user,
+      videos: Object.values(types)
+        .filter(type => typeof type.properties != "undefined"
+                     && Array.isArray(type.properties.youtubeId)
+                     && type.properties.youtubeId.length>0)
+        .map(type => {
+          return {
+            category: type.category,
+            type: type.code,
+            name: type.name,
+            youtubeId: type.properties.youtubeId
+          }
+        })
+    });
+    profiler.log('videos', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
 // Authors Page
 router.get('/help/authors', async (req, res, next) => {
   try {

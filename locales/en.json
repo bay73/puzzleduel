@@ -312,5 +312,8 @@
 	"Author can not rate own puzzles!": "Author can not rate own puzzles!",
 	"Nobody left comments for this puzzle": "Nobody left comments for this puzzle",
 	"Solvers comments:": "Solvers comments:",
-	"Puzzles to test": "Puzzles to test"
+	"Puzzles to test": "Puzzles to test",
+	"video_links": "video_links",
+	"Explainer videos": "Explainer videos",
+	"List of video text": "Some solvers use puzzles from our website to make videos where solving steps for the puzzles are explained. This videos can be very helpfull to understand how puzzles can be solved, which techniques can be used. Most of the videos are in Russian.<br>Please contact <a href='mailto:puzzleduel.club@gmail.com'>puzzleduel.club@gmail.com</a> if you want to suggest some vidoe to be added here."
 }

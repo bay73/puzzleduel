@@ -1,0 +1,82 @@
+<%- include ('./partials/navbar') %>
+<style>
+   @media (max-width: 767px) {
+    .btn-xs-block {
+        display: block;
+        width: 100%;
+    }
+    input[type="submit"].btn-xs-block,
+    input[type="reset"].btn-xs-block,
+    input[type="button"].btn-xs-block {
+        width: 100%;
+    }
+    .btn-block + .btn-xs-block,
+    .btn-xs-block + .btn-block,
+    .btn-xs-block + .btn-xs-block {
+        margin-top: 0.5rem;
+    }
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <h1 class="card-header"><%= __('Explainer videos') %></h1>
+        <div class="card-body">
+          <p>
+          <%- __('List of video text')%>
+          </p>
+          <div class="accordion" id="mainAccordion">
+            <% var prevCategory = null; %>
+            <% function compareVideos(v1, v2) {
+              if (v1.category==v2.category) {
+                return v1.type.localeCompare(v2.type);
+              } else {
+                return v1.category.localeCompare(v2.category);
+              }
+            } %>
+            <% videos.sort((v1,v2) => compareVideos(v1, v2)).forEach(function(video) { %>
+            <% if (video.category != prevCategory) { %>
+            <% if (prevCategory!=null) { %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <% } %>
+            <div class="card">
+              <div class="card-header" id="<%= video.category.substr(3) %>Heading">
+                <button class="btn btn-link btn-xs-block" type="button"
+                  data-toggle="collapse" data-target="#<%= video.category.substr(3) %>Collapse"
+                  aria-expanded="true" aria-controls="<%= video.category.substr(3) %>Collapse"
+                >
+                  <h2><%= __(video.category.substr(3)) %></h2>
+                </button>
+              </div>
+              <div id="<%= video.category.substr(3) %>Collapse" class="collapse <%= prevCategory==null?"show":"" %>" aria-labelledby="<%= video.category.substr(3) %>Heading" data-parent="#mainAccordion">
+                <table class="table table-condensed ml-5">
+                  <tbody>
+            <% } %>
+            <% prevCategory = video.category; %>
+                    <tr>
+                      <td>
+                        <h4><%= video.name %></h4>
+                        <% video.youtubeId.forEach(id => {%>
+                          <a class="p-1 pr-3" href="https://youtu.be/<%= id %>"><img src="https://img.youtube.com/vi/<%= id %>/default.jpg"></a>
+                        <% }) %>
+                        </a>
+                      </td>
+                    </tr>
+            <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

@@ -315,5 +315,8 @@
 	"Author can not rate own puzzles!": "Author can not rate own puzzles!",
 	"Nobody left comments for this puzzle": "Никто не написал комментария к этой задаче",
 	"Solvers comments:": "Комментарии решателей:",
-	"Puzzles to test": "Задачи для тестирования"
+	"Puzzles to test": "Задачи для тестирования",
+	"video_links": "video_links",
+	"Explainer videos": "Обучающие видео",
+	"List of video text": "Некоторые решатели используют задачи сайта чтобы записывать видео с объяснением способов решения головоломок. Эти видео могут быть очень полезны для понимания правил и методов решения. Большая часть видео в этом списке - на русском языке.<br>Пишите на <a href='mailto:puzzleduel.club@gmail.com'>puzzleduel.club@gmail.com</a> если вы хотите предложить видео для добавления в этот список."
 }
