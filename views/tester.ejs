@@ -9,7 +9,7 @@
           <tbody>
             <tr>
               <th><%= __('Puzzle') %></th>
-              <th class="d-none d-sm-table-cell"><%= __('Your time') %></th>
+              <th><%= __('Your time') %></th>
             </tr>
             <% puzzles.forEach(function(puzzle) { %>
             <tr>
@@ -19,7 +19,7 @@
                   <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
                 </a>
               </td>
-              <td class="d-none d-sm-table-cell">
+              <td>
                 <%= puzzle.userTime %>
               </td>
             </tr>
