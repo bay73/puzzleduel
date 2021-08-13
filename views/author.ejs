@@ -181,7 +181,7 @@
                 </td>
                 <td>
                   <% if (puzzle.rating && puzzle.rating.rating>0) { %>
-                  <a href="javascript:void(0);" onclick="showPuzzleComments('<%= puzzle.code %>','<%= puzzle.type %><%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>',<%= puzzle.rating.rating %>,<%= puzzle.rating.count %>)" >
+                  <a href="javascript:void(0);" onclick="showPuzzleComments('<%= puzzle.code %>','<%= puzzle.type %><%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>',<%= Math.round(puzzle.rating.rating*10)/10 %>,<%= puzzle.rating.count %>)" >
                     <% var rating=Math.round(puzzle.rating.rating*25-25); %>
                     <% var hearts=Math.round(5+rating*rating/223)/10; %>
                     <span class="hearts" style="width: calc(15px * <%= hearts %>)" data-toggle="tooltip" title="<%= rating %>% / <%= puzzle.rating.count %>"></span>
