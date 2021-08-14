@@ -69,7 +69,12 @@ pentominoes: {
 
 check:function(dimension, clues, data){
   // Create array
-  var dim = util.parseDimension(dimension);
+  var part = dimension.split("-");
+  var requiredLetters = part[1];
+  if (requiredLetters=="pento12") {
+    requiredLetters = "FILNPTUVWXYZ"
+  }
+  var dim = util.parseDimension(part[0]);
   var cells = util.create2DArray(dim.rows, dim.cols, false)
   var clue = util.create2DArray(dim.rows, dim.cols, false)
 
@@ -106,7 +111,7 @@ check:function(dimension, clues, data){
       }
     }
   }
-  var res = Checker.checkPento(cells);
+  var res = Checker.checkPento(cells, requiredLetters);
   if (res.status != "OK") {
     return res;
   }
@@ -117,17 +122,17 @@ check:function(dimension, clues, data){
   return {status: "OK"};
 },
 
-checkPento: function(cells) {
+checkPento: function(cells, requiredLetters) {
   var start = {x:0, y:0};
   var map = util.create2DArray(cells.rows, cells.cols, "")
   while (true) {
-    let res = Checker.findNextPentomino(cells, start, map);
+    let res = Checker.findNextPentomino(cells, start, map, requiredLetters);
     if (!res) break;
     if (res.status != "OK") {
       return res;
     }
   }
-  var res = Checker.checkAllUsedOnce(map);
+  var res = Checker.checkAllUsedOnce(map, requiredLetters);
   if (res.status != "OK") {
     return res;
   }
@@ -152,7 +157,7 @@ checkClues: function(cells, clue) {
   }
   return {status: "OK"};
 },
-findNextPentomino: function(cells, start, map) {
+findNextPentomino: function(cells, start, map, requiredLetters) {
   while (true) {
     if (start.x>=cells.cols) {
       start.x = 0;
@@ -163,14 +168,14 @@ findNextPentomino: function(cells, start, map) {
       if (cells[start.y][start.x] && map[start.y][start.x]=="") {
         let area = Checker.buildArea(cells, start, map);
         if (area.cells.length != 5) {
-          return {status: "Each marked area should form a pentomino" , errors: area.coords};
+          return {status: "Each marked area should form a pentomino from the given set" , errors: area.coords};
         }
-        var tetro = Checker.pentominoes[area.code];
-        if (typeof tetro == "undefined") {
-          return {status: "Each marked area should form a pentomino" , errors: area.coords};
+        var pento = Checker.pentominoes[area.code];
+        if (typeof pento == "undefined" || !requiredLetters.includes(pento)) {
+          return {status: "Each marked area should form a pentomino from the given set" , errors: area.coords};
         }
         for (let i=0;i<area.cells.length;i++) {
-          map[area.cells[i].y][area.cells[i].x]=tetro;
+          map[area.cells[i].y][area.cells[i].x]=pento;
         }
         return {status: "OK"};
       }
@@ -179,21 +184,18 @@ findNextPentomino: function(cells, start, map) {
   }
   return false;
 },
-checkAllUsedOnce: function(map) {
-  let letters = {
-    "F": [],
-    "I": [],
-    "L": [],
-    "N": [],
-    "P": [],
-    "T": [],
-    "U": [],
-    "V": [],
-    "W": [],
-    "X": [],
-    "Y": [],
-    "Z": []
-  };
+checkAllUsedOnce: function(map, requiredLetters) {
+  let lettersRequired = {};
+  let letters = {};
+  for (let i=0;i<requiredLetters.length;i++) {
+    let letter = requiredLetters.charAt(i);
+    if (!lettersRequired[letter]) {
+      letters[letter] = [];
+      lettersRequired[letter] = 5;
+    } else {
+      lettersRequired[letter] += 5;
+    }
+  }
   for (var x = 0; x < map.cols; x++) {
     for (var y = 0; y < map.rows; y++) {
       if (map[y][x]!="") {
@@ -202,13 +204,13 @@ checkAllUsedOnce: function(map) {
     }
   }
   for(let letter of Object.keys(letters)){
-    if(letters[letter].length > 5) {
-      return {status: "Each element should be used exactly once" , errors: letters[letter]};
+    if(letters[letter].length > lettersRequired[letter]) {
+      return {status: "Each element should be used exactly same number of times as given" , errors: letters[letter]};
     }
   }
   for(let letter of Object.keys(letters)){
-    if(letters[letter].length < 5) {
-      return {status: "Each element should be used exactly once" , errors: letters[letter]};
+    if(letters[letter].length < lettersRequired[letter]) {
+      return {status: "Each element should be used exactly same number of times as given" , errors: letters[letter]};
     }
   }
   return {status: "OK"};

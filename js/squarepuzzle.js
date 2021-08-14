@@ -7,7 +7,7 @@ squarePuzzleType = function(puzzleData, controls, settings) {
 Object.setPrototypeOf(squarePuzzleType.prototype, squarePuzzle.prototype);
 
 squarePuzzleType.prototype.parseDimension = function(dimension) {
-  if (this.typeCode == "top_heavy") {
+  if (this.typeCode == "top_heavy" || this.typeCode == "pentamino_touch" || this.typeCode == "battleships_minesweeper" || this.typeCode == "battleships_knight") {
     // Parse dimension string to values.
     var part = dimension.split("-");
     squarePuzzle.prototype.parseDimension.call(this, part[0]);

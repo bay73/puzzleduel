@@ -59,19 +59,23 @@
               </div>
               <div class="form-group pr-4 pb-2">
                 <label class="col-form-label pr-1" for="rows">Rows</label>
-                <input type="number" min="2" max="15" value="9" class="form-control" id="rows">
+                <input type="number" min="2" max="15" value="9" class="form-control" style="width:64px" id="rows">
               </div>
               <div class="form-group pr-4 pb-2">
                 <label class="col-form-label pr-1" for="cols">Columns</label>
-                <input type="number" min="2" max="15" value="9" class="form-control" id="cols">
+                <input type="number" min="2" max="15" value="9" class="form-control" style="width:64px" id="cols">
+              </div>
+              <div class="form-group pr-4 pb-2">
+                 <input class="form-check-input" type="checkbox" value="" id="pentaset" checked/>
+                 <label class="col-form-label pr-1" for="pentaset">Standard set</label>
               </div>
               <div class="form-group pr-4 pb-2">
                 <label class="col-form-label pr-1" for="letters">Values</label>
-                <input class="form-control" width="5" id="letters">
+                <input class="form-control" width="5" style="width:128px" id="letters">
               </div>
               <div class="form-group pr-4 pb-2">
                 <label class="col-form-label pr-1" for="size">Quantity</label>
-                <input type="number" min="0" max="99" class="form-control" id="quantity">
+                <input type="number" min="0" max="99" class="form-control" style="width:64px" id="quantity">
               </div>
               <div class="form-group pr-4 pb-2">
                 <label class="col-form-label pr-1" for="shipset">Ship set</label>
@@ -92,6 +96,7 @@
           var needLetters = [];
           var needQuantity = [];
           var needShipset = [];
+          var needPentaset = [];
           var rows = [];
           <% types.forEach(function(type) { %>
           <% if (type.properties && type.properties.squared) { %>
@@ -109,15 +114,22 @@
           <% if (type.properties && type.properties.needShipset) { %>
           needShipset['<%= type.code %>'] = true;
           <% } %>
+          <% if (type.properties && type.properties.needPentaset) { %>
+          needPentaset['<%= type.code %>'] = true;
+          <% } %>
           <% }) %>
           function showFields() {
-            $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true);
+            console.log('showFields',needPentaset[$("#type").children("option:selected").val()],$("#pentaset").is(':checked'));
+            $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true
+                                          || needPentaset[$("#type").children("option:selected").val()]==true && !$("#pentaset").is(':checked'));
             $("#quantity").parent().toggle(needQuantity[$("#type").children("option:selected").val()]==true);
             $("#shipset").parent().toggle(needShipset[$("#type").children("option:selected").val()]==true);
+            $("#pentaset").parent().toggle(needPentaset[$("#type").children("option:selected").val()]==true);
             $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
             $("#rows").parent().toggle(typeof rows[$("#type").children("option:selected").val()] == "undefined");
           }
           $("#type").change(showFields);
+          $("#pentaset").change(showFields);
           $(document).ready(showFields);
           $("#createPuzzle").click(function () {
             var type = $("#type").children("option:selected").val();
@@ -155,6 +167,19 @@
                 return;
               }
               dimension = dimension + "-" + shipset;
+            }
+            if (needPentaset[type]) {
+              var pentaset = 'penta12';
+              if (!$("#pentaset").is(':checked')) {
+                var penta = $("#letters").val().replace(/[^FILNPTUVWXYZ]/g, '');
+                if (!penta) {
+                  window.alert('Specify the list of available pentamino for the puzzle!');
+                  return;
+                }
+              } else {
+                penta = 'penta12'
+              }
+              dimension = dimension + "-" + penta;
             }
             var url = "/single/" + type + "/" + dimension + "/new";
             window.location = url;
