@@ -317,5 +317,6 @@
 	"Explainer videos": "Explainer videos",
 	"List of video text": "Some solvers use puzzles from our website to make videos where solving steps for the puzzles are explained. This videos can be very helpfull to understand how puzzles can be solved, which techniques can be used. Most of the videos are in Russian.<br>Please contact <a href='mailto:puzzleduel.club@gmail.com'>puzzleduel.club@gmail.com</a> if you want to suggest some vidoe to be added here.",
 	"Each marked area should form a pentomino from the given set": "Each marked area should form a pentomino from the given set",
-	"Each element should be used exactly same number of times as given": "Each element should be used exactly same number of times as given"
+	"Each element should be used exactly same number of times as given": "Each element should be used exactly same number of times as given",
+	"Each third cell used by pentomino should be marked": "Each third cell used by pentomino should be marked"
 }

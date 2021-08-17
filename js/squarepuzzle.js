@@ -7,7 +7,7 @@ squarePuzzleType = function(puzzleData, controls, settings) {
 Object.setPrototypeOf(squarePuzzleType.prototype, squarePuzzle.prototype);
 
 squarePuzzleType.prototype.parseDimension = function(dimension) {
-  if (this.typeCode == "top_heavy" || this.typeCode == "pentamino_touch" || this.typeCode == "battleships_minesweeper" || this.typeCode == "battleships_knight") {
+  if (this.typeCode == "top_heavy" || this.typeCode == "pentamino_touch" || this.typeCode == "pentamino_hungarian" || this.typeCode == "battleships_minesweeper" || this.typeCode == "battleships_knight") {
     // Parse dimension string to values.
     var part = dimension.split("-");
     squarePuzzle.prototype.parseDimension.call(this, part[0]);
@@ -406,6 +406,21 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         return {image: "battenberg_small"};
       } else {
         return {text: value};
+      }
+    },
+  }
+
+  typeProperties["pentomino_hungarian"] = {
+    needNodes: false,
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+    },
+    cellEditController: cell => {
+      cell.clickSwitch = [{},{color: self.colorSchema.clueColor, returnValue: "1"}];
+    },
+    decodeClue: value => {
+      if (value=="1") {
+        return {color: self.colorSchema.clueColor};
       }
     },
   }
