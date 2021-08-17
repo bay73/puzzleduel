@@ -119,7 +119,7 @@
           <% } %>
           <% }) %>
           function showFields() {
-            console.log('showFields',needPent0set[$("#type").children("option:selected").val()],$("#pentoset").is(':checked'));
+            console.log('showFields',needPentoset[$("#type").children("option:selected").val()],$("#pentoset").is(':checked'));
             $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true
                                           || needPentoset[$("#type").children("option:selected").val()]==true && !$("#pentoset").is(':checked'));
             $("#quantity").parent().toggle(needQuantity[$("#type").children("option:selected").val()]==true);
