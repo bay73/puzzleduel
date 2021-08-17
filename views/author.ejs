@@ -66,8 +66,8 @@
                 <input type="number" min="2" max="15" value="9" class="form-control" style="width:64px" id="cols">
               </div>
               <div class="form-group pr-4 pb-2">
-                 <input class="form-check-input" type="checkbox" value="" id="pentaset" checked/>
-                 <label class="col-form-label pr-1" for="pentaset">Standard set</label>
+                 <input class="form-check-input" type="checkbox" value="" id="pentoset" checked/>
+                 <label class="col-form-label pr-1" for="pentoset">Standard set</label>
               </div>
               <div class="form-group pr-4 pb-2">
                 <label class="col-form-label pr-1" for="letters">Values</label>
@@ -96,7 +96,7 @@
           var needLetters = [];
           var needQuantity = [];
           var needShipset = [];
-          var needPentaset = [];
+          var needPentoset = [];
           var rows = [];
           <% types.forEach(function(type) { %>
           <% if (type.properties && type.properties.squared) { %>
@@ -114,22 +114,22 @@
           <% if (type.properties && type.properties.needShipset) { %>
           needShipset['<%= type.code %>'] = true;
           <% } %>
-          <% if (type.properties && type.properties.needPentaset) { %>
-          needPentaset['<%= type.code %>'] = true;
+          <% if (type.properties && type.properties.needPentoset) { %>
+          needPentoset['<%= type.code %>'] = true;
           <% } %>
           <% }) %>
           function showFields() {
-            console.log('showFields',needPentaset[$("#type").children("option:selected").val()],$("#pentaset").is(':checked'));
+            console.log('showFields',needPent0set[$("#type").children("option:selected").val()],$("#pentoset").is(':checked'));
             $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true
-                                          || needPentaset[$("#type").children("option:selected").val()]==true && !$("#pentaset").is(':checked'));
+                                          || needPentoset[$("#type").children("option:selected").val()]==true && !$("#pentoset").is(':checked'));
             $("#quantity").parent().toggle(needQuantity[$("#type").children("option:selected").val()]==true);
             $("#shipset").parent().toggle(needShipset[$("#type").children("option:selected").val()]==true);
-            $("#pentaset").parent().toggle(needPentaset[$("#type").children("option:selected").val()]==true);
+            $("#pentoset").parent().toggle(needPentoset[$("#type").children("option:selected").val()]==true);
             $("#cols").parent().toggle(squared[$("#type").children("option:selected").val()]!=true);
             $("#rows").parent().toggle(typeof rows[$("#type").children("option:selected").val()] == "undefined");
           }
           $("#type").change(showFields);
-          $("#pentaset").change(showFields);
+          $("#pentoset").change(showFields);
           $(document).ready(showFields);
           $("#createPuzzle").click(function () {
             var type = $("#type").children("option:selected").val();
@@ -168,18 +168,18 @@
               }
               dimension = dimension + "-" + shipset;
             }
-            if (needPentaset[type]) {
-              var pentaset = 'penta12';
-              if (!$("#pentaset").is(':checked')) {
-                var penta = $("#letters").val().replace(/[^FILNPTUVWXYZ]/g, '');
-                if (!penta) {
-                  window.alert('Specify the list of available pentamino for the puzzle!');
+            if (needPentoset[type]) {
+              var pentoset = 'pento12';
+              if (!$("#pentoset").is(':checked')) {
+                var pento = $("#letters").val().replace(/[^FILNPTUVWXYZ]/g, '');
+                if (!pento) {
+                  window.alert('Specify the list of available pentomino for the puzzle!');
                   return;
                 }
               } else {
-                penta = 'penta12'
+                pento = 'pento12'
               }
-              dimension = dimension + "-" + penta;
+              dimension = dimension + "-" + pento;
             }
             var url = "/single/" + type + "/" + dimension + "/new";
             window.location = url;
