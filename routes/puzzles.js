@@ -89,6 +89,7 @@ type_cheker["pentomino_hungarian"] = require('../puzzle_types/pentomino_hungaria
 type_cheker["araf"] = require('../puzzle_types/araf')
 type_cheker["battleships_minesweeper"] = require('../puzzle_types/battleships_minesweeper')
 type_cheker["battleships_knight"] = require('../puzzle_types/battleships_knight')
+type_cheker["battleships"] = require('../puzzle_types/battleships')
 type_cheker["russian_loop"] = require('../puzzle_types/russian_loop')
 type_cheker["two_apiece"] = require('../puzzle_types/two_apiece')
 

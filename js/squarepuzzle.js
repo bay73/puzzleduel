@@ -441,6 +441,32 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
   }
 
+  typeProperties["battleships"] = {
+    needNodes: false,
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      if (cell.outerCell) {
+        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
+      } else {
+        setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "wave"}], [{},{color: "#a0a0a0"},{image: "wave"}]);
+      }
+    },
+    cellEditController: cell => {
+      if (cell.outerCell) {
+        cell.isClue = true;
+        var chooserValues = [{}];
+        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
+         chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      } else {
+        cell.clickSwitch = [{},{image: "wave", returnValue: "wave"}];
+      }
+    },
+    decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
+  }
+
   typeProperties["battleships_knight"] = {
     needNodes: false,
     cellController: cell => {

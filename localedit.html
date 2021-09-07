@@ -73,17 +73,43 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "two_apiece",
+      typeCode: "battleships",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "9x9"
     };
     var settings = {
       local: true,
-      data:  {}
+      data:  {
+    "f4": "wave",
+    "d6": "wave",
+    "bottom": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        null,
+        "8",
+        null,
+        null
+    ],
+    "right": [
+        "9",
+        "4",
+        null,
+        null,
+        "7",
+        null,
+        "8",
+        null,
+        "0"
+    ],
+    "tag": ""
+}
     };
     settings.theme = "default";
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });
