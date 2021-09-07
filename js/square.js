@@ -549,8 +549,12 @@ squarePuzzleCell.prototype.drawImage = function() {
 squarePuzzleCell.prototype.drawText = function() {
   var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.7, this.data.text);
   var textColor = this.data.textColor;
-  if (typeof textColor=='undefined') {
-    textColor = this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor;
+  if (!textColor) {
+    if (this.outerCell) {
+      textColor = this.puzzle.colorSchema.outerClueColor;
+    } else {
+      textColor = this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor;
+    }
   }
   text.attr({"fill": textColor});
   return text;
