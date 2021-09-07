@@ -25,6 +25,22 @@ squarePuzzle.prototype.createBoard = function() {
       this.elements.push(this.cells[y][x]);
     }
   }
+  if (this.typeProperties.needBottom) {
+    this.bottom = [];
+    for (var x = 0; x < this.cols; x++) {
+      this.bottom[x] = new squarePuzzleCell(this, x, this.rows);
+      this.bottom[x].outerCell = true;
+      this.elements.push(this.bottom[x]);
+    }
+  }
+  if (this.typeProperties.needRight) {
+    this.right = [];
+    for (var y = 0; y < this.rows; y++) {
+      this.right[y] = new squarePuzzleCell(this, this.cols, y);
+      this.right[y].outerCell = true;
+      this.elements.push(this.right[y]);
+    }
+  }
   //
   if (this.typeProperties.needEdges) {
     this.edges = [];
@@ -149,6 +165,16 @@ squarePuzzle.prototype.initController = function () {
       }
     }
   }
+  if (this.typeProperties.needBottom && typeof this.typeProperties.cellController == "function") {
+    for (var x = 0; x < this.cols; x++) {
+      this.typeProperties.cellController(this.bottom[x]);
+    }
+  }
+  if (this.typeProperties.needRight && typeof this.typeProperties.cellController == "function") {
+    for (var y = 0; y < this.rows; y++) {
+      this.typeProperties.cellController(this.right[y]);
+    }
+  }
 }
 
 squarePuzzle.prototype.initEditController = function() {
@@ -182,6 +208,16 @@ squarePuzzle.prototype.initEditController = function() {
       }
     }
   }
+  if (this.typeProperties.needBottom && typeof this.typeProperties.cellEditController == "function") {
+    for (var x = 0; x < this.cols; x++) {
+      this.typeProperties.cellEditController(this.bottom[x]);
+    }
+  }
+  if (this.typeProperties.needRight && typeof this.typeProperties.cellEditController == "function") {
+    for (var y = 0; y < this.rows; y++) {
+      this.typeProperties.cellEditController(this.right[y]);
+    }
+  }
 }
 
 squarePuzzle.prototype.findSize = function() {
@@ -193,7 +229,9 @@ squarePuzzle.prototype.findSize = function() {
   var vSizeLimit = window.innerHeight*0.57;
   var cols = this.cols;
   var rows = this.rows;
-  // unitCell - length of a cell edge
+  if (this.typeProperties.needBottom) rows++;
+  if (this.typeProperties.needRight) cols++;
+  // unitSize - length of a cell edge
   var unitSize = Math.min(hSizeLimit / cols, vSizeLimit / rows);
   this.leftGap = (width - unitSize * cols) /2;
   this.topGap = unitSize/4;
@@ -221,6 +259,10 @@ squarePuzzle.prototype.showClues = function(data) {
       this.drawEdgeClues(value);
     } else if (key=="nodes") {
       this.drawNodeClues(value);
+    } else if (key=="bottom") {
+      this.drawBottomClues(value);
+    } else if (key=="right") {
+      this.drawRightClues(value);
     } else {
       var coord = this.decodeCoordinate(key);
       if (this.cells[coord.y] && this.cells[coord.y][coord.x]) {
@@ -278,6 +320,26 @@ squarePuzzle.prototype.drawNodeClues = function(nodes) {
   }
 }
 
+squarePuzzle.prototype.drawBottomClues = function(bottom) {
+  if (this.bottom) {
+    for(var i=0; i<bottom.length;i++) {
+      if (this.bottom[i]) {
+        this.bottom[i].setClue(this.decodeClue(bottom[i]));
+      }
+    }
+  }
+}
+
+squarePuzzle.prototype.drawRightClues = function(right) {
+  if (this.right) {
+    for(var i=0; i<right.length;i++) {
+      if (this.right[i]) {
+        this.right[i].setClue(this.decodeClue(right[i]));
+      }
+    }
+  }
+}
+
 squarePuzzle.prototype.collectData = function() {
   var data = {};
   var edgeData = {};
@@ -285,7 +347,7 @@ squarePuzzle.prototype.collectData = function() {
   var connectorData = {};
   this.elements.forEach(element => {
     var value = element.getValue();
-    if (value != null) {
+    if (value != null && !element.outerCell) {
       var coord = element.getCoordinates();
       if (element instanceof squarePuzzleCell) {
          data[coord] = value;
@@ -313,6 +375,34 @@ squarePuzzle.prototype.collectData = function() {
   }
   if (Object.keys(connectorData).length != 0) {
     data["connectors"] = connectorData;
+  }
+  if (this.typeProperties.needBottom) {
+    let bottomValues = [];
+    let exists = false;
+    for (var x = 0; x < this.cols; x++) {
+      let value = this.bottom[x].getValue();
+      bottomValues.push(value);
+      if (value != null) {
+        exists = true;
+      }
+    }
+    if (exists) {
+      data["bottom"] = bottomValues;
+    }
+  }
+  if (this.typeProperties.needRight) {
+    let rightValues = [];
+    let exists = false;
+    for (var y = 0; y < this.rows; y++) {
+      let value = this.right[y].getValue();
+      rightValues.push(value);
+      if (value != null) {
+        exists = true;
+      }
+    }
+    if (exists) {
+      data["right"] = rightValues;
+    }
   }
   return data;
 }
@@ -429,12 +519,21 @@ squarePuzzleCell.prototype.center = function() {
 
 squarePuzzleCell.prototype.render = function() {
   var path = this.puzzle.snap.polygon([].concat.apply([], this.cellCorners().map(corner => [corner.x, corner.y])));
-  path.attr(this.puzzle.gridProperty.cell);
+  if (this.outerCell) {
+    var attr = Object.assign({}, this.puzzle.gridProperty.outerCell);
+  } else {
+    var attr = Object.assign({}, this.puzzle.gridProperty.cell);
+  }
+  path.attr(attr);
   return path;
 }
 
 squarePuzzleCell.prototype.drawColor = function() {
-  var attr = Object.assign({}, this.puzzle.gridProperty.cell);
+  if (this.outerCell) {
+    var attr = Object.assign({}, this.puzzle.gridProperty.outerCell);
+  } else {
+    var attr = Object.assign({}, this.puzzle.gridProperty.cell);
+  }
   Object.assign(attr, {fill: this.data.color});
   this.elements.path.attr(attr);
 }
@@ -468,7 +567,11 @@ squarePuzzleCell.prototype.drawPencilColor = function() {
 }
 
 squarePuzzleCell.prototype.clearPencilColor = function() {
-  this.elements.path.attr(this.puzzle.gridProperty.cell);
+  if (this.outerCell) {
+    this.elements.path.attr(this.puzzle.gridProperty.outerCell);
+  } else {
+    this.elements.path.attr(this.puzzle.gridProperty.cell);
+  }
 }
 
 squarePuzzleCell.prototype.drawPencilImage = function() {

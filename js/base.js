@@ -34,6 +34,11 @@ basePuzzle.prototype.render = function(snap) {
       "stroke": this.colorSchema.gridColor,
       "strokeWidth": 1,
     },
+    outerCell: {
+      "fill-opacity": 0,
+      "stroke": this.colorSchema.gridColor,
+      "strokeWidth": 1,
+    },
     pencilCell: {
       "fill": this.colorSchema.bgColor,
       "fill-opacity": 1,
@@ -88,6 +93,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       gridColor: "#000",
       bgColor: "#fff",
       errorColor: "#efa4a7",
+      outerClueColor: "#06d",
     }
   } else if (this.settings.theme=="contrast") {
     return {
@@ -99,6 +105,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       gridColor: "#000",
       bgColor: "#fff",
       errorColor: "#f52b14",
+      outerClueColor: "#fff",
     }
   } else {
     return {
@@ -110,6 +117,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       gridColor: "#000",
       bgColor: "#fff",
       errorColor: "#e72381",
+      outerClueColor: "#8db",
     }
   }
 }
