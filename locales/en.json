@@ -319,5 +319,6 @@
 	"Each marked area should form a pentomino from the given set": "Each marked area should form a pentomino from the given set",
 	"Each element should be used exactly same number of times as given": "Each element should be used exactly same number of times as given",
 	"Each third cell used by pentomino should be marked": "Each third cell used by pentomino should be marked",
-	"Areas of the same shape shouldn't share an edge": "Areas of the same shape shouldn't share an edge"
+	"Areas of the same shape shouldn't share an edge": "Areas of the same shape shouldn't share an edge",
+	"Each outlined area should have exactly one star": "Each outlined area should have exactly one star"
 }

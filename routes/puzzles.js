@@ -19,6 +19,7 @@ type_cheker["minesweeper_classic"] = require('../puzzle_types/minesweeper_classi
 type_cheker["queens"] = require('../puzzle_types/queens')
 type_cheker["akari"] = require('../puzzle_types/akari')
 type_cheker["starbattle"] = require('../puzzle_types/starbattle')
+type_cheker["starbattle_smallregions"] = require('../puzzle_types/starbattle_smallregions')
 type_cheker["nurikabe"] = require('../puzzle_types/nurikabe')
 type_cheker["clouds"] = require('../puzzle_types/clouds')
 type_cheker["easy_as_coral"] = require('../puzzle_types/easy_as_coral')

@@ -322,5 +322,6 @@
 	"Each marked area should form a pentomino from the given set": "Каждая отмеченная область должна образовывать пентамино из данного набора",
 	"Each element should be used exactly same number of times as given": "Каждый элемент должен быть использован ровно столько раз, сколько в данном наборе",
 	"Each third cell used by pentomino should be marked": "Каждая третья клетка, использованая пентамино, должна быть отмечена",
-	"Areas of the same shape shouldn't share an edge": "Области одинаковой формы не должны касаться стороной"
+	"Areas of the same shape shouldn't share an edge": "Области одинаковой формы не должны касаться стороной",
+	"Each outlined area should have exactly one star": "Должна быть ровно одна звезда в каждой области"
 }
