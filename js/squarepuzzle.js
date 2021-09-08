@@ -7,7 +7,12 @@ squarePuzzleType = function(puzzleData, controls, settings) {
 Object.setPrototypeOf(squarePuzzleType.prototype, squarePuzzle.prototype);
 
 squarePuzzleType.prototype.parseDimension = function(dimension) {
-  if (this.typeCode == "top_heavy" || this.typeCode == "pentamino_touch" || this.typeCode == "pentamino_hungarian" || this.typeCode == "battleships_minesweeper" || this.typeCode == "battleships_knight") {
+  if (this.typeCode == "pentomino" || this.typeCode == "pentomino_touch" || this.typeCode == "pentomino_hungarian" || this.typeCode == "battleships_minesweeper" || this.typeCode == "battleships_knight" || this.typeCode == "battleships" || this.typeCode == "starbattle_smallregions") {
+    // Parse dimension string to values.
+    var part = dimension.split("-");
+    squarePuzzle.prototype.parseDimension.call(this, part[0]);
+    this.maxChooserValue = parseInt(part[1]);
+  } else if (this.typeCode == "top_heavy") {
     // Parse dimension string to values.
     var part = dimension.split("-");
     squarePuzzle.prototype.parseDimension.call(this, part[0]);
@@ -499,6 +504,32 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.chooserValues = chooserValues;
     },
     decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
+  }
+
+  typeProperties["pentomino"] = {
+    needNodes: false,
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      if (cell.outerCell) {
+        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
+      } else {
+        setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      }
+    },
+    cellEditController: cell => {
+      if (cell.outerCell) {
+        cell.isClue = true;
+        var chooserValues = [{}];
+        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
+         chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      } else {
+        cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
+      }
+    },
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
   typeProperties["alternate_loop"] = {

@@ -134,7 +134,7 @@
 </div>
 <div class="d-flex flex-wrap card-body pt-0" id="puzzleRules">
   <div class="col-lg-4">
-    <span class="puzzle-figures w-100 d-block" theme="default" figures="ship" set="ship4"></span>
+    <span class="puzzle-figures w-100 d-block" theme="default" figures="pento" set="XXXXXX"></span>
   </div>
   <div class="col-lg-8">
     <p class="card-text text-left mt-2 w-100">Shade some empty cells black to create a single connected wall. No 2x2 square can be completely shaded. Numbers in a cell indicate the length of consecutive shaded blocks in the neighboring cells. If there is more than one number in a cell, then there must be at least one white (unshaded) cell between the black cell groups.></p>
@@ -150,14 +150,16 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "battleships",
+      typeCode: "pentomino",
       id: "puzzle.code",
-      dimension: "9x9-ship4"
+      dimension: "9x9-XXXXXX"
     };
     var settings = {
       local: true,
       
       data: {
+    "f4": "cross",
+    "d6": "cross",
     "bottom": [
         "1",
         "3",
