@@ -300,11 +300,18 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     }
     const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
     var typePuzzleCount = Object.entries(typeMap).reduce((map, [key, value]) => {
-      map[key] = {name: value.name, puzzleCount: 0, properties: value.properties};
+      map[key] = {name: value.name, puzzleCount: 0, lastDate: null, properties: value.properties};
       return map;
     }, {});
-    const futurePuzzles = await Puzzle.find({tag: "daily", $or: [{daily: {$gt: new Date()}}, {daily: {$exists: false}}]}, "-data").sort({daily: -1});
-    futurePuzzles.forEach(puzzle => typePuzzleCount[puzzle.type].puzzleCount++);
+    const allPuzzles = await Puzzle.find({tag: "daily"}, "-data");
+    allPuzzles.forEach(puzzle => {
+      typePuzzleCount[puzzle.type].puzzleCount++;
+      if (puzzle.daily < Date.now()) {
+        typePuzzleCount[puzzle.type].lastDate = Math.max(typePuzzleCount[puzzle.type].lastDate, puzzle.daily);
+      } else {
+        typePuzzleCount[puzzle.type].lastDate = Math.max(typePuzzleCount[puzzle.type].lastDate, Date.now());
+      }
+    });
     res.render('author', {
       user: req.user,
       publish: publishFilter,
@@ -332,12 +339,12 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
             rating: puzzle.rating
           };
       }),
-      dailyQueue: Object.entries(typePuzzleCount)
+      typesRating: Object.entries(typePuzzleCount)
         .map(([key, value]) => {
         return {
           code: key,
           name: value.name,
-          count: value.puzzleCount
+          rating: Math.round(((Date.now() - value.lastDate)/(1000*60*60*24) + 5) / (5 + Math.min(value.puzzleCount, 10)))
         };
       })
     });

@@ -27,21 +27,21 @@
         </p>
         <div class="collapse" id="newform">
           <div class="card card-body">
-            <a data-toggle="collapse" href="#dailyqueue" aria-expanded="false" aria-controls="Collapse">
-              Show/hide current queue
+            <a data-toggle="collapse" href="#typesrating" aria-expanded="false" aria-controls="Collapse">
+              Show/hide types demand rating
             </a><br>
-            <div class="collapse bg-light" style="position: absolute; top: 45px; left: -30px; z-index: 100;" id="dailyqueue">
+            <div class="collapse bg-light" style="position: absolute; top: 45px; left: -30px; z-index: 100;" id="typesrating">
               <div class="card card-body">
-                The list shows how many puzzles of each type are waiting<br> in the daily puzzles queue to be published
+                The demand rating shows how valuable the new puzzles are<br> based on amount and frequency of already existing puzzles.
                 <table class="table table-sm table-condensed table-borderless">
                   <tbody>
-                    <% dailyQueue.sort((type1,type2) => (type1.count - type2.count)).forEach(function(type) { %>
+                    <% typesRating.sort((type1,type2) => (type2.rating - type1.rating)).forEach(function(type) { %>
                     <tr>
                       <td>
                         <%= type.name %>
                       </td>
                       <td>
-                        <%= type.count %>
+                        <%= type.rating %>
                       </td>
                     </tr>
                     <% }) %>
@@ -119,7 +119,6 @@
           <% } %>
           <% }) %>
           function showFields() {
-            console.log('showFields',needPentoset[$("#type").children("option:selected").val()],$("#pentoset").is(':checked'));
             $("#letters").parent().toggle(needLetters[$("#type").children("option:selected").val()]==true
                                           || needPentoset[$("#type").children("option:selected").val()]==true && !$("#pentoset").is(':checked'));
             $("#quantity").parent().toggle(needQuantity[$("#type").children("option:selected").val()]==true);
