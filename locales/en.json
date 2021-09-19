@@ -320,5 +320,9 @@
 	"Each element should be used exactly same number of times as given": "Each element should be used exactly same number of times as given",
 	"Each third cell used by pentomino should be marked": "Each third cell used by pentomino should be marked",
 	"Areas of the same shape shouldn't share an edge": "Areas of the same shape shouldn't share an edge",
-	"Each outlined area should have exactly one star": "Each outlined area should have exactly one star"
+	"Each outlined area should have exactly one star": "Each outlined area should have exactly one star",
+	"Each area should be L-shaped": "Each area should be L-shaped",
+	"Each area should contain a circle in the corner": "Each area should contain a circle in the corner",
+	"L-shape with a black circle should have equal legs": "L-shape with a black circle should have equal legs",
+	"L-shape with a white circle should not have equal legs": "L-shape with a white circle should not have equal legs"
 }

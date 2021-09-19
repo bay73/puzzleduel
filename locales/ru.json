@@ -323,5 +323,9 @@
 	"Each element should be used exactly same number of times as given": "Каждый элемент должен быть использован ровно столько раз, сколько в данном наборе",
 	"Each third cell used by pentomino should be marked": "Каждая третья клетка, использованая пентамино, должна быть отмечена",
 	"Areas of the same shape shouldn't share an edge": "Области одинаковой формы не должны касаться стороной",
-	"Each outlined area should have exactly one star": "Должна быть ровно одна звезда в каждой области"
+	"Each outlined area should have exactly one star": "Должна быть ровно одна звезда в каждой области",
+	"Each area should be L-shaped": "Каждая область должны быть L-образной",
+	"Each area should contain a circle in the corner": "Кружок должен располагаться в угловой клетке области",
+	"L-shape with a black circle should have equal legs": "L-образная область с чёрным кружком должна иметь равные стороны",
+	"L-shape with a white circle should not have equal legs": "L-образная область с белым кружком должна иметь неравные стороны"
 }

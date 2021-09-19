@@ -73,43 +73,29 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "pentomino",
+      typeCode: "l_shapes",
       id: "puzzle.code",
-      dimension: "9x9-XXXXX"
+      dimension: "7x7"
     };
     var settings = {
       local: true,
       data:  {
-    "f4": "cross",
-    "d6": "cross",
-    "bottom": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        null,
-        "8",
-        null,
-        null
-    ],
-    "right": [
-        "9",
-        "4",
-        null,
-        null,
-        "7",
-        null,
-        "8",
-        null,
-        "0"
-    ],
+    "a1": "black_circle",
+    "g1": "white_circle",
+    "b2": "white_circle",
+    "f2": "black_circle",
+    "c3": "black_circle",
+    "d4": "white_circle",
+    "e5": "white_circle",
+    "a7": "black_circle",
+    "c7": "black_circle",
+    "f7": "black_circle",
     "tag": ""
 }
     };
     settings.theme = "default";
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

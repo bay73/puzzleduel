@@ -150,45 +150,31 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "pentomino",
+      typeCode: "l_shapes",
       id: "puzzle.code",
-      dimension: "9x9-XXXXXX"
+      dimension: "7x7"
     };
     var settings = {
       local: true,
       
       data: {
-    "f4": "cross",
-    "d6": "cross",
-    "bottom": [
-        "1",
-        "3",
-        "0",
-        "5",
-        "3",
-        "3",
-        "0",
-        "3",
-        "2"
-    ],
-    "right": [
-        "1",
-        "4",
-        "0",
-        "5",
-        "1",
-        "2",
-        "1",
-        "4",
-        "2"
-    ],
+    "a1": "black_circle",
+    "g1": "white_circle",
+    "b2": "white_circle",
+    "f2": "black_circle",
+    "c3": "black_circle",
+    "d4": "white_circle",
+    "e5": "white_circle",
+    "a7": "black_circle",
+    "c7": "black_circle",
+    "f7": "black_circle",
     "tag": ""
 }
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
