@@ -3,9 +3,7 @@ const util = require('./util');
 const Checker = {
 check:function(dimension, clues, data){
   // Create array
-  var part = dimension.split("-");
-  var requiredLetters = part[1];
-  var dim = util.parseDimension(part[0]);
+  var dim = util.parseDimension(dimension);
   var cluecells = util.create2DArray(dim.rows, dim.cols, "")
   var areas = [];
 
