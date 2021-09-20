@@ -3,7 +3,9 @@ const util = require('./util');
 const Checker = {
 check:function(dimension, clues, data){
   // Create array
-  var dim = util.parseDimension(dimension);
+  var part = dimension.split("-");
+  var snakeLength = part[1]?parseInt(part[1]):45;
+  var dim = util.parseDimension(part[0]);
   var cells = util.create2DArray(dim.rows, dim.cols, false)
   var clue = util.create2DArray(dim.rows, dim.cols, false)
 
@@ -21,7 +23,7 @@ check:function(dimension, clues, data){
       clue[pos.y][pos.x] = value;
     }
   }
-  var res = Checker.checkSnake(cells);
+  var res = Checker.checkSnake(cells, snakeLength);
   if (res.status != "OK") {
     return res;
   }
@@ -32,7 +34,7 @@ check:function(dimension, clues, data){
   return {status: "OK"};
 },
 
-checkSnake: function(cells) {
+checkSnake: function(cells, snakeLength) {
   var snake = util.create2DArray(cells.rows, cells.cols, 0);
   var length = 1;
   var head = Checker.findHead(cells);
@@ -87,8 +89,8 @@ checkSnake: function(cells) {
       }
     }
   }
-  if (length != 45) {
-    return {status: "Snake should be 45 cells long", errors: []};
+  if (length != snakeLength) {
+    return {status: "The length of the snake should be exactly equal to the given value", errors: []};
   }
   return {status: "OK"};
 },
