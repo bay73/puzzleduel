@@ -7,7 +7,7 @@
         <h1 class="card-header"><%= __('Daily puzzles') %></h1>
           <% function getMonth(puzzle) {return puzzle.daily?puzzle.daily.getMonth():"None"; } %>
           <% function getYear(puzzle) {return puzzle.daily?puzzle.daily.getFullYear():""; } %>
-          <% function getMonthAndYear(puzzle) {return puzzle.daily?(puzzle.daily.getMonth()+puzzle.daily.getFullYear()):"None"; } %>
+          <% function getMonthAndYear(puzzle) {return puzzle.daily?(puzzle.daily.getMonth().toString()+puzzle.daily.getFullYear()):"None"; } %>
           <div class="accordion" id="mainAccordion">
             <% var prevMonth = null; %>
             <% puzzles.forEach(function(puzzle) { %>
@@ -35,6 +35,7 @@
                   <tbody>
                     <tr>
                       <th><%= __('Date') %></th>
+                      <th class="d-none d-sm-table-cell"></th>
                       <th><%= __('Puzzle') %></th>
                       <% if (user) { %>
                       <th class="d-none d-sm-table-cell"><%= __('Your time') %></th>
@@ -46,9 +47,17 @@
                     <tr>
                       <td>
                         <%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
                         <% if(puzzle.competitive) { %>
                         <span class="pl-1 d-none d-sm-inline-flex">(<%= __('competitive') %>)</span>
-                        <% }%>
+                        <% } else {%>
+                        <% if (puzzle.rating && puzzle.rating.rating>0) { %>
+                        <% var rating=Math.round(puzzle.rating.rating*25-25); %>
+                        <% var hearts=Math.round(Math.exp(rating/25.6))/10; %>
+                        <span class="hearts" style="width: calc(15px * <%= hearts %>)" data-toggle="tooltip" title="<%= rating %>% / <%= puzzle.rating.count %>"></span>
+                        <% } %>
+                        <% } %>
                       </td>
                       <td>
                         <a href="/single/<%= puzzle.code %>">

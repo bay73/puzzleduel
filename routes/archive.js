@@ -43,6 +43,8 @@ router.get(['/','/daily'],
           competitive: puzzle.needLogging,
           userTime: userTimesMap[puzzle.code]?util.timeToString(userTimesMap[puzzle.code].time):"",
           userErr: userTimesMap[puzzle.code]?userTimesMap[puzzle.code].errors:0,
+          difficulty: puzzle.difficulty,
+          rating: puzzle.needLogging?null:puzzle.rating,
           time: util.timeToString(timesMap[puzzle.code])
         };
       })
