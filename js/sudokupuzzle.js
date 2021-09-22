@@ -90,7 +90,9 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.chooserValues = chooserValues;
     },
     decodeClue: value => {
-      if (value.startsWith("-")) {
+      if (value=="-") {
+        return {color: "grey"}
+      } else if (value.startsWith("-")) {
         return {color: "grey", text: value.substring(1)}
       } else {
         return {text: value}
