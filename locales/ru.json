@@ -327,5 +327,10 @@
 	"Each area should be L-shaped": "Каждая область должны быть L-образной",
 	"Each area should contain a circle in the corner": "Кружок должен располагаться в угловой клетке области",
 	"L-shape with a black circle should have equal legs": "L-образная область с чёрным кружком должна иметь равные стороны",
-	"L-shape with a white circle should not have equal legs": "L-образная область с белым кружком должна иметь неравные стороны"
+	"L-shape with a white circle should not have equal legs": "L-образная область с белым кружком должна иметь неравные стороны",
+	"Wrong product for the row": "Неверное произведение в ряду",
+	"Wrong product for the column": "Неверное произведение в столбце",
+	"There should be 2 digits in the column": "В столбце должно быть две цифры",
+	"There should be 2 digits in the row": "В ряду должно быть две цифры",
+	"Cells with digits shouldn't share an edge": "Клетки с цифрами не должны касаться стороной"
 }

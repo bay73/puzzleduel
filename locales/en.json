@@ -180,7 +180,7 @@
 	"An island must consist of 6 cells": "An island must consist of 6 cells",
 	"There should be 6 white islands": "There should be 6 white islands",
 	"Unpainted cells should contain different digits in row": "Unpainted cells should contain different digits in row",
-	"Blackened cells shouldn't sharing an edge": "Blackened cells shouldn't sharing an edge",
+	"Blackened cells shouldn't sharing an edge": "Blackened cells shouldn't share an edge",
 	"See the rating computation rules at ": "See the rating computation rules at ",
 	"Rating history": "Rating history",
 	"Weekly performance": "Weekly performance",
@@ -324,5 +324,10 @@
 	"Each area should be L-shaped": "Each area should be L-shaped",
 	"Each area should contain a circle in the corner": "Each area should contain a circle in the corner",
 	"L-shape with a black circle should have equal legs": "L-shape with a black circle should have equal legs",
-	"L-shape with a white circle should not have equal legs": "L-shape with a white circle should not have equal legs"
+	"L-shape with a white circle should not have equal legs": "L-shape with a white circle should not have equal legs",
+	"Wrong product for the row": "Wrong product for the row",
+	"Wrong product for the column": "Wrong product for the column",
+	"There should be 2 digits in the column": "There should be 2 digits in the column",
+	"There should be 2 digits in the row": "There should be 2 digits in the row",
+	"Cells with digits shouldn't share an edge": "Cells with digits shouldn't share an edge"
 }

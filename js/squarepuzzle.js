@@ -612,6 +612,35 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     usePlus10: this.editMode,
   }
 
+  typeProperties["product_kuromasu"] = {
+    needNodes: false,
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      if (cell.outerCell) {
+        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
+      } else {
+        if (!cell.isClue) {
+          var chooserValues = [{}];
+          for (var i=0; i<=9; i++) {
+            chooserValues.push({text: i.toString(), returnValue: i.toString()});
+          }
+          chooserValues.push({image: "white_circle"}, {image: "cross"});
+          cell.chooserValues = chooserValues;
+        }
+      }
+    },
+    cellEditController: cell => {
+      if (cell.outerCell) {
+        cell.isClue = true; setNumberChooser(cell, 1, 81);
+      } else {
+        cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
+      }
+    },
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
+    usePlus10: this.editMode,
+  }
+
   typeProperties["top_heavy"] = {
     needNodes: false,
     cellController: cell => {if (!cell.isClue) {

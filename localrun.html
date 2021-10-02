@@ -150,7 +150,7 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "l_shapes",
+      typeCode: "product_kuromasu",
       id: "puzzle.code",
       dimension: "7x7"
     };
@@ -158,23 +158,31 @@
       local: true,
       
       data: {
-    "a1": "black_circle",
-    "g1": "white_circle",
-    "b2": "white_circle",
-    "f2": "black_circle",
-    "c3": "black_circle",
-    "d4": "white_circle",
-    "e5": "white_circle",
-    "a7": "black_circle",
-    "c7": "black_circle",
-    "f7": "black_circle",
+    "bottom": [
+        "2",
+        "14",
+        "48",
+        "10",
+        "6",
+        "15",
+        "24"
+    ],
+    "right": [
+        "5",
+        "6",
+        "12",
+        "12",
+        "15",
+        "28",
+        "16"
+    ],
     "tag": ""
 }
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
