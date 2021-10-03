@@ -329,5 +329,7 @@
 	"Wrong product for the column": "Wrong product for the column",
 	"There should be 2 digits in the column": "There should be 2 digits in the column",
 	"There should be 2 digits in the row": "There should be 2 digits in the row",
-	"Cells with digits shouldn't share an edge": "Cells with digits shouldn't share an edge"
+	"Cells with digits shouldn't share an edge": "Cells with digits shouldn't share an edge",
+	"Shaded cells should form a domino": "Shaded cells should form a domino",
+	"The area should contain exactly 2 shaded cells": "The area should contain exactly 2 shaded cells"
 }

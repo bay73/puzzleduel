@@ -332,5 +332,7 @@
 	"Wrong product for the column": "Неверное произведение в столбце",
 	"There should be 2 digits in the column": "В столбце должно быть две цифры",
 	"There should be 2 digits in the row": "В ряду должно быть две цифры",
-	"Cells with digits shouldn't share an edge": "Клетки с цифрами не должны касаться стороной"
+	"Cells with digits shouldn't share an edge": "Клетки с цифрами не должны касаться стороной",
+	"Shaded cells should form a domino": "Закрашеные клетки должны образовать домино",
+	"The area should contain exactly 2 shaded cells": "В области должно быть две закрашеных клетки"
 }

@@ -96,6 +96,7 @@ type_cheker["russian_loop"] = require('../puzzle_types/russian_loop')
 type_cheker["two_apiece"] = require('../puzzle_types/two_apiece')
 type_cheker["l_shapes"] = require('../puzzle_types/l_shapes')
 type_cheker["product_kuromasu"] = require('../puzzle_types/product_kuromasu')
+type_cheker["norinori"] = require('../puzzle_types/norinori')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({

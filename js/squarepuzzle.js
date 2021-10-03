@@ -176,6 +176,24 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["norinori"] = {
+    needNodes: true,
+    cellController: cell => {
+      if (!cell.isClue || cell.data.image != "cross") {
+        setClickSwitch(cell, true, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      }
+    },
+    edgeEditController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    collectAreas: this.editMode
+  }
+
   typeProperties["chaos"] = {
     needNodes: false,
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 4);}},
