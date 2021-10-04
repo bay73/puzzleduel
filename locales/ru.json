@@ -334,5 +334,6 @@
 	"There should be 2 digits in the row": "В ряду должно быть две цифры",
 	"Cells with digits shouldn't share an edge": "Клетки с цифрами не должны касаться стороной",
 	"Shaded cells should form a domino": "Закрашеные клетки должны образовать домино",
-	"The area should contain exactly 2 shaded cells": "В области должно быть две закрашеных клетки"
+	"The area should contain exactly 2 shaded cells": "В области должно быть две закрашеных клетки",
+	"The length of the segment should be strictly between numbers at its ends": "Длина участа цикла должна быть строго между числами на его концах"
 }

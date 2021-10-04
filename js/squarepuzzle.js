@@ -257,6 +257,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 8);},
   }
 
+  typeProperties["loop_bounds"] = {
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 99);},
+    usePlus10: this.editMode,
+  }
+
   typeProperties["every_second_turn"] = {
     needConnectors: true,
     cellController: cell => {
