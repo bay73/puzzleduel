@@ -332,5 +332,9 @@
 	"Cells with digits shouldn't share an edge": "Cells with digits shouldn't share an edge",
 	"Shaded cells should form a domino": "Shaded cells should form a domino",
 	"The area should contain exactly 2 shaded cells": "The area should contain exactly 2 shaded cells",
-	"The length of the segment should be strictly between numbers at its ends": "The length of the segment should be strictly between numbers at its ends"
+	"The length of the segment should be strictly between numbers at its ends": "The length of the segment should be strictly between numbers at its ends",
+	"Two cells sharing an edge should contain different digits": "Two cells sharing an edge should contain different digits",
+	"All digits should be exactly two times in every area": "All digits should be exactly two times in every area",
+	"All digits should be exactly two times in every row": "All digits should be exactly two times in every row",
+	"All digits should be exactly two times in every column": "All digits should be exactly two times in every column"
 }

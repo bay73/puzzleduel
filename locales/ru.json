@@ -335,5 +335,9 @@
 	"Cells with digits shouldn't share an edge": "Клетки с цифрами не должны касаться стороной",
 	"Shaded cells should form a domino": "Закрашеные клетки должны образовать домино",
 	"The area should contain exactly 2 shaded cells": "В области должно быть две закрашеных клетки",
-	"The length of the segment should be strictly between numbers at its ends": "Длина участа цикла должна быть строго между числами на его концах"
+	"The length of the segment should be strictly between numbers at its ends": "Длина участа цикла должна быть строго между числами на его концах",
+	"Two cells sharing an edge should contain different digits": "Ячейки, касающиеся стороной, должны содержать разные цифры",
+	"All digits should be exactly two times in every area": "Все цифры должны встречаться в области ровно два раза",
+	"All digits should be exactly two times in every row": "Все цифры должны встречаться в ряду ровно два раза",
+	"All digits should be exactly two times in every column": "Все цифры должны встречаться в столбце ровно два раза"
 }

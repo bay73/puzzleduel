@@ -160,6 +160,22 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["sudoku_double"] = {
+    needNodes: true,
+    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, self.rows/2);}},
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.rows/2);},
+    edgeEditController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    collectAreas: this.editMode,
+    cellMultiPencil: true,
+  }
+
   typeProperties["suguru"] = {
     needNodes: true,
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 6);}},

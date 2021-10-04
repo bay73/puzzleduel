@@ -73,33 +73,13 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "loop_bounds",
+      typeCode: "sudoku_double",
       id: "puzzle.code",
-      dimension: "10x10"
+      dimension: "8x8"
     };
     var settings = {
       local: true,
-      data:  {
-    "b1": "4",
-    "i1": "8",
-    "d2": "7",
-    "i2": "2",
-    "f3": "7",
-    "g3": "7",
-    "a5": "7",
-    "c5": "4",
-    "f5": "4",
-    "h5": "4",
-    "e6": "4",
-    "b7": "7",
-    "j7": "4",
-    "e9": "7",
-    "h9": "7",
-    "b10": "4",
-    "c10": "4",
-    "i10": "7",
-    "tag": ""
-}
+      data:  {}
     };
     settings.theme = "default";
     requirejs(["squarepuzzle"], function() {
