@@ -552,6 +552,44 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
   }
 
+  typeProperties["tents_classic"] = {
+    needNodes: false,
+    needBottom: true,
+    needRight: true,
+    needConnectors: !this.editMode,
+    thinConnectors: true,
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor}]);
+    },
+    cellController: cell => {
+      cell.dragProcessor = true;
+      if (cell.outerCell) {
+        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
+      } else {
+        setClickSwitch(cell, false, [{},{image: "tent", returnValue: "1"},{image: "cross"}]);
+      }
+    },
+    cellEditController: cell => {
+      if (cell.outerCell) {
+        cell.isClue = true;
+        var chooserValues = [{}];
+        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
+         chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      } else {
+        cell.chooserValues = [{},{image: "tree1", returnValue: "tree1"},{image: "tree2", returnValue: "tree2"},{image: "tree3", returnValue: "tree3"}];
+      }
+    },
+    decodeClue: value => {
+      if (value.startsWith("tree")) {
+        return {image: value};
+      } else {
+        return {text: value};
+      }
+    },
+  }
+
   typeProperties["pentomino"] = {
     needNodes: false,
     needBottom: true,

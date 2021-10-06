@@ -339,5 +339,9 @@
 	"Two cells sharing an edge should contain different digits": "Ячейки, касающиеся стороной, должны содержать разные цифры",
 	"All digits should be exactly two times in every area": "Все цифры должны встречаться в области ровно два раза",
 	"All digits should be exactly two times in every row": "Все цифры должны встречаться в ряду ровно два раза",
-	"All digits should be exactly two times in every column": "Все цифры должны встречаться в столбце ровно два раза"
+	"All digits should be exactly two times in every column": "Все цифры должны встречаться в столбце ровно два раза",
+	"Cells with tents cannot share a point": "Клетки с палатками не должны касаться",
+	"Wrong number of tents in the row": "Неверное число палаток в ряду",
+	"Wrong number of tents in the column": "Неверное число палаток в столбце",
+	"Each tree should have one corresponding tent": "У каждого дерева должна быть одна соответствующая палатка"
 }

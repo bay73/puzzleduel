@@ -336,5 +336,9 @@
 	"Two cells sharing an edge should contain different digits": "Two cells sharing an edge should contain different digits",
 	"All digits should be exactly two times in every area": "All digits should be exactly two times in every area",
 	"All digits should be exactly two times in every row": "All digits should be exactly two times in every row",
-	"All digits should be exactly two times in every column": "All digits should be exactly two times in every column"
+	"All digits should be exactly two times in every column": "All digits should be exactly two times in every column",
+	"Cells with tents cannot share a point": "Cells with tents cannot share a point",
+	"Wrong number of tents in the row": "Wrong number of tents in the row",
+	"Wrong number of tents in the column": "Wrong number of tents in the column",
+	"Each tree should have one corresponding tent": "Each tree should have one corresponding tent"
 }
