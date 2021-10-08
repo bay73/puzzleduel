@@ -6,7 +6,7 @@ snapId: 0,
 theme: 'default',
 
 tetro_I: {letter: "I", letterPos: {x:1,y:0}, cells: [{x:0,y:0},{x:1,y:0},{x:2,y:0},{x:3,y:0}]},
-tetro_I_vert: {letter: "I", letterPos: {x:0,y:1}, cells: [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:3}]},
+tetro_I_vert: {letter: "I", letterPos: {x:0,y:2}, cells: [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:3}]},
 tetro_T: {letter: "T", letterPos: {x:1,y:0}, cells: [{x:0,y:0},{x:1,y:0},{x:2,y:0},{x:1,y:1}]},
 tetro_L: {letter: "L", letterPos: {x:0,y:1}, cells: [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:1,y:2}]},
 tetro_J: {letter: "J", letterPos: {x:0,y:1}, cells: [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:-1,y:2}]},
