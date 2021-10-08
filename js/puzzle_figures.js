@@ -148,6 +148,22 @@ createTetro7: function(snap, withLetters) {
   }
 },
 
+createTetro4: function(snap, withLetters) {
+  let width = $(snap.node).parent().width();
+  const viewportWidth = Math.max(
+    document.documentElement.clientWidth,
+    window.innerWidth || 0
+  )
+  snap.node.setAttribute("width", width);
+  var cellSize = width/10;
+  snap.node.setAttribute("height", cellSize * 4 + puzzleFigures.gapTop*2);
+  puzzleFigures.gapLeft = (width - cellSize*9)/2
+  puzzleFigures.drawFigure(snap,{x:0,y:1}, puzzleFigures.tetro_L, cellSize, withLetters);
+  puzzleFigures.drawFigure(snap,{x:2.5,y:0}, puzzleFigures.tetro_I_vert, cellSize, withLetters);
+  puzzleFigures.drawFigure(snap,{x:4,y:2}, puzzleFigures.tetro_T, cellSize, withLetters);
+  puzzleFigures.drawFigure(snap,{x:7.5,y:1}, puzzleFigures.tetro_S, cellSize, withLetters);
+},
+
 createPento12: function(snap, withLetters) {
   let width = $(snap.node).parent().width();
   const viewportWidth = Math.max(
@@ -362,7 +378,7 @@ init: function(element) {
                             'O': puzzleFigures.tetro_O},
   puzzleFigures.allTetro5 = {'I': puzzleFigures.tetro_I_vert, 'T': puzzleFigures.tetro_T, 'L': puzzleFigures.tetro_L,
                              'S': puzzleFigures.tetro_S, 'O': puzzleFigures.tetro_O},
-  puzzleFigures.allTetro4 = {'I': puzzleFigures.tetro_I_vert, 'T': puzzleFigures.tetro_T, 'L': puzzleFigures.tetro_L,
+  puzzleFigures.allTetro4 = {'L': puzzleFigures.tetro_L, 'I': puzzleFigures.tetro_I_vert, 'T': puzzleFigures.tetro_T,
                              'S': puzzleFigures.tetro_S},
 
   puzzleFigures.allPenta = {'F': puzzleFigures.penta_F, 'I': puzzleFigures.penta_I, 'L': puzzleFigures.penta_L,
@@ -388,6 +404,9 @@ init: function(element) {
   let withLetters = (element.attr('letters')=="true");
   if (figures=="tetro7") {
     puzzleFigures.createTetro7(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
+  }
+  if (figures=="LITS") {
+    puzzleFigures.createTetro4(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
   if (figures=="pento12") {
     puzzleFigures.createPento12(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
