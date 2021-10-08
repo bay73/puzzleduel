@@ -130,6 +130,7 @@
 	"All black cells should be connected to the edge of the grid": "Все черные клетки должны соединяться с краем сетки",
 	"White area should be connected": "Белая область должна быть связной",
 	"object_placement": "Задачи на размещение объектов",
+	"polymino": "Задачи с пентамино/тетрамино",
 	"painting": "Задачи на раскраску",
 	"lines": "Задачи с проведением линий",
 	"snakes": "Змеиные задачи",
