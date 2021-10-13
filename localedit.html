@@ -73,25 +73,13 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "four_winds",
+      typeCode: "paint_battenberg",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "6x9"
     };
     var settings = {
       local: true,
-      data:  {
-    "a1": "9",
-    "h1": "3",
-    "c2": "9",
-    "e3": "6",
-    "g4": "6",
-    "b5": "5",
-    "d6": "5",
-    "f7": "3",
-    "a8": "4",
-    "h8": "4",
-    "tag": ""
-}
+      data:  {"d7": "cross", "bottom":["white","white","white","white","white","white"],"right":["white","white","white","white","white","white","2","white","white"], "nodes": {"a2": "battenberg","a3": "battenberg","a7": "battenberg","a8": "battenberg","b1": "battenberg","b6": "battenberg","c5": "battenberg","c8": "battenberg","d1": "battenberg","d4": "battenberg","e2": "battenberg","e3": "battenberg","e8": "battenberg"}}
     };
     settings.theme = "default";
     requirejs(["squarepuzzle"], function() {

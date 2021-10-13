@@ -456,6 +456,42 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["paint_battenberg"] = {
+    needNodes: true,
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "black"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+    },
+    cellEditController: cell => {
+      if (cell.outerCell) {
+        cell.isClue = true;
+        var chooserValues = [{}];
+        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
+         chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      } else {
+        cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
+      }
+    },
+    nodeEditController: node => {
+      node.isClue = true;
+      node.clickSwitch = [{}, {image: "battenberg_small", returnValue: "battenberg"}];
+    },
+    decodeClue: value => {
+      if (value=="cross") {
+        return {image: "cross"};
+      } else if (value=="white") {
+        return {};
+      } else if (value=="battenberg") {
+        return {image: "battenberg_small"};
+      } else {
+        return {text: value};
+      }
+    },
+  }
+
   typeProperties["tetro_scope"] = {
     needNodes: true,
     cellController: cell => {

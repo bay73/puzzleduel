@@ -150,26 +150,14 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "four_winds",
+      typeCode: "paint_battenberg",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "6x9"
     };
     var settings = {
       local: true,
       
-      data: {
-    "a1": "6",
-    "h1": "4",
-    "c2": "6",
-    "e3": "2",
-    "g4": "3",
-    "b5": "5",
-    "d6": "7",
-    "f7": "9",
-    "a8": "3",
-    "h8": "9",
-    "tag": ""
-}
+      data: {"d7": "cross", "bottom":["white","white","white","white","white","white"],"right":["white","white","white","white","white","white","2","white","white"], "nodes": {"a2": "battenberg","a3": "battenberg","a7": "battenberg","a8": "battenberg","b1": "battenberg","b6": "battenberg","c5": "battenberg","c8": "battenberg","d1": "battenberg","d4": "battenberg","e2": "battenberg","e3": "battenberg","e8": "battenberg"}}
 
     };
     settings.theme = "contrast";
