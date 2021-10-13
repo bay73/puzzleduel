@@ -412,6 +412,24 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     collectAreas: this.editMode,
   }
 
+  typeProperties["four_winds"] = {
+    needNodes: false,
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+      if (cell.isClue) {
+        setClickSwitch(cell, true, [{},{image: "white_circle"}]);
+      } else {
+        setClickSwitch(cell, false, [{},{image: "white_dot"}]);
+      }
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 99);},
+    usePlus10: this.editMode,
+  }
+
   typeProperties["snake_scope"] = {
     needNodes: true,
     cellController: cell => {
