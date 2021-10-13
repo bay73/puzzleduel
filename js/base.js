@@ -271,17 +271,20 @@ basePuzzle.prototype.check = function() {
   var data = this.collectData();
   data.time = new Date() - this.startTime;
   data.log = this.log;
+  let typeCode = this.typeCode;
   this.removeMessages();
   if (typeof this.settings != 'undefined' && this.settings.local) {
     var dimension = this.dimension;
     var puzzleData = this.settings.data;
     module = {};
-    requirejs(['puzzle_types/util.js','puzzle_types/sudoku_util.js','puzzle_types/pentomino_util.js','puzzle_types/' + this.typeCode + '.js'], function() {
+    requirejs(['puzzle_types/util.js'], function() {
       window.util=Util;
-      window.sudoku_util=SudokuUtil;
-      window.pentomino_util=PentominoUtil;
-      response = Checker.check(dimension, puzzleData, data);
-      self.showResult(response);
+      requirejs(['puzzle_types/sudoku_util.js','puzzle_types/pentomino_util.js', 'puzzle_types/' + typeCode + '.js'], function() { 
+        window.sudoku_util=SudokuUtil;
+        window.pentomino_util=PentominoUtil;
+        response = Checker.check(dimension, puzzleData, data);
+        self.showResult(response);
+      });
     });
     return;
   }

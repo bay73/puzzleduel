@@ -1,4 +1,6 @@
-const util = require('./util');
+if (typeof util=="undefined") {
+  var util = require('./util');
+}
 
 const PentominoUtil = {
 pentominoes: {
