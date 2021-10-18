@@ -150,15 +150,25 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "paint_battenberg",
+      typeCode: "product_latin_square",
       id: "puzzle.code",
-      dimension: "6x9"
+      dimension: "5x5"
     };
     var settings = {
       local: true,
-      
-      data: {"d7": "cross", "bottom":["white","white","white","white","white","white"],"right":["white","white","white","white","white","white","2","white","white"], "nodes": {"a2": "battenberg","a3": "battenberg","a7": "battenberg","a8": "battenberg","b1": "battenberg","b6": "battenberg","c5": "battenberg","c8": "battenberg","d1": "battenberg","d4": "battenberg","e2": "battenberg","e3": "battenberg","e8": "battenberg"}}
-
+      data: {
+    "nodes": {
+        "b1-2": "30",
+        "c1-2": "30",
+        "a2-2": "40",
+        "d2-2": "72",
+        "a3-2": "20",
+        "d3-2": "48",
+        "b4-2": "24",
+        "c4-2": "48"
+    },
+    "tag": ""
+}
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"

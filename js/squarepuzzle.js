@@ -456,6 +456,24 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["product_latin_square"] = {
+    needNodes: true,
+    cellController: cell => setNumberChooser(cell, 1, self.rows),
+    nodeEditController: node => {
+      node.isClue = true;
+      var chooserValues = [{}];
+      for (var i=1; i<=99; i++) {
+        chooserValues.push({color: self.colorSchema.gridColor, text: i.toString(), textColor: "#fff", returnValue: i.toString()});
+      }
+      node.chooserValues = chooserValues;
+    },
+    decodeClue: value => {
+      return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
+    },
+    usePlus10: this.editMode,
+    cellMultiPencil: true,
+  }
+
   typeProperties["paint_battenberg"] = {
     needNodes: true,
     needBottom: true,
