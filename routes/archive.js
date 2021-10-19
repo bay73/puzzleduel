@@ -196,7 +196,8 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
     } else {
       var puzzle = await cache.readPuzzle(req.params.puzzleid);
     }
-    if (!puzzle || puzzle.hiddenScore) {
+    let isAdmin = req.user && req.user.role == "admin";
+    if (!puzzle || (puzzle.hiddenScore && !isAdmin)) {
       res.sendStatus(404);
       return;
     }
