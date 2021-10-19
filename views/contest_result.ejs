@@ -6,6 +6,7 @@
       <div class="card">
         <% if (typeof contest.logo != "undefined") { %>
         <h1 class="card-header"><img src="<%= contest.logo %>" /></h1>
+        <h3 class="card-body"><%= contest.name %></h3>
         <% } else { %>
         <h1 class="card-header"><%= contest.name %></h1>
         <% }%>
