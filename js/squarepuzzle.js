@@ -11,8 +11,7 @@ squarePuzzleType.prototype.parseDimension = function(dimension) {
     // Parse dimension string to values.
     var part = dimension.split("-");
     squarePuzzle.prototype.parseDimension.call(this, part[0]);
-    this.maxChooserValue = parseInt(part[1]);
-  } else if (this.typeCode == "top_heavy") {
+  } else if (this.typeCode == "top_heavy" || this.typeCode == "no_touch_sums") {
     // Parse dimension string to values.
     var part = dimension.split("-");
     squarePuzzle.prototype.parseDimension.call(this, part[0]);
@@ -795,6 +794,37 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
     usePlus10: this.editMode,
+    cellMultiPencil: true,
+  }
+
+  typeProperties["no_touch_sums"] = {
+    needNodes: false,
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      if (cell.outerCell) {
+        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
+      } else {
+        if (!cell.isClue) {
+          var chooserValues = [{}];
+          for (var i=1; i<=self.maxChooserValue; i++) {
+            chooserValues.push({text: i.toString(), returnValue: i.toString()});
+          }
+          chooserValues.push({image: "white_circle"}, {image: "cross"});
+          cell.chooserValues = chooserValues;
+        }
+      }
+    },
+    cellEditController: cell => {
+      if (cell.outerCell) {
+        cell.isClue = true; setNumberChooser(cell, 1, 81);
+      } else {
+        cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
+      }
+    },
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
+    usePlus10: this.editMode,
+    cellMultiPencil: true,
   }
 
   typeProperties["top_heavy"] = {

@@ -343,5 +343,6 @@
 	"Wrong number of tents in the column": "Wrong number of tents in the column",
 	"Each tree should have one corresponding tent": "Each tree should have one corresponding tent",
 	"The lines can't cross": "The lines can't cross",
-	"The line from a clue shouldn't pass another clue or cell with a cross": "The line from a clue shouldn't pass another clue or cell with a cross"
+	"The line from a clue shouldn't pass another clue or cell with a cross": "The line from a clue shouldn't pass another clue or cell with a cross",
+	"Cells with digits shouldn't touch": "Cells with digits shouldn't touch"
 }

@@ -73,21 +73,33 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "product_latin_square",
+      typeCode: "no_touch_sums",
       id: "puzzle.code",
-      dimension: "5x5"
+      dimension: "8x8-4"
     };
     var settings = {
       local: true,
       data:  {
-    "nodes": {
-        "b1-2": "30",
-        "c1-2": "30",
-        "d2-2": "72",
-        "d3-2": "48",
-        "b4-2": "24",
-        "c4-2": "48"
-    },
+    "bottom": [
+        "5",
+        "3",
+        "2",
+        "6",
+        "5",
+        "6",
+        "7",
+        "7"
+    ],
+    "right": [
+        "4",
+        "9",
+        "3",
+        "6",
+        "5",
+        "6",
+        "8",
+        "2"
+    ],
     "tag": ""
 }
     };
