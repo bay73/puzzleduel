@@ -129,6 +129,7 @@
 	"All black cells should be connected to the edge of the grid": "All black cells should be connected to the edge of the grid",
 	"White area should be connected": "White area should be connected",
 	"object_placement": "Object Placement Puzzles",
+	"number_placement": "Number Placement Puzzles",
 	"polymino": "Pentomino/Tetromino puzzles",
 	"painting": "Painting Puzzles",
 	"lines": "Line Drawing Puzzles",
