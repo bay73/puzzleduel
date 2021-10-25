@@ -509,6 +509,41 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["aquarium"] = {
+    needNodes: true,
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      if (cell.outerCell) {
+        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
+      } else {
+        setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      }
+    },
+    edgeEditController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    cellEditController: cell => {
+      if (cell.outerCell) {
+        cell.isClue = true;
+        var chooserValues = [{}];
+        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
+         chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      } else {
+        cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
+      }
+    },
+    decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
+    collectAreas: this.editMode,
+  }
+
   typeProperties["tetro_scope"] = {
     needNodes: true,
     cellController: cell => {

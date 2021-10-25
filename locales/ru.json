@@ -348,5 +348,6 @@
 	"Each tree should have one corresponding tent": "У каждого дерева должна быть одна соответствующая палатка",
 	"The lines can't cross": "Линии не должны пересекаться",
 	"The line from a clue shouldn't pass another clue or cell with a cross": "Линия от числа не должна проходить через клетку с крестом или другим числом",
-	"Cells with digits shouldn't touch": "Ячейки с числами не должны касаться"
+	"Cells with digits shouldn't touch": "Ячейки с числами не должны касаться",
+	"The cells must be filled up from the bottom up in the area": "В области клетки должны быть заполнены снизу вверх"
 }
