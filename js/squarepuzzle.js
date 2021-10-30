@@ -135,7 +135,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
        if (edge.allCells.length > 1) {
          edge.isClue = true;
          edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch        = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
        }
     },
     nodeEditController: node => node.dragProcessor = true,
@@ -659,7 +659,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   }
 
   typeProperties["tents_classic"] = {
-    needNodes: false,
+    needNodes: !this.editMode,
     needBottom: true,
     needRight: true,
     needConnectors: !this.editMode,
@@ -672,7 +672,12 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       if (cell.outerCell) {
         setClueClickSwitch(cell, [{},{image: "white_circle"}]);
       } else {
-        setClickSwitch(cell, false, [{},{image: "tent", returnValue: "1"},{image: "cross"}]);
+        if (cell.isClue) {
+          let image = cell.data.image + "_circle";
+          setClueClickSwitch(cell, [{},{image: image}]);
+        } else {
+          setClickSwitch(cell, false, [{},{image: "tent", returnValue: "1"},{image: "cross"}]);
+        }
       }
     },
     cellEditController: cell => {
@@ -687,6 +692,10 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         cell.chooserValues = [{},{image: "tree1", returnValue: "tree1"},{image: "tree2", returnValue: "tree2"},{image: "tree3", returnValue: "tree3"}];
       }
     },
+    edgeController: edge => {
+      setDragSwitch(edge, false, [{},{color: self.colorSchema.lineColor}]);
+    },
+    nodeController: node => node.dragProcessor = true,
     decodeClue: value => {
       if (value.startsWith("tree")) {
         return {image: value};
