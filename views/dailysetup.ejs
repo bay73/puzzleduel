@@ -44,9 +44,7 @@
                 <td>
                   <a href="javascript:void(0);" onclick="showPuzzleComments('<%= puzzle.code %>','<%= puzzle.type %><%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>')" >
                   <% if (puzzle.rating && puzzle.rating.rating>0) { %>
-                  <% var rating=Math.round(puzzle.rating.rating*25-25); %>
-                  <% var hearts=Math.round(Math.exp(rating/25.6))/10; %>
-                  <span class="hearts" style="width: calc(15px * <%= hearts %>)" data-toggle="tooltip" title="<%= rating %>% / <%= puzzle.rating.count %>"></span>
+                  <%- include ('./partials/rating_span', {rating: puzzle.rating.rating, ratingCount: puzzle.rating.count}) %>
                   <% } %>
                   </a>
                 </td>

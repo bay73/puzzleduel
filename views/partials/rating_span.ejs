@@ -1,0 +1,4 @@
+<% var showRating=Math.round(rating*25-25); %>
+<% var hearts=Math.round(19*(1.44+Math.atan(showRating/10-7.5)))/10; %>
+<span class="hearts" style="width: calc(15px * <%= hearts %>)" data-toggle="tooltip" title="<%= showRating %>% / <%= ratingCount %>"></span>
+
