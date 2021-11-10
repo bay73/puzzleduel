@@ -90,6 +90,15 @@
           <% if(contestPuzzle){ %>
           showcontestPuzzle();
           <% } %>
+          <% if (new Date() < new Date('2021-11-14T00:00:00.000+00:00')) { %>
+          showMessage("Online <a href='https://logicmastersindia.com/forum/forums/thread-view.asp?tid=2941#M29684'>World Sudoku+Puzzle Convention</a> starts " +
+                      "this Friday at 3 PM GMT at the Logic Masters India website. The event lasts 11 days and besides the competition part, you can attend a " +
+                      "lot of panels with authors and top solvers via ZOOM and take part in a trivia quiz or bonus puzzle contests. <br><br> " +
+                      "The full schedule will be posted <a href='https://logicmastersindia.com/forum/forums/thread-view.asp?tid=2941#M29684'>here</a> in a very " +
+                      "short time. The Instruction Booklets will be released on Tuesday on the LMI website. The opening ceremony is on Saturday at 1 PM GMT " +
+                      "and the Q&A session will follow afterward.<br><br>",
+            null,"2021-11-11");
+          <% } %>
         });
       </script>
     </div>
