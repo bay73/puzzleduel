@@ -279,11 +279,13 @@ basePuzzle.prototype.check = function() {
     module = {};
     requirejs(['puzzle_types/util.js'], function() {
       window.util=Util;
-      requirejs(['puzzle_types/sudoku_util.js','puzzle_types/pentomino_util.js', 'puzzle_types/' + typeCode + '.js'], function() { 
+      requirejs(['puzzle_types/sudoku_util.js','puzzle_types/pentomino_util.js'], function() {
         window.sudoku_util=SudokuUtil;
         window.pentomino_util=PentominoUtil;
-        response = Checker.check(dimension, puzzleData, data);
-        self.showResult(response);
+        requirejs(['puzzle_types/' + typeCode + '.js'], function() {
+          response = Checker.check(dimension, puzzleData, data);
+          self.showResult(response);
+        });
       });
     });
     return;
