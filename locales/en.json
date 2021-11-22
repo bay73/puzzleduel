@@ -347,5 +347,6 @@
 	"The lines can't cross": "The lines can't cross",
 	"The line from a clue shouldn't pass another clue or cell with a cross": "The line from a clue shouldn't pass another clue or cell with a cross",
 	"Cells with digits shouldn't touch": "Cells with digits shouldn't touch",
-	"The cells must be filled up from the bottom up in the area": "The cells must be filled up from the bottom up in the area"
+	"The cells must be filled up from the bottom up in the area": "The cells must be filled up from the bottom up in the area",
+	"All digits should be exactly once in shaded area": "All digits should be exactly once in shaded area"
 }

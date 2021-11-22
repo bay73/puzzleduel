@@ -350,5 +350,6 @@
 	"The lines can't cross": "Линии не должны пересекаться",
 	"The line from a clue shouldn't pass another clue or cell with a cross": "Линия от числа не должна проходить через клетку с крестом или другим числом",
 	"Cells with digits shouldn't touch": "Ячейки с числами не должны касаться",
-	"The cells must be filled up from the bottom up in the area": "В области клетки должны быть заполнены снизу вверх"
+	"The cells must be filled up from the bottom up in the area": "В области клетки должны быть заполнены снизу вверх",
+	"All digits should be exactly once in shaded area": "Все цифры должны встречаться в закрашеной области ровно один раз"
 }
