@@ -136,15 +136,25 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
         {daily: {$exists: false}}
       ]
     };
+    var oldDailyFilter = {
+      tag: {$regex : ".*daily.*"},
+      daily: {$lt: new Date()},
+    };
 
 
-    const [userData, typeMap, timesMap, puzzles] = await Promise.all([
+    const [userData, typeMap, timesMap, puzzles, oldPuzzles] = await Promise.all([
       User.find(),
       cache.readPuzzleTypes(),
       util.bestSolvingTimeMap(true),
-      Puzzle.find(filter, "code type dimension tag daily author rating").sort({daily: -1})
+      Puzzle.find(filter, "code type dimension tag daily author rating").sort({daily: -1}),
+      Puzzle.find(oldDailyFilter, "type daily").sort({daily: -1})
     ])
 
+    oldPuzzles.forEach(puzzle => {
+      if (typeof typeMap[puzzle.type].last == "undefined" || typeMap[puzzle.type].last < puzzle.daily) {
+        typeMap[puzzle.type].last = puzzle.daily;
+      }
+    })
     var userMap = {}
     userData.forEach(user => userMap[user._id] = user.name);
 
@@ -154,6 +164,7 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
         return {
           code: puzzle.code,
           type: typeMap[puzzle.type].name,
+          publishAge: new Date() - typeMap[puzzle.type].last,
           dimension: puzzle.dimension,
           tag: puzzle.tag,
           daily: puzzle.daily,

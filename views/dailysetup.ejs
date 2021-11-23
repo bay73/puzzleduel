@@ -1,4 +1,15 @@
 <%- include ('./partials/navbar') %>
+<style>
+  .age-marker {
+    border-radius: 50%;
+    font-size: 70%;
+    padding: 1px;
+    display: inline-block;
+    width: 1.75em;
+    height: 1.75em;
+    text-align: center;
+  }
+</style>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
@@ -31,7 +42,9 @@
                   <%= puzzle.daily?("("+puzzle.daily.toISOString().split('T')[0]+")"):"" %>
                 </td>
                 <td>
+                  <% var visibleAge = Math.ceil(puzzle.publishAge/86400000); %>
                   <a href="/single/<%= puzzle.code %>">
+                    <span class="age-marker" style="background-color: hsl(<%= visibleAge?200-visibleAge:"0" %>,100%,50%)"><%= visibleAge?visibleAge:"" %></span>
                     <%= puzzle.type %>
                     <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
                   </a>
