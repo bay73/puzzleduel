@@ -33,7 +33,7 @@
           });
           function copyId() {
             if(typeof navigator == "undefined" || typeof navigator.clipboard == "undefined"  || typeof navigator.clipboard.writeText == "undefined") {
-              alert("Puzzle Id = <%= puzzle.code %>")
+              alert("Clipboard access is blocked.\n Puzzle Id = <%= puzzle.code %>")
             } else {
               navigator.clipboard.writeText("<%= puzzle.code %>");
               $("#copyId").text("Copied: <%= puzzle.code %>");
