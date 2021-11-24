@@ -7,6 +7,7 @@
         <div class="card">
           <%- include ('./partials/puzzleedit') %>
           <a class="text-right pb-2" href="/single/<%= puzzle.code %>">Open solving window</a>
+          <a class="text-right pb-2" href="#" onclick="copyId()" id="copyId">Copy ID</a>
         </div>
         <% if(times) { %>
         <div class="card">
@@ -30,6 +31,14 @@
           $(document).ready(function () {
             showPuzzle();
           });
+          function copyId() {
+            if(typeof navigator == "undefined" || typeof navigator.clipboard == "undefined"  || typeof navigator.clipboard.writeText == "undefined") {
+              alert("Puzzle Id = <%= puzzle.code %>")
+            } else {
+              navigator.clipboard.writeText("<%= puzzle.code %>");
+              $("#copyId").text("Copied: <%= puzzle.code %>");
+            }
+          }
         </script>
       <% } %>
     </div>
