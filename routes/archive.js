@@ -303,16 +303,20 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     }
     const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
     var typePuzzleCount = Object.entries(typeMap).reduce((map, [key, value]) => {
-      map[key] = {name: value.name, puzzleCount: 0, lastDate: null, properties: value.properties};
+      map[key] = {name: value.name, puzzleCount: 0, newCount: 0, lastDate: null, properties: value.properties};
       return map;
     }, {});
     const allPuzzles = await Puzzle.find({tag: "daily"}, "-data");
     allPuzzles.forEach(puzzle => {
       typePuzzleCount[puzzle.type].puzzleCount++;
-      if (puzzle.daily < Date.now()) {
-        typePuzzleCount[puzzle.type].lastDate = Math.max(typePuzzleCount[puzzle.type].lastDate, puzzle.daily);
+      if (puzzle.daily) {
+        if (puzzle.daily < Date.now()) {
+          typePuzzleCount[puzzle.type].lastDate = Math.max(typePuzzleCount[puzzle.type].lastDate, puzzle.daily);
+        } else {
+          typePuzzleCount[puzzle.type].lastDate = Math.max(typePuzzleCount[puzzle.type].lastDate, Date.now());
+        }
       } else {
-        typePuzzleCount[puzzle.type].lastDate = Math.max(typePuzzleCount[puzzle.type].lastDate, Date.now());
+        typePuzzleCount[puzzle.type].newCount++;
       }
     });
     res.render('author', {
@@ -347,7 +351,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
         return {
           code: key,
           name: value.name,
-          rating: Math.round(((Date.now() - value.lastDate)/(1000*60*60*24) + 5) / (5 + Math.min(value.puzzleCount, 10)))
+          rating: Math.round(((Date.now() - value.lastDate)/(1000*60*60*24) + 50) / (10 + 3*Math.min(value.newCount, 5) + Math.min(value.puzzleCount, 10 )))
         };
       })
     });
