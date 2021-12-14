@@ -161,7 +161,41 @@ async function rescheduleDailyContest(contestId) {
   return true;
 }
 
+async function rescheduleOneTimeContest(contestId) {
+  const contest = await Contest.findOne({code: contestId});
+  if (!contest) {
+    return false;
+  }
+  console.log('contest.start',contest.start);
+  if (contest.start <= new Date()) {
+    return false;
+  }
+  let puzzles = [];
+  for(var i=0; i<contest.puzzles.length; i++) {
+    puzzle = contest.puzzles[i];
+    if (puzzle.puzzleId) {
+      var puzzleStorage = await Puzzle.findOne({code: puzzle.puzzleId});
+      if (puzzleStorage) {
+        if (typeof puzzleStorage.daily != "undefined") {
+          throw "Daily puzzle " + puzzle.puzzleId + " included into contest!";
+        }
+        if (typeof puzzleStorage.contest=="undefined" || puzzleStorage.contest.contestId == contestId) {
+          puzzleStorage.tag = "contest";
+          puzzleStorage.contest = {contestId: contestId, puzzleDate: contest.start};
+          await puzzleStorage.save();
+        }
+      }
+    }
+    puzzle.revealDate = contest.start;
+  }
+  console.log(puzzles);
+  contest.markModified('puzzles');
+  await contest.save();
+  return true;
+}
+
 module.exports.recountContest = recountContest;
 module.exports.reschedulePuzzles = reschedulePuzzles;
 module.exports.rescheduleDailyContest = rescheduleDailyContest;
+module.exports.rescheduleOneTimeContest = rescheduleOneTimeContest;
 
