@@ -25,6 +25,22 @@ async function recountPuzzle(puzzle, scoring) {
       }
     };
   }
+  if (scoring.method == "log") {
+    var complexityFn = function(medianTime) {
+      return medianTime * Math.log(medianTime / scoring.complexityRate) / Math.log(scoring.complexityPower);
+    }
+    var scoreFn = function(time, complexity) {
+      return Math.log(1 + complexity / time) / Math.log(scoring.scoringPower);
+    }
+  } else {
+    var complexityFn = function(medianTime) {
+      return medianTime * Math.pow(medianTime / scoring.complexityRate, scoring.complexityPower);
+    }
+    var scoreFn = function(time, complexity) {
+      return Math.pow(complexity / time, scoring.scoringPower);
+    }
+  }
+  
   var success = times.filter(time => !time.errCount);
   if (success.length==0) {
     success = times;
@@ -35,13 +51,10 @@ async function recountPuzzle(puzzle, scoring) {
   } else {
     var median = success[(success.length-1)/2].solvingTime;
   }
-  var complexity = median * Math.pow(median / scoring.complexityRate, scoring.complexityPower);
+  var complexity = complexityFn(median);
   times.forEach(time => {
     var result = time.toObject();
-    var score = Math.pow(complexity / (result.solvingTime + median * result.errCount), scoring.scoringPower);
-//    if (result.errCount > 0 ) {
-//      score = score / (result.errCount + 1);
-//    }
+    var score = scoreFn(result.solvingTime + median * result.errCount, complexity);
     score = Math.round(score*10)/10;
     results.push({userId: result.userId, userName: result.userName, score: score});
   });
@@ -51,8 +64,8 @@ async function recountPuzzle(puzzle, scoring) {
       bestTime: best, 
       medianTime: median,
       complexity: complexity,
-      bestScore: Math.pow(complexity/best, scoring.scoringPower),
-      medianScore: Math.pow(complexity/median, scoring.scoringPower)
+      bestScore: scoreFn(best, complexity),
+      medianScore: scoreFn(median, complexity)
     }
   };
 }
