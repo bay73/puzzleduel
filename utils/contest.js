@@ -27,7 +27,8 @@ async function recountPuzzle(puzzle, scoring) {
   }
   if (scoring.method == "log") {
     var complexityFn = function(medianTime) {
-      return medianTime * Math.log(medianTime / scoring.complexityRate) / Math.log(scoring.complexityPower);
+//      return medianTime * Math.log(medianTime / scoring.complexityRate) / Math.log(scoring.complexityPower);
+      return medianTime * Math.pow(medianTime / scoring.complexityRate, scoring.complexityPower);
     }
     var scoreFn = function(time, complexity) {
       return Math.log(1 + complexity / time) / Math.log(scoring.scoringPower);
