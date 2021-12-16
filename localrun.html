@@ -150,44 +150,46 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "sudoku_extra_regions",
+      typeCode: "xo",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "8x8"
     };
     var settings = {
       local: true,
       data: {
-    "a1": "-1",
-    "b1": "-",
-    "e1": "-",
-    "f1": "-6",
-    "a2": "-",
-    "b2": "-",
-    "c2": "3",
-    "d2": "1",
-    "e2": "-",
-    "f2": "-",
-    "a3": "-",
-    "b3": "-2",
-    "e3": "-5",
-    "f3": "-",
-    "b4": "1",
-    "e4": "4",
-    "c5": "-",
-    "d5": "-",
-    "a6": "2",
-    "b6": "-",
-    "c6": "-",
-    "d6": "-",
-    "e6": "-",
-    "f6": "5",
+    "a1": "X",
+    "d1": "X",
+    "f1": "X",
+    "g1": "X",
+    "b2": "X",
+    "f2": "X",
+    "h2": "O",
+    "a3": "O",
+    "e3": "O",
+    "a4": "O",
+    "b4": "O",
+    "e4": "O",
+    "f4": "O",
+    "h4": "X",
+    "c5": "X",
+    "b6": "X",
+    "d6": "X",
+    "f6": "X",
+    "a7": "X",
+    "h7": "X",
+    "a8": "O",
+    "b8": "X",
+    "d8": "O",
+    "e8": "O",
+    "f8": "O",
+    "h8": "X",
     "tag": ""
 }
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

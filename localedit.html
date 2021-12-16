@@ -73,43 +73,28 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "sudoku_extra_regions",
+      typeCode: "xo",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "8x8"
     };
     var settings = {
       local: true,
       data:  {
-    "a1": "-1",
-    "b1": "-",
-    "e1": "-",
-    "f1": "-6",
-    "a2": "-",
-    "b2": "-",
-    "c2": "3",
-    "d2": "1",
-    "e2": "-",
-    "f2": "-",
-    "a3": "-",
-    "b3": "-2",
-    "e3": "-5",
-    "f3": "-",
-    "b4": "1",
-    "e4": "4",
-    "c5": "-",
-    "d5": "-",
-    "a6": "2",
-    "b6": "-",
-    "c6": "-",
-    "d6": "-",
-    "e6": "-",
-    "f6": "5",
+    "c3": "O",
+    "e3": "X",
+    "f3": "O",
+    "d4": "O",
+    "e4": "O",
+    "f4": "X",
+    "d5": "X",
+    "e5": "X",
+    "c6": "black",
     "tag": ""
 }
     };
     settings.theme = "default";
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

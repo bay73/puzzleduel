@@ -731,6 +731,20 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
+  typeProperties["xo"] = {
+    needConnectors: true,
+    cellController: cell => setClickSwitch(cell, false, [{},{image: "white_circle", returnValue: "O"},{image: "cross", returnValue: "X"}]),
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "O"},{image: "cross", returnValue: "X"},{color: self.colorSchema.gridColor, returnValue: "black"}];},
+    decodeClue: value => {
+      if (value=="O") return {image: "white_circle"};
+      if (value=="X") return {image: "cross"};
+      if (value=="black") return {color: self.colorSchema.gridColor};
+    },
+  }
+
   typeProperties["alternate_loop"] = {
     needConnectors: true,
     cellController: cell => {
