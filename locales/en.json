@@ -349,5 +349,7 @@
 	"Cells with digits shouldn't touch": "Cells with digits shouldn't touch",
 	"The cells must be filled up from the bottom up in the area": "The cells must be filled up from the bottom up in the area",
 	"All digits should be exactly once in shaded area": "All digits should be exactly once in shaded area",
-	"Four identical symbols shouldn't form a continious line": "Four identical symbols shouldn't form a continious line"
+	"Four identical symbols shouldn't form a continious line": "Four identical symbols shouldn't form a continious line",
+	"Wrong length of the shortest segment in the row": "Wrong length of the shortest segment in the row",
+	"Wrong length of the shortest segment in the column": "Wrong length of the shortest segment in the column"
 }

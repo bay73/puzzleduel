@@ -106,6 +106,7 @@ type_cheker["product_latin_square"] = require('../puzzle_types/product_latin_squ
 type_cheker["no_touch_sums"] = require('../puzzle_types/no_touch_sums')
 type_cheker["aquarium"] = require('../puzzle_types/aquarium')
 type_cheker["xo"] = require('../puzzle_types/xo')
+type_cheker["shortest_segment"] = require('../puzzle_types/shortest_segment')
 
 async function logAction(user, puzzleId, action, ipInfo, data) {
   const newUserActionLog = new UserActionLog({

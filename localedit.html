@@ -73,22 +73,37 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "xo",
+      typeCode: "shortest_segment",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "10x10"
     };
     var settings = {
       local: true,
       data:  {
-    "c3": "O",
-    "e3": "X",
-    "f3": "O",
-    "d4": "O",
-    "e4": "O",
-    "f4": "X",
-    "d5": "X",
-    "e5": "X",
-    "c6": "black",
+    "bottom": [
+        null,
+        null,
+        null,
+        "3",
+        null,
+        "4",
+        "1",
+        "5",
+        null,
+        null
+    ],
+    "right": [
+        null,
+        "5",
+        "4",
+        "3",
+        "2",
+        "1",
+        null,
+        "3",
+        null,
+        null
+    ],
     "tag": ""
 }
     };

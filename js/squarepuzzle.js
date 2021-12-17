@@ -745,6 +745,32 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["shortest_segment"] = {
+    needConnectors: true,
+    needNodes: false,
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    edgeController: edge => {
+      setClickSwitch(edge, false, [{},{image: "cross"}]);
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {
+      if (cell.outerCell) {
+        cell.isClue = true;
+        var chooserValues = [{}];
+        for (var i=0; i<=Math.max(self.rows-1, self.cols-1); i++) {
+          chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      }
+    },
+  }
+
   typeProperties["alternate_loop"] = {
     needConnectors: true,
     cellController: cell => {
