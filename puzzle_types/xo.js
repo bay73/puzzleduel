@@ -44,25 +44,27 @@ checkNot4InRow: function(cells) {
 find4InRow: function(cells) {
   for (var y = 0; y < cells.rows; y++) {
     for (var x = 0; x < cells.cols; x++) {
-      if (x + 3 < cells.cols) {
-        if (cells[y][x] == cells[y][x+1] && cells[y][x] == cells[y][x+2] && cells[y][x] == cells[y][x+3]) {
-          return [util.coord(x,y), util.coord(x+1,y), util.coord(x+2,y), util.coord(x+3,y)];
-        } 
-      }
-      if (y + 3 < cells.rows) {
-        if (cells[y][x] == cells[y+1][x] && cells[y][x] == cells[y+2][x] && cells[y][x] == cells[y+3][x]) {
-          return [util.coord(x,y), util.coord(x,y+1), util.coord(x,y+2), util.coord(x,y+3)];
-        } 
-      }
-      if (x + 3 < cells.cols && y + 3 < cells.rows) {
-        if (cells[y][x] == cells[y+1][x+1] && cells[y][x] == cells[y+2][x+2] && cells[y][x] == cells[y+3][x+3]) {
-          return [util.coord(x,y), util.coord(x+1,y+1), util.coord(x+2,y+2), util.coord(x+3,y+3)];
-        } 
-      }
-      if (x - 3 >= 0 && y + 3 < cells.rows) {
-        if (cells[y][x] == cells[y+1][x-1] && cells[y][x] == cells[y+2][x-2] && cells[y][x] == cells[y+3][x-3]) {
-          return [util.coord(x,y), util.coord(x-1,y+1), util.coord(x-2,y+2), util.coord(x-3,y+3)];
-        } 
+      if (cells[y][x] != "black") {
+        if (x + 3 < cells.cols) {
+          if (cells[y][x] == cells[y][x+1] && cells[y][x] == cells[y][x+2] && cells[y][x] == cells[y][x+3]) {
+            return [util.coord(x,y), util.coord(x+1,y), util.coord(x+2,y), util.coord(x+3,y)];
+          }
+        }
+        if (y + 3 < cells.rows) {
+          if (cells[y][x] == cells[y+1][x] && cells[y][x] == cells[y+2][x] && cells[y][x] == cells[y+3][x]) {
+            return [util.coord(x,y), util.coord(x,y+1), util.coord(x,y+2), util.coord(x,y+3)];
+          }
+        }
+        if (x + 3 < cells.cols && y + 3 < cells.rows) {
+          if (cells[y][x] == cells[y+1][x+1] && cells[y][x] == cells[y+2][x+2] && cells[y][x] == cells[y+3][x+3]) {
+            return [util.coord(x,y), util.coord(x+1,y+1), util.coord(x+2,y+2), util.coord(x+3,y+3)];
+          }
+        }
+        if (x - 3 >= 0 && y + 3 < cells.rows) {
+          if (cells[y][x] == cells[y+1][x-1] && cells[y][x] == cells[y+2][x-2] && cells[y][x] == cells[y+3][x-3]) {
+            return [util.coord(x,y), util.coord(x-1,y+1), util.coord(x-2,y+2), util.coord(x-3,y+3)];
+          }
+        }
       }
     }
   }
