@@ -2,6 +2,18 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
+      <% if (new Date() >= new Date('2021-12-30T00:00:00.000+00:00') && new Date() < new Date('2022-01-04T00:00:00.000+00:00')) { %>
+      <div class="card card-body bg-info text-white">
+        <p>
+        Celebrate this New Year’s solving puzzles sans given numbers.<br><br>
+        <a class="text-warning" href="/contest/4064541kwpd0ck0">Twentyx 1/2 - No numbers contest</a>
+        was created by <a class="text-warning" href="/help/authors#60814d3fe0927c00177f6b36">Anurag Sahay</a> to celebrate the coming new year 2021-22.
+        It consists of 13 puzzles which are available for five days from December 30 till January 3.<br>
+        All puzzles have 20x (x=1 or 2) non-number clues - no given numbers anywhere (only dots, circles, shaded cells, regions, etc).<br>
+        Puzzles are available at the <a class="text-warning" href="/contest/4064541kwpd0ck0">contest page</a>.
+        </p>
+      </div>
+      <% } %>
       <% if (contestPuzzle){ %>
         <% if (user) { %>
         <div class="card card-body">
@@ -90,14 +102,14 @@
           <% if(contestPuzzle){ %>
           showcontestPuzzle();
           <% } %>
-          <% if (new Date() < new Date('2021-11-14T00:00:00.000+00:00')) { %>
-          showMessage("Online <a href='https://logicmastersindia.com/forum/forums/thread-view.asp?tid=2941#M29684'>World Sudoku+Puzzle Convention</a> starts " +
-                      "this Friday at 3 PM GMT at the Logic Masters India website. The event lasts 11 days and besides the competition part, you can attend a " +
-                      "lot of panels with authors and top solvers via ZOOM and take part in a trivia quiz or bonus puzzle contests. <br><br> " +
-                      "The full schedule will be posted <a href='https://logicmastersindia.com/forum/forums/thread-view.asp?tid=2941#M29684'>here</a> in a very " +
-                      "short time. The Instruction Booklets will be released on Tuesday on the LMI website. The opening ceremony is on Saturday at 1 PM GMT " +
-                      "and the Q&A session will follow afterward.<br><br>",
-            null,"2021-11-11");
+          <% if (new Date() < new Date('2021-12-30T00:00:00.000+00:00')) { %>
+          showMessage("Celebrate the New Year’s solving puzzles sans given numbers.<br><br> " +
+                      "Anurag Sahay created a contest consisting of 13 puzzles which are available " +
+                      "for five days from December 30 till January 3.<br>" +
+                      "All puzzles have 20x (x=1 or 2) non-number clues - " +
+                      "no given numbers anywhere (only dots, circles, shaded cells, regions, etc). <br><br>" +
+                      "Don't miss it!" ,
+            null,"2021-12-20");
           <% } %>
         });
       </script>
