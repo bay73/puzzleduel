@@ -731,6 +731,17 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
+  typeProperties["arrow_web"] = {
+    needNodes: false,
+    cellController: cell => {
+      setClickSwitch(cell, true, [{},{color: self.colorSchema.gridColor, returnValue: "1"},{color: "#c0ffff"}], [{},{color: "#a0a0a0"},{color: "#e0ffff"}]);
+    },
+    cellEditController: cell => {
+      cell.chooserValues = [{},{image: "arrow_u", returnValue: "arrow_u"},{image: "arrow_ur", returnValue: "arrow_ur"},{image: "arrow_r", returnValue: "arrow_r"},{image: "arrow_dr", returnValue: "arrow_dr"},{image: "arrow_d", returnValue: "arrow_d"},{image: "arrow_dl", returnValue: "arrow_dl"},{image: "arrow_l", returnValue: "arrow_l"},{image: "arrow_ul", returnValue: "arrow_ul"}];
+    },
+    decodeClue: value => {return {image: value}; },
+  }
+
   typeProperties["xo"] = {
     needConnectors: true,
     cellController: cell => setClickSwitch(cell, false, [{},{image: "white_circle", returnValue: "O"},{image: "cross", returnValue: "X"}]),

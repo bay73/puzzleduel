@@ -351,5 +351,6 @@
 	"All digits should be exactly once in shaded area": "All digits should be exactly once in shaded area",
 	"Four identical symbols shouldn't form a continious line": "Four identical symbols shouldn't form a continious line",
 	"Wrong length of the shortest segment in the row": "Wrong length of the shortest segment in the row",
-	"Wrong length of the shortest segment in the column": "Wrong length of the shortest segment in the column"
+	"Wrong length of the shortest segment in the column": "Wrong length of the shortest segment in the column",
+	"The arrow should point to exactly one black cell": "The arrow should point to exactly one black cell"
 }

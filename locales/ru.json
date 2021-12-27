@@ -354,5 +354,6 @@
 	"All digits should be exactly once in shaded area": "Все цифры должны встречаться в закрашеной области ровно один раз",
 	"Four identical symbols shouldn't form a continious line": "Четыре идентичных символа не должны образовывать непрерывный ряд",
 	"Wrong length of the shortest segment in the row": "Длина кратчайшего отрезка в ряду неверная",
-	"Wrong length of the shortest segment in the column": "Длина кратчайшего отрезка в столбце неверная"
+	"Wrong length of the shortest segment in the column": "Длина кратчайшего отрезка в столбце неверная",
+	"The arrow should point to exactly one black cell": "Стрелка должна показывать ровно на одну закрашеную клетку"
 }
