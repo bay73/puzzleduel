@@ -1,5 +1,9 @@
-const util = require('./util');
-const pentomino_util = require('./pentomino_util');
+if (typeof util=="undefined") {
+  var util = require('./util');
+}
+if (typeof pentomino_util=="undefined") {
+  var pentomino_util = require('./pentomino_util');
+}
 
 const Checker = {
 check:function(dimension, clues, data){

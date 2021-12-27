@@ -1,5 +1,9 @@
-const util = require('./util');
-const sudoku_util = require('./sudoku_util');
+if (typeof util=="undefined") {
+  var util = require('./util');
+}
+if (typeof sudoku_util=="undefined") {
+  var sudoku_util = require('./sudoku_util');
+}
 
 const Checker = {
 check:function(dimension, clues, data){

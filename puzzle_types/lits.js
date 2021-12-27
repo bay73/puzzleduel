@@ -1,4 +1,6 @@
-const util = require('./util');
+if (typeof util=="undefined") {
+  var util = require('./util');
+}
 
 var validShapes = {
   "1_0,0_1,0_2": "L",
