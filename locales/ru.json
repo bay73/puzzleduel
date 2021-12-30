@@ -355,5 +355,6 @@
 	"Four identical symbols shouldn't form a continious line": "Четыре идентичных символа не должны образовывать непрерывный ряд",
 	"Wrong length of the shortest segment in the row": "Длина кратчайшего отрезка в ряду неверная",
 	"Wrong length of the shortest segment in the column": "Длина кратчайшего отрезка в столбце неверная",
-	"The arrow should point to exactly one black cell": "Стрелка должна показывать ровно на одну закрашеную клетку"
+	"The arrow should point to exactly one black cell": "Стрелка должна показывать ровно на одну закрашеную клетку",
+	"Twentyx 1/2-No numbers": "Twentyx 1/2-No numbers"
 }

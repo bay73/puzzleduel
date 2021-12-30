@@ -352,5 +352,6 @@
 	"Four identical symbols shouldn't form a continious line": "Four identical symbols shouldn't form a continious line",
 	"Wrong length of the shortest segment in the row": "Wrong length of the shortest segment in the row",
 	"Wrong length of the shortest segment in the column": "Wrong length of the shortest segment in the column",
-	"The arrow should point to exactly one black cell": "The arrow should point to exactly one black cell"
+	"The arrow should point to exactly one black cell": "The arrow should point to exactly one black cell",
+	"Twentyx 1/2-No numbers": "Twentyx 1/2-No numbers"
 }
