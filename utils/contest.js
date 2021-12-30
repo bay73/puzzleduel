@@ -93,9 +93,9 @@ async function recountContest(contestId) {
     }
   }
   contest.results = [];
-//  for (let [userId, value] of Object.entries(userTotals)) {
-//    contest.results.push({userId: userId, userName: value.userName, score: Math.round(value.score*10)/10});
-//  }
+  for (let [userId, value] of Object.entries(userTotals)) {
+    contest.results.push({userId: userId, userName: value.userName, score: Math.round(value.score*10)/10});
+  }
   await contest.save();
   return true;
 }
