@@ -88,7 +88,7 @@ async function recountContest(contestId) {
         if (typeof userTotals[result.userId]=='undefined'){
           userTotals[result.userId] = {userName: result.userName, score: 0 };
         }
-        // userTotals[result.userId].score += result.score;
+        userTotals[result.userId].score += result.score;
       });
     }
   }
