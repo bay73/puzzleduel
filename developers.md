@@ -1,5 +1,7 @@
 # How to Create new puzzle type #
 
+Each type is identified by type code. This code is used as the name of checker file js-module and as a key when defining UI properties. Use lower case with underscore string for type code.
+
 ## 1. Setup puzzle UI ##
 
 To set up a UI, the description of the new type should be added to the corresponding js file.
@@ -57,7 +59,7 @@ While testing on the server it automatically adds error messages to localization
 
 An example puzzle has to be created for the new puzzle type. This can be done the same way as adding a regular puzzle using the author's page. Put estimated solving difficulty in seconds for the puzzle. The puzzle id should be put to the `example.puzzleId` field of the puzzle type.
 
-The puzzle should be solved and the answer image captured (preferable without additional marks in it) and saved into `/images/answers` directory. Then the puzzle should be found in the storage collection. Field `tag` should be set to _‘example’_, field `answerImg` should be set to the path of answer image like _‘/images/answers/puzzleid.png’_
+The puzzle should be solved and the answer image captured (preferable without additional marks in it) and saved into `/images/answers` directory using .png format. Then the puzzle should be found in the storage collection. Field `tag` should be set to _‘example’_, field `answerImg` should be set to the path of answer image like _‘/images/answers/puzzleid.png’_
 
 ## 8. Commit everything and deploy ##
 
