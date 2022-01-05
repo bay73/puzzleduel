@@ -48,6 +48,27 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["sudoku_pair_sum"] = {
+    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
+    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
+    edgeEditController: edge => {
+      edge.isClue = true;
+      var chooserValues = [{}];
+      for (var i=3; i<2*self.rows; i++) {
+        chooserValues.push({image: "small_circle", text: i.toString(), textColor: "#fff", returnValue: "+"+i.toString()});
+      }
+      edge.chooserValues = chooserValues;
+    },
+    decodeClue: value => {
+      if (value.startsWith("+")) {
+        return {image: "small_circle", text: value.replace(/^\++/, ''), textColor: "#fff"};
+      } else {
+        return {text: value};
+      }
+    },
+    cellMultiPencil: true,
+  }
+
   typeProperties["sudoku_consecutive"] = {
     cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
     cellEditController: cell => setNumberChooser(cell, 1, self.rows),

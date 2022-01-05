@@ -150,45 +150,43 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "arrow_web",
+      typeCode: "sudoku_pair_sum",
       id: "puzzle.code",
-      dimension: "5x5"
+      dimension: "6x6"
     };
     var settings = {
       local: true,
       data: {
-    "a1": "arrow_r",
-    "b1": "arrow_d",
-    "c1": "arrow_dr",
-    "d1": "arrow_d",
-    "e1": "arrow_d",
-    "a2": "arrow_d",
-    "b2": "arrow_r",
-    "c2": "arrow_r",
-    "d2": "arrow_l",
-    "e2": "arrow_dl",
-    "a3": "arrow_dr",
-    "b3": "arrow_ur",
-    "c3": "arrow_dl",
-    "d3": "arrow_dr",
-    "e3": "arrow_dl",
-    "a4": "arrow_ur",
-    "b4": "arrow_dr",
-    "c4": "arrow_r",
-    "d4": "arrow_l",
-    "e4": "arrow_l",
-    "a5": "arrow_ur",
-    "b5": "arrow_u",
-    "c5": "arrow_l",
-    "d5": "arrow_ul",
-    "e5": "arrow_ul",
+    "edges": {
+        "a1-1": "+10",
+        "b1-1": "+8",
+        "d1-2": "+9",
+        "e1-2": "+5",
+        "f1-2": "+7",
+        "a2-1": "+6",
+        "b2-1": "+8",
+        "a3-1": "+9",
+        "b3-1": "+4",
+        "d3-2": "+3",
+        "e3-2": "+11",
+        "f3-2": "+7",
+        "a4-1": "+7",
+        "b4-1": "+6",
+        "a5-1": "+3",
+        "b5-1": "+6",
+        "d5-2": "+9",
+        "e5-2": "+5",
+        "f5-2": "+7",
+        "a6-1": "+7",
+        "b6-1": "+10"
+    },
     "tag": ""
 }
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

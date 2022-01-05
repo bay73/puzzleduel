@@ -748,7 +748,7 @@ squarePuzzleEdge.prototype.drawImage = function() {
 }
 
 squarePuzzleEdge.prototype.drawText = function() {
-  var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.4, this.data.text);
+  var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.3, this.data.text);
   var textColor = this.data.textColor;
   if (typeof textColor=='undefined') {
     textColor = this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor;
