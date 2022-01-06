@@ -734,12 +734,12 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   typeProperties["arrow_web"] = {
     needNodes: false,
     cellController: cell => {
-      setClickSwitch(cell, true, [{},{color: "#602020", returnValue: "1"},{color: "#c0ffff"}], [{},{color: "#b0b0b0"},{color: "#e0ffff"}]);
+      setClickSwitch(cell, true, [{},{color: self.colorSchema.gridColor, returnValue: "1"},{color: "#c0ffff"}], [{},{color: "#a0a0a0"},{color: "#e0ffff"}]);
     },
     cellEditController: cell => {
-      cell.chooserValues = [{},{image: "arrow_u", returnValue: "arrow_u"},{image: "arrow_ur", returnValue: "arrow_ur"},{image: "arrow_r", returnValue: "arrow_r"},{image: "arrow_dr", returnValue: "arrow_dr"},{image: "arrow_d", returnValue: "arrow_d"},{image: "arrow_dl", returnValue: "arrow_dl"},{image: "arrow_l", returnValue: "arrow_l"},{image: "arrow_ul", returnValue: "arrow_ul"}];
+      cell.chooserValues = [{},{image: "white_arrow_u", returnValue: "arrow_u"},{image: "white_arrow_ur", returnValue: "arrow_ur"},{image: "white_arrow_r", returnValue: "arrow_r"},{image: "white_arrow_dr", returnValue: "arrow_dr"},{image: "white_arrow_d", returnValue: "arrow_d"},{image: "white_arrow_dl", returnValue: "arrow_dl"},{image: "white_arrow_l", returnValue: "arrow_l"},{image: "white_arrow_ul", returnValue: "arrow_ul"}];
     },
-    decodeClue: value => {return {image: value}; },
+    decodeClue: value => {return {image: "white_" + value}; },
   }
 
   typeProperties["xo"] = {
