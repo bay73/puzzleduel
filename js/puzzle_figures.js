@@ -58,16 +58,20 @@ shipSet: function(code) {
   return counts;
 },
 
-drawSquare: function(snap, x, y, size){
+drawRectangle: function(snap, x, y, dx, dy, size){
   var border = size/14;
   let path = snap.polygon([
      puzzleFigures.gapLeft+x*size+border,puzzleFigures.gapTop+y*size+border,
-     puzzleFigures.gapLeft+x*size+size-border,puzzleFigures.gapTop+y*size+border,
-     puzzleFigures.gapLeft+x*size+size-border,puzzleFigures.gapTop+y*size+size-border,
-     puzzleFigures.gapLeft+x*size+border,puzzleFigures.gapTop+y*size+size-border,
+     puzzleFigures.gapLeft+x*size+dx*size-border,puzzleFigures.gapTop+y*size+border,
+     puzzleFigures.gapLeft+x*size+dx*size-border,puzzleFigures.gapTop+y*size+dy*size-border,
+     puzzleFigures.gapLeft+x*size+border,puzzleFigures.gapTop+y*size+dy*size-border,
      puzzleFigures.gapLeft+x*size+border,puzzleFigures.gapTop+y*size+border]);
-  path.attr({fill: puzzleFigures.color})
+  path.attr({fill: puzzleFigures.color});
   return path;
+},
+
+drawSquare: function(snap, x, y, size){
+  return puzzleFigures.drawRectangle(snap, x, y, 1, 1, size)
 },
 
 drawLetter: function(snap, x, y, size, letter){
@@ -110,6 +114,64 @@ drawFigure: function(snap,coord,figure,size,withLetter) {
     item.click(toggle);
   }
   group.attr({"isMarked": false})
+},
+
+drawDomino: function(snap,coord,size,letter1, letter2) {
+  let toggle = function() {
+    let isMarked = (group.attr("isMarked")!="true");
+    group.attr({"isMarked": isMarked});
+    group.children().forEach(function(item) {
+      item.attr({fill: isMarked?puzzleFigures.markedColor:puzzleFigures.color})
+    });
+  }
+  let group = snap.g();
+  let item = puzzleFigures.drawSquare(snap,coord.x,coord.y,size);
+  item.click(toggle);
+  group.add(item);
+  item = puzzleFigures.drawLetter(snap, coord.x, coord.y, size, letter1);
+  item.click(toggle);
+  item = puzzleFigures.drawSquare(snap,coord.x + 1,coord.y,size);
+  item.click(toggle);
+  group.add(item);
+  item = puzzleFigures.drawLetter(snap, coord.x + 1, coord.y, size, letter2);
+  item.click(toggle);
+  group.attr({"isMarked": false});
+},
+
+createDominoSet: function(snap, values, includeDoubles) {
+  let width = $(snap.node).parent().width();
+  const viewportWidth = Math.max(
+    document.documentElement.clientWidth,
+    window.innerWidth || 0
+  )
+  snap.node.setAttribute("width", width);
+  let itemCount = values.length - (includeDoubles?0:1);
+  if (viewportWidth < 992) {
+    if (itemCount%2==0) {
+      var maxXPos = itemCount*2.5;
+    } else {
+      var maxXPos = (itemCount+1)*2.5;
+    }
+    var maxYPos = Math.ceil((itemCount+1)/2)*1.5 - 0.5;
+    var cellSize = width/maxXPos;
+    snap.node.setAttribute("height", cellSize * maxYPos + puzzleFigures.gapTop*2);
+  } else {
+    var cellSize = width/(itemCount*2.5);
+    snap.node.setAttribute("height", cellSize * (itemCount*1.5 - 0.5) + puzzleFigures.gapTop*2);
+  }
+  var minX = includeDoubles?0:1;
+  var minY = 0;
+  for (let y=0;y<values.length;y++) {
+    for (let x=includeDoubles?y:y+1; x<values.length; x++) {
+      let xPos = (x - y + minY -minX)*2.5;
+      let yPos = (y - minY)*1.5;
+      if (viewportWidth < 992 && yPos > maxYPos) {
+        xPos = maxXPos - xPos - 2.5;
+        yPos = 2*maxYPos - yPos - 0.5;
+      }
+      puzzleFigures.drawDomino(snap, {x: xPos, y: yPos}, cellSize, values.charAt(y), values.charAt(x));
+    }
+  }
 },
 
 createTetro7: function(snap, withLetters) {
@@ -425,6 +487,9 @@ init: function(element) {
   }
   if (figures=="pento") {
     puzzleFigures.createPento(Snap('#figures_svg_' + puzzleFigures.snapId), element.attr('set')?element.attr('set'):'FILNPTUVWXYZ', withLetters);
+  }
+  if (figures=="domino") {
+    puzzleFigures.createDominoSet(Snap('#figures_svg_' + puzzleFigures.snapId),element.attr('set'),true);
   }
 },
 
