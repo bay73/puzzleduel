@@ -12,6 +12,12 @@ galaxiesType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(galaxiesType.prototype, areaPuzzleType.prototype);
 
+dominoType = function(puzzleData, controls, settings) {
+  areaPuzzleType.call(this, puzzleData, controls, settings);
+}
+
+Object.setPrototypeOf(dominoType.prototype, areaPuzzleType.prototype);
+
 areaPuzzleType.prototype.recountConnectorAreas = function() {
   if (!this.typeProperties.recountConnector) {
     return;
@@ -77,12 +83,101 @@ areaPuzzleType.prototype.recountConnectorAreas = function() {
   }
 }
 
+dominoType.prototype.recountConnectorAreas = function() {
+  if (!this.typeProperties.recountConnector) {
+    return;
+  }
+  var areaData = []
+  var root = function(area) {
+    if (areaData[area].parent == area) return area;
+    return root(areaData[area].parent);
+  }
+  var join = function(area1, area2) {
+    var root1 = root(area1);
+    var root2 = root(area2);
+    if (root1 == root2) return;
+    if (areaData[root1].volume > areaData[root2].volume) {
+      areaData[root2].parent = root1;
+      areaData[root1].volume += areaData[root2].volume;
+    } else {
+      areaData[root1].parent = root2;
+      areaData[root2].volume += areaData[root1].volume;
+    }
+  }
+  var areaLink = [];
+  var cellCount = 0;
+  for (var y = 0; y < this.rows; y++) {
+    areaLink[y] = new Array(this.cols);
+    for (var x = 0; x < this.cols; x++) {
+      areaData[cellCount] = {name: this.cells[y][x].getCoordinates(), parent: cellCount, volume: 1};
+      areaLink[y][x] = cellCount;
+      cellCount++;
+    }
+  }
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      if (x < this.cols-1 && this.connectors[y][x]['h'].getValue() == "1") {
+        join(areaLink[y][x], areaLink[y][x+1]);
+      }
+      if (y < this.rows-1 && this.connectors[y][x]['v'].getValue() == "1") {
+        join(areaLink[y][x], areaLink[y+1][x]);
+      }
+    }
+  }
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      for (var s = 1; s < 3; s++) {
+        var edge = this.edges[y][x][s];
+        var cellBigAreas = [];
+        var cellAreas = [];
+        for (var c=0; c<edge.allCells.length; c++) {
+          var cellArea = root(areaLink[edge.allCells[c].row][edge.allCells[c].col]);
+          if (areaData[cellArea].volume > 1) {
+            if (!cellBigAreas.includes(cellArea)) {
+              cellBigAreas.push(cellArea)
+            }
+          } else {
+            if (!cellAreas.includes(cellArea)) {
+              cellAreas.push(cellArea)
+            }
+          }
+        }
+        if (cellBigAreas.length > 1) {
+          edge.setGray(true);
+        } else if (cellBigAreas.length==1 && cellAreas.length > 0){
+
+          edge.setGray(true);
+        } else {
+          edge.setGray(false);
+        }
+      }
+    }
+  }
+}
+
 areaPuzzleType.prototype.isAreaRoot = function(cell) {
   return false;
 }
 
 galaxiesType.prototype.isAreaRoot = function(cell) {
   return cell.isClue;
+}
+
+areaPuzzleType.prototype.addConnector = function(connector) {
+  return;
+}
+
+dominoType.prototype.addConnector = function(connector) {
+  let puzzle = this;
+  connector.allCells.forEach(cell=> {
+    puzzle.cells[cell.row][cell.col].connectors.forEach(otherConnector => {
+      if (otherConnector != connector) {
+        otherConnector.data.color = null;
+        otherConnector.redraw();
+      }
+    });
+  });
+  return;
 }
 
 squarePuzzleConnector.prototype.revertTo = function(oldData) {
@@ -107,6 +202,7 @@ squarePuzzleConnector.prototype.switchToData = function(data) {
       }
     }
   }
+  this.puzzle.addConnector(this);
   this.puzzle.recountConnectorAreas();
 }
 
@@ -159,6 +255,35 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
   var typeProperties = {}
 
   typeProperties["abc_division"] = {
+    needNodes: true,
+    needConnectors: true,
+    edgeController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
+         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
+       }
+    },
+    nodeController: node => node.dragProcessor = true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      cell.chooserValues = [{}];
+      for (var i = 0; i < self.letters.length; i++) {
+        cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
+      }
+    },
+    collectAreas: !this.editMode,
+    recountConnector: !this.editMode,
+  }
+
+  typeProperties["domino_hunt"] = {
     needNodes: true,
     needConnectors: true,
     edgeController: edge => {
@@ -397,7 +522,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
 }
 
 areaPuzzleType.prototype.parseDimension = function(dimension) {
-  if (this.typeCode == "abc_division") {
+  if (this.typeCode == "abc_division" || this.typeCode == "domino_hunt") {
     // Parse dimension string to values.
     var part = dimension.split("-");
     squarePuzzle.prototype.parseDimension.call(this, part[0]);

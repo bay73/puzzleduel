@@ -114,16 +114,20 @@ squarePuzzle.prototype.createBoard = function() {
         if (x < this.cols - 1) {
           this.connectors[y][x]['h'] = new squarePuzzleConnector(this, x, y, 'h');
           this.elements.push(this.connectors[y][x]['h']);
+          this.cells[y][x].addConnector(this.connectors[y][x]['h']);
         }
         if (y < this.rows - 1) {
           this.connectors[y][x]['v'] = new squarePuzzleConnector(this, x, y, 'v');
           this.elements.push(this.connectors[y][x]['v']);
+          this.cells[y][x].addConnector(this.connectors[y][x]['v']);
         }
         if (x > 0) {
           this.connectors[y][x-1]['h'].allCells.push({col:x, row:y, side: '-h'});
+          this.cells[y][x].addConnector(this.connectors[y][x-1]['h']);
         }
         if (y > 0) {
           this.connectors[y-1][x]['v'].allCells.push({col:x, row:y, side: '-v'});
+          this.cells[y][x].addConnector(this.connectors[y-1][x]['v']);
         }
       }
     }
@@ -664,6 +668,13 @@ squarePuzzleCell.prototype.processDragMove = function(startElement) {
     return false;
   }
   return {newMouseStartElement: this};
+}
+
+squarePuzzleCell.prototype.addConnector = function(connector) {
+  if (typeof this.connectors == 'undefined') {
+    this.connectors = [];
+  }
+  this.connectors.push(connector);
 }
 
 squarePuzzleCell.prototype.commonConnectors = function(startElement) {
