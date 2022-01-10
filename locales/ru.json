@@ -356,5 +356,7 @@
 	"Wrong length of the shortest segment in the row": "Длина кратчайшего отрезка в ряду неверная",
 	"Wrong length of the shortest segment in the column": "Длина кратчайшего отрезка в столбце неверная",
 	"The arrow should point to exactly one black cell": "Стрелка должна показывать ровно на одну закрашеную клетку",
-	"Twentyx 1/2-No numbers": "Twentyx 1/2-No numbers"
+	"Twentyx 1/2-No numbers": "Twentyx 1/2-No numbers",
+	"Each area should contain two cells": "В каждой области должно быть две клетки",
+	"Each domino should be used once": "Каждое домино должно использоваться один раз"
 }

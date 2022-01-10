@@ -132,7 +132,7 @@ dominoType.prototype.recountConnectorAreas = function() {
         var cellAreas = [];
         for (var c=0; c<edge.allCells.length; c++) {
           var cellArea = root(areaLink[edge.allCells[c].row][edge.allCells[c].col]);
-          if (areaData[cellArea].volume > 1) {
+          if (areaData[cellArea].volume > 1 || this.isAreaRoot(this.cells[edge.allCells[c].row][edge.allCells[c].col])) {
             if (!cellBigAreas.includes(cellArea)) {
               cellBigAreas.push(cellArea)
             }
@@ -161,6 +161,10 @@ areaPuzzleType.prototype.isAreaRoot = function(cell) {
 
 galaxiesType.prototype.isAreaRoot = function(cell) {
   return cell.isClue;
+}
+
+dominoType.prototype.isAreaRoot = function(cell) {
+  return cell.data.color != null;
 }
 
 areaPuzzleType.prototype.addConnector = function(connector) {
@@ -303,13 +307,20 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     cellEditController: cell => {
       cell.isClue = true;
-      cell.chooserValues = [{}];
+      cell.chooserValues = [{}, {color: self.colorSchema.gridColor, returnValue: "black"}];
       for (var i = 0; i < self.letters.length; i++) {
         cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
       }
     },
     collectAreas: !this.editMode,
     recountConnector: !this.editMode,
+    decodeClue: value => {
+      if (value=="black") {
+        return {color: value}
+      } else {
+        return {text: value}
+      }
+    },
   }
 
   typeProperties["foseruzu"] = {

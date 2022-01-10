@@ -73,42 +73,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "sudoku_pair_sum",
+      typeCode: "domino_hunt",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "4x4-123"
     };
     var settings = {
       local: true,
-      data:  {
-    "edges": {
-        "a1-1": "+10",
-        "b1-1": "+8",
-        "d1-2": "+9",
-        "e1-2": "+5",
-        "f1-2": "+7",
-        "a2-1": "+6",
-        "b2-1": "+8",
-        "a3-1": "+9",
-        "b3-1": "+4",
-        "d3-2": "+3",
-        "e3-2": "+11",
-        "f3-2": "+7",
-        "a4-1": "+7",
-        "b4-1": "+6",
-        "a5-1": "+4",
-        "b5-1": "+6",
-        "d5-2": "+9",
-        "e5-2": "+5",
-        "f5-2": "+7",
-        "a6-1": "+7",
-        "b6-1": "+10"
-    },
-    "tag": ""
-}
+      data:  {}
     };
     settings.theme = "default";
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new dominoType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

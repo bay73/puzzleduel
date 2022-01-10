@@ -150,43 +150,62 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "sudoku_pair_sum",
+      typeCode: "domino_hunt",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "7x6-123456"
     };
     var settings = {
       local: true,
       data: {
-    "edges": {
-        "a1-1": "+10",
-        "b1-1": "+8",
-        "d1-2": "+9",
-        "e1-2": "+5",
-        "f1-2": "+7",
-        "a2-1": "+6",
-        "b2-1": "+8",
-        "a3-1": "+9",
-        "b3-1": "+4",
-        "d3-2": "+3",
-        "e3-2": "+11",
-        "f3-2": "+7",
-        "a4-1": "+7",
-        "b4-1": "+6",
-        "a5-1": "+3",
-        "b5-1": "+6",
-        "d5-2": "+9",
-        "e5-2": "+5",
-        "f5-2": "+7",
-        "a6-1": "+7",
-        "b6-1": "+10"
-    },
+    "a1": "1",
+    "b1": "1",
+    "c1": "5",
+    "d1": "3",
+    "e1": "1",
+    "f1": "2",
+    "g1": "2",
+    "a2": "2",
+    "b2": "5",
+    "c2": "6",
+    "d2": "3",
+    "e2": "6",
+    "f2": "5",
+    "g2": "1",
+    "a3": "4",
+    "b3": "3",
+    "c3": "6",
+    "d3": "4",
+    "e3": "2",
+    "f3": "3",
+    "g3": "2",
+    "a4": "4",
+    "b4": "6",
+    "c4": "5",
+    "d4": "3",
+    "e4": "2",
+    "f4": "6",
+    "g4": "4",
+    "a5": "3",
+    "b5": "5",
+    "c5": "4",
+    "d5": "1",
+    "e5": "3",
+    "f5": "4",
+    "g5": "6",
+    "a6": "1",
+    "b6": "2",
+    "c6": "5",
+    "d6": "5",
+    "e6": "1",
+    "f6": "4",
+    "g6": "6",
     "tag": ""
 }
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new dominoType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
