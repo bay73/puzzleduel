@@ -153,23 +153,35 @@ createDominoSet: function(snap, values, includeDoubles) {
       var maxXPos = (itemCount+1)*2.5;
     }
     var maxYPos = Math.ceil((itemCount+1)/2)*1.5 - 0.5;
-    var cellSize = width/maxXPos;
-    snap.node.setAttribute("height", cellSize * maxYPos + puzzleFigures.gapTop*2);
+    var direction = 'h';
   } else {
-    var cellSize = width/(itemCount*2.5);
-    snap.node.setAttribute("height", cellSize * (itemCount*1.5 - 0.5) + puzzleFigures.gapTop*2);
+    var maxXPos = Math.ceil((itemCount+2)/2)*2.5 - 0.5;
+    if (itemCount%2==0) {
+      var maxYPos = itemCount*1.5 - 0.5;
+    } else {
+      var maxYPos = itemCount*1.5 - 0.5;
+    }
+    var direction = 'v';
   }
-  var minX = includeDoubles?0:1;
-  var minY = 0;
-  for (let y=0;y<values.length;y++) {
-    for (let x=includeDoubles?y:y+1; x<values.length; x++) {
-      let xPos = (x - y + minY -minX)*2.5;
-      let yPos = (y - minY)*1.5;
-      if (viewportWidth < 992 && yPos > maxYPos) {
+  var cellSize = width/maxXPos;
+  snap.node.setAttribute("height", cellSize * maxYPos + puzzleFigures.gapTop*2);
+  for (let x=0; x<values.length; x++) {
+    for (let y=x+(includeDoubles?0:1);y<values.length;y++) {
+      let xPos = x*2.5;
+      let yPos = (y - x - (includeDoubles?0:1))*1.5;
+      if (yPos > maxYPos) {
         xPos = maxXPos - xPos - 2.5;
         yPos = 2*maxYPos - yPos - 0.5;
       }
-      puzzleFigures.drawDomino(snap, {x: xPos, y: yPos}, cellSize, values.charAt(y), values.charAt(x));
+      if (xPos > maxXPos) {
+        xPos = 2*maxXPos - xPos - 1.5;
+        yPos = maxYPos - yPos - 1;
+      }
+      if (direction=='h') {
+        puzzleFigures.drawDomino(snap, {x: xPos, y: yPos}, cellSize, values.charAt(y - x - (includeDoubles?0:1)), values.charAt(y));
+      } else {
+        puzzleFigures.drawDomino(snap, {x: xPos, y: yPos}, cellSize, values.charAt(x), values.charAt(y));
+      }
     }
   }
 },
@@ -489,7 +501,7 @@ init: function(element) {
     puzzleFigures.createPento(Snap('#figures_svg_' + puzzleFigures.snapId), element.attr('set')?element.attr('set'):'FILNPTUVWXYZ', withLetters);
   }
   if (figures=="domino") {
-    puzzleFigures.createDominoSet(Snap('#figures_svg_' + puzzleFigures.snapId),element.attr('set'),true);
+    puzzleFigures.createDominoSet(Snap('#figures_svg_' + puzzleFigures.snapId),element.attr('set'), element.attr('doubles')!='false');
   }
 },
 
