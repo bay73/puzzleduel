@@ -316,7 +316,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     recountConnector: !this.editMode,
     decodeClue: value => {
       if (value=="black") {
-        return {color: value}
+        return {color: self.colorSchema.gridColor}
       } else {
         return {text: value}
       }
