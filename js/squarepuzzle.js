@@ -260,6 +260,25 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
+  typeProperties["railroad"] = {
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{},{image: "big_plus", returnValue: "+"}];
+      for (var i=1; i<=15; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {return value=="+"?{image: "big_plus"}:{text: value};},
+  }
+
   typeProperties["loop_minesweeper"] = {
     needConnectors: true,
     cellController: cell => {

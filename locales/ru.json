@@ -358,5 +358,9 @@
 	"The arrow should point to exactly one black cell": "Стрелка должна показывать ровно на одну закрашеную клетку",
 	"Twentyx 1/2-No numbers": "Twentyx 1/2-No numbers",
 	"Each area should contain two cells": "В каждой области должно быть две клетки",
-	"Each domino should be used once": "Каждое домино должно использоваться один раз"
+	"Each domino should be used once": "Каждое домино должно использоваться один раз",
+	"The line should pass numbered cells in order": "Маршрут должен проходить через клетки с числами по-порядку",
+	"The loop can't have an intersection outside of the marked cells": "Маршрут не может иметь пересечений кроме как в отмеченных клетках",
+	"The loop should have an intersection at the marked cell": "Маршрут должен пересекать себя в отмеченной клетке",
+	"The line shouldn't have turn at numbered cells": "Линия не должна поворачивать в клетке с числом"
 }

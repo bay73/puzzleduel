@@ -73,17 +73,26 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "domino_hunt",
+      typeCode: "railroad",
       id: "puzzle.code",
-      dimension: "4x4-123"
+      dimension: "7x7"
     };
     var settings = {
       local: true,
-      data:  {}
+      data:  {
+    "c2": "+",
+    "e2": "6",
+    "e3": "2",
+    "f3": "+",
+    "d4": "+",
+    "b5": "1",
+    "c5": "4",
+    "tag": ""
+}
     };
     settings.theme = "default";
-    requirejs(["areapuzzle"], function() {
-      puzzle = new dominoType(puzzleData, "#editControls", settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

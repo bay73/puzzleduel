@@ -355,5 +355,9 @@
 	"The arrow should point to exactly one black cell": "The arrow should point to exactly one black cell",
 	"Twentyx 1/2-No numbers": "Twentyx 1/2-No numbers",
 	"Each area should contain two cells": "Each area should contain two cells",
-	"Each domino should be used once": "Each domino should be used once"
+	"Each domino should be used once": "Each domino should be used once",
+	"The line should pass numbered cells in order": "The line should pass numbered cells in order",
+	"The loop can't have an intersection outside of the marked cells": "The loop can't have an intersection outside of the marked cells",
+	"The loop should have an intersection at the marked cell": "The loop should have an intersection at the marked cell",
+	"The line shouldn't have turn at numbered cells": "The line shouldn't have turn at numbered cells"
 }

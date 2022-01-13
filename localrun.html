@@ -150,62 +150,29 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "domino_hunt",
+      typeCode: "railroad",
       id: "puzzle.code",
-      dimension: "7x6-123456"
+      dimension: "7x7"
     };
     var settings = {
       local: true,
       data: {
-    "a1": "1",
-    "b1": "1",
-    "c1": "5",
-    "d1": "3",
-    "e1": "1",
-    "f1": "2",
-    "g1": "2",
-    "a2": "2",
-    "b2": "5",
-    "c2": "6",
-    "d2": "3",
+    "c2": "+",
     "e2": "6",
-    "f2": "5",
-    "g2": "1",
-    "a3": "4",
-    "b3": "3",
-    "c3": "6",
-    "d3": "4",
     "e3": "2",
-    "f3": "3",
-    "g3": "2",
-    "a4": "4",
-    "b4": "6",
-    "c4": "5",
-    "d4": "3",
-    "e4": "2",
-    "f4": "6",
-    "g4": "4",
-    "a5": "3",
-    "b5": "5",
+    "f3": "+",
+    "d4": "+",
+    "b5": "1",
     "c5": "4",
-    "d5": "1",
-    "e5": "3",
-    "f5": "4",
-    "g5": "6",
-    "a6": "1",
-    "b6": "2",
-    "c6": "5",
-    "d6": "5",
-    "e6": "1",
-    "f6": "4",
-    "g6": "6",
+    "c6": "3",
+    "e6": "5",
     "tag": ""
 }
     };
     settings.theme = "contrast";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new dominoType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
