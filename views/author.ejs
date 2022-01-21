@@ -144,7 +144,7 @@
             }
             var dimension = colN + "x" + rowN;
             if (needLetters[type]) {
-              var letters = $("#letters").val().replace(/[^ABCDE1234567890]/g, '');
+              var letters = $("#letters").val().replace(/[^a-zA-Z0-9]/g, '');
               if (!letters) {
                 window.alert('Specify the list of available letters/digits for the puzzle!');
                 return;
