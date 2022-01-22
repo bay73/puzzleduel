@@ -48,7 +48,11 @@ router.get('/:contestid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
     const contest = await Contest.findOne({code: req.params.contestid});
-    if (!contest || contest.start > new Date()) {
+    if (!contest) {
+      res.sendStatus(404);
+      return;
+    }
+    if (contest.start > new Date() && !(req.user && req.user.role == "admin")) {
       res.sendStatus(404);
       return;
     }
@@ -75,7 +79,7 @@ router.get('/:contestid', async (req, res, next) => {
       }
     }
     var puzzleList = contest.puzzles
-      .filter(puzzle => puzzle.revealDate < new Date())
+      .filter(puzzle => puzzle.revealDate < new Date() || (req.user && req.user.role == "admin"))
       .map(puzzle => {
         puzzleObj = puzzleMap[puzzle.puzzleId];
         return {
