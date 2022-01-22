@@ -73,20 +73,119 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "railroad",
+      typeCode: "domino_castle_sum",
       id: "puzzle.code",
-      dimension: "7x7"
+      dimension: "8x6-12345"
     };
     var settings = {
       local: true,
       data:  {
-    "c2": "+",
-    "e2": "6",
-    "e3": "2",
-    "f3": "+",
-    "d4": "+",
-    "b5": "1",
-    "c5": "4",
+    "a1": "black",
+    "b1": "black",
+    "d1": "black",
+    "e1": "black",
+    "g1": "black",
+    "h1": "black",
+    "b2": "black",
+    "d2": "black",
+    "e2": "black",
+    "g2": "black",
+    "d3": "black",
+    "e3": "black",
+    "b4": "black",
+    "g4": "black",
+    "b5": "black",
+    "d5": "black",
+    "e5": "black",
+    "g5": "black",
+    "areas": [
+        [
+            "a1",
+            "b1",
+            "c1",
+            "d1",
+            "e1",
+            "f1",
+            "g1",
+            "h1",
+            "a2",
+            "b2",
+            "c2",
+            "d2",
+            "e2",
+            "f2",
+            "g2",
+            "h2",
+            "a3",
+            "d3",
+            "e3",
+            "h3",
+            "b4",
+            "e4",
+            "f4",
+            "g4",
+            "b5",
+            "c5",
+            "d5",
+            "e5",
+            "g5",
+            "c6"
+        ],
+        [
+            "b3",
+            "c3"
+        ],
+        [
+            "f3",
+            "g3"
+        ],
+        [
+            "c4",
+            "d4"
+        ],
+        [
+            "a4",
+            "a5"
+        ],
+        [
+            "h4",
+            "h5"
+        ],
+        [
+            "a6",
+            "b6"
+        ],
+        [
+            "d6",
+            "e6"
+        ],
+        [
+            "f5",
+            "f6"
+        ],
+        [
+            "g6",
+            "h6"
+        ]
+    ],
+    "bottom": [
+        null,
+        "6",
+        null,
+        null,
+        null,
+        null,
+        "8",
+        null
+    ],
+    "right": [
+        null,
+        "11",
+        null,
+        "14",
+        null,
+        null
+    ],
     "tag": ""
 }
     };

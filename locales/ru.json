@@ -362,5 +362,8 @@
 	"The line should pass numbered cells in order": "Маршрут должен проходить через клетки с числами по-порядку",
 	"The loop can't have an intersection outside of the marked cells": "Маршрут не может иметь пересечений кроме как в отмеченных клетках",
 	"The loop should have an intersection at the marked cell": "Маршрут должен пересекать себя в отмеченной клетке",
-	"The line shouldn't have turn at numbered cells": "Линия не должна поворачивать в клетке с числом"
+	"The line shouldn't have turn at numbered cells": "Линия не должна поворачивать в клетке с числом",
+	"Touching dominoes should contain the same value": "Касающиеся домино должны иметь равные значения",
+	"Wrong sum of values in the column": "Неверная сумма в столбце",
+	"Wrong sum of values in the row": "Неверная сумма в строке"
 }

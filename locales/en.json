@@ -359,5 +359,8 @@
 	"The line should pass numbered cells in order": "The line should pass numbered cells in order",
 	"The loop can't have an intersection outside of the marked cells": "The loop can't have an intersection outside of the marked cells",
 	"The loop should have an intersection at the marked cell": "The loop should have an intersection at the marked cell",
-	"The line shouldn't have turn at numbered cells": "The line shouldn't have turn at numbered cells"
+	"The line shouldn't have turn at numbered cells": "The line shouldn't have turn at numbered cells",
+	"Touching dominoes should contain the same value": "Touching dominoes should contain the same value",
+	"Wrong sum of values in the column": "Wrong sum of values in the column",
+	"Wrong sum of values in the row": "Wrong sum of values in the row"
 }

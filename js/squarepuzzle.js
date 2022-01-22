@@ -7,9 +7,10 @@ squarePuzzleType = function(puzzleData, controls, settings) {
 Object.setPrototypeOf(squarePuzzleType.prototype, squarePuzzle.prototype);
 
 squarePuzzleType.prototype.parseDimension = function(dimension) {
-  if (this.typeCode == "pentomino" || this.typeCode == "pentomino_touch" || this.typeCode == "pentomino_hungarian" || this.typeCode == "battleships_minesweeper" || this.typeCode == "battleships_knight" || this.typeCode == "battleships" || this.typeCode == "starbattle_smallregions") {
+  if (this.typeCode == "pentomino" || this.typeCode == "pentomino_touch" || this.typeCode == "pentomino_hungarian" || this.typeCode == "battleships_minesweeper" || this.typeCode == "battleships_knight" || this.typeCode == "battleships" || this.typeCode == "starbattle_smallregions" || this.typeCode == "domino_castle_sum") {
     // Parse dimension string to values.
     var part = dimension.split("-");
+    this.letters = part[1];
     squarePuzzle.prototype.parseDimension.call(this, part[0]);
   } else if (this.typeCode == "top_heavy" || this.typeCode == "no_touch_sums") {
     // Parse dimension string to values.
@@ -75,6 +76,43 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     nodeEditController: node => node.dragProcessor = true,
     decodeClue: value => {return {image: value} },
     collectAreas: this.editMode,
+  }
+
+  typeProperties["domino_castle_sum"] = {
+    needNodes: true,
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      cell.chooserValues = [{}];
+      for (var i = 0; i < self.letters.length; i++) {
+        cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
+      }
+    },
+    cellEditController: cell => {
+      if(cell.outerCell) {
+        cell.isClue = true; setNumberChooser(cell, 1, 99);
+      } else {
+        cell.isClue = true; cell.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "black"}];
+      }
+    },
+    edgeEditController: edge => {
+       if (edge.allCells.length > 1) {
+         edge.isClue = true;
+         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
+       }
+    },
+    nodeEditController: node => node.dragProcessor = true,
+    decodeClue: value => {
+      if (value=="black") {
+        return {color: self.colorSchema.gridColor}
+      } else {
+        return {text: value}
+      }
+    },
+    cellMultiPencil: true,
+    collectAreas: this.editMode,
+    usePlus10: this.editMode,
   }
 
   typeProperties["lits"] = {
