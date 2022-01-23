@@ -145,7 +145,6 @@ dominoType.prototype.recountConnectorAreas = function() {
         if (cellBigAreas.length > 1) {
           edge.setGray(true);
         } else if (cellBigAreas.length==1 && cellAreas.length > 0){
-
           edge.setGray(true);
         } else {
           edge.setGray(false);
@@ -161,10 +160,6 @@ areaPuzzleType.prototype.isAreaRoot = function(cell) {
 
 galaxiesType.prototype.isAreaRoot = function(cell) {
   return cell.isClue;
-}
-
-dominoType.prototype.isAreaRoot = function(cell) {
-  return cell.data.color != null;
 }
 
 areaPuzzleType.prototype.addConnector = function(connector) {

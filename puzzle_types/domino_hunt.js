@@ -21,7 +21,9 @@ check:function(dimension, clues, data){
   for (var [key, value] of Object.entries(clues)) {
     var pos = util.parseCoord(key);
     if (cluecells[pos.y]){
-      if (value != "black") {
+      if (value == "black") {
+        cluecells[pos.y][pos.x] = "black";
+      } else {
         cluecells[pos.y][pos.x] = value;
       }
     }
@@ -30,13 +32,63 @@ check:function(dimension, clues, data){
   if (res.status != "OK") {
     return res;
   }
-  var res = Checker.checkDominoes(cluecells, areas);
+  var dominoes = Checker.buildDominoes(cluecells, areas);
+  var res = Checker.checkDominoes(cluecells, dominoes);
   if (res.status != "OK") {
     return res;
   }
   return {status: "OK"};
 },
-
+buildDominoes: function(cells, areas) {
+  var dominoes = [];
+  for (var a=0; a<areas.length; a++) {
+    dominoes = dominoes.concat(Checker.dominoesInArea(cells, areas[a]));
+  }
+  return dominoes;
+},
+dominoesInArea: function(cells, area) {
+  var used = util.create2DArray(cells.rows, cells.cols, true);
+  for (var a=0;a<area.length;a++) {
+    var pos = util.parseCoord(area[a]);
+    used[pos.y][pos.x] = false;
+  }
+  for (var y = 0; y < used.rows; y++) {
+    for (var x = 0; x < used.cols; x++) {
+      if (!used[y][x]) {
+        used[y][x] = (cells[y][x]=="black");
+      }
+    }
+  }
+  var dominoes = [];
+  for (var y = 0; y < used.rows; y++) {
+    for (var x = 0; x < used.cols; x++) {
+      if (!used[y][x]) {
+        dominoes.push(Checker.connectedArea(used, {x: x, y:y}))
+      }
+    }
+  }
+  return dominoes;
+},
+connectedArea: function(used, start) {
+   var area = [];
+   var queue = [];
+   queue.push(start);
+   while (queue.length > 0) {
+     let next = queue.shift();
+     if (Checker.ifCell(used, next)) {
+       used[next.y][next.x]=true;
+       area.push(util.coord(next.x, next.y));
+       queue.push({x: next.x+1, y: next.y});
+       queue.push({x: next.x-1, y: next.y});
+       queue.push({x: next.x, y: next.y+1});
+       queue.push({x: next.x, y: next.y-1});
+     }
+   }
+   return area;
+},
+ifCell: function(used, pos) {
+  return pos.x>=0 && pos.x<used.cols && pos.y>=0 && pos.y<used.rows && !used[pos.y][pos.x];
+},
 checkDominoes: function(cells, areas) {
   var usedDominoes = {};
   for (var a=0; a<areas.length; a++) {
@@ -58,7 +110,7 @@ getLetersInArea: function(cells, area) {
   var res = [];
   for (var a=0;a<area.length;a++) {
     var pos = util.parseCoord(area[a]);
-    if (cells[pos.y][pos.x] != "") {
+    if (cells[pos.y][pos.x] != "" && cells[pos.y][pos.x] != "black") {
       res.push(cells[pos.y][pos.x]);
     }
   }
