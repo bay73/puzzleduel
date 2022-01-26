@@ -15,7 +15,7 @@
               name="name"
               class="form-control"
               placeholder="Enter New Name"
-              value="<%= typeof user.name != 'undefined' ? name : '' %>"
+              value="<%= typeof name != 'undefined' ? name : '' %>"
             />
           </div>
           <div class="form-group">
@@ -26,8 +26,22 @@
               name="email"
               class="form-control"
               placeholder="Enter New Email"
-              value="<%= typeof user.email != 'undefined' ? email : '' %>"
+              value="<%= typeof email != 'undefined' ? email : '' %>"
             />
+          </div>
+          <div class="form-group">
+            <label for="country">Country</label>
+            <input
+              type="text"
+              id="country"
+              class="form-control"
+              placeholder="Choose the country"
+            />
+            <input
+              type="hidden"
+              id="country_code"
+              name="country"
+              value="<%= typeof country != 'undefined' ? country : '' %>"
           </div>
           <div class="form-group">
             <label for="password">New Password</label>
@@ -70,3 +84,18 @@
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function() {
+    var countryData = $.fn.countrySelect.getCountryData();
+    countryData.push({name: "", iso2: "-"})
+    $.fn.countrySelect.setCountryData(countryData);
+    $("#country").countrySelect({
+      defaultCountry: "-",
+      preferredCountries: [],
+      responsiveDropdown:true
+    });
+    <% if (typeof country != 'undefined') { %>
+      $("#country").countrySelect("selectCountry", "<%= country %>")
+    <% } %>
+  })
+</script>

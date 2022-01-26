@@ -59,7 +59,8 @@ router.get('/edit', ensureAuthenticated, (req, res) => {
   res.render('edit_user', {
     user: req.user,
     name: req.user.name,
-    email: req.user.email
+    email: req.user.email,
+    country: req.user.country
   });
   profiler.log('userEditPage', processStart);
 });
@@ -68,7 +69,7 @@ router.get('/edit', ensureAuthenticated, (req, res) => {
 router.post('/register', recaptcha.middleware.verify, recaptcha.middleware.render, async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const { name, email, password, password2 } = req.body;
+    const { name, email, country, password, password2 } = req.body;
     let errors = [];
 
     if (!name || !email || !password || !password2) {
@@ -102,6 +103,7 @@ router.post('/register', recaptcha.middleware.verify, recaptcha.middleware.rende
         errors,
         name,
         email,
+        country,
         password,
         password2,
         captcha:res.recaptcha
@@ -112,6 +114,7 @@ router.post('/register', recaptcha.middleware.verify, recaptcha.middleware.rende
     const newUser = new User({
       name,
       email,
+      country,
       password
     });
 
@@ -136,7 +139,7 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
       res.sendStatus(403);
       return;
     }
-    const { name, email, password, password2, oldpassword } = req.body;
+    const { name, email, country, password, password2, oldpassword } = req.body;
     let errors = [];
 
     if (!oldpassword) {
@@ -177,6 +180,7 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
         errors: errors,
         name: name,
         email: email,
+        country: country,
         password: password,
         password2: password2,
         oldpassword: oldpassword
@@ -190,6 +194,9 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
     }
     if (email) {
       user.email = email;
+    }
+    if (country) {
+      user.country = country;
     }
 
 
