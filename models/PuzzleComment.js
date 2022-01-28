@@ -22,6 +22,11 @@ const PuzzleCommentSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  date: {
+    type: Date,
+    default: Date.now
+    index: true,
+  },
 });
 
 PuzzleCommentSchema.index({userId: 1, puzzleId: 1})
