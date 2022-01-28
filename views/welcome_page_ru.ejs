@@ -2,14 +2,14 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
-      <% if(new Date() > new Date(2022,1,4)) { %>
       <div class="card card-body">
         <div class="row">
           <div class="col-md">
             <table class="table table-hover table-condensed table-striped">
               <tbody>
                 <tr>
-                  <th colspan=2>
+                  <th colspan=2 data-toggle="tooltip"
+                    title="В списке нет недавно зарегистрированных пользвателей - рейтинг таких пользователей не рассчитывается по общим формулам.">
                     Лидеры изменения рейтинга за месяц
                   </th>
                 </tr>
@@ -45,7 +45,6 @@
           </div>
         </div>
       </div>
-      <% } %>
       <% if (contestPuzzle){ %>
         <% if (user) { %>
         <div class="card card-body">
