@@ -24,8 +24,8 @@ const PuzzleCommentSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    default: Date.now
-    index: true,
+    default: Date.now,
+    index: true
   },
 });
 
