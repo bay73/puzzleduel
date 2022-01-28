@@ -10,16 +10,22 @@ const cache = require('../utils/cache');
 router.get('/', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var dailyPuzzle = await cache.readPuzzleByDate(new Date().toISOString().slice(0,10));
+    var date = new Date();
+    var yesterday = new Date(date.getFullYear(), date.getMonth(), date.getDay() - 1);
+    const [dailyPuzzle, contest, ratingChange, commenters] = await Promise.all([
+      cache.readPuzzleByDate(new Date().toISOString().slice(0,10)),
+      cache.readDailyShadowContest(),
+      cache.readMonthlyRatingChange(yesterday),
+      cache.readMonthlyCommenters(yesterday)
+    ]);
     if (dailyPuzzle) {
       var dailyPuzzleObj = await util.puzzleToPresent(dailyPuzzle, req.getLocale());
       if (typeof dailyPuzzleObj.contest != "undefined") {
         dailyPuzzleObj.contest.link = "/contest/" + dailyPuzzleObj.contest.contestId;
-        var contest = await cache.readContest(dailyPuzzleObj.contest.contestId);
-        dailyPuzzleObj.contest.name = contest.name;
+        const dailyContest = await cache.readContest(dailyPuzzleObj.contest.contestId);
+        dailyPuzzleObj.contest.name = dailyContest.name;
       }
     }
-    var contest = await cache.readDailyShadowContest();
     if (contest) {
       var contestPuzzleId = null;
       contest.puzzles.forEach(puzzle => {
@@ -38,10 +44,14 @@ router.get('/', async (req, res, next) => {
         }
       }
     }
+    topRatingChange = ratingChange.sort((change1, change2)=>(change2.change - change1.change)).slice(0,5);
+    topCommenters = commenters.sort((commenter1, commenter2)=>(commenter2.commentCount - commenter1.commentCount)).slice(0,5);
     res.render(res.__('welcome_page'), {
       user: req.user,
       dailyPuzzle: dailyPuzzleObj,
-      contestPuzzle: contestPuzzleObj
+      contestPuzzle: contestPuzzleObj,
+      topRatingChange: topRatingChange,
+      topCommenters: topCommenters
     });
     profiler.log('welcomePage', processStart);
   } catch (e) {

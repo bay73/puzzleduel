@@ -2,6 +2,50 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
+      <% if(new Date() > new Date(2022,1,4)) { %>
+      <div class="card card-body">
+        <div class="row">
+          <div class="col-md">
+            <table class="table table-hover table-condensed table-striped">
+              <tbody>
+                <tr>
+                  <th colspan=2>
+                    Top rating improvement of the month
+                  </th>
+                </tr>
+                <% topRatingChange.forEach(function(change){ %>
+                <tr>
+                  <td class="p-0"><a href="/userstat/<%= change.userId %>"><%= change.userName %></a></td>
+                  <td class="p-0 text-center">
+                    <%= change.change?Math.round(change.change):"-" %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table class="table table-hover table-condensed table-striped">
+          </div>
+          <div class="col-md">
+            <table class="table table-hover table-condensed table-striped">
+              <tbody>
+                <tr>
+                  <th colspan=2>
+                    Top commenters of the month
+                  </th>
+                </tr>
+                <% topCommenters.forEach(function(commenter){ %>
+                <tr>
+                  <td class="p-0"><a href="/userstat/<%= commenter.userId %>"><%= commenter.userName %></a></td>
+                  <td class="p-0 text-center">
+                    <%= commenter.commentCount?Math.round(commenter.commentCount):"-" %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table class="table table-hover table-condensed table-striped">
+          </div>
+        </div>
+      </div>
+      <% } %>
       <% if (contestPuzzle){ %>
         <% if (user) { %>
         <div class="card card-body">

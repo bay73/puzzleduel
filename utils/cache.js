@@ -4,6 +4,7 @@ const PuzzleType = require('../models/PuzzleType');
 const Rating = require('../models/Rating');
 const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
+const PuzzleComment = require('../models/PuzzleComment');
 
 const CONTEST_CACHE_TTL = 10*1000; // 10 seconds
 const PUZZLETYPE_CACHE_TTL = 60*60*1000; // 1 hour
@@ -11,11 +12,14 @@ const PUZZLE_CACHE_TTL = 60*60*1000; // 1 hour
 const RATING_CACHE_TTL = 60*60*1000; // 1 hour
 const USER_CACHE_TTL = 60*60*1000; // 1 hour
 const SOLVINGTIME_CACHE_TTL = 20*1000; // 20 seconds
+const COMMENTER_CACHE_TTL = 60*60*1000; // 1 hour
 
 const contestCache = {}
 const puzzleTypeCache = {fresheness: undefined, puzzleTypes: {}}
 const puzzleCache = {}
 const ratingCache = {}
+const monthlyRatingChangeCache = {};
+const monthlyCommentersCache = {};
 const userCache = {}
 const solvingTimeCache = {}
 
@@ -135,6 +139,50 @@ module.exports.readSolvingTime = async function(puzzleId) {
     solvingTimeCache[puzzleId] = {times: times, fresheness: new Date().getTime() + SOLVINGTIME_CACHE_TTL};
   }
   return solvingTimeCache[puzzleId].times;
+}
+
+module.exports.readMonthlyRatingChange = async function(date) {
+  monthBegin = new Date(date.getFullYear(), date.getMonth(), 3);
+  const currentTime = new Date().getTime();
+  if (typeof monthlyRatingChangeCache[monthBegin]=='undefined' || currentTime > monthlyRatingChangeCache[monthBegin].fresheness) {
+    monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 2);
+    const ratingList = await Rating.find({date: {$gt: monthBegin, $lte: monthEnd}, ratingWeek: {$gte: 4}}).lean();
+    ratingChanges = {};
+    ratingList.forEach(function(rating) {
+      if (typeof ratingChanges[rating.userId]=="undefined") {
+        ratingChanges[rating.userId] = {userName: rating.userName, change: rating.change};
+      } else {
+        ratingChanges[rating.userId].change += rating.change;
+      }
+    })
+    var changeList = Object.keys(ratingChanges).map(function(key){
+      return {userId: key, userName: ratingChanges[key].userName, change: ratingChanges[key].change};
+    })
+    monthlyRatingChangeCache[monthBegin] = {changeList: changeList, fresheness: new Date().getTime() + RATING_CACHE_TTL};
+  }
+  return monthlyRatingChangeCache[monthBegin].changeList;
+}
+
+module.exports.readMonthlyCommenters = async function(date) {
+  monthBegin = new Date(date.getFullYear(), date.getMonth(), 1);
+  const currentTime = new Date().getTime();
+  if (typeof monthlyCommentersCache[monthBegin]=='undefined' || currentTime > monthlyCommentersCache[monthBegin].fresheness) {
+    monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const commentList = await PuzzleComment.find({date: {$gt: monthBegin, $lte: monthEnd}, comment: {$exists : true, $ne : ""}}).lean();
+    comments = {};
+    commentList.forEach(function(comment) {
+      if (typeof comments[comment.userId]=="undefined") {
+        comments[comment.userId] = {userName: comment.userName, commentCount: 1};
+      } else {
+        comments[comment.userId].commentCount++;
+      }
+    })
+    var commenters = Object.keys(comments).map(function(key){
+      return {userId: key, userName: comments[key].userName, commentCount: comments[key].commentCount};
+    })
+    monthlyCommentersCache[monthBegin] = {commenters: commenters, fresheness: new Date().getTime() + COMMENTER_CACHE_TTL};
+  }
+  return monthlyCommentersCache[monthBegin].commenters;
 }
 
 module.exports.clearCache = function() {
