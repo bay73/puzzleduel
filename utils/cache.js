@@ -43,7 +43,7 @@ module.exports.readDailyShadowContest = async function() {
   if (typeof contestCache["_daily"]=='undefined' || currentTime > contestCache["_daily"].fresheness) {
     const datetime = new Date();
     const contest = await Contest.findOne({type: "daily_shadow", start: {$lt: datetime}, finish: {$gt: datetime} }, "code name puzzles");
-    var endOfHour = new Date();
+    const endOfHour = new Date();
     endOfHour.setMinutes(59,59,999);
     contestCache["_daily"] = {contest: contest, fresheness: endOfHour.getTime()};
   }
@@ -63,7 +63,7 @@ var puzzleToObj = function(puzzle) {
 var readPuzzleFromDb = async function(cacheId, condition) {
   const puzzle = await Puzzle.findOne(condition);
   const puzzleObj = puzzleToObj(puzzle);
-  var fresheness = new Date().getTime() + PUZZLE_CACHE_TTL;
+  let fresheness = new Date().getTime() + PUZZLE_CACHE_TTL;
   if (puzzleObj.changeDate && puzzleObj.changeDate.getTime() > new Date().getTime() && puzzleObj.changeDate.getTime() < fresheness) {
     fresheness = puzzleObj.changeDate.getTime()
   }
@@ -142,12 +142,12 @@ module.exports.readSolvingTime = async function(puzzleId) {
 }
 
 module.exports.readMonthlyRatingChange = async function(date) {
-  monthBegin = new Date(date.getFullYear(), date.getMonth(), 3);
+  const monthBegin = new Date(date.getFullYear(), date.getMonth(), 3);
   const currentTime = new Date().getTime();
   if (typeof monthlyRatingChangeCache[monthBegin]=='undefined' || currentTime > monthlyRatingChangeCache[monthBegin].fresheness) {
-    monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 2);
+    const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 2);
     const ratingList = await Rating.find({date: {$gt: monthBegin, $lte: monthEnd}, ratingWeek: {$gte: 4}}).lean();
-    ratingChanges = {};
+    const ratingChanges = {};
     ratingList.forEach(function(rating) {
       if (typeof ratingChanges[rating.userId]=="undefined") {
         ratingChanges[rating.userId] = {userName: rating.userName, change: rating.change};
@@ -155,7 +155,7 @@ module.exports.readMonthlyRatingChange = async function(date) {
         ratingChanges[rating.userId].change += rating.change;
       }
     })
-    var changeList = Object.keys(ratingChanges).map(function(key){
+    const changeList = Object.keys(ratingChanges).map(function(key){
       return {userId: key, userName: ratingChanges[key].userName, change: ratingChanges[key].change};
     })
     monthlyRatingChangeCache[monthBegin] = {changeList: changeList, fresheness: new Date().getTime() + RATING_CACHE_TTL};
@@ -164,12 +164,12 @@ module.exports.readMonthlyRatingChange = async function(date) {
 }
 
 module.exports.readMonthlyCommenters = async function(date) {
-  monthBegin = new Date(date.getFullYear(), date.getMonth(), 1);
+  const monthBegin = new Date(date.getFullYear(), date.getMonth(), 1);
   const currentTime = new Date().getTime();
   if (typeof monthlyCommentersCache[monthBegin]=='undefined' || currentTime > monthlyCommentersCache[monthBegin].fresheness) {
-    monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const commentList = await PuzzleComment.find({date: {$gt: monthBegin, $lte: monthEnd}, comment: {$exists : true, $ne : ""}}).lean();
-    comments = {};
+    const comments = {};
     commentList.forEach(function(comment) {
       if (typeof comments[comment.userId]=="undefined") {
         comments[comment.userId] = {userName: comment.userName, commentCount: 1};
@@ -177,7 +177,7 @@ module.exports.readMonthlyCommenters = async function(date) {
         comments[comment.userId].commentCount++;
       }
     })
-    var commenters = Object.keys(comments).map(function(key){
+    const commenters = Object.keys(comments).map(function(key){
       return {userId: key, userName: comments[key].userName, commentCount: comments[key].commentCount};
     })
     monthlyCommentersCache[monthBegin] = {commenters: commenters, fresheness: new Date().getTime() + COMMENTER_CACHE_TTL};
@@ -201,10 +201,16 @@ module.exports.printCache = function() {
   console.log(new Date().getTime());
   console.log("contests:");
   Object.keys(contestCache).forEach(function(key) { console.log(key, contestCache[key].fresheness);});
+  console.log("puzzlesTypes:");
+  console.log(puzzleTypeCache.fresheness);
   console.log("puzzles:");
   Object.keys(puzzleCache).forEach(function(key) { console.log(key, puzzleCache[key].fresheness); });
   console.log("ratings:");
   Object.keys(ratingCache).forEach(function(key) { console.log(key, ratingCache[key].fresheness); });
+  console.log("ratingChanges:");
+  Object.keys(monthlyRatingChangeCache).forEach(function(key) { console.log(key, monthlyRatingChangeCache[key].fresheness); });
+  console.log("commenters:");
+  Object.keys(monthlyCommentersCache).forEach(function(key) { console.log(key, monthlyCommentersCache[key].fresheness); });
   console.log("users:");
   Object.keys(userCache).forEach(function(key) { console.log(key, userCache[key].fresheness);; });
   console.log("solvingTimes:");
