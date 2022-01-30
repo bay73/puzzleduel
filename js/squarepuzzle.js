@@ -83,9 +83,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     needBottom: true,
     needRight: true,
     cellController: cell => {
-      cell.chooserValues = [{}];
-      for (var i = 0; i < self.letters.length; i++) {
-        cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
+      if(!cell.outerCell && !cell.isClue) {
+        cell.chooserValues = [{}];
+        for (var i = 0; i < self.letters.length; i++) {
+         cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
+        }
       }
     },
     cellEditController: cell => {
