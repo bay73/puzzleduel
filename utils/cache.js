@@ -187,8 +187,11 @@ module.exports.readMonthlyCommenters = async function(date) {
 
 module.exports.clearCache = function() {
   Object.keys(contestCache).forEach(function(key) { delete contestCache[key]; });
+  Object.keys(puzzleTypeCache).forEach(function(key) { delete solvingTimeCache[key]; });
   Object.keys(puzzleCache).forEach(function(key) { delete puzzleCache[key]; });
   Object.keys(ratingCache).forEach(function(key) { delete ratingCache[key]; });
+  Object.keys(monthlyRatingChangeCache).forEach(function(key) { delete solvingTimeCache[key]; });
+  Object.keys(monthlyCommentersCache).forEach(function(key) { delete solvingTimeCache[key]; });
   Object.keys(userCache).forEach(function(key) { delete userCache[key]; });
   Object.keys(solvingTimeCache).forEach(function(key) { delete solvingTimeCache[key]; });
   puzzleTypeCache.fresheness = undefined;
