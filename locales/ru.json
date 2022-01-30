@@ -365,5 +365,11 @@
 	"The line shouldn't have turn at numbered cells": "Линия не должна поворачивать в клетке с числом",
 	"Touching dominoes should contain the same value": "Касающиеся домино должны иметь равные значения",
 	"Wrong sum of values in the column": "Неверная сумма в столбце",
-	"Wrong sum of values in the row": "Неверная сумма в строке"
+	"Wrong sum of values in the row": "Неверная сумма в строке",
+	"Best puzzles": "Лучшие задачи",
+	"Worst puzzles": "Худшие задачи",
+	"Non rated puzzles": "Задачи без рейтинга",
+	"Show the best pouzzles": "Показать лучшие задачи",
+	"Show non rated pouzzles": "Показать задачи без рейтинга",
+	"Puzzle rating is recounted once per day, so any changes appears at this page witrh some delay.": "Рейтинг задач пересчитывается один раз в день, поэтому изменения появляются на этой странице с задержкой."
 }

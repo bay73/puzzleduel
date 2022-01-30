@@ -362,5 +362,11 @@
 	"The line shouldn't have turn at numbered cells": "The line shouldn't have turn at numbered cells",
 	"Touching dominoes should contain the same value": "Touching dominoes should contain the same value",
 	"Wrong sum of values in the column": "Wrong sum of values in the column",
-	"Wrong sum of values in the row": "Wrong sum of values in the row"
+	"Wrong sum of values in the row": "Wrong sum of values in the row",
+	"Best puzzles": "Best puzzles",
+	"Worst puzzles": "Worst puzzles",
+	"Non rated puzzles": "Non rated puzzles",
+	"Show the best pouzzles": "Show the best pouzzles",
+	"Show non rated pouzzles": "Show non rated pouzzles",
+	"Puzzle rating is recounted once per day, so any changes appears at this page witrh some delay.": "Puzzle rating is recounted once per day, so any changes appears at this page witrh some delay."
 }

@@ -1,0 +1,53 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <% if (listtype=="best") { %>
+        <h1 class="card-header"><%= __('Best puzzles') %></h1>
+        <% } else if (listtype=="worst") { %>
+        <h1 class="card-header"><%= __('Worse puzzles') %></h1>
+        <% } else { %>
+        <h1 class="card-header"><%= __('Non rated puzzles') %></h1>
+        <% } %>
+        <table class="card-body table table-hover table-condensed">
+          <tbody>
+            <% puzzles.forEach(function(puzzle) { %>
+            <tr>
+              <td class="d-none d-sm-table-cell">
+                <% if (puzzle.rating && puzzle.rating.rating>0) { %>
+                <%- include ('./partials/rating_span', {rating: puzzle.rating.rating, ratingCount: puzzle.rating.count}) %>
+                <% } %>
+              </td>
+              <td>
+                <a href="/single/<%= puzzle.code %>">
+                  <%= puzzle.type %>
+                  <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
+                </a>
+              </td>
+              <td class="d-none d-sm-table-cell">
+                <%= puzzle.author %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <p class="card-text text-right pt-3">
+          <% if (listtype!="best") { %>
+          <a href="/archive/best"><%= __('Show the best pouzzles') %></a>
+          <% } %>
+          <% if (listtype!="non_rated") { %>
+          <a href="/archive/nonrated"><%= __('Show non rated pouzzles') %></a>
+          <% } %>
+        </p>
+        <p class="card-text text-left">
+          <%= __('Puzzle rating is recounted once per day, so any changes appears at this page witrh some delay.') %>
+          <%= __('Click at the puzzle name to solve the selected puzzle.') %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

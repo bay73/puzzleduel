@@ -126,6 +126,76 @@ router.get('/types', async (req, res, next) => {
 });
 
 
+// List of the best puzzles
+router.get('/best', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    const [typeMap, puzzles, userMap] = await Promise.all([
+      cache.readPuzzleTypes(),
+      Puzzle.find({}, "-data"),
+      util.userNameMap()
+    ]);
+    res.render('best_puzzles', {
+      user: req.user,
+      listtype: "best",
+      puzzles: puzzles
+        .filter(puzzle => !puzzle.needLogging)
+        .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
+        .sort((p1, p2) => (p2.rating.rating==p1.rating.rating?p2.rating.count - p1.rating.count:p2.rating.rating - p1.rating.rating))
+        .slice(0,50)
+        .map(puzzle => {
+        return {
+          code: puzzle.code,
+          category: typeMap[puzzle.type].category,
+          type: typeMap[puzzle.type].name,
+          dimension: puzzle.dimension,
+          difficulty: puzzle.difficulty,
+          rating: puzzle.rating,
+          author: userMap[puzzle.author]
+        };
+      })
+    });
+    profiler.log('archiveBest', processStart);
+  } catch (e) {
+    next(e)
+  }
+});
+
+// List of non rated puzzles
+router.get('/nonrated', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    const [typeMap, puzzles, userMap] = await Promise.all([
+      cache.readPuzzleTypes(),
+      Puzzle.find({}, "-data"),
+      util.userNameMap()
+    ]);
+    res.render('best_puzzles', {
+      user: req.user,
+      listtype: "non_rated",
+      puzzles: puzzles
+        .filter(puzzle => !puzzle.needLogging)
+        .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
+        .filter(puzzle => typeof puzzle.rating.rating == "undefined")
+        .slice(0,50)
+        .map(puzzle => {
+        return {
+          code: puzzle.code,
+          category: typeMap[puzzle.type].category,
+          type: typeMap[puzzle.type].name,
+          dimension: puzzle.dimension,
+          difficulty: puzzle.difficulty,
+          rating: puzzle.rating,
+          author: userMap[puzzle.author]
+        };
+      })
+    });
+    profiler.log('archiveBest', processStart);
+  } catch (e) {
+    next(e)
+  }
+});
+
 // List of all old puzzles by author
 router.get('/types/author/:authorid', async (req, res, next) => {
   try {
