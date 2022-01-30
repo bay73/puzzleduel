@@ -11,12 +11,12 @@ router.get('/', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
     var date = new Date();
-    var yesterday = new Date(date.getFullYear(), date.getMonth(), date.getDay() - 1);
+    var twoDaysAgo = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
     const [dailyPuzzle, contest, ratingChange, commenters] = await Promise.all([
       cache.readPuzzleByDate(new Date().toISOString().slice(0,10)),
       cache.readDailyShadowContest(),
-      cache.readMonthlyRatingChange(yesterday),
-      cache.readMonthlyCommenters(yesterday)
+      cache.readMonthlyRatingChange(twoDaysAgo),
+      cache.readMonthlyCommenters(twoDaysAgo)
     ]);
     if (dailyPuzzle) {
       var dailyPuzzleObj = await util.puzzleToPresent(dailyPuzzle, req.getLocale());
