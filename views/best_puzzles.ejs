@@ -15,11 +15,13 @@
           <tbody>
             <% puzzles.forEach(function(puzzle) { %>
             <tr>
-              <td class="d-none d-sm-table-cell">
+              <% if (listtype!="non_rated") { %>
+              <td>
                 <% if (puzzle.rating && puzzle.rating.rating>0) { %>
                 <%- include ('./partials/rating_span', {rating: puzzle.rating.rating, ratingCount: puzzle.rating.count}) %>
                 <% } %>
               </td>
+              <% } %>
               <td>
                 <a href="/single/<%= puzzle.code %>">
                   <%= puzzle.type %>
