@@ -139,6 +139,7 @@ router.get('/best', async (req, res, next) => {
       user: req.user,
       listtype: "best",
       puzzles: puzzles
+        .filter(puzzle => typeof puzzle.rating!="undefined" && puzzle.rating.rating > 0)
         .filter(puzzle => !puzzle.needLogging)
         .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
         .sort((p1, p2) => (p2.rating.rating==p1.rating.rating?p2.rating.count - p1.rating.count:p2.rating.rating - p1.rating.rating))
@@ -174,9 +175,9 @@ router.get('/nonrated', async (req, res, next) => {
       user: req.user,
       listtype: "non_rated",
       puzzles: puzzles
+        .filter(puzzle => typeof puzzle.rating.rating == "undefined" || puzzle.rating.rating <= 0)
         .filter(puzzle => !puzzle.needLogging)
         .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
-        .filter(puzzle => typeof puzzle.rating.rating == "undefined")
         .slice(0,50)
         .map(puzzle => {
         return {
