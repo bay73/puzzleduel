@@ -51,7 +51,7 @@
           <p>Below you can find two puzzles: <br>
              One is a regular daily puzzle. Solving time for the puzzle affects <a href="/archive/scores">daily score list</a>
              and the <a href="/rating">user rating</a>. <br>
-             The second puzzle is a part of <a href="<%= contestPuzzle.contest.link %>"><%= contestPuzzle.contest.name %> contest</a>.
+             The second puzzle is a part of <a href="<%= contestPuzzle.contest.link %>"><%- contestPuzzle.contest.name %> contest</a>.
              It doesn't affect rating but used for separate contest scoring.
              The contest rules, results and additional information can
              be found at <a href="<%= contestPuzzle.contest.link %>">contest page</a>.</p>
@@ -77,7 +77,7 @@
       </div>
       <% } else if (dailyPuzzle && dailyPuzzle.contest) { %>
       <div class="card card-body">
-        <p>Today's daily puzzle is also a part of <a href="<%= dailyPuzzle.contest.link %>"><%= dailyPuzzle.contest.name %> contest</a>.
+        <p>Today's daily puzzle is also a part of <a href="<%= dailyPuzzle.contest.link %>"><%- dailyPuzzle.contest.name %> contest</a>.
            So the solving result for the puzzle affects both
            <a href="/archive/scores">daily score list</a> and <a href="/contest/<%= dailyPuzzle.contest.contestId %>/results">contest scores</a>.</p>
         <p>The contest rules, results and additional information can  be found at <a href="<%= dailyPuzzle.contest.link %>">contest page</a>.</p>

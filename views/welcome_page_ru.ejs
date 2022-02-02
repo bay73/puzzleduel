@@ -51,7 +51,7 @@
           <p>Ниже вы можете увидеть две задачи: <br>
              Одна - это обычная задача дня. Время решения этой задачи указывается в <a href="/archive/scores">списке результатов дня</a>
              и влияет на <a href="/rating">рейтинг</a>. <br>
-             Вторая задача - часть <a href="<%= contestPuzzle.contest.link %>">конкурса <%= contestPuzzle.contest.name %></a>.
+             Вторая задача - часть <a href="<%= contestPuzzle.contest.link %>">конкурса <%- contestPuzzle.contest.name %></a>.
              Решение этой задачи не влияет на рейтинг, а учитывается в специальном конкурсном зачёте.
              Правила конкурса, результаты и другую информации можно найти на
              <a href="<%= contestPuzzle.contest.link %>">странице конкурса</a>.</p>
@@ -77,7 +77,7 @@
       </div>
       <% } else if (dailyPuzzle && dailyPuzzle.contest) { %>
       <div class="card card-body">
-        <p>Сегодняшняя задача дня является также частью <a href="<%= dailyPuzzle.contest.link %>">конкурса <%= dailyPuzzle.contest.name %></a>.
+        <p>Сегодняшняя задача дня является также частью <a href="<%= dailyPuzzle.contest.link %>">конкурса <%- dailyPuzzle.contest.name %></a>.
            То есть решение этой задачи отражается и в
            <a href="/archive/scores">результатах дня</a> и в <a href="/contest/<%= dailyPuzzle.contest.contestId %>/results">конкурсном зачёте</a>.</p>
         <p>Правила конкурса, результаты и другую информации можно найти на <a href="<%= dailyPuzzle.contest.link %>">странице конкурса</a>.</p>
