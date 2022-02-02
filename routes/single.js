@@ -141,7 +141,12 @@ router.get('/:puzzleid/answers', ensureAuthenticated, async (req, res, next) => 
     res.render('answers', {
       user: req.user,
       puzzle: puzzleObj,
-      answers: log.map(item => {return {date: item.date, data: item.data, userName: userMap[item.userId]};})
+      answers: log.map(item => {
+        var data = (typeof item.data!="undefined")?JSON.parse(item.data):null;
+        delete data.time;
+        delete data.log;
+        return {date: item.date, data: data, userName: userMap[item.userId]};
+      })
     });
     profiler.log('singleAnswers', processStart);
   } catch (e) {
