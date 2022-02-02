@@ -51,4 +51,12 @@
    -webkit-mask-repeat: repeat-x;
    -webkit-mask-size: 15px 15px;
 }
+.flipV {
+   display: inline-block;
+  transform: scale(1, -1);
+   -moz-transform: scale(1, -1);
+   -webkit-transform: scale(1, -1);
+   -o-transform: scale(1, -1);
+   -ms-transform: scale(1, -1);
+}
 
