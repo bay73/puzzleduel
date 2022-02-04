@@ -52,18 +52,18 @@
              One is a regular daily puzzle. Solving time for the puzzle affects <a href="/archive/scores">daily score list</a>
              and the <a href="/rating">user rating</a>. <br>
              The second puzzle is a part of <a href="<%= contestPuzzle.contest.link %>"><%- contestPuzzle.contest.name %> contest</a>.
-             It doesn't affect rating but used for separate contest scoring.
+             It doesn't affect rating but used for a separate contest scoring.
              The contest rules, results and additional information can
-             be found at <a href="<%= contestPuzzle.contest.link %>">contest page</a>.</p>
+             be found at <a href="<%= contestPuzzle.contest.link %>">the contest page</a>.</p>
         </div>
         <% } else { %>
         <div class="card card-body">
           <p>The puzzles below are current daily and contest puzzles.
              These puzzles are competitive and you have to register to solve them and participate in the competition.
              To register click <a href="/users/login">Login</a> link in the top right corner.</p>
-          <p>You can use the <a href="/archive/scores">scores page</a> to see the results of other competitors for daily puzzle.</p>
+          <p>You can use the <a href="/archive/scores">scores page</a> to see the results of other competitors for the daily puzzle.</p>
           <p>All the puzzles from the previous days are available at our <a href="/archive">archive page</a>.
-             Puzzles which are older than 5 days do not affect score table and can be attempted without registration.</p>
+             Puzzles which are older than 5 days do not affect the score table and can be attempted without registration.</p>
         </div>
         <% } %>
       <% } else if (!user) { %>
@@ -73,14 +73,14 @@
            To register click <a href="/users/login">Login</a> link in the top right corner.</p>
         <p>You can use the <a href="/archive/scores">scores page</a> to see the results of other competitors for this puzzle.</p>
         <p>All the puzzles from the previous days are available at our <a href="/archive">archive page</a>.
-           Puzzles which are older than 5 days do not affect score table and can be attempted without registration.</p>
+           Puzzles which are older than 5 days do not affect the score table and can be attempted without registration.</p>
       </div>
       <% } else if (dailyPuzzle && dailyPuzzle.contest) { %>
       <div class="card card-body">
         <p>Today's daily puzzle is also a part of <a href="<%= dailyPuzzle.contest.link %>"><%- dailyPuzzle.contest.name %> contest</a>.
            So the solving result for the puzzle affects both
-           <a href="/archive/scores">daily score list</a> and <a href="/contest/<%= dailyPuzzle.contest.contestId %>/results">contest scores</a>.</p>
-        <p>The contest rules, results and additional information can  be found at <a href="<%= dailyPuzzle.contest.link %>">contest page</a>.</p>
+           <a href="/archive/scores">the daily score list</a> and <a href="/contest/<%= dailyPuzzle.contest.contestId %>/results">the contest scores</a>.</p>
+        <p>The contest rules, results and additional information can  be found at <a href="<%= dailyPuzzle.contest.link %>">the contest page</a>.</p>
       </div>
       <% } %>
       <%- include ('./partials/messages') %>
