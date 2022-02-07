@@ -4,13 +4,33 @@
     <div class="col-12 col-lg-10 m-auto">
       <%- include ('./partials/messages') %>
       <div class="card">
-        <% if (listtype=="best") { %>
-        <h1 class="card-header"><%= __('Best puzzles') %></h1>
-        <% } else if (listtype=="worst") { %>
-        <h1 class="card-header"><%= __('Worse puzzles') %></h1>
-        <% } else { %>
-        <h1 class="card-header"><%= __('Non rated puzzles') %></h1>
-        <% } %>
+        <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+          <div>
+            <% if (listtype=="best") { %>
+            <h1><%= __('Best puzzles') %></h1>
+            <% } else if (listtype=="worst") { %>
+            <h1><%= __('Worse puzzles') %></h1>
+            <% } else { %>
+            <h1><%= __('Non rated puzzles') %></h1>
+            <% } %>
+          </div>
+          <div class="mt-2 p-2 align-text-bottom text-right">
+            <select id="chooseCategory" class="form-select">
+              <option value=""><%= __('All Puzzles') %></option>
+              <% categories.sort().forEach(categoryCode => { %>
+              <option value="<%= categoryCode.substr(3) %>" <%= categoryCode.substr(3)==category?"selected":"" %>><%= __(categoryCode.substr(3)) %></option>
+              <% }) %>
+            <select>
+          </div>
+          <script>
+            $("#chooseCategory").change(function(){
+              var url = window.location;
+              var path=url.pathname.split("archive")[1];
+              url=url.origin + "/archive/" + path.split("/")[1] +"/"+ $("#chooseCategory").val();
+              window.location = url;
+            })
+          </script>
+        </div>
         <table class="card-body table table-hover table-condensed">
           <tbody>
             <% puzzles.forEach(function(puzzle) { %>

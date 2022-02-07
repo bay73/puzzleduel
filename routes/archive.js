@@ -127,7 +127,7 @@ router.get('/types', async (req, res, next) => {
 
 
 // List of the best puzzles
-router.get('/best', async (req, res, next) => {
+router.get(['/best','/best/:category'], async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
     const [typeMap, puzzles, userMap] = await Promise.all([
@@ -135,13 +135,18 @@ router.get('/best', async (req, res, next) => {
       Puzzle.find({}, "-data"),
       util.userNameMap()
     ]);
+    const categories = [];
+    Object.entries(typeMap).forEach(([key,type]) => {if(!categories.includes(type.category)) categories.push(type.category)});
     res.render('best_puzzles', {
       user: req.user,
       listtype: "best",
+      category: req.params.category,
+      categories: categories,
       puzzles: puzzles
         .filter(puzzle => typeof puzzle.rating!="undefined" && puzzle.rating.rating > 0)
         .filter(puzzle => !puzzle.needLogging)
         .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
+        .filter(puzzle => typeof req.params.category=="undefined" || typeMap[puzzle.type].category.substr(3)==req.params.category)
         .sort((p1, p2) => (p2.rating.rating==p1.rating.rating?p2.rating.count - p1.rating.count:p2.rating.rating - p1.rating.rating))
         .slice(0,50)
         .map(puzzle => {
@@ -163,7 +168,7 @@ router.get('/best', async (req, res, next) => {
 });
 
 // List of non rated puzzles
-router.get('/nonrated', async (req, res, next) => {
+router.get(['/nonrated','/nonrated/:category'], async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
     const [typeMap, puzzles, userMap] = await Promise.all([
@@ -171,13 +176,18 @@ router.get('/nonrated', async (req, res, next) => {
       Puzzle.find({}, "-data"),
       util.userNameMap()
     ]);
+    const categories = [];
+    Object.entries(typeMap).forEach(([key,type]) => {if(!categories.includes(type.category)) categories.push(type.category)});
     res.render('best_puzzles', {
       user: req.user,
       listtype: "non_rated",
+      category: req.params.category,
+      categories: categories,
       puzzles: puzzles
         .filter(puzzle => typeof puzzle.rating.rating == "undefined" || puzzle.rating.rating <= 0)
         .filter(puzzle => !puzzle.needLogging)
         .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
+        .filter(puzzle => typeof req.params.category=="undefined" || typeMap[puzzle.type].category.substr(3)==req.params.category)
         .slice(0,50)
         .map(puzzle => {
         return {
