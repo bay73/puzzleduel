@@ -162,6 +162,23 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
+  typeProperties["queens"] = {
+    cellController: cell => {
+      if (!cell.isClue) {
+        setClickSwitch(cell, true, [{},{image: "queen", returnValue: "queen"},{image: "cross"}]);
+      }
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{}, {image: "cross", returnValue: "cross"}];
+      for (var i=0; i<=8; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
+  }
+
   typeProperties["snake_belarusian"] = {
     needNodes: true,
     cellController: cell => {
@@ -599,8 +616,33 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
       }
     },
-    decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
     collectAreas: this.editMode,
+  }
+
+  typeProperties["snake_simple"] = {
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      if (cell.outerCell) {
+        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
+      } else {
+        setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "black"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      }
+    },
+    cellEditController: cell => {
+      if (cell.outerCell) {
+        cell.isClue = true;
+        var chooserValues = [{}];
+        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
+         chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      } else {
+        cell.clickSwitch = [{},,{color: self.colorSchema.greyColor, returnValue: "black"},{image: "cross", returnValue: "cross"}];
+      }
+    },
+    decodeClue: value => {return value=="cross"?{image: "cross"}(value=="black"?{image: "black"}:{text: value});},
   }
 
   typeProperties["tetro_scope"] = {
