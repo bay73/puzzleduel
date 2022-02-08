@@ -639,10 +639,20 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         }
         cell.chooserValues = chooserValues;
       } else {
-        cell.clickSwitch = [{},,{color: self.colorSchema.greyColor, returnValue: "black"},{image: "cross", returnValue: "cross"}];
+        cell.clickSwitch = [{},{color: self.colorSchema.clueColor, returnValue: "black"},{image: "cross", returnValue: "cross"}];
       }
     },
-    decodeClue: value => {return value=="cross"?{image: "cross"}(value=="black"?{image: "black"}:{text: value});},
+    decodeClue: value => {
+      if (value=="cross") {
+        return {image: value};
+      } else if (value=="black") {
+        return {color: self.colorSchema.clueColor};
+      } else if (value=="white") {
+        return {};
+      } else {
+        return {text: value};
+      };
+    },
   }
 
   typeProperties["tetro_scope"] = {
