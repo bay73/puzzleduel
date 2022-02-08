@@ -179,6 +179,36 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
+  typeProperties["minesweeper_classic"] = {
+    cellController: cell => {
+      if (!cell.isClue) {
+        setClickSwitch(cell, true, [{},{image: "mine", returnValue: "mine"},{image: "cross"}]);
+      }
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{}, {image: "cross", returnValue: "cross"}];
+      for (var i=0; i<=8; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
+  }
+
+  typeProperties["yin_yang_classic"] = {
+    cellController: cell => {
+      if (!cell.isClue) {
+        setClickSwitch(cell, true, [{},{image: "black_circle", returnValue: "black_circle"},{image: "white_circle", returnValue: "white_circle"}]);
+      }
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      cell.clickSwitch = [{},{image: "black_circle", returnValue: "black_circle"},{image: "white_circle", returnValue: "white_circle"}];
+    },
+    decodeClue: value => {return {image: value};},
+  }
+
   typeProperties["snake_belarusian"] = {
     needNodes: true,
     cellController: cell => {
