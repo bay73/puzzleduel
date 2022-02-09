@@ -303,6 +303,75 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["fuzuli"] = {
+    needNodes: false,
+    cellController: cell => {
+      if (!cell.isClue) {
+        var chooserValues = [{}];
+        for (var i=1; i<=self.rows-2; i++) {
+         chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        chooserValues.push({image: "cross"});
+        chooserValues.push({image: "white_circle"});
+        cell.chooserValues = chooserValues;
+      }
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{}];
+      for (var i=1; i<=self.rows-2; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      chooserValues.push({image: "cross", returnValue: "cross"});
+      cell.chooserValues = chooserValues;
+    },
+    cellMultiPencil: true,
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
+  }
+
+  typeProperties["doubleblock"] = {
+    needNodes: false,
+    needBottom: true,
+    needRight: true,
+    cellController: cell => {
+      if (!cell.isClue && !cell.outerCell) {
+        var chooserValues = [{}];
+        for (var i=1; i<=self.rows-2; i++) {
+         chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        chooserValues.push({image: "cross"});
+        chooserValues.push({image: "white_circle"});
+        cell.chooserValues = chooserValues;
+      } else if (cell.outerCell) {
+        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
+      }
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      if (cell.outerCell) {
+        setNumberChooser(cell, 0, (self.rows-2)*(self.rows-1)/2);
+      } else {
+        var chooserValues = [{}];
+        for (var i=1; i<=self.rows-2; i++) {
+         chooserValues.push({text: i.toString(), returnValue: i.toString()});
+        }
+        chooserValues.push({image: "cross", returnValue: "cross"});
+        cell.chooserValues = chooserValues;
+      }
+    },
+    usePlus10: this.editMode?12:0,
+    cellMultiPencil: true,
+    decodeClue: value => {
+      if (value=="cross") {
+        return {image: "cross"};
+      } else if (value=="white") {
+        return {};
+      } else {
+        return {text: value};
+      }
+    },
+  }
+
   typeProperties["ripple_effect"] = {
     needNodes: true,
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 6);}},
