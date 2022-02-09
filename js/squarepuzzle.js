@@ -741,6 +741,48 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["nurikabe"] = {
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "black"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      setClueClickSwitch(cell, [{},{image: "cross"}], [{},{image: "cross"}]);
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{},{image: "cross", returnValue: "cross"}];
+      for (var i=1; i<=99; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    usePlus10: this.editMode?11:0,
+    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
+  }
+
+  typeProperties["cave_classic"] = {
+    cellController: cell => {
+      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "black"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
+      setClueClickSwitch(cell, [{},{image: "cross"}], [{},{image: "cross"}]);
+    },
+    cellEditController: cell => {
+      cell.isClue = true;
+      var chooserValues = [{},{image: "cross", returnValue: "cross"},{color: self.colorSchema.clueColor, returnValue: "black"}];
+      for (var i=1; i<=99; i++) {
+       chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    usePlus10: this.editMode?12:0,
+    decodeClue: value => {
+      if (value=="cross") {
+        return {image: "cross"};
+      } else if (value=="black"){
+        return {color: self.colorSchema.clueColor};
+      } else {
+        return {text: value};
+      }
+    },
+  }
+
   typeProperties["battleships_minesweeper"] = {
     needNodes: false,
     cellController: cell => {
