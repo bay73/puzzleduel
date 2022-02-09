@@ -392,7 +392,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellEditController: cell => setNumberChooser(cell, 1, 99),
     collectAreas: !this.editMode,
     recountConnector: !this.editMode,
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["araf"] = {
@@ -416,7 +416,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellEditController: cell => setNumberChooser(cell, 1, 99),
     collectAreas: !this.editMode,
     recountConnector: !this.editMode,
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["black_white"] = {

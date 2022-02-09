@@ -160,7 +160,7 @@ gridElement.prototype.switchOnDrag = function() {
 
 gridElement.prototype.switchOnChooser = function(index) {
   if (this.chooserValues != null) {
-    if (this.chooserValues.length > 10 && this.puzzle.typeProperties.usePlus10 && index == 10) {
+    if (this.puzzle.typeProperties.usePlus10 > 0 && this.chooserValues.length > this.puzzle.typeProperties.usePlus10 && index == this.puzzle.typeProperties.usePlus10) {
       var currentIndex = this.findCurrent(this.chooserValues);
       var index = currentIndex + 10;
       if (index >= this.chooserValues.length) {
@@ -337,8 +337,8 @@ gridElement.prototype.useChooser = function() {
 }
 
 gridElement.prototype.chooserData = function() {
-  if (this.chooserValues.length > 10 && this.puzzle.typeProperties.usePlus10) {
-    var values = this.chooserValues.slice(0, 10);
+  if (this.puzzle.typeProperties.usePlus10 > 0 && this.chooserValues.length > this.puzzle.typeProperties.usePlus10) {
+    var values = this.chooserValues.slice(0, this.puzzle.typeProperties.usePlus10);
     values.push({text: "+10"});
     return values;
   } else {

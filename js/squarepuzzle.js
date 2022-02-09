@@ -114,7 +114,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     cellMultiPencil: true,
     collectAreas: this.editMode,
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["lits"] = {
@@ -387,7 +387,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
     },
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 99);},
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["every_second_turn"] = {
@@ -471,7 +471,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     nodeEditController: node => node.dragProcessor = true,
     collectAreas: this.editMode,
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["country_road"] = {
@@ -494,7 +494,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     nodeEditController: node => node.dragProcessor = true,
     collectAreas: this.editMode,
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["double_back"] = {
@@ -532,7 +532,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
     },
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 99);},
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["snake_scope"] = {
@@ -575,7 +575,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {
       return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
     },
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
     cellMultiPencil: true,
   }
 
@@ -1000,7 +1000,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       setClueClickSwitch(cell, [{},{image: "cross"}], [{},{image: "cross"}]);
     },
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 29);},
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["product_kuromasu"] = {
@@ -1029,7 +1029,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       }
     },
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
     cellMultiPencil: true,
   }
 
@@ -1059,7 +1059,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       }
     },
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
-    usePlus10: this.editMode,
+    usePlus10: this.editMode?10:0,
     cellMultiPencil: true,
   }
 
