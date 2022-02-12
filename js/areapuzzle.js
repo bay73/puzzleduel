@@ -154,6 +154,17 @@ dominoType.prototype.recountConnectorAreas = function() {
   }
 }
 
+dominoType.prototype.canJoinAreas = function(pos1, pos2) {
+  if (this.cells[pos1.y][pos1.x].data.color==this.colorSchema.gridColor) {
+    return false;
+  }
+  if (this.cells[pos2.y][pos2.x].data.color==this.colorSchema.gridColor) {
+    return false;
+  }
+  return areaPuzzleType.prototype.canJoinAreas.call(this, pos1, pos2);
+}
+
+
 areaPuzzleType.prototype.isAreaRoot = function(cell) {
   return false;
 }

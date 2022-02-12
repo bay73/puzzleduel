@@ -441,10 +441,10 @@ squarePuzzle.prototype.computeAreas = function() {
   }
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
-      if (x < this.cols-1 && this.edges[y][x][1].getValue() != "1") {
+      if (x < this.cols-1 && this.canJoinAreas({x:x,y:y}, {x:x+1,y:y})) {
         join(areaLink[y][x], areaLink[y][x+1]);
       }
-      if (y < this.rows-1 && this.edges[y][x][2].getValue() != "1") {
+      if (y < this.rows-1 && this.canJoinAreas({x:x,y:y}, {x:x,y:y+1})) {
         join(areaLink[y][x], areaLink[y+1][x]);
       }
     }
@@ -462,6 +462,21 @@ squarePuzzle.prototype.computeAreas = function() {
     areas.push(areasObject[r])
   }
   return areas;
+}
+
+squarePuzzle.prototype.canJoinAreas = function(pos1, pos2) {
+  if (pos1.x == pos2.x && pos1.y+1 == pos2.y) {
+    return this.edges[pos1.y][pos1.x][2].getValue() != "1";
+  }
+  if (pos1.x == pos2.x && pos1.y == pos2.y+1) {
+    return this.edges[pos2.y][pos2.x][2].getValue() != "1";
+  }
+  if (pos1.x+1 == pos2.x && pos1.y == pos2.y) {
+    return this.edges[pos1.y][pos1.x][1].getValue() != "1";
+  }
+  if (pos1.x == pos2.x+1 && pos1.y == pos2.y) {
+    return this.edges[pos2.y][pos2.x][1].getValue() != "1";
+  }
 }
 
 squarePuzzle.prototype.showErrorCells = function(result) {
