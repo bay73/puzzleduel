@@ -147,6 +147,7 @@ router.get(['/best','/best/:category'], async (req, res, next) => {
         .filter(puzzle => !puzzle.needLogging)
         .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
         .filter(puzzle => typeof req.params.category=="undefined" || typeMap[puzzle.type].category.substr(3)==req.params.category)
+        .filter(puzzle => puzzle.rating.count > 10)
         .sort((p1, p2) => (p2.rating.rating==p1.rating.rating?p2.rating.count - p1.rating.count:p2.rating.rating - p1.rating.rating))
         .slice(0,50)
         .map(puzzle => {
@@ -184,10 +185,11 @@ router.get(['/nonrated','/nonrated/:category'], async (req, res, next) => {
       category: req.params.category,
       categories: categories,
       puzzles: puzzles
-        .filter(puzzle => typeof puzzle.rating.rating == "undefined" || puzzle.rating.rating <= 0)
+        .filter(puzzle => typeof puzzle.rating.rating == "undefined" || puzzle.rating.rating <= 0 || puzzle.rating.count <= 10)
         .filter(puzzle => !puzzle.needLogging)
         .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
         .filter(puzzle => typeof req.params.category=="undefined" || typeMap[puzzle.type].category.substr(3)==req.params.category)
+        .sort((p1, p2) => (p2.rating.rating==p1.rating.rating?p2.rating.count - p1.rating.count:p2.rating.rating - p1.rating.rating))
         .slice(0,50)
         .map(puzzle => {
         return {

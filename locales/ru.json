@@ -368,9 +368,9 @@
 	"Wrong sum of values in the row": "Неверная сумма в строке",
 	"Best puzzles": "Лучшие задачи",
 	"Worst puzzles": "Худшие задачи",
-	"Non rated puzzles": "Задачи без рейтинга",
+	"Non rated puzzles": "Задачи с малым числом голосов",
 	"Show the best pouzzles": "Показать лучшие задачи",
-	"Show non rated pouzzles": "Показать задачи без рейтинга",
+	"Show non rated pouzzles": "Показать задачи с малым числом голосов",
 	"Puzzle rating is recounted once per day, so any changes appears at this page witrh some delay.": "Рейтинг задач пересчитывается один раз в день, поэтому изменения появляются на этой странице с задержкой.",
 	"All Puzzles": "Все задачи"
 }
