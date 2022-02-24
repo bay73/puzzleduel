@@ -1,4 +1,4 @@
-define(["square"], function() {
+define(["square","controller_helper"], function() {
 
 squarePuzzleType = function(puzzleData, controls, settings) {
   squarePuzzle.call(this, puzzleData, controls, settings);
@@ -24,41 +24,43 @@ squarePuzzleType.prototype.parseDimension = function(dimension) {
 
 squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
+
+  if (typeCode =="hitori") {
+    this.typeProperties = decribePuzzleType().
+      add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,16)).
+      add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.BLACK.submitAs("1"))
+      .  addItem(StdItem.WHITE_CIRCLE.doNotSubmit())).
+      build(this);
+
+  } else if (typeCode=="snake_dutch") {
+    this.typeProperties = decribePuzzleType().
+      add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE)
+        .addItem(StdItem.BLACK_CIRCLE)
+        .addItem(StdItem.CROSS)).
+      add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit())).
+      add(controller().forSolver().cell().clue(StdItem.WHITE_CIRCLE, StdItem.BLACK_CIRCLE).clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))).
+      build(this);
+
+  } else if (typeCode=="starbattle") {
+    this.typeProperties = decribePuzzleType().
+      add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.CROSS)).
+      add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder())).
+      add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.STAR)
+        .addItem(StdItem.CROSS.doNotSubmit())).
+      build(this);
+
+  } else {
+
   var typeProperties = {}
-
-  typeProperties["hitori"] = {
-    cellController: cell => setClickSwitch(cell, true, [{},{color: "#303030", returnValue: "1"},{image: "white_circle"}], [{},{color: "#808080"},{image: "white_circle"}]),
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 16);},
-  }
-
-  typeProperties["snake_dutch"] = {
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      if (cell.isClue && cell.data.image != "cross") {
-        setClueClickSwitch(cell, [{},{color: self.colorSchema.greyColor, returnValue: "1"}], [{},{color: "#a0a0a0"}]);
-      }
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"},{image: "cross", returnValue: "cross"}];},
-    decodeClue: value => {return {image: value} },
-  }
-
-  typeProperties["starbattle"] = {
-    needNodes: true,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{image: "star", returnValue: "star"},{image: "cross"}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    decodeClue: value => {return {image: value} },
-    collectAreas: this.editMode,
-  }
 
   typeProperties["starbattle_smallregions"] = {
     needNodes: true,
@@ -1250,6 +1252,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
+  }
   }
 }
 

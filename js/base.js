@@ -90,6 +90,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       lineColor: "#18254d",
       clueColor: "#203063",
       greyColor: "#4060b6",
+      lightGreyColor: "#90b0e2",
       traceColor: "#007bff",
       gridColor: "#000",
       bgColor: "#fff",
@@ -102,6 +103,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       lineColor: "#008959",
       clueColor: "#404040",
       greyColor: "#707070",
+      lightGreyColor: "#b0b0b0",
       traceColor: "#66efbf",
       gridColor: "#000",
       bgColor: "#fff",
@@ -114,6 +116,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       lineColor: "#00121d",
       clueColor: "#042632",
       greyColor: "#38585c",
+      lightGreyColor: "#a0c0c5",
       traceColor: "#777777",
       gridColor: "#000",
       bgColor: "#fff",
@@ -424,7 +427,7 @@ basePuzzle.prototype.removeMessages = function() {
 basePuzzle.prototype.decodeClue = function(value) {
   // Convert clue value to data for element.
   if (typeof this.typeProperties.decodeClue =="function") {
-    return this.typeProperties.decodeClue(value);
+    return this.typeProperties.decodeClue(value, this);
   } else {
     return {text: value};
   }

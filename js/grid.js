@@ -100,7 +100,7 @@ gridElement.prototype.setPencilData = function(data) {
 // Process events
 gridElement.prototype.compareData = function(data, template) {
   function same(value1, value2) {
-    return (typeof value1 == "undefined" || value2 == value1) && (typeof value1 != "undefined" || value2 == null);
+    return value2 == value1 || (typeof value1 == "undefined" && typeof value2 == "undefined") || (typeof value1 == "undefined" && value2 == null) || (value1 == null && typeof value2 == "undefined");
   }
   return same(data.image, template.image) && same(data.text, template.text)
       && same(data.color, template.color) && same(data.textColor, template.textColor);
