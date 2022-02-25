@@ -26,7 +26,7 @@ PuzzleTypeBuilder.prototype.add = function(controller) {
 
 PuzzleTypeBuilder.prototype.build = function(puzzle) {
   var controllers = this.controllers;
-  var typeDesc = {};
+  var typeDesc = Object.assign({}, puzzle.typeProperties);
 
   var needDrag = function(elementType, editMode) {
     return controllers.filter(controller => (typeof editMode=="undefined" || controller.editMode==editMode)
@@ -87,7 +87,7 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
   typeDesc.connectorEditController = extractControllers(ControllerBuilder.CONNECTOR, true);
 
 
-  typeDesc.needEdges = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.EDGE).length > 0;
+//  typeDesc.needEdges = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.EDGE).length > 0;
   typeDesc.needNodes = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.NODE).length > 0;
   if (needDrag(ControllerBuilder.EDGE)) {
     typeDesc.needNodes = true;
