@@ -6,22 +6,6 @@ squarePuzzleType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(squarePuzzleType.prototype, squarePuzzle.prototype);
 
-squarePuzzleType.prototype.parseDimension = function(dimension) {
-  if (this.typeCode == "pentomino" || this.typeCode == "pentomino_touch" || this.typeCode == "pentomino_hungarian" || this.typeCode == "battleships_minesweeper" || this.typeCode == "battleships_knight" || this.typeCode == "battleships" || this.typeCode == "starbattle_smallregions" || this.typeCode == "domino_castle_sum") {
-    // Parse dimension string to values.
-    var part = dimension.split("-");
-    this.letters = part[1];
-    squarePuzzle.prototype.parseDimension.call(this, part[0]);
-  } else if (this.typeCode == "top_heavy" || this.typeCode == "no_touch_sums") {
-    // Parse dimension string to values.
-    var part = dimension.split("-");
-    squarePuzzle.prototype.parseDimension.call(this, part[0]);
-    this.maxChooserValue = parseInt(part[1]);
-  } else {
-    squarePuzzle.prototype.parseDimension.call(this, dimension);
-  }
-}
-
 squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
 
@@ -87,8 +71,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellController: cell => {
       if(!cell.outerCell && !cell.isClue) {
         cell.chooserValues = [{}];
-        for (var i = 0; i < self.letters.length; i++) {
-         cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
+        for (var i = 0; i < self.this.dimensionExtra.length; i++) {
+         cell.chooserValues.push({text: self.this.dimensionExtra[i], returnValue: self.this.dimensionExtra[i]});
         }
       }
     },
@@ -1156,7 +1140,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       } else {
         if (!cell.isClue) {
           var chooserValues = [{}];
-          for (var i=1; i<=self.maxChooserValue; i++) {
+          for (var i=1; i<=parseInt(self.dimensionExtra); i++) {
             chooserValues.push({text: i.toString(), returnValue: i.toString()});
           }
           chooserValues.push({image: "white_circle"}, {image: "cross"});
@@ -1180,13 +1164,13 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     needNodes: false,
     cellController: cell => {if (!cell.isClue) {
       var chooserValues = [{}];
-      for (var i=1; i<=self.maxChooserValue; i++) {
+      for (var i=1; i<=parseInt(self.dimensionExtra); i++) {
         chooserValues.push({text: i.toString(), returnValue: i.toString()});
       }
       chooserValues.push({image: "white_circle"}, {image: "cross"});
       cell.chooserValues = chooserValues;
     }},
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.maxChooserValue);},
+    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, parseInt(self.dimensionExtra));},
     cellMultiPencil: true,
   }
 

@@ -7,11 +7,17 @@ squarePuzzle = function(puzzleData, controls, settings) {
 Object.setPrototypeOf(squarePuzzle.prototype, basePuzzle.prototype);
 
 squarePuzzle.prototype.parseDimension = function(dimension) {
-  var dimensions = dimension.split("x");
+  if (dimension.includes("-")) {
+    var part = dimension.split("-");
+    var size = part[0];
+    this.dimensionExtra = part[1];
+  } else {
+    var size = dimension;
+  }
   // rows - size of the vertical sides of the grid
   // cols - size of top (and bottom) inclined sedes
-  this.rows = parseInt(dimensions[1]);
-  this.cols = parseInt(dimensions[0]);
+  this.rows = parseInt(size.split("x")[1]);
+  this.cols = parseInt(size.split("x")[0]);
 }
 
 squarePuzzle.prototype.createBoard = function() {

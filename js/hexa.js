@@ -7,12 +7,18 @@ hexaPuzzle = function(puzzleData, controls, settings) {
 Object.setPrototypeOf(hexaPuzzle.prototype, basePuzzle.prototype);
 
 hexaPuzzle.prototype.parseDimension = function(dimension) {
-  var dimensions = dimension.split("x");
+  if (dimension.includes("-")) {
+    var part = dimension.split("-");
+    var size = part[0];
+    this.demensionExtra = part[1];
+  } else {
+    var size = dimension;
+  }
   // Hexa grid has vertical simmetrical.
   // rows - size of the vertical sides of the grid
   // cols - size of top (and bottom) inclined sedes
-  this.rows = parseInt(dimensions[1]);
-  this.cols = parseInt(dimensions[0]);
+  this.rows = parseInt(size.split("x")[1]);
+  this.cols = parseInt(size.split("x")[0]);
 }
 
 hexaPuzzle.prototype.createBoard = function() {

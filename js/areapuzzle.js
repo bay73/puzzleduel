@@ -285,8 +285,8 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellEditController: cell => {
       cell.isClue = true;
       cell.chooserValues = [{}];
-      for (var i = 0; i < self.letters.length; i++) {
-        cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
+      for (var i = 0; i < self.dimensionExtra.length; i++) {
+        cell.chooserValues.push({text: self.dimensionExtra[i], returnValue: self.dimensionExtra[i]});
       }
     },
     collectAreas: !this.editMode,
@@ -314,8 +314,8 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellEditController: cell => {
       cell.isClue = true;
       cell.chooserValues = [{}, {color: self.colorSchema.gridColor, returnValue: "black"}];
-      for (var i = 0; i < self.letters.length; i++) {
-        cell.chooserValues.push({text: self.letters[i], returnValue: self.letters[i]});
+      for (var i = 0; i < self.dimensionExtra.length; i++) {
+        cell.chooserValues.push({text: self.dimensionExtra[i], returnValue: self.dimensionExtra[i]});
       }
     },
     collectAreas: !this.editMode,
@@ -535,17 +535,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
-  }
-}
-
-areaPuzzleType.prototype.parseDimension = function(dimension) {
-  if (this.typeCode == "abc_division" || this.typeCode == "domino_hunt") {
-    // Parse dimension string to values.
-    var part = dimension.split("-");
-    squarePuzzle.prototype.parseDimension.call(this, part[0]);
-    this.letters = part[1];
-  } else {
-    squarePuzzle.prototype.parseDimension.call(this, dimension);
   }
 }
 
