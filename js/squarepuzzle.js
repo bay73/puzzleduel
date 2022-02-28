@@ -42,6 +42,21 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit())).
       build(this);
 
+  } else if (typeCode=="akari") {
+    this.typeProperties = decribePuzzleType().
+      add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK)
+        .addNumbers(0,4,StdColor.BLACK)).
+      add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.BULB)
+        .addItem(StdItem.CROSS.doNotSubmit())).
+      add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CROSS.doNotSubmit())).
+      add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.doNotSubmit())).
+      addUpgradeClue((clue)=>{if (clue.includes("_shade")){return clue.substring(0,1);} else {return clue;}}).
+      build(this);
+
   } else {
 
   var typeProperties = {}

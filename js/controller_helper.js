@@ -12,6 +12,7 @@ controllerItem = function(data) {
 
 PuzzleTypeBuilder = function() {
   this.controllers = [];
+  this.upgradeClue = undefined;
 }
 
 PuzzleTypeBuilder.prototype.add = function(controller) {
@@ -23,6 +24,12 @@ PuzzleTypeBuilder.prototype.add = function(controller) {
   }
   return this;
 }
+
+PuzzleTypeBuilder.prototype.addUpgradeClue = function(upgradeClue){
+  this.upgradeClue = upgradeClue;
+  return this;
+}
+
 
 PuzzleTypeBuilder.prototype.build = function(puzzle) {
   var controllers = this.controllers;
@@ -110,6 +117,9 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
   }
   typeDesc.collectAreas = this.controllers.filter(controller=>controller.collectAreas && controller.editMode==puzzle.editMode).length > 0;
 
+  if (typeof this.upgradeClue != "undefined") {
+    typeDesc.upgradeClue = this.upgradeClue;
+  }
   return typeDesc;
 }
 
@@ -244,9 +254,13 @@ ControllerBuilder.prototype.withDrag = function(withDarg){
   return this;
 }
 
-ControllerBuilder.prototype.addNumbers = function(start, end){
+ControllerBuilder.prototype.addNumbers = function(start, end, color){
   for (var i=start; i<=end; i++) {
-    this.addItem(controllerItem({text: i.toString(), returnValue: i.toString()}));
+    if (typeof color != "undefined") {
+      this.addItem(controllerItem({text: i.toString(), color: color.color, textColor: color.textColor, returnValue: i.toString()}));
+    } else {
+      this.addItem(controllerItem({text: i.toString(), returnValue: i.toString()}));
+    }
   }
   return this;
 }
@@ -255,7 +269,6 @@ ControllerBuilder.prototype.addItem = function(item){
   this.items.push(item);
   return this;
 }
-
 
 ControllerBuilder.prototype.build = function(){
   var self = this;
@@ -358,13 +371,21 @@ ControllerItemBuilder.prototype.asAreaBorder = function(){
   return this.submitAs("1");
 }
 
+StdColor = {
+ BLACK: {color: (puzzle, isPencil) => puzzle.colorSchema.gridColor,
+         textColor: "#fff"}
+}
+
 StdItem = {
 EMPTY: controllerItem({}),
 BLACK: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.greyColor:puzzle.colorSchema.gridColor, returnValue: "black"}),
 GREY: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.lightGreyColor:puzzle.colorSchema.greyColor, returnValue: "grey"}),
+LINE: controllerItem({color: (puzzle, isPencil) => puzzle.colorSchema.lineColor, returnValue: "line"}),
 WHITE_CIRCLE: controllerItem({image: "white_circle", returnValue: "white_circle"}),
 BLACK_CIRCLE: controllerItem({image: "black_circle", returnValue: "black_circle"}),
 CROSS: controllerItem({image: "cross", returnValue: "cross"}),
+WHITE_CROSS: controllerItem({image: "white_cross", returnValue: "white_cross"}),
 STAR: controllerItem({image: "star", returnValue: "star"}),
+BULB: controllerItem({image: "bulb", returnValue: "bulb"}),
 }
 

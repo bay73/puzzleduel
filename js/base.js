@@ -425,6 +425,9 @@ basePuzzle.prototype.removeMessages = function() {
 }
 
 basePuzzle.prototype.decodeClue = function(value) {
+  if (typeof this.typeProperties.upgradeClue =="function") {
+    value = this.typeProperties.upgradeClue(value);
+  }
   // Convert clue value to data for element.
   if (typeof this.typeProperties.decodeClue =="function") {
     return this.typeProperties.decodeClue(value, this);
