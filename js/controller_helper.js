@@ -22,6 +22,16 @@ PuzzleTypeBuilder.prototype.add = function(controller) {
     dragController.type = ControllerBuilder.DRAG_SWITCH;
     this.controllers.push(dragController);
   }
+  if (controller.conditions.length > 0) {
+    controller.condition = function(gridElement) {
+      for (var i=0; i<controller.conditions.length;i++) {
+        if (!controller.conditions[i](gridElement)) {
+          return false;
+        }
+      }
+      return true;
+    };
+  }
   return this;
 }
 
@@ -113,9 +123,14 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
     }
   });
   typeDesc.decodeClue = function(value, puzzle) {
+    if (!value) {
+      return {};
+    }
     return processControllerGenericData(clueValues[value], puzzle);
   }
   typeDesc.collectAreas = this.controllers.filter(controller=>controller.collectAreas && controller.editMode==puzzle.editMode).length > 0;
+  typeDesc.needBottom = this.controllers.filter(controller=>controller.outerCells).length > 0;
+  typeDesc.needRight = this.controllers.filter(controller=>controller.outerCells).length > 0;
 
   if (typeof this.upgradeClue != "undefined") {
     typeDesc.upgradeClue = this.upgradeClue;
@@ -127,7 +142,9 @@ ControllerBuilder = function() {
   this.editMode = false;
   this.type = undefined;
   this.elementType = undefined;
+  this.outerCells = false;
   this.condition = undefined;
+  this.conditions = [];
   this.collectAreas = false;
   this.addDrag = false;
   this.items = [StdItem.EMPTY];
@@ -186,22 +203,27 @@ ControllerBuilder.prototype.drag = function(){
   return this;
 }
 
+ControllerBuilder.prototype.inner = function(){
+  this.conditions.push(gridElement => !gridElement.outerCell);
+  return this;
+}
+
+ControllerBuilder.prototype.outer = function(){
+  this.conditions.push(gridElement => gridElement.outerCell);
+  this.outerCells = true;
+  return this;
+}
+
 ControllerBuilder.prototype.noClue = function(){
-  if (typeof this.condition!="undefined") {
-    throw "Controller condition is already defined"
-  }
-  this.condition = gridElement => !gridElement.isClue;
+  this.conditions.push(gridElement => !gridElement.isClue);
   return this;
 }
 
 ControllerBuilder.prototype.clue = function(...clueItems){
-  if (typeof this.condition!="undefined") {
-    throw "Controller condition is already defined"
-  }
   if (clueItems.length == 0) {
-    this.condition = gridElement => gridElement.isClue;
+    this.conditions.push(gridElement => gridElement.isClue);
   } else {
-    this.condition = gridElement => containClues(gridElement, clueItems);
+    this.conditions.push(gridElement => containClues(gridElement, clueItems));
   }
   return this;
 }
@@ -387,5 +409,13 @@ CROSS: controllerItem({image: "cross", returnValue: "cross"}),
 WHITE_CROSS: controllerItem({image: "white_cross", returnValue: "white_cross"}),
 STAR: controllerItem({image: "star", returnValue: "star"}),
 BULB: controllerItem({image: "bulb", returnValue: "bulb"}),
+ARROW_U: controllerItem({image: "arrow_u", returnValue: "arrow_u"}),
+ARROW_UR: controllerItem({image: "arrow_ur", returnValue: "arrow_ur"}),
+ARROW_R: controllerItem({image: "arrow_r", returnValue: "arrow_r"}),
+ARROW_DR: controllerItem({image: "arrow_dr", returnValue: "arrow_dr"}),
+ARROW_D: controllerItem({image: "arrow_d", returnValue: "arrow_d"}),
+ARROW_DL: controllerItem({image: "arrow_dl", returnValue: "arrow_dl"}),
+ARROW_L: controllerItem({image: "arrow_l", returnValue: "arrow_l"}),
+ARROW_UL: controllerItem({image: "arrow_ul", returnValue: "arrow_ul"}),
 }
 

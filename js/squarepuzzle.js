@@ -54,7 +54,32 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CROSS.doNotSubmit())).
       add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.doNotSubmit())).
-      addUpgradeClue((clue)=>{if (clue.includes("_shade")){return clue.substring(0,1);} else {return clue;}}).
+      addUpgradeClue(clue=>{if (clue.includes("_shade")){return clue.substring(0,1);} else {return clue;}}).
+      build(this);
+
+  } else if (typeCode=="point_a_star") {
+    var maxValue = (Math.max(this.rows, this.cols)+1)/2;
+    this.typeProperties = decribePuzzleType().
+      add(controller().forAuthor().cell().inner().chooser()
+        .addItem(StdItem.ARROW_U)
+        .addItem(StdItem.ARROW_UR)
+        .addItem(StdItem.ARROW_R)
+        .addItem(StdItem.ARROW_DR)
+        .addItem(StdItem.ARROW_D)
+        .addItem(StdItem.ARROW_DL)
+        .addItem(StdItem.ARROW_L)
+        .addItem(StdItem.ARROW_UL)
+        .addItem(StdItem.CROSS)).
+      add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0,maxValue)).
+      add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.STAR)
+        .addItem(StdItem.CROSS.doNotSubmit())).
+      add(controller().forSolver().cell().inner().clue().clickSwitch()
+        .addItem(StdItem.GREY.doNotSubmit())).
+      add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit())).
+      addUpgradeClue(clue=>clue=="white"?null:clue).
       build(this);
 
   } else {
