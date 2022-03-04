@@ -82,6 +82,22 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       addUpgradeClue(clue=>clue=="white"?null:clue).
       build(this);
 
+  } else if (typeCode=="clouds") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType().
+      add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.BLACK)).
+      add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0,maxValue)).
+      add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.BLACK)
+        .addItem(StdItem.CROSS.doNotSubmit())).
+      add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit())).
+      addUpgradeClue(clue=>clue=="white"?null:clue).
+      build(this);
+
   } else {
 
   var typeProperties = {}
