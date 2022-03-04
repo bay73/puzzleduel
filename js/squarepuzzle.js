@@ -98,6 +98,22 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="gaps") {
+    var maxValue = this.rows-2;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.WHITE_CIRCLE))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0,maxValue))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE)
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else {
 
   var typeProperties = {}
