@@ -143,8 +143,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellController: cell => {
       if(!cell.outerCell && !cell.isClue) {
         cell.chooserValues = [{}];
-        for (var i = 0; i < self.this.dimensionExtra.length; i++) {
-         cell.chooserValues.push({text: self.this.dimensionExtra[i], returnValue: self.this.dimensionExtra[i]});
+        for (var i = 0; i < self.dimensionExtra.length; i++) {
+         cell.chooserValues.push({text: self.dimensionExtra[i], returnValue: self.dimensionExtra[i]});
         }
       }
     },
