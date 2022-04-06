@@ -126,6 +126,9 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
     if (!value) {
       return {};
     }
+    if (!clueValues[value]) {
+      throw "Unrecognized clue value " + value;
+    }
     return processControllerGenericData(clueValues[value], puzzle);
   }
   typeDesc.collectAreas = this.controllers.filter(controller=>controller.collectAreas && controller.editMode==puzzle.editMode).length > 0;
