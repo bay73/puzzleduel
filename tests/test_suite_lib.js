@@ -122,13 +122,13 @@ assertSubject.prototype.isNotNull = function() {
 }
 
 assertSubject.prototype.isNull = function() {
-  return this.assertWithMessage("expected to be null, but was " + this.subject, this.subject == null);
+  return this.assertWithMessage("expected to be null, but was " + JSON.stringify(this.subject), this.subject == null);
 }
 
 assertSubject.prototype.containsExactly = function(expected) {
   let subject = this.subject;
   if (!subject) {
-    throw this.text + " expected to be non empty Array but was " + subject;
+    throw this.text + " expected to be non empty Array but was " + JSON.stringify(subject);
   }
   if (!(subject instanceof Array)) {
     throw this.text + " expected to be Array but was " + (typeof subject);
