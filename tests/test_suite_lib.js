@@ -23,11 +23,9 @@ function testSuite(name, ...tests) {
   }
   
   return {name: name,
-    header: () => {
-       console.log("%c" + name, "font-weight:bold");
-    },
     exec: () => {
     beforeAll( () => {
+       console.log("%c" + name, "font-weight:bold");
       for (let i=0; i<testList.length; i++) {
         for (let j=0; j<beforeEach.length; j++) {
           beforeEach[j]();
@@ -152,6 +150,30 @@ assertSubject.prototype.containsExactly = function(expected) {
     }
   }
   throw this.text + " expected to contain exactly " + JSON.stringify(expected) + ", but was " + JSON.stringify(subject);
+}
+
+
+assertSubject.prototype.containsAtLeast = function(expected) {
+  let subject = this.subject;
+  if (!subject) {
+    throw this.text + " expected to be non empty Array but was " + JSON.stringify(subject);
+  }
+  if (!(subject instanceof Array)) {
+    throw this.text + " expected to be Array but was " + (typeof subject);
+  }
+  for (let i=0; i<expected.length; i++) {
+    let found = false;
+    for (let j=0; j<subject.length; j++) {
+      if (deepCompare(subject[j], expected[i])) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      throw this.text + " expected to contain at least " + JSON.stringify(expected) + ", but was " + JSON.stringify(subject);
+    }
+  }
+  return this;
 }
 
 

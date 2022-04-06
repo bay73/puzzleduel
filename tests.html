@@ -63,7 +63,7 @@
 <script src="tests/test_suite_lib.js"></script>
 <script src="js/locale_ru.js"></script>
 <script>
-  $("#runTests").click(() => allTestSuites.forEach(suite => {suite.header(); suite.exec();}));
+  $("#runTests").click(() => allTestSuites.forEach(suite => {suite.exec();}));
   $(document).ready(function () {
     requirejs(["tests/all_tests.js"], () => {});
   });
