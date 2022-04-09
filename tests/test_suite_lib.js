@@ -25,7 +25,9 @@ function testSuite(name, ...tests) {
   return {name: name,
     exec: () => {
     beforeAll( () => {
-       console.log("%c" + name, "font-weight:bold");
+      let failed = 0;
+      let passed = 0;
+      console.log("%c" + name, "font-weight:bold");
       for (let i=0; i<testList.length; i++) {
         for (let j=0; j<beforeEach.length; j++) {
           beforeEach[j]();
@@ -35,11 +37,14 @@ function testSuite(name, ...tests) {
           afterEach[j]();
         }
         if (result.status == "PASSED") {
-          console.log(result.name + " %c" + result.status, "color:green");
+          passed++;
+          console.log("  " + result.name + " %c" + result.status, "color:green");
         } else {
-          console.log(result.name + " %c" + result.status + "\n%c" + result.error, "color:red", "padding-left:50px");
+          failed++;
+          console.log("  " + result.name + " %c" + result.status + "\n%c" + result.error, "color:red", "padding-left:50px");
         }
       }
+      console.log("%c FAILED: " + failed + " PASSED: " + passed, "font-weight:bold");
     });
     afterAll();
   }};
@@ -230,49 +235,53 @@ function deepCompare () {
     }
     
     function hasDefinedProperty(o, p) {
-      return o.hasOwnProperty(p) && typeof o[p] != "undefined";
+      return o.hasOwnProperty(p) && typeof o[p] != "undefined" && o[p] != null;
     }
 
     // Quick checking of one object being a subset of another.
     // todo: cache the structure of arguments[0] for performance
     for (p in y) {
-        if (hasDefinedProperty(y, p) !== hasDefinedProperty(x, p)) {
-            return false;
+      if (hasDefinedProperty(y, p) !== hasDefinedProperty(x, p)) {
+        return false;
+      }
+      if (hasDefinedProperty(y, p) && hasDefinedProperty(x, p)) {
+        if (typeof y[p] !== typeof x[p]) {
+          return false;
         }
-        else if (typeof y[p] !== typeof x[p]) {
-            return false;
-        }
+      }
     }
 
     for (p in x) {
-        if (hasDefinedProperty(y, p) !== hasDefinedProperty(x, p)) {
-            return false;
-        }
-        else if (typeof y[p] !== typeof x[p]) {
-            return false;
+      if (hasDefinedProperty(y, p) !== hasDefinedProperty(x, p)) {
+        return false;
+      }
+      if (hasDefinedProperty(y, p) && hasDefinedProperty(x, p)) {
+        if (typeof y[p] !== typeof x[p]) {
+          return false;
         }
 
         switch (typeof (x[p])) {
-            case 'object':
-            case 'function':
+          case 'object':
 
-                leftChain.push(x);
-                rightChain.push(y);
+          case 'function':
+            leftChain.push(x);
+            rightChain.push(y);
 
-                if (!compare2Objects (x[p], y[p])) {
-                    return false;
-                }
+            if (!compare2Objects (x[p], y[p])) {
+              return false;
+            }
 
-                leftChain.pop();
-                rightChain.pop();
-                break;
+            leftChain.pop();
+            rightChain.pop();
+            break;
 
-            default:
-                if (x[p] !== y[p]) {
-                    return false;
-                }
-                break;
+          default:
+            if (x[p] !== y[p]) {
+              return false;
+            }
+            break;
         }
+      }
     }
 
     return true;
