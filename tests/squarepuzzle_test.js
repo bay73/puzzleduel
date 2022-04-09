@@ -60,6 +60,48 @@ test('Hitori',() => {
   assert("Cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{text: '1'}, {text: '1', color: puzzle.colorSchema.gridColor, returnValue: '1'}, {text: '1', image: 'white_circle'}]);
 }),
 
+test('Queens',() => {
+  let puzzle = showPuzzle(
+    "queens", "4x4",
+    {"a2": "cross", "a3": "5", "d1": "2"}
+  )
+  puzzle.start();
+
+  assert("Empty cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'queen', returnValue: 'queen'}, {image: 'cross'}]);
+  assert("Cross chooser").that(puzzle.cells[1][0].chooserValues).isNull();
+  assert("Corss click").that(puzzle.cells[1][0].clickSwitch).isNull();
+  assert("Number cell chooser").that(puzzle.cells[2][0].chooserValues).isNull();
+  assert("Number cell click").that(puzzle.cells[2][0].clickSwitch).isNull();
+}),
+
+test('Minesweeper',() => {
+  let puzzle = showPuzzle(
+    "minesweeper_classic", "4x4",
+    {"a2": "cross", "a3": "5", "d1": "2"}
+  )
+  puzzle.start();
+
+  assert("Empty cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'mine', returnValue: 'mine'}, {image: 'cross'}]);
+  assert("Cross chooser").that(puzzle.cells[1][0].chooserValues).isNull();
+  assert("Corss click").that(puzzle.cells[1][0].clickSwitch).isNull();
+  assert("Number cell chooser").that(puzzle.cells[2][0].chooserValues).isNull();
+  assert("Number cell click").that(puzzle.cells[2][0].clickSwitch).isNull();
+}),
+
+test('Yin Yang',() => {
+  let puzzle = showPuzzle("yin_yang_classic", "4x4",{"a1": "white_circle", "a2": "black_circle"});
+  puzzle.start();
+
+  assert("Empty cell chooser").that(puzzle.cells[1][1].chooserValues).isNull();
+  assert("Empty cell click").that(puzzle.cells[1][1].clickSwitch).containsExactly([{}, {image: 'white_circle', returnValue: 'white_circle'}, {image: 'black_circle', returnValue: 'black_circle'}]);
+  assert("White circle chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("White circle click").that(puzzle.cells[0][0].clickSwitch).isNull();
+  assert("Black circle chooser").that(puzzle.cells[1][0].chooserValues).isNull();
+  assert("Black circle click").that(puzzle.cells[1][0].clickSwitch).isNull();
+}),
+
 test('Dutch snake',() => {
   let puzzle = showPuzzle(
     "snake_dutch", "5x5",
@@ -86,6 +128,45 @@ test('Star battle',() => {
 
   assert("Empty cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
   assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'star', returnValue: 'star'}, {image: 'cross'}]);
+  assert("Cross chooser").that(puzzle.cells[2][2].chooserValues).isNull();
+  assert("Cross click").that(puzzle.cells[2][2].clickSwitch).isNull();
+}),
+
+test('Star battle small regions',() => {
+  let puzzle = showPuzzle(
+    "starbattle_smallregions", "5x5-1",
+    {"c3": "cross", "areas": [["a1", "b1","a2"],["b2", "a3","b3"],["c1","c2","d1","d2","e1","e2"],["a4","a5","b4","b5","c3","c4","d3"],["c5","d4","d5","e3","e4","e5"]]}
+  );
+  puzzle.start();
+
+  assert("Empty cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'star', returnValue: 'star'}, {image: 'cross'}]);
+  assert("Cross chooser").that(puzzle.cells[2][2].chooserValues).isNull();
+  assert("Cross click").that(puzzle.cells[2][2].clickSwitch).isNull();
+}),
+
+test('LITS',() => {
+  let puzzle = showPuzzle(
+    "lits", "5x5-1",
+    {"c3": "cross", "areas": [["a1", "b1","a2"],["b2", "a3","b3"],["c1","c2","d1","d2","e1","e2"],["a4","a5","b4","b5","c3","c4","d3"],["c5","d4","d5","e3","e4","e5"]]}
+  );
+  puzzle.start();
+
+  assert("Empty cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {color: '#606060', returnValue: '1'}, {image: 'cross'}]);
+  assert("Cross chooser").that(puzzle.cells[2][2].chooserValues).isNull();
+  assert("Cross click").that(puzzle.cells[2][2].clickSwitch).isNull();
+}),
+
+test('Heyawake',() => {
+  let puzzle = showPuzzle(
+    "heyawake", "5x5-1",
+    {"c3": "cross", "areas": [["a1", "b1","a2"],["b2", "a3","b3"],["c1","c2","d1","d2","e1","e2"],["a4","a5","b4","b5","c3","c4","d3"],["c5","d4","d5","e3","e4","e5"]]}
+  );
+  puzzle.start();
+
+  assert("Empty cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {color: '#606060', returnValue: '1'}, {image: 'cross'}]);
   assert("Cross chooser").that(puzzle.cells[2][2].chooserValues).isNull();
   assert("Cross click").that(puzzle.cells[2][2].clickSwitch).isNull();
 }),
@@ -215,6 +296,30 @@ test('Hitori',() => {
   assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
 }),
 
+test('Queens',() => {
+  let puzzle = showPuzzle("queens", "4x4");
+  puzzle.edit();
+
+  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '8', returnValue: '8'}, {image: 'cross', returnValue: 'cross'}]);
+  assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
+}),
+
+test('Minesweeper',() => {
+  let puzzle = showPuzzle("minesweeper_classic", "4x4");
+  puzzle.edit();
+
+  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '8', returnValue: '8'}, {image: 'cross', returnValue: 'cross'}]);
+  assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
+}),
+
+test('Yin Yang',() => {
+  let puzzle = showPuzzle("yin_yang_classic", "4x4");
+  puzzle.edit();
+
+  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("Cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'white_circle', returnValue: 'white_circle'}, {image: 'black_circle', returnValue: 'black_circle'}]);
+}),
+
 test('Dutch snake',() => {
   let puzzle = showPuzzle("snake_dutch", "5x5");
   puzzle.edit();
@@ -229,6 +334,39 @@ test('Star battle',() => {
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
   assert("Cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'cross', returnValue: 'cross'}]);
+  assert("Edge chooser").that(puzzle.edges[0][0][1].chooserValues).isNull();
+  assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
+  assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
+}),
+
+test('Star battle small regions',() => {
+  let puzzle = showPuzzle("starbattle_smallregions", "5x5-1");
+  puzzle.edit();
+
+  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("Cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'cross', returnValue: 'cross'}]);
+  assert("Edge chooser").that(puzzle.edges[0][0][1].chooserValues).isNull();
+  assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
+  assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
+}),
+
+test('LITS',() => {
+  let puzzle = showPuzzle("lits", "5x5");
+  puzzle.edit();
+
+  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("Cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'cross', returnValue: 'cross'}]);
+  assert("Edge chooser").that(puzzle.edges[0][0][1].chooserValues).isNull();
+  assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
+  assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
+}),
+
+test('Heyawake',() => {
+  let puzzle = showPuzzle("heyawake", "5x5");
+  puzzle.edit();
+
+  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '8', returnValue: '8'}, {image: 'cross', returnValue: 'cross'}]);
+  assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
   assert("Edge chooser").that(puzzle.edges[0][0][1].chooserValues).isNull();
   assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
   assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
