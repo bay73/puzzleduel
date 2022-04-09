@@ -55,7 +55,9 @@
         </svg>
       </div>
       <div class="card">
-         <button id="runTests" type="button" class="btn btn-primary mb-3 ml-3">Run tests</button>
+        <button id="runTests" type="button" class="btn btn-primary mb-3 ml-3">Run all tests</button>
+        <table id="suits">
+        </table>
       </div>
     </div>
   </div>
@@ -63,10 +65,21 @@
 <script src="tests/test_suite_lib.js"></script>
 <script src="js/locale_ru.js"></script>
 <script>
-  $("#runTests").click(() => allTestSuites.forEach(suite => {suite.exec();}));
+  $("#runTests").click(() => allTestSuites.forEach(suite => {suite.exec(true);}));
   $(document).ready(function () {
     requirejs(["tests/all_tests.js"], () => {});
+    setTimeout(show_tests, 100);
   });
+  function show_tests() {
+    if (typeof allTestSuites == "undefined") {
+      return;
+    }
+    for (let i=0;i < allTestSuites.length; i++) {
+      suite = allTestSuites[i];
+      $("#suits").append("<tr><td>" + suite.name + "</td><td><button id='runTests"+i+"' type='button' class='btn btn-primary mb-3 ml-3'>Run</button></td></tr>");
+      $("#runTests"+i).click(() => suite.exec());
+    };
+  }
 </script>
   </body>
 </html>

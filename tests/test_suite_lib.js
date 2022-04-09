@@ -23,7 +23,7 @@ function testSuite(name, ...tests) {
   }
   
   return {name: name,
-    exec: () => {
+    exec: (hideDetails) => {
     beforeAll( () => {
       let failed = 0;
       let passed = 0;
@@ -38,13 +38,21 @@ function testSuite(name, ...tests) {
         }
         if (result.status == "PASSED") {
           passed++;
-          console.log("  " + result.name + " %c" + result.status, "color:green");
+          if (!hideDetails) {
+            console.log("  " + result.name + " %c" + result.status, "color:green");
+          }
         } else {
           failed++;
-          console.log("  " + result.name + " %c" + result.status + "\n%c" + result.error, "color:red", "padding-left:50px");
+          if (!hideDetails) {
+            console.log("  " + result.name + " %c" + result.status + "\n%c" + result.error, "color:red", "padding-left:50px");
+          }
         }
       }
-      console.log("%c FAILED: " + failed + " PASSED: " + passed, "font-weight:bold");
+      if (failed > 0) {
+        console.log("%c FAILED: " + failed + " PASSED: " + passed, "color:red;font-weight:bold");
+      } else {
+        console.log("%c FAILED: " + failed + " PASSED: " + passed, "color:green;font-weight:bold");
+      }
     });
     afterAll();
   }};
