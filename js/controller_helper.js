@@ -1,11 +1,14 @@
+// Creates puzzle type descriptor.
 decribePuzzleType = function() {
   return new PuzzleTypeBuilder();
 }
 
+// Creates controller descriptor.
 controller = function() {
   return new ControllerBuilder();
 }
 
+// Creates controller item descriptor.
 controllerItem = function(data) {
   return new ControllerItemBuilder(data);
 }
@@ -15,6 +18,7 @@ PuzzleTypeBuilder = function() {
   this.upgradeClue = undefined;
 }
 
+// Adds new controller to the puzzle type descriptor.
 PuzzleTypeBuilder.prototype.add = function(controller) {
   this.controllers.push(controller);
   if (controller.addDrag) {
@@ -35,12 +39,13 @@ PuzzleTypeBuilder.prototype.add = function(controller) {
   return this;
 }
 
+// Adds function which converts clues from the old to the new format.
 PuzzleTypeBuilder.prototype.addUpgradeClue = function(upgradeClue){
   this.upgradeClue = upgradeClue;
   return this;
 }
 
-
+// Build puzzle type descriptor.
 PuzzleTypeBuilder.prototype.build = function(puzzle) {
   var controllers = this.controllers;
   var typeDesc = Object.assign({}, puzzle.typeProperties);
@@ -104,7 +109,7 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
   typeDesc.connectorEditController = extractControllers(ControllerBuilder.CONNECTOR, true);
 
 
-//  typeDesc.needEdges = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.EDGE).length > 0;
+  //  typeDesc.needEdges = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.EDGE).length > 0;
   typeDesc.needNodes = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.NODE).length > 0;
   if (needDrag(ControllerBuilder.EDGE)) {
     typeDesc.needNodes = true;
@@ -162,17 +167,19 @@ ControllerBuilder.EDGE = 2;
 ControllerBuilder.NODE = 3;
 ControllerBuilder.CONNECTOR = 4;
 
-
+// Defines controller which is used in puzzle edit mode.
 ControllerBuilder.prototype.forAuthor = function(){
   this.editMode = true;
   return this;
 }
 
+// Defines controller which is used in puzzle solving mode.
 ControllerBuilder.prototype.forSolver = function(){
   this.editMode = false;
   return this;
 }
 
+// Defines controller as a values chooser.
 ControllerBuilder.prototype.chooser = function(){
   if (typeof this.type!="undefined") {
     throw "Controller type is already defined"
@@ -184,6 +191,7 @@ ControllerBuilder.prototype.chooser = function(){
   return this;
 }
 
+// Defines controller which switch the element state on click.
 ControllerBuilder.prototype.clickSwitch = function(){
   if (typeof this.type!="undefined") {
     throw "Controller type is already defined"
@@ -195,6 +203,7 @@ ControllerBuilder.prototype.clickSwitch = function(){
   return this;
 }
 
+// Defines controller which switch the element state on drag-n-drop.
 ControllerBuilder.prototype.drag = function(){
   if (typeof this.type!="undefined") {
     throw "Controller type is already defined"
@@ -206,22 +215,26 @@ ControllerBuilder.prototype.drag = function(){
   return this;
 }
 
+// Applies controller only to inner cells.
 ControllerBuilder.prototype.inner = function(){
   this.conditions.push(gridElement => !gridElement.outerCell);
   return this;
 }
 
+// Applies controller only to outer cells.
 ControllerBuilder.prototype.outer = function(){
   this.conditions.push(gridElement => gridElement.outerCell);
   this.outerCells = true;
   return this;
 }
 
+// Applies controller only to elements without clues.
 ControllerBuilder.prototype.noClue = function(){
   this.conditions.push(gridElement => !gridElement.isClue);
   return this;
 }
 
+// Applies controller only to elements with clues.
 ControllerBuilder.prototype.clue = function(...clueItems){
   if (clueItems.length == 0) {
     this.conditions.push(gridElement => gridElement.isClue);
@@ -231,6 +244,7 @@ ControllerBuilder.prototype.clue = function(...clueItems){
   return this;
 }
 
+// Defines controller for cells.
 ControllerBuilder.prototype.cell = function(){
   if (typeof this.elementType!="undefined") {
     throw "Controller element type is already defined"
@@ -239,6 +253,7 @@ ControllerBuilder.prototype.cell = function(){
   return this;
 }
 
+// Defines controller for edges.
 ControllerBuilder.prototype.edge = function(){
   if (typeof this.elementType!="undefined") {
     throw "Controller element type is already defined"
@@ -247,6 +262,7 @@ ControllerBuilder.prototype.edge = function(){
   return this;
 }
 
+// Defines controller for nodes.
 ControllerBuilder.prototype.node = function(){
   if (typeof this.elementType!="undefined") {
     throw "Controller element type is already defined"
@@ -255,6 +271,7 @@ ControllerBuilder.prototype.node = function(){
   return this;
 }
 
+// Defines controller for connectors.
 ControllerBuilder.prototype.connector = function(){
   if (typeof this.elementType!="undefined") {
     throw "Controller element type is already defined"
@@ -263,6 +280,7 @@ ControllerBuilder.prototype.connector = function(){
   return this;
 }
 
+// For edge controllers - convert edges to areas while submitting.
 ControllerBuilder.prototype.toAreas = function(needAreas){
   if (this.elementType!=ControllerBuilder.EDGE) {
     throw "toAreas() can be used only for edge conroller"
@@ -271,6 +289,7 @@ ControllerBuilder.prototype.toAreas = function(needAreas){
   return this;
 }
 
+// Duplicates clickSwitch controller to drag-n-drop.
 ControllerBuilder.prototype.withDrag = function(withDarg){
   if (this.type!=ControllerBuilder.CLICK_SWITCH || this.elementType!=ControllerBuilder.EDGE) {
     throw "withDrag() can be used only for click switch edge conroller"
@@ -279,6 +298,13 @@ ControllerBuilder.prototype.withDrag = function(withDarg){
   return this;
 }
 
+// Adds item to the controller.
+ControllerBuilder.prototype.addItem = function(item){
+  this.items.push(item);
+  return this;
+}
+
+// Adds items with numbers from the given range (ends included).
 ControllerBuilder.prototype.addNumbers = function(start, end, color){
   for (var i=start; i<=end; i++) {
     if (typeof color != "undefined") {
@@ -290,11 +316,7 @@ ControllerBuilder.prototype.addNumbers = function(start, end, color){
   return this;
 }
 
-ControllerBuilder.prototype.addItem = function(item){
-  this.items.push(item);
-  return this;
-}
-
+// Auxiliary method. Don't use in definition.
 ControllerBuilder.prototype.build = function(){
   var self = this;
   if (this.type==ControllerBuilder.CHOOSER) {
@@ -382,16 +404,19 @@ ControllerItemBuilder = function(data){
   this.data = data;
 }
 
+// Defines the value which is sent for the element when the puzzle is submitted.
 ControllerItemBuilder.prototype.submitAs = function(value){
   var newData = Object.assign({}, this.data);
   newData.returnValue = value;
   return new ControllerItemBuilder(newData);
 }
 
+// Defines the value which is not sent when the puzzle is submitted.
 ControllerItemBuilder.prototype.doNotSubmit = function(){
   return this.submitAs(undefined);
 }
 
+// Defines the element which is used as an area border. Should be used for controlles having "toAreas" property.
 ControllerItemBuilder.prototype.asAreaBorder = function(){
   return this.submitAs("1");
 }
@@ -401,6 +426,7 @@ StdColor = {
          textColor: "#fff"}
 }
 
+// Standard items
 StdItem = {
 EMPTY: controllerItem({}),
 BLACK: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.greyColor:puzzle.colorSchema.gridColor, returnValue: "black"}),

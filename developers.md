@@ -15,7 +15,9 @@ There are 4 puzzle categories (and js files):
 
 New puzzle categories also can be added, but this requires more coding.
 
-Each of the files above contains an array of type definitions. See the corresponding section below about the fields on this definition.
+Each of the files above contains UI definitions for the list of puzzle types. See the corresponding section below about the fields on this definition.
+
+Add tests for controllers which asserts that all corresponding elements are created.
 
 ## 2. Implement solution checker ##
 
@@ -85,6 +87,7 @@ Each element can have next properties (can be used simultaneously):
 *  _Color_ - background color for the cell, color of the line for edges and connectors, color of a small circle for nodes.
 *  _Image_ - some picture which is shown at the element (for edges it is shown at the middle point of the edge). This is not supported for connectors.
 *  _Text_ - one or two symbols (letters so digits) which are shown at the element (for edges it is shown at the middle). This is not supported for connectors.
+*  _TextColor_ - color for the text. The default value is black and this may need replacement if cell color is dark.
 
 Puzzle type UI definition contains the next properties (all are optional)
 
@@ -102,7 +105,21 @@ Puzzle type UI definition contains the next properties (all are optional)
 *  function **nodeController** - function which creates controls for a node in solving mode
 *  function **nodeEditController** - function which creates controls for a node in editing mode
 *  function **connectorController** - function which creates controls for a connector in solving mode
-*  function **decodeClue**
+*  function **decodeClue** - function which converts value of clue to elemnt properties.
+
+controller_helper.js allows to describe these properties in a declarative way. The description looks like:
+```
+decribePuzzleType()
+      .add(controller()...)
+      .add(controller()...)
+      .build();
+```
+
+Each added controller defines a rule to interract with the grid element and elements to which the rule applies. see controller_helper.js for a full list of method which can be applied for controller.
+Some examples are below:
+*  `controller().forAuthor().cell().chooser().addNumbers(1,10)` - all cell in puzzle edit mode will have value chooser with numbers from 1 to 10.
+*  `controller().forSolver().cell().inner().noClue().clickSwitch().addItem(StdItem.BLACK).addItem(StdItem.CROSS.doNotSubmit())` - inner cells without clues in solving mode will switch the state on click between two possibilities - blackened cell or cell with a cross. Crossed out cells are not used for solution submission.
+*  `controller().forAuthor().edge().toAreas().clickSwitch().withDrag().addItem(StdItem.BLACK.asAreaBorder())` - in puzzle edit mode edges will switch on click or drag to blackened and these edegs will be used as an area definition.
 
 # Puzzle types collection in storage #
 
