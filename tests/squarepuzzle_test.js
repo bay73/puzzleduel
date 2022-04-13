@@ -1,12 +1,12 @@
 GRID_SELECTOR = "#mainGrid";
 
-squarePuzzleTestSuite = testSuite("squarePuzzle_solver_controllers", 
+squarePuzzleTestSuite = testSuite("Square puzzle solver controllers",
 
 beforeSuite((cb)=> {
   if (!$(GRID_SELECTOR).length) {
     throw "Missing " + GRID_SELECTOR + " element"
   };
-  showPuzzle = function(type, dimension, data) {
+  showSquarePuzzle = function(type, dimension, data) {
     var controls = "";
     var puzzleData = {
       typeCode: type,
@@ -15,7 +15,7 @@ beforeSuite((cb)=> {
     };
     var settings = {
       local: true,
-      data: data
+      data: data || {}
     };
     var puzzle = new squarePuzzleType(puzzleData, controls, settings);
     puzzle.render(Snap(GRID_SELECTOR));
@@ -29,7 +29,7 @@ after(()=> {
 }),
 
 test('Domino Castle',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "domino_castle_sum", "4x4-123",
     {
      "b2": "black", "c2": "black", "b3": "black", "c3": "black",
@@ -50,7 +50,7 @@ test('Domino Castle',() => {
 }),
 
 test('Hitori',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "hitori", "4x4",
     {"a1": "1", "b1": "1", "c1": "3", "d1": "2", "a2": "3", "b2": "2", "c2": "1", "d2": "2", "a3": "1", "b3": "2", "c3": "2", "d3": "3", "a4": "2", "b4": "3", "c4": "3", "d4": "1"}
   );
@@ -61,7 +61,7 @@ test('Hitori',() => {
 }),
 
 test('Queens',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "queens", "4x4",
     {"a2": "cross", "a3": "5", "d1": "2"}
   )
@@ -76,7 +76,7 @@ test('Queens',() => {
 }),
 
 test('Minesweeper',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "minesweeper_classic", "4x4",
     {"a2": "cross", "a3": "5", "d1": "2"}
   )
@@ -91,7 +91,7 @@ test('Minesweeper',() => {
 }),
 
 test('Yin Yang',() => {
-  let puzzle = showPuzzle("yin_yang_classic", "4x4",{"a1": "white_circle", "a2": "black_circle"});
+  let puzzle = showSquarePuzzle("yin_yang_classic", "4x4",{"a1": "white_circle", "a2": "black_circle"});
   puzzle.start();
 
   assert("Empty cell chooser").that(puzzle.cells[1][1].chooserValues).isNull();
@@ -103,7 +103,7 @@ test('Yin Yang',() => {
 }),
 
 test('Dutch snake',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "snake_dutch", "5x5",
     {"a4": "black_circle", "b2": "black_circle", "c3": "cross", "c4": "white_circle", "d1": "white_circle", "d5": "black_circle"}
   );
@@ -120,7 +120,7 @@ test('Dutch snake',() => {
 }),
 
 test('Star battle',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "starbattle", "5x5",
     {"c3": "cross", "areas": [["a1", "b1","a2"],["b2", "a3","b3"],["c1","c2","d1","d2","e1","e2"],["a4","a5","b4","b5","c3","c4","d3"],["c5","d4","d5","e3","e4","e5"]]}
   );
@@ -133,7 +133,7 @@ test('Star battle',() => {
 }),
 
 test('Star battle small regions',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "starbattle_smallregions", "5x5-1",
     {"c3": "cross", "areas": [["a1", "b1","a2"],["b2", "a3","b3"],["c1","c2","d1","d2","e1","e2"],["a4","a5","b4","b5","c3","c4","d3"],["c5","d4","d5","e3","e4","e5"]]}
   );
@@ -146,7 +146,7 @@ test('Star battle small regions',() => {
 }),
 
 test('LITS',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "lits", "5x5-1",
     {"c3": "cross", "areas": [["a1", "b1","a2"],["b2", "a3","b3"],["c1","c2","d1","d2","e1","e2"],["a4","a5","b4","b5","c3","c4","d3"],["c5","d4","d5","e3","e4","e5"]]}
   );
@@ -159,7 +159,7 @@ test('LITS',() => {
 }),
 
 test('Heyawake',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "heyawake", "5x5-1",
     {"c3": "cross", "areas": [["a1", "b1","a2"],["b2", "a3","b3"],["c1","c2","d1","d2","e1","e2"],["a4","a5","b4","b5","c3","c4","d3"],["c5","d4","d5","e3","e4","e5"]]}
   );
@@ -172,7 +172,7 @@ test('Heyawake',() => {
 }),
 
 test('Akari',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "akari", "4x4",
     {"a3": "black", "c4": "1", "d1": "2"}
   )
@@ -188,7 +188,7 @@ test('Akari',() => {
 }),
 
 test('Point a star',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "point_a_star", "4x4",
     {"b3": "arrow_ur", "c4": "arrow_u", "bottom": ["2",null,null,"1"], "right": ["1",null,"1",null]}
   );
@@ -205,7 +205,7 @@ test('Point a star',() => {
 }),
 
 test('Clouds',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "clouds", "5x5",
     {"a1": "cross", "b2": "black", "bottom": ["2","4","2","4","2"], "right": ["3","3",null,"4","4"]}
   );
@@ -224,7 +224,7 @@ test('Clouds',() => {
 }),
 
 test('Gaps',() => {
-  let puzzle = showPuzzle(
+  let puzzle = showSquarePuzzle(
     "gaps", "5x5",
     {"a1": "cross", "b2": "white_circle", "bottom": ["2",null,"2",null,"2"], "right": ["3","3",null,null,null]}
   );
@@ -242,16 +242,16 @@ test('Gaps',() => {
   assert("Right clue click").that(puzzle.right[0].clickSwitch).containsExactly([{text: '3'}, {text: '3', image: 'white_circle'}]);
 }),
 
-// end squarePuzzle_solver_controllers testSuite
+// end "Square puzzle solver controllers" test suite
 );
 
-squarePuzzleEditTestSuite = testSuite("squarePuzzle_author_controllers", 
+squarePuzzleEditTestSuite = testSuite("Square puzzle author controllers",
 
 beforeSuite((cb)=> {
   if (!$(GRID_SELECTOR).length) {
     throw "Missing " + GRID_SELECTOR + " element"
   };
-  showPuzzle = function(type, dimension, data) {
+  showSquarePuzzleForEdit = function(type, dimension, data) {
     var controls = "";
     var puzzleData = {
       typeCode: type,
@@ -260,7 +260,7 @@ beforeSuite((cb)=> {
     };
     var settings = {
       local: true,
-      data: data ||{}
+      data: data || {}
     };
     var puzzle = new squarePuzzleType(puzzleData, controls, settings);
     puzzle.render(Snap(GRID_SELECTOR));
@@ -274,7 +274,7 @@ after(()=> {
 }),
 
 test('Domino Castle',() => {
-  let puzzle = showPuzzle("domino_castle_sum", "4x4-123");
+  let puzzle = showSquarePuzzleForEdit("domino_castle_sum", "4x4-123");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -289,7 +289,7 @@ test('Domino Castle',() => {
 }),
 
 test('Hitori',() => {
-  let puzzle = showPuzzle("hitori", "4x4");
+  let puzzle = showSquarePuzzleForEdit("hitori", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '15', returnValue: '15'}]);
@@ -297,7 +297,7 @@ test('Hitori',() => {
 }),
 
 test('Queens',() => {
-  let puzzle = showPuzzle("queens", "4x4");
+  let puzzle = showSquarePuzzleForEdit("queens", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '8', returnValue: '8'}, {image: 'cross', returnValue: 'cross'}]);
@@ -305,7 +305,7 @@ test('Queens',() => {
 }),
 
 test('Minesweeper',() => {
-  let puzzle = showPuzzle("minesweeper_classic", "4x4");
+  let puzzle = showSquarePuzzleForEdit("minesweeper_classic", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '8', returnValue: '8'}, {image: 'cross', returnValue: 'cross'}]);
@@ -313,7 +313,7 @@ test('Minesweeper',() => {
 }),
 
 test('Yin Yang',() => {
-  let puzzle = showPuzzle("yin_yang_classic", "4x4");
+  let puzzle = showSquarePuzzleForEdit("yin_yang_classic", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -321,7 +321,7 @@ test('Yin Yang',() => {
 }),
 
 test('Dutch snake',() => {
-  let puzzle = showPuzzle("snake_dutch", "5x5");
+  let puzzle = showSquarePuzzleForEdit("snake_dutch", "5x5");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -329,7 +329,7 @@ test('Dutch snake',() => {
 }),
 
 test('Star battle',() => {
-  let puzzle = showPuzzle("starbattle", "5x5");
+  let puzzle = showSquarePuzzleForEdit("starbattle", "5x5");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -340,7 +340,7 @@ test('Star battle',() => {
 }),
 
 test('Star battle small regions',() => {
-  let puzzle = showPuzzle("starbattle_smallregions", "5x5-1");
+  let puzzle = showSquarePuzzleForEdit("starbattle_smallregions", "5x5-1");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -351,7 +351,7 @@ test('Star battle small regions',() => {
 }),
 
 test('LITS',() => {
-  let puzzle = showPuzzle("lits", "5x5");
+  let puzzle = showSquarePuzzleForEdit("lits", "5x5");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -362,7 +362,7 @@ test('LITS',() => {
 }),
 
 test('Heyawake',() => {
-  let puzzle = showPuzzle("heyawake", "5x5");
+  let puzzle = showSquarePuzzleForEdit("heyawake", "5x5");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '8', returnValue: '8'}, {image: 'cross', returnValue: 'cross'}]);
@@ -373,7 +373,7 @@ test('Heyawake',() => {
 }),
 
 test('Akari',() => {
-  let puzzle = showPuzzle("akari", "4x4");
+  let puzzle = showSquarePuzzleForEdit("akari", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -381,7 +381,7 @@ test('Akari',() => {
 }),
 
 test('Point a star',() => {
-  let puzzle = showPuzzle("point_a_star", "4x4");
+  let puzzle = showSquarePuzzleForEdit("point_a_star", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{image: 'arrow_u', returnValue: 'arrow_u'},{image: 'arrow_ur', returnValue: 'arrow_ur'},{image: 'arrow_ul', returnValue: 'arrow_ul'}]);
@@ -393,7 +393,7 @@ test('Point a star',() => {
 }),
 
 test('Clouds',() => {
-  let puzzle = showPuzzle("clouds", "5x5");
+  let puzzle = showSquarePuzzleForEdit("clouds", "5x5");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -405,7 +405,7 @@ test('Clouds',() => {
 }),
 
 test('Gaps',() => {
-  let puzzle = showPuzzle("gaps", "5x5");
+  let puzzle = showSquarePuzzleForEdit("gaps", "5x5");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -416,7 +416,7 @@ test('Gaps',() => {
   assert("Right clue click").that(puzzle.right[0].clickSwitch).isNull();
 }),
 
-// end squarePuzzle_author_controllers testSuite
+// end "Square puzzle author controllers" test suite
 );
 
 
