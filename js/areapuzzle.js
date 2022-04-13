@@ -309,7 +309,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
     cellEditController: cell => {
       cell.isClue = true;
@@ -345,9 +345,9 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
-    cellEditController: cell => setNumberChooser(cell, 0, 4),
+    cellEditController: cell => setNumberChooser(cell, 0, 3),
     collectAreas: !this.editMode,
     recountConnector: !this.editMode,
   }
@@ -368,7 +368,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
     cellEditController: cell => {
       cell.isClue = true;
@@ -398,7 +398,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
     cellEditController: cell => setNumberChooser(cell, 1, 99),
     collectAreas: !this.editMode,
@@ -422,7 +422,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
     cellEditController: cell => setNumberChooser(cell, 1, 99),
     collectAreas: !this.editMode,
@@ -446,7 +446,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
     collectAreas: !this.editMode,
@@ -470,7 +470,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
     collectAreas: !this.editMode,
@@ -499,7 +499,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "small_circle", returnValue: "small_circle"}];},
     nodeEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "black_circle", returnValue: "black_circle"}];},
@@ -525,7 +525,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
     collectAreas: !this.editMode,
