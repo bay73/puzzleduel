@@ -72,7 +72,7 @@ function test(name, fn) {
         fn();
         return {name: name, status: "PASSED"};
       } catch (error) {
-        return {name: name, status: "FAILED", error: error};
+        return {name: name, status: "FAILED", error: error + (error.stack != undefined?"\n"+error.stack:"")};
       }
     }
   };

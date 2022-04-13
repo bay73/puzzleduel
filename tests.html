@@ -75,7 +75,7 @@
       return;
     }
     for (let i=0;i < allTestSuites.length; i++) {
-      suite = allTestSuites[i];
+      let suite = allTestSuites[i];
       $("#suits").append("<tr><td>" + suite.name + "</td><td><button id='runTests"+i+"' type='button' class='btn btn-primary mb-3 ml-3'>Run</button></td></tr>");
       $("#runTests"+i).click(() => suite.exec());
     };
