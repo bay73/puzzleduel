@@ -280,7 +280,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.dragProcessor = true;
     },
     connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
     },
     cellEditController: cell => {
       cell.isClue = true;
