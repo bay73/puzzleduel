@@ -176,13 +176,13 @@ hexaPuzzle.prototype.findSize = function() {
   var rows = this.rows;
   // unitCell - diameter of a hexagon cell
   var unitSize = Math.min(hSizeLimit / (3*cols-1), vSizeLimit / ((cols+rows-1)*Math.sqrt(3)));
-  this.leftGap = (width - unitSize * (3*cols-1)) /2;
-  this.topGap = 1;
+  var leftGap = (width - unitSize * (3*cols-1)) /2;
+  var topGap = 1;
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  var height = ((cols+rows-1)*Math.sqrt(3))*unitSize + this.topGap + unitSize / (isSafari ? 1.5 : 4);
-  this.chooserSize = Math.min(25 + this.leftGap + unitSize*0.9, unitSize * (isSafari ? 2.1 : 2.3));
+  var height = ((cols+rows-1)*Math.sqrt(3))*unitSize + topGap + unitSize / (isSafari ? 1.5 : 4);
+  this.chooserSize = Math.min(25 + leftGap + unitSize*0.9, unitSize * (isSafari ? 2.1 : 2.3));
 
-  return {height: height, width: width, unitSize: unitSize};
+  return {height: height, width: width, unitSize: unitSize, leftGap: leftGap, topGap: topGap};
 }
 
 hexaPuzzle.prototype.drawBoard = function() {
@@ -255,8 +255,8 @@ hexaGridElement.prototype.baseCorner = function() {
   var s = this.puzzle.size.unitSize;
   var h = s * Math.sqrt(3)/2.;
   return {
-    x: this.puzzle.leftGap + s/2 + this.col * s*3/2,
-    y: this.puzzle.topGap + (this.puzzle.cols - 1) * h + this.row * h * 2 - this.col * h
+    x: this.puzzle.size.leftGap + s/2 + this.col * s*3/2,
+    y: this.puzzle.size.topGap + (this.puzzle.cols - 1) * h + this.row * h * 2 - this.col * h
   };
 }
 

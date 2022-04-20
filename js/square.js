@@ -243,13 +243,13 @@ squarePuzzle.prototype.findSize = function() {
   if (this.typeProperties.needRight) cols++;
   // unitSize - length of a cell edge
   var unitSize = Math.min(hSizeLimit / cols, vSizeLimit / rows);
-  this.leftGap = (width - unitSize * cols) /2;
-  this.topGap = unitSize/4;
+  var leftGap = (width - unitSize * cols) /2;
+  var topGap = unitSize/4;
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  var height = rows*unitSize + this.topGap + unitSize / (isSafari ? 1.5 : 4);
-  this.chooserSize = Math.min(25 + this.leftGap + unitSize / 2, unitSize * (isSafari ? 1.4 : 1.6));
+  var height = rows*unitSize + topGap + unitSize / (isSafari ? 1.5 : 4);
+  this.chooserSize = Math.min(25 + leftGap + unitSize / 2, unitSize * (isSafari ? 1.4 : 1.6));
 
-  return {height: height, width: width, unitSize: unitSize};
+  return {height: height, width: width, unitSize: unitSize, leftGap: leftGap, topGap: topGap};
 }
 
 squarePuzzle.prototype.drawBoard = function() {
@@ -506,8 +506,8 @@ Object.setPrototypeOf(squareGridElement.prototype, gridElement.prototype);
 squareGridElement.prototype.baseCorner = function() {
   var s = this.puzzle.size.unitSize;
   return {
-    x: this.puzzle.leftGap + this.col * s,
-    y: this.puzzle.topGap + this.row * s
+    x: this.puzzle.size.leftGap + this.col * s,
+    y: this.puzzle.size.topGap + this.row * s
   };
 }
 
