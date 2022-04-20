@@ -192,11 +192,17 @@ dominoType.prototype.addConnector = function(connector) {
 
 squarePuzzleConnector.prototype.revertTo = function(oldData) {
   squareGridElement.prototype.revertTo.call(this, oldData);
+  if (!(this.puzzle instanceof areaPuzzleType)) {
+    return;
+  }
   this.puzzle.recountConnectorAreas();
 }
 
 squarePuzzleConnector.prototype.switchToData = function(data) {
   squareGridElement.prototype.switchToData.call(this, data);
+  if (!(this.puzzle instanceof areaPuzzleType)) {
+    return;
+  }
   if (this.allCells.length >= 2) {
     var cell1 = this.allCells[0];
     var cell2 = this.allCells[1];
@@ -218,11 +224,17 @@ squarePuzzleConnector.prototype.switchToData = function(data) {
 
 squarePuzzleEdge.prototype.revertTo = function(oldData) {
   squareGridElement.prototype.revertTo.call(this, oldData);
+  if (!(this.puzzle instanceof areaPuzzleType)) {
+    return;
+  }
   this.puzzle.recountConnectorAreas();
 }
 
 squarePuzzleEdge.prototype.switchToData = function(data) {
   squareGridElement.prototype.switchToData.call(this, data);
+  if (!(this.puzzle instanceof areaPuzzleType)) {
+    return;
+  }
   if (this.allCells.length >= 2) {
     var cell1 = this.allCells[0];
     var cell2 = this.allCells[1];
