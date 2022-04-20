@@ -11,4 +11,7 @@ requirejs(["tests/areapuzzle_test.js"], ()=>{
   allTestSuites.push(areaPuzzleEditTestSuite);
 })
 
+requirejs(["tests/mouse_test.js"], ()=>{
+  allTestSuites.push(mouseTestSuite);
+})
 

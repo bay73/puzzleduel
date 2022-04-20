@@ -136,6 +136,10 @@ assertSubject.prototype.isNull = function() {
   return this.assertWithMessage("expected to be null, but was " + JSON.stringify(this.subject), this.subject == null);
 }
 
+assertSubject.prototype.isEqualTo = function(expected) {
+  return this.assertWithMessage("expected to be " + JSON.stringify(expected) + ", but was " + JSON.stringify(this.subject), deepCompare(this.subject, expected));
+}
+
 assertSubject.prototype.containsExactly = function(expected) {
   let subject = this.subject;
   if (!subject) {
