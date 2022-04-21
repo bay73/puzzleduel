@@ -129,11 +129,11 @@ assertSubject.prototype.assertWithMessage = function(message, expression) {
 }
 
 assertSubject.prototype.isNotNull = function() {
-  return this.assertWithMessage("expected to be not null, but was null", this.subject != null);
+  return this.assertWithMessage("expected to be not null, but was null", this.subject != null && typeof this.subject != 'undefined');
 }
 
 assertSubject.prototype.isNull = function() {
-  return this.assertWithMessage("expected to be null, but was " + JSON.stringify(this.subject), this.subject == null);
+  return this.assertWithMessage("expected to be null, but was " + JSON.stringify(this.subject), this.subject == null || typeof this.subject == 'undefined');
 }
 
 assertSubject.prototype.isEqualTo = function(expected) {

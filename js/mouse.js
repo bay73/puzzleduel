@@ -8,6 +8,7 @@ mouseController = function(elements){
 
 mouseController.prototype.attachEvents = function(snap) {
   this.snap = snap;
+  this.handlerFilter = this.snap.filter("<feColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.7 0'/>");
   var self = this;
   self.mouseDown = function(event){self.onMouseDown(event)};
   self.mouseUp = function(event){self.onMouseUp(event)};
@@ -107,11 +108,64 @@ mouseController.prototype.onMouseMove = function(event) {
       return;
     }
     var end = this.transformPoint(this.eventPosition(event));
-    var start = this.mouseStartElement.center();
-    this.dragHandler.path = this.snap.line(start.x, start.y,  end.x, end.y);
-    this.dragHandler.path.attr(Object.assign({stroke: this.mouseStartElement.puzzle.colorSchema.traceColor}, this.mouseStartElement.puzzle.gridProperty.edge));
+    if (typeof this.mouseStartElement.drawDragHandler=="function") {
+      this.dragHandler.path = this.mouseStartElement.drawDragHandler(end);
+    } else {
+      this.dragHandler.path = this.drawLineHandler(this.mouseStartElement, end);
+    }
   }
 }
+
+mouseController.prototype.drawLineHandler = function(startElement, end) {
+  var start = startElement.center();
+  var path = this.snap.line(start.x, start.y,  end.x, end.y);
+  path.attr(Object.assign({stroke: startElement.puzzle.colorSchema.traceColor}, startElement.puzzle.gridProperty.edge));
+  return path;
+}
+
+mouseController.prototype.drawCopyHandler = function(startElement, end) {
+  var elementGroup = this.snap.group();
+  var data = startElement.data;
+  var puzzle = startElement.puzzle;
+  var unitSize = puzzle.size.unitSize*0.8;
+
+  var circle = this.snap.circle(end.x, end.y, unitSize/2);
+  circle.attr({fill: "#fff", opacity: 0.8});
+  if (data.color) {
+    circle.attr({fill: data.color, opacity: 0.5});
+  }
+  elementGroup.append(circle);
+
+  if (data.image) {
+    var image = this.snap.image(
+      puzzle.imageUrl(data.image),
+      end.x - unitSize/2,
+      end.y - unitSize/2,
+      unitSize,
+      unitSize);
+    image.attr({filter: this.handlerFilter});
+    circle.attr({opacity: 0});
+    elementGroup.append(image);
+  }
+  if (data.text) {
+    var width = unitSize*0.7;
+    if (data.text!=null && data.text.length==1) {
+      width = unitSize*0.4;
+    }
+    var text = this.snap.text(end.x-width/2, end.y + unitSize*0.3, data.text);
+    var attr = Object.assign({}, puzzle.gridProperty.font);
+    var textColor = data.textColor;
+    if (typeof textColor == 'undefined'){
+      textColor = this.puzzle.colorSchema.textColor;
+    }
+    Object.assign(attr, {"fill": textColor, "filter": this.handlerFilter, "font-size": unitSize*0.7, "textLength": width });
+    text.attr(attr);
+    circle.attr({opacity: 0});
+    elementGroup.append(text);
+  }
+  return elementGroup;
+}
+
 
 mouseController.prototype.clearDragHandler = function() {
   if (this.dragHandler) {

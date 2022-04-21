@@ -258,7 +258,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellController: cell => {
       if (!cell.isClue) {
         setClickSwitch(cell, true, [{},{image: "black_circle", returnValue: "black_circle"},{image: "white_circle", returnValue: "white_circle"}]);
+        cell.dragProcessor = (start) => {
+          if (cell != start) {
+            cell.switchToData(start.data);
+            return cell;
+          } else {
+            return false;
+          }
+        };
+      } else {
+        cell.dragProcessor = () => false;
       }
+      cell.drawDragHandler = (end) => cell.puzzle.controller.drawCopyHandler(cell, end);
     },
     cellEditController: cell => {
       cell.isClue = true;

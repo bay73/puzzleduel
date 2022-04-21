@@ -673,15 +673,25 @@ squarePuzzleCell.prototype.hasMultiPencil = function() {
 }
 
 squarePuzzleCell.prototype.processDragEnd = function(startElement) {
-  if (startElement.constructor.name != this.constructor.name) {
+  if (this.dragProcessor == null) {
     return false;
   }
-  var commonConnectors = this.commonConnectors(startElement);
-  if (!commonConnectors) {
-    return false;
+  if (typeof this.dragProcessor=='function') {
+    return this.dragProcessor(startElement);
+  } else {
+    if (startElement.constructor.name != this.constructor.name) {
+      return false;
+    }
+    if (startElement == this) {
+      return false;
+    }
+    var commonConnectors = this.commonConnectors(startElement);
+    if (!commonConnectors) {
+      return false;
+    }
+    commonConnectors.forEach(connector => connector.switchOnDrag());
+    return true;
   }
-  commonConnectors.forEach(connector => connector.switchOnDrag());
-  return true;
 }
 
 squarePuzzleCell.prototype.processDragMove = function(startElement) {
