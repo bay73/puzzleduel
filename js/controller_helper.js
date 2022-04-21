@@ -161,6 +161,8 @@ ControllerBuilder = function() {
 ControllerBuilder.CHOOSER = 1;
 ControllerBuilder.CLICK_SWITCH = 2;
 ControllerBuilder.DRAG_SWITCH = 3;
+ControllerBuilder.DRAG_COPY = 4;
+ControllerBuilder.DRAG_COPY_PATSE = 5;
 
 ControllerBuilder.CELL = 1;
 ControllerBuilder.EDGE = 2;
@@ -212,6 +214,30 @@ ControllerBuilder.prototype.drag = function(){
     throw "drag conroller can be used only for edges and connectors"
   }
   this.type = ControllerBuilder.DRAG_SWITCH;
+  return this;
+}
+
+// Defines controller which copy the element state on drag.
+ControllerBuilder.prototype.copy = function(){
+  if (typeof this.type!="undefined") {
+    throw "Controller type is already defined"
+  }
+  if (this.elementType!=ControllerBuilder.CELL) {
+    throw "drag conroller can be used only for cells"
+  }
+  this.type = ControllerBuilder.DRAG_COPY;
+  return this;
+}
+
+// Defines controller which copy-paste the element state on drag-n-drop.
+ControllerBuilder.prototype.copyPaste = function(){
+  if (typeof this.type!="undefined") {
+    throw "Controller type is already defined"
+  }
+  if (this.elementType!=ControllerBuilder.CELL) {
+    throw "drag conroller can be used only for cells"
+  }
+  this.type = ControllerBuilder.DRAG_COPY_PASTE;
   return this;
 }
 
@@ -348,6 +374,26 @@ ControllerBuilder.prototype.build = function(){
         gridElement.pencilDragSwitch = self.items.map(item => processControllerData(item.data, gridElement, gridElement.puzzle, true));
       }
     }
+  } else if (this.type==ControllerBuilder.DRAG_COPY) {
+    return function(gridElement) {
+      gridElement.dragProcessor = () => false;
+      gridElement.drawDragHandler = (end) => gridElement.puzzle.controller.drawCopyHandler(gridElement, end);
+    }
+  } else if (this.type==ControllerBuilder.DRAG_COPY_PASTE) {
+    return function(gridElement) {
+      if (self.editMode) {
+        gridElement.isClue = true;
+      }
+      gridElement.dragProcessor = (start) => {
+        if (gridElement != start) {
+          gridElement.switchToData(start.data);
+          return gridElement;
+        } else {
+          return false;
+        }
+      };
+      gridElement.drawDragHandler = (end) => gridElement.puzzle.controller.drawCopyHandler(gridElement, end);
+  }
   } else {
     throw 'controller type is not defined!';
   }

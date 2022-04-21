@@ -324,6 +324,8 @@ test('Yin Yang',() => {
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
   assert("Cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'white_circle', returnValue: 'white_circle'}, {image: 'black_circle', returnValue: 'black_circle'}]);
+  assert("Cell drag handler").that(puzzle.cells[1][1].drawDragHandler).isNull();
+  assert("Cell drag processor").that(puzzle.cells[1][1].dragProcessor).isNull();
 }),
 
 test('Dutch snake',() => {

@@ -114,6 +114,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="yin_yang_classic") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE)
+        .addItem(StdItem.WHITE_CIRCLE))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE)
+        .addItem(StdItem.WHITE_CIRCLE))
+      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().copy())
+      .build(this);
+
   } else {
 
   var typeProperties = {}
@@ -252,30 +264,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.chooserValues = chooserValues;
     },
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
-  }
-
-  typeProperties["yin_yang_classic"] = {
-    cellController: cell => {
-      if (!cell.isClue) {
-        setClickSwitch(cell, true, [{},{image: "black_circle", returnValue: "black_circle"},{image: "white_circle", returnValue: "white_circle"}]);
-        cell.dragProcessor = (start) => {
-          if (cell != start) {
-            cell.switchToData(start.data);
-            return cell;
-          } else {
-            return false;
-          }
-        };
-      } else {
-        cell.dragProcessor = () => false;
-      }
-      cell.drawDragHandler = (end) => cell.puzzle.controller.drawCopyHandler(cell, end);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      cell.clickSwitch = [{},{image: "black_circle", returnValue: "black_circle"},{image: "white_circle", returnValue: "white_circle"}];
-    },
-    decodeClue: value => {return {image: value};},
   }
 
   typeProperties["snake_belarusian"] = {
