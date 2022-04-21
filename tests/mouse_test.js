@@ -207,6 +207,43 @@ test('Process click on connector',() => {
   assert("Connector data after click").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
 }),
 
+test('Drag handler path',() => {
+  let puzzle = showMousePuzzle("railroad", "4x4",{"b1": "1", "b3": "+", "c3": "+"});
+  puzzle.start();
+
+  let startX = puzzle.size.leftGap + puzzle.size.unitSize/2;
+  let startY = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let x = startX;
+  let y = startY;
+
+  puzzle.controller.onMouseDown(createMouseEvent(x, y));
+  x += puzzle.size.unitSize/4;
+  puzzle.controller.onMouseMove(createMouseEvent(x, y));
+
+  let path = puzzle.controller.dragHandler.path;
+  assert("Drag path after first move").that(path).isNotNull();
+
+  assert("Drag path type after first move").that(path.type).isEqualTo("line");
+  assert("Drag path color after first move").that(path.toJSON().attr.stroke).isEqualTo(puzzle.colorSchema.traceColor);
+  assert("Drag path start x after first move").that(path.toJSON().attr.x1).isAlmostEqualTo(startX);
+  assert("Drag path end x after first move").that(path.toJSON().attr.x2).isAlmostEqualTo(x);
+  assert("Drag path start y after first move").that(path.toJSON().attr.y1).isAlmostEqualTo(startY);
+  assert("Drag path end y after first move").that(path.toJSON().attr.y2).isAlmostEqualTo(y);
+  x += puzzle.size.unitSize/4;
+
+  puzzle.controller.onMouseMove(createMouseEvent(x, y));
+
+  path = puzzle.controller.dragHandler.path;
+  assert("Drag path after second move").that(path).isNotNull();
+
+  assert("Drag path type after second move").that(path.type).isEqualTo("line");
+  assert("Drag path color after second move").that(path.toJSON().attr.stroke).isEqualTo(puzzle.colorSchema.traceColor);
+  assert("Drag path start x after second move").that(path.toJSON().attr.x1).isAlmostEqualTo(startX);
+  assert("Drag path end x after second move").that(path.toJSON().attr.x2).isAlmostEqualTo(x);
+  assert("Drag path start y after second move").that(path.toJSON().attr.y1).isAlmostEqualTo(startY);
+  assert("Drag path end y after second move").that(path.toJSON().attr.y2).isAlmostEqualTo(y);
+}),
+
 // end "Mouse event processing" test suite
 );
 

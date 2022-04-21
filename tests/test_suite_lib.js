@@ -140,6 +140,14 @@ assertSubject.prototype.isEqualTo = function(expected) {
   return this.assertWithMessage("expected to be " + JSON.stringify(expected) + ", but was " + JSON.stringify(this.subject), deepCompare(this.subject, expected));
 }
 
+assertSubject.prototype.isAlmostEqualTo = function(expected) {
+  let number = Number(this.subject);
+  if (isNaN(number)) {
+    return this.assertWithMessage("expected to be a number, but was " + JSON.stringify(this.subject), false);
+  }
+  return this.assertWithMessage("expected to be almost " + expected + ", but was " + number, Math.abs(number - expected) < Math.abs(number/10000.));
+}
+
 assertSubject.prototype.containsExactly = function(expected) {
   let subject = this.subject;
   if (!subject) {

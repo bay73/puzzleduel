@@ -91,17 +91,16 @@ mouseController.prototype.onMouseMove = function(event) {
       this.dragHandler.path = null;
     }
     var element = this.eventElement(event);
-    if (element == null) {
-      return;
-    }
-    var moveResult = element.processDragMove(this.mouseStartElement);
-    if (moveResult) {
-      if (moveResult.stopDrag) {
-        this.clearDragHandler();
-        this.mouseStartElement = null;
-      } else {
-        this.dragRestarted = true;
-        this.mouseStartElement = moveResult.newMouseStartElement;
+    if (element != null) {
+      var moveResult = element.processDragMove(this.mouseStartElement);
+      if (moveResult) {
+        if (moveResult.stopDrag) {
+          this.clearDragHandler();
+          this.mouseStartElement = null;
+        } else {
+          this.dragRestarted = true;
+          this.mouseStartElement = moveResult.newMouseStartElement;
+        }
       }
     }
     if (!this.dragHandler) {
