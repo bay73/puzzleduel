@@ -20,3 +20,7 @@ requirejs(["tests/submissiondata_test.js"], ()=>{
   allTestSuites.push(submissionAreaDataTestSuite);
 })
 
+requirejs(["tests/checkers_test.js"], ()=>{
+  allTestSuites.push(yingYangCheckerTestSuite);
+})
+
