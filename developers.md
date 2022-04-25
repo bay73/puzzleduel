@@ -17,8 +17,6 @@ New puzzle categories also can be added, but this requires more coding.
 
 Each of the files above contains UI definitions for the list of puzzle types. See the corresponding section below about the fields on this definition.
 
-Add tests for controllers which asserts that all corresponding elements are created.
-
 ## 2. Implement solution checker ##
 
 Solution check is executed at the server side and checks that, solution data provided by the user corresponds to puzzle rules and given clues.
@@ -37,7 +35,7 @@ And returns an object with two fields
 1. String **status** "OK" if solution is correct, user visible message if it's wrong
 2. Array **errorList** list of coordinate of cells which should be marked in the grid to show where the solution is incorrect
 
-## 3. Test locally ##
+## 3. Test manually ##
 
 To test locally files _localedit.html_ and _localrun.html_ can be used. It allows to set puzzle type, dimension, grid data and specify js file which is used for rendering.
 
@@ -45,25 +43,29 @@ To test locally files _localedit.html_ and _localrun.html_ can be used. It allow
 
 **localrun.hrml** shows solving UI. Check button runs the corresponding checker.
 
-## 4. Add type to the storage ##
+## 4. Automatic testing ##
+
+Add automatic tests for UI definition and solution checker.
+
+## 5. Add type to the storage ##
 
 New puzzle type should be registered in the database collection puzzletypes:
 
-## 5. Test on server ##
+## 6. Test on server ##
 
 After adding a new type to the storage collection it appears at the author's page. Run server with new changes in js files and test the new puzzle created correctly and can be solved. 
 
-## 6. Add localization ##
+## 7. Add localization ##
 
 While testing on the server it automatically adds error messages to localization files which are located in locales directory. Error messages should be translated to corresponding languages.
 
-## 7. Create example puzzle with the answer image ##
+## 8. Create example puzzle with the answer image ##
 
 An example puzzle has to be created for the new puzzle type. This can be done the same way as adding a regular puzzle using the author's page. Put estimated solving difficulty in seconds for the puzzle. The puzzle id should be put to the `example.puzzleId` field of the puzzle type.
 
 The puzzle should be solved and the answer image captured (preferable without additional marks in it) and saved into `/images/answers` directory using .png format. Then the puzzle should be found in the storage collection. Field `tag` should be set to _‘example’_, field `answerImg` should be set to the path of answer image like _‘/images/answers/puzzleid.png’_
 
-## 8. Commit everything and deploy ##
+## 9. Commit everything and deploy ##
 
 All changes in local files should be committed this includes:
 
@@ -163,4 +165,16 @@ Examples of valid tags:
 *  `{rows-2}` - used for double block and fuzili puzzle
 *  `{letters}` - list of available letters in the puzzle
 *  `{quantity=="pento12"?"pento12":("pento\" set=\""+quantity)}` - used for pentomino puzzles
+
+# Test automation
+
+For each puzzle type developer can add the next tests:
+*  **Controllers definition tests** - checks that definition made using controller_helper.js converted to correct controller information for different cells.
+   The test includes puzzle initialization and assertion that _chooserValues_, _clickSwitch_, _dragSwitch_ attributes for some puzzle elements contain correct values. See `tests/areapuzzle_test.js` for examples.
+*  **Mouse reaction tests** - checks that mouse events processed correctly.
+   The test includes puzzle initialization, emulation of few mouse actions and assertion that grid state changed correspondingly. See `tests/mouse_test.js` for examples.
+*  **Data collector tests** - checks that submission data collected from the grid correctly.
+   The test includes type puzzle initialization, emulation of few mouse actions and assertion for the result of _collectData_ method. See `tests/submissiondata_test.js` for examples.
+*  **Checkers tests** - checks that puzzle type checker processes different solvers mistakes correctly.
+   The test execution of corresponding checker for different submission data and assertion for the result. See `tests/checkers_test.js` for examples.
 
