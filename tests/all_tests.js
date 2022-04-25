@@ -15,3 +15,8 @@ requirejs(["tests/mouse_test.js"], ()=>{
   allTestSuites.push(mouseTestSuite);
 })
 
+requirejs(["tests/submissiondata_test.js"], ()=>{
+  allTestSuites.push(submissionSquareDataTestSuite);
+  allTestSuites.push(submissionAreaDataTestSuite);
+})
+
