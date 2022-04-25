@@ -2,8 +2,8 @@ function testSuite(name, ...tests) {
   let testList = [];
   let beforeEach = [];
   let afterEach = [];
-  let beforeAll = (cb) => cb();
-  let afterAll = () => null;
+  let beforeAll = (suite, cb) => cb();
+  let afterAll = (suite) => null;
   for (let i=1; i<arguments.length; i++) {
     if (arguments[i].type == testSuite.TEST) {
       testList.push(arguments[i].exec);
@@ -22,19 +22,19 @@ function testSuite(name, ...tests) {
     }
   }
   
-  return {name: name,
+  let self = {name: name,
     exec: (hideDetails) => {
-    beforeAll( () => {
+    beforeAll( self, () => {
       let failed = 0;
       let passed = 0;
       console.log("%c" + name, "font-weight:bold");
       for (let i=0; i<testList.length; i++) {
         for (let j=0; j<beforeEach.length; j++) {
-          beforeEach[j]();
+          beforeEach[j](self);
         }
-        let result = testList[i]();
+        let result = testList[i](self);
         for (let j=0; j<afterEach.length; j++) {
-          afterEach[j]();
+          afterEach[j](self);
         }
         if (result.status == "PASSED") {
           passed++;
@@ -54,8 +54,9 @@ function testSuite(name, ...tests) {
         console.log("%c FAILED: " + failed + " PASSED: " + passed, "color:green;font-weight:bold");
       }
     });
-    afterAll();
+    afterAll(self);
   }};
+  return self;
 }
 
 testSuite.TEST = 1;
@@ -67,9 +68,9 @@ testSuite.AFTER_ALL = 5;
 function test(name, fn) {
   return {
     type: testSuite.TEST,
-    exec: () => {
+    exec: (suite) => {
       try {
-        fn();
+        fn(suite);
         return {name: name, status: "PASSED"};
       } catch (error) {
         return {name: name, status: "FAILED", error: error + (error.stack != undefined?"\n"+error.stack:"")};

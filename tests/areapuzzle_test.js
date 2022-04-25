@@ -1,12 +1,11 @@
-GRID_SELECTOR = "#mainGrid";
-
 areaPuzzleTestSuite = testSuite("Area puzzle solver controllers",
 
-beforeSuite((cb)=> {
-  if (!$(GRID_SELECTOR).length) {
-    throw "Missing " + GRID_SELECTOR + " element"
+beforeSuite((suite, cb)=> {
+  suite.GRID_SELECTOR = "#mainGrid";
+  if (!$(suite.GRID_SELECTOR).length) {
+    throw "Missing " + suite.GRID_SELECTOR + " element"
   };
-  showAreaPuzzle = function(type, dimension, data) {
+  suite.showAreaPuzzle = function(type, dimension, data) {
     var controls = "";
     var puzzleData = {
       typeCode: type,
@@ -18,10 +17,10 @@ beforeSuite((cb)=> {
       data: data || {}
     };
     var puzzle = new areaPuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(GRID_SELECTOR));
+    puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
   }
-  showDominoPuzzle = function(type, dimension, data) {
+  suite.showDominoPuzzle = function(type, dimension, data) {
     var controls = "";
     var puzzleData = {
       typeCode: type,
@@ -33,10 +32,10 @@ beforeSuite((cb)=> {
       data: data || {}
     };
     var puzzle = new dominoType(puzzleData, controls, settings);
-    puzzle.render(Snap(GRID_SELECTOR));
+    puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
   }
-  showGalaxyPuzzle = function(type, dimension, data) {
+  suite.showGalaxyPuzzle = function(type, dimension, data) {
     var controls = "";
     var puzzleData = {
       typeCode: type,
@@ -48,18 +47,18 @@ beforeSuite((cb)=> {
       data: data || {}
     };
     var puzzle = new galaxiesType(puzzleData, controls, settings);
-    puzzle.render(Snap(GRID_SELECTOR));
+    puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
   }
   requirejs(["areapuzzle"], cb);
 }),
 
-after(()=> {
-  Snap(GRID_SELECTOR).clear();
+after((suite)=> {
+  Snap(suite.GRID_SELECTOR).clear();
 }),
 
-test('ABC Division',() => {
-  let puzzle = showAreaPuzzle(
+test('ABC Division',(suite) => {
+  let puzzle = suite.showAreaPuzzle(
     "abc_division", "4x4-ABCD",
     {"a1": "A", "a2": "B", "a3": "C", "a4": "D", "b1": "A", "b2": "B", "b3": "C", "b4": "D", "c1": "A", "c2": "B", "c3": "A", "c4": "B", "d1": "C", "d2": "D", "d3": "C", "d4": "D"}
   );
@@ -73,8 +72,8 @@ test('ABC Division',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
 }),
 
-test('Domino Hunt',() => {
-  let puzzle = showDominoPuzzle(
+test('Domino Hunt',(suite) => {
+  let puzzle = suite.showDominoPuzzle(
     "domino_hunt", "4x4-123",
     {"a1": "1", "a2": "1", "a3": "1", "a4": "1", "b1": "2", "b2": "black", "b3": "black", "b4": "3", "c1": "2", "c2": "black", "c3": "black", "c4": "3", "d1": "2", "d2": "2", "d3": "3", "d4": "3"}
   );
@@ -88,8 +87,8 @@ test('Domino Hunt',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
 }),
 
-test('Foseruzu',() => {
-  let puzzle = showAreaPuzzle(
+test('Foseruzu',(suite) => {
+  let puzzle = suite.showAreaPuzzle(
     "foseruzu", "4x4", {"a2": "1", "b2": "3", "b3": "2"});
   puzzle.start();
 
@@ -101,8 +100,8 @@ test('Foseruzu',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
 }),
 
-test('Neighbour Areas',() => {
-  let puzzle = showAreaPuzzle(
+test('Neighbour Areas',(suite) => {
+  let puzzle = suite.showAreaPuzzle(
     "neighbors", "4x4", {"a1": "4", "a2": "?", "c4": "3", "d4": "?"});
   puzzle.start();
 
@@ -114,8 +113,8 @@ test('Neighbour Areas',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
 }),
 
-test('Shikaku',() => {
-  let puzzle = showAreaPuzzle(
+test('Shikaku',(suite) => {
+  let puzzle = suite.showAreaPuzzle(
     "shikaku", "4x4", {"a1": "4", "a2": "5", "d3": "2", "d4": "4"});
   puzzle.start();
 
@@ -127,8 +126,8 @@ test('Shikaku',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
 }),
 
-test('Araf',() => {
-  let puzzle = showAreaPuzzle(
+test('Araf',(suite) => {
+  let puzzle = suite.showAreaPuzzle(
     "araf", "4x4", {"a1": "5", "a2": "11", "d3": "7", "d4": "8"});
   puzzle.start();
 
@@ -140,8 +139,8 @@ test('Araf',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
 }),
 
-test('Black and White',() => {
-  let puzzle = showAreaPuzzle(
+test('Black and White',(suite) => {
+  let puzzle = suite.showAreaPuzzle(
     "black_white", "4x4", {"a1": "white_circle", "a2": "white_circle", "b2": "black_circle", "c1": "black_circle", "c4": "white_circle", "d2": "black_circle", });
   puzzle.start();
 
@@ -153,8 +152,8 @@ test('Black and White',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
 }),
 
-test('Two Apiece',() => {
-  let puzzle = showAreaPuzzle(
+test('Two Apiece',(suite) => {
+  let puzzle = suite.showAreaPuzzle(
     "two_apiece", "4x4", {"a1": "white_circle", "a2": "white_circle", "a4": "white_circle", "b3": "black_circle", "c2": "black_circle", "c4": "black_circle", "d1": "white_circle", "d4": "black_circle", });
   puzzle.start();
 
@@ -166,8 +165,8 @@ test('Two Apiece',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
 }),
 
-test('L-Shapes',() => {
-  let puzzle = showAreaPuzzle(
+test('L-Shapes',(suite) => {
+  let puzzle = suite.showAreaPuzzle(
     "l_shapes", "4x4", {"a1": "white_circle", "b3": "black_circle", "d2": "white_circle", "d4": "black_circle"});
   puzzle.start();
 
@@ -179,8 +178,8 @@ test('L-Shapes',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
 }),
 
-test('Spiral Galaxies',() => {
-  let puzzle = showGalaxyPuzzle(
+test('Spiral Galaxies',(suite) => {
+  let puzzle = suite.showGalaxyPuzzle(
     "spiral_galaxies", "4x4", {"a1": "small_circle", "d4": "small_circle", "edges": {"a2-2": "black_circle", "d1-2": "black_circle"}, "nodes": {"b1-2": "black_circle", "b3-2": "black_circle"} });
   puzzle.start();
 
@@ -196,11 +195,12 @@ test('Spiral Galaxies',() => {
 
 areaPuzzleEditTestSuite = testSuite("Area puzzle author controllers",
 
-beforeSuite((cb)=> {
-  if (!$(GRID_SELECTOR).length) {
-    throw "Missing " + GRID_SELECTOR + " element"
+beforeSuite((suite, cb)=> {
+  suite.GRID_SELECTOR = "#mainGrid";
+  if (!$(suite.GRID_SELECTOR).length) {
+    throw "Missing " + suite.GRID_SELECTOR + " element"
   };
-  showAreaPuzzleForEdit = function(type, dimension, data) {
+  suite.showAreaPuzzle = function(type, dimension, data) {
     var controls = "";
     var puzzleData = {
       typeCode: type,
@@ -212,10 +212,10 @@ beforeSuite((cb)=> {
       data: data || {}
     };
     var puzzle = new areaPuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(GRID_SELECTOR));
+    puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
   }
-  showDominoPuzzleForEdit = function(type, dimension, data) {
+  suite.showDominoPuzzle = function(type, dimension, data) {
     var controls = "";
     var puzzleData = {
       typeCode: type,
@@ -227,10 +227,10 @@ beforeSuite((cb)=> {
       data: data || {}
     };
     var puzzle = new dominoType(puzzleData, controls, settings);
-    puzzle.render(Snap(GRID_SELECTOR));
+    puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
   }
-  showGalaxyPuzzleForEdit = function(type, dimension, data) {
+  suite.showGalaxyPuzzle = function(type, dimension, data) {
     var controls = "";
     var puzzleData = {
       typeCode: type,
@@ -242,18 +242,18 @@ beforeSuite((cb)=> {
       data: data || {}
     };
     var puzzle = new galaxiesType(puzzleData, controls, settings);
-    puzzle.render(Snap(GRID_SELECTOR));
+    puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
   }
   requirejs(["areapuzzle"], cb);
 }),
 
-after(()=> {
-  Snap(GRID_SELECTOR).clear();
+after((suite)=> {
+  Snap(suite.GRID_SELECTOR).clear();
 }),
 
-test('ABC Division',() => {
-  let puzzle = showAreaPuzzleForEdit("abc_division", "4x4-ABCD");
+test('ABC Division',(suite) => {
+  let puzzle = suite.showAreaPuzzle("abc_division", "4x4-ABCD");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsExactly([{},{text: 'A', returnValue: 'A'},{text: 'B', returnValue: 'B'},{text: 'C', returnValue: 'C'},{text: 'D', returnValue: 'D'}]);
@@ -264,8 +264,8 @@ test('ABC Division',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
-test('Domino Hunt',() => {
-  let puzzle = showDominoPuzzleForEdit("domino_hunt", "4x4-123");
+test('Domino Hunt',(suite) => {
+  let puzzle = suite.showDominoPuzzle("domino_hunt", "4x4-123");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsExactly([{},{color: puzzle.colorSchema.gridColor, returnValue: 'black'},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'}]);
@@ -276,8 +276,8 @@ test('Domino Hunt',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
-test('Foseruzu',() => {
-  let puzzle = showAreaPuzzleForEdit("foseruzu", "4x4");
+test('Foseruzu',(suite) => {
+  let puzzle = suite.showAreaPuzzle("foseruzu", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsExactly([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'}]);
@@ -288,8 +288,8 @@ test('Foseruzu',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
-test('Neighbour Areas',() => {
-  let puzzle = showAreaPuzzleForEdit("neighbors", "4x4");
+test('Neighbour Areas',(suite) => {
+  let puzzle = suite.showAreaPuzzle("neighbors", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '?', returnValue: '?'},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '10', returnValue: '10'}]);
@@ -300,8 +300,8 @@ test('Neighbour Areas',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
-test('Shikaku',() => {
-  let puzzle = showAreaPuzzleForEdit("shikaku", "4x4");
+test('Shikaku',(suite) => {
+  let puzzle = suite.showAreaPuzzle("shikaku", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '99', returnValue: '99'}]);
@@ -312,8 +312,8 @@ test('Shikaku',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
-test('Araf',() => {
-  let puzzle = showAreaPuzzleForEdit("araf", "4x4");
+test('Araf',(suite) => {
+  let puzzle = suite.showAreaPuzzle("araf", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '99', returnValue: '99'}]);
@@ -324,8 +324,8 @@ test('Araf',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
-test('Black and White',() => {
-  let puzzle = showAreaPuzzleForEdit("black_white", "4x4");
+test('Black and White',(suite) => {
+  let puzzle = suite.showAreaPuzzle("black_white", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -336,8 +336,8 @@ test('Black and White',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
-test('Two Apiece',() => {
-  let puzzle = showAreaPuzzleForEdit("two_apiece", "4x4");
+test('Two Apiece',(suite) => {
+  let puzzle = suite.showAreaPuzzle("two_apiece", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -348,8 +348,8 @@ test('Two Apiece',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
-test('L-Shapes',() => {
-  let puzzle = showAreaPuzzleForEdit("l_shapes", "4x4");
+test('L-Shapes',(suite) => {
+  let puzzle = suite.showAreaPuzzle("l_shapes", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
@@ -360,8 +360,8 @@ test('L-Shapes',() => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
-test('Spiral Galaxies',() => {
-  let puzzle = showGalaxyPuzzleForEdit("spiral_galaxies", "4x4");
+test('Spiral Galaxies',(suite) => {
+  let puzzle = suite.showGalaxyPuzzle("spiral_galaxies", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
