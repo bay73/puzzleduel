@@ -170,11 +170,12 @@ Examples of valid tags:
 
 For each puzzle type developer can add the next tests:
 *  **Controllers definition tests** - checks that definition made using controller_helper.js converted to correct controller information for different cells.
-   The test includes puzzle initialization and assertion that _chooserValues_, _clickSwitch_, _dragSwitch_ attributes for some puzzle elements contain correct values. See `tests/areapuzzle_test.js` for examples.
+   The test includes puzzle initialization and assertion that _chooserValues_, _clickSwitch_, _dragSwitch_ attributes for some puzzle elements contain correct values.
 *  **Mouse reaction tests** - checks that mouse events processed correctly.
-   The test includes puzzle initialization, emulation of few mouse actions and assertion that grid state changed correspondingly. See `tests/mouse_test.js` for examples.
+   The test includes puzzle initialization, emulation of few mouse actions and assertion that grid state changed correspondingly.
 *  **Data collector tests** - checks that submission data collected from the grid correctly.
-   The test includes type puzzle initialization, emulation of few mouse actions and assertion for the result of _collectData_ method. See `tests/submissiondata_test.js` for examples.
+   The test includes type puzzle initialization, emulation of few mouse actions and assertion for the result of _collectData_ method.
 *  **Checkers tests** - checks that puzzle type checker processes different solvers mistakes correctly.
-   The test execution of corresponding checker for different submission data and assertion for the result. See `tests/checkers_test.js` for examples.
+   The test execution of corresponding checker for different submission data and assertion for the result.
 
+ See `tests/yin_yang.test.js` for examples.
