@@ -65,6 +65,7 @@
 <script src="tests/test_suite_lib.js"></script>
 <script src="js/locale_ru.js"></script>
 <script>
+  var testSuiteCounter = 0;
   $("#runTests").click(() => allTestSuites.forEach(suite => {suite.exec(true);}));
   $(document).ready(function () {
     requirejs(["tests/all_tests.js"], () => {});
@@ -74,11 +75,18 @@
     if (typeof allTestSuites == "undefined") {
       return;
     }
+    if (allTestSuites.length <= testSuiteCounter) {
+      return;
+    }
+    testSuiteCounter = allTestSuites.length;
+    $("#suits").empty();
+    allTestSuites.sort((s1, s2) => s1.name < s2.name?-1:1);
     for (let i=0;i < allTestSuites.length; i++) {
       let suite = allTestSuites[i];
       $("#suits").append("<tr><td>" + suite.name + "</td><td><button id='runTests"+i+"' type='button' class='btn btn-primary mb-3 ml-3'>Run</button></td></tr>");
       $("#runTests"+i).click(() => suite.exec());
     };
+    setTimeout(show_tests, 100);
   }
 </script>
   </body>
