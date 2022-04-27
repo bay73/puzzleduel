@@ -44,6 +44,12 @@ test('Solver controllers',(suite) => {
   assert("Bottom clue click").that(puzzle.bottom[0].clickSwitch).containsExactly([{text: '2'}, {text: '2', image: 'white_circle'}]);
   assert("Right clue chooser").that(puzzle.right[0].chooserValues).isNull();
   assert("Right clue click").that(puzzle.right[0].clickSwitch).containsExactly([{text: '3'}, {text: '3', image: 'white_circle'}]);
+  assert("Empty cell drag handler").that(puzzle.cells[2][2].drawDragHandler).isNotNull();
+  assert("Empty cell drag processor").that(puzzle.cells[2][2].dragProcessor).isNotNull();
+  assert("White circle drag handler").that(puzzle.cells[1][1].drawDragHandler).isNotNull();
+  assert("White circle drag processor").that(puzzle.cells[1][1].dragProcessor).isNotNull();
+  assert("Cross drag handler").that(puzzle.cells[0][0].drawDragHandler).isNotNull();
+  assert("Cross drag processor").that(puzzle.cells[0][0].dragProcessor).isNotNull();
 }),
 
 test('Author controllers',(suite) => {

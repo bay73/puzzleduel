@@ -97,6 +97,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().outer().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .add(controller().forSolver().cell().inner().clue().copy())
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
@@ -114,6 +116,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().outer().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .add(controller().forSolver().cell().inner().clue().copy())
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
