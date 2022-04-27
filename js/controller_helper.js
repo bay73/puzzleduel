@@ -158,6 +158,7 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
 ControllerBuilder = function() {
   this.editMode = false;
   this.type = undefined;
+  this.pasteFn = undefined;
   this.elementType = undefined;
   this.outerCells = false;
   this.condition = undefined;
@@ -239,7 +240,7 @@ ControllerBuilder.prototype.copy = function(){
 }
 
 // Defines controller which copy-paste the element state on drag-n-drop.
-ControllerBuilder.prototype.copyPaste = function(){
+ControllerBuilder.prototype.copyPaste = function(pasteFn){
   if (typeof this.type!="undefined") {
     throw "Controller type is already defined"
   }
@@ -247,6 +248,7 @@ ControllerBuilder.prototype.copyPaste = function(){
     throw "drag conroller can be used only for cells"
   }
   this.type = ControllerBuilder.DRAG_COPY_PASTE;
+  this.pasteFn = pasteFn;
   return this;
 }
 
@@ -395,7 +397,11 @@ ControllerBuilder.prototype.build = function(){
       }
       gridElement.dragProcessor = (start) => {
         if (gridElement != start) {
-          gridElement.switchToData(start.data);
+          if (typeof self.pasteFn == 'function') {
+            gridElement.switchToData(self.pasteFn(start.data));
+          } else {
+            gridElement.switchToData(start.data);
+          }
           return gridElement;
         } else {
           return false;
@@ -477,14 +483,15 @@ ControllerItemBuilder.prototype.asAreaBorder = function(){
 }
 
 StdColor = {
- BLACK: {color: (puzzle, isPencil) => puzzle.colorSchema.gridColor,
-         textColor: "#fff"}
+BLACK: {color: (puzzle, isPencil) => puzzle.colorSchema.gridColor,
+        textColor: "#fff"}
 }
 
 // Standard items
 StdItem = {
 EMPTY: controllerItem({}),
 BLACK: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.greyColor:puzzle.colorSchema.gridColor, returnValue: "black"}),
+CLUE_COLOR: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.greyColor:puzzle.colorSchema.clueColor, returnValue: "black"}),
 GREY: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.lightGreyColor:puzzle.colorSchema.greyColor, returnValue: "grey"}),
 LINE: controllerItem({color: (puzzle, isPencil) => puzzle.colorSchema.lineColor, returnValue: "line"}),
 WHITE_CIRCLE: controllerItem({image: "white_circle", returnValue: "white_circle"}),

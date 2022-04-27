@@ -102,6 +102,44 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="snake_simple") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.CLUE_COLOR))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0,maxValue))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("black"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.color==self.colorSchema.clueColor?{color:self.colorSchema.greyColor}:data ))
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="snake_max") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.CLUE_COLOR))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0,maxValue))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("black"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.color==self.colorSchema.clueColor?{color:self.colorSchema.greyColor}:data ))
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else if (typeCode=="gaps") {
     var maxValue = this.rows-2;
     this.typeProperties = decribePuzzleType()
@@ -800,41 +838,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
     collectAreas: this.editMode,
-  }
-
-  typeProperties["snake_simple"] = {
-    needBottom: true,
-    needRight: true,
-    cellController: cell => {
-      if (cell.outerCell) {
-        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
-      } else {
-        setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "black"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      }
-    },
-    cellEditController: cell => {
-      if (cell.outerCell) {
-        cell.isClue = true;
-        var chooserValues = [{}];
-        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
-         chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      } else {
-        cell.clickSwitch = [{},{color: self.colorSchema.clueColor, returnValue: "black"},{image: "cross", returnValue: "cross"}];
-      }
-    },
-    decodeClue: value => {
-      if (value=="cross") {
-        return {image: value};
-      } else if (value=="black") {
-        return {color: self.colorSchema.clueColor};
-      } else if (value=="white") {
-        return {};
-      } else {
-        return {text: value};
-      };
-    },
   }
 
   typeProperties["tetro_scope"] = {

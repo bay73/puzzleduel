@@ -87,6 +87,15 @@ requirejs(["tests/shikaku.test.js"], ()=>{
 requirejs(["tests/snake_dutch.test.js"], ()=>{
   allTestSuites.push(snakeDutchTestSuite);
 })
+
+requirejs(["tests/snake_max.test.js"], ()=>{
+  allTestSuites.push(snakeMaxTestSuite);
+})
+
+requirejs(["tests/snake_simple.test.js"], ()=>{
+  allTestSuites.push(snakeSimpleTestSuite);
+})
+
 requirejs(["tests/starbattle.test.js"], ()=>{
   allTestSuites.push(starbattleTestSuite);
 })
