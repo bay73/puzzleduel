@@ -15,6 +15,7 @@ controllerItem = function(data) {
 
 PuzzleTypeBuilder = function() {
   this.controllers = [];
+  this.outerCellType = undefined;
   this.upgradeClue = undefined;
 }
 
@@ -36,6 +37,12 @@ PuzzleTypeBuilder.prototype.add = function(controller) {
       return true;
     };
   }
+  return this;
+}
+
+// Adds new controller to the puzzle type descriptor.
+PuzzleTypeBuilder.prototype.useOuterCells = function(outerCellType) {
+  this.outerCellType = outerCellType;
   return this;
 }
 
@@ -137,8 +144,10 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
     return processControllerGenericData(clueValues[value], puzzle);
   }
   typeDesc.collectAreas = this.controllers.filter(controller=>controller.collectAreas && controller.editMode==puzzle.editMode).length > 0;
-  typeDesc.needBottom = this.controllers.filter(controller=>controller.outerCells).length > 0;
-  typeDesc.needRight = this.controllers.filter(controller=>controller.outerCells).length > 0;
+  typeDesc.needBottom = this.outerCellType & StdOuter.BOTTOM;
+  typeDesc.needRight = this.outerCellType & StdOuter.RIGHT;
+  typeDesc.needTop = this.outerCellType & StdOuter.TOP;
+  typeDesc.needLeft = this.outerCellType & StdOuter.LEFT;
 
   if (typeof this.upgradeClue != "undefined") {
     typeDesc.upgradeClue = this.upgradeClue;
@@ -494,3 +503,9 @@ ARROW_L: controllerItem({image: "arrow_l", returnValue: "arrow_l"}),
 ARROW_UL: controllerItem({image: "arrow_ul", returnValue: "arrow_ul"}),
 }
 
+StdOuter = {
+LEFT: 1,
+RIGHT: 2,
+TOP: 4,
+BOTTOM: 8
+}

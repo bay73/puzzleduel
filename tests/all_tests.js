@@ -28,6 +28,10 @@ requirejs(["tests/domino_hunt.test.js"], ()=>{
   allTestSuites.push(dominoHuntTestSuite);
 })
 
+requirejs(["tests/easy_as_coral.test.js"], ()=>{
+  allTestSuites.push(easyAsCoralTestSuite);
+})
+
 requirejs(["tests/fence.test.js"], ()=>{
   allTestSuites.push(fenceTestSuite);
 })

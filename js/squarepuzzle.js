@@ -60,6 +60,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="point_a_star") {
     var maxValue = (Math.max(this.rows, this.cols)+1)/2;
     this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
       .add(controller().forAuthor().cell().inner().chooser()
         .addItem(StdItem.ARROW_U)
         .addItem(StdItem.ARROW_UR)
@@ -85,6 +86,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="clouds") {
     var maxValue = Math.max(this.rows, this.cols);
     this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
       .add(controller().forAuthor().cell().inner().clickSwitch()
         .addItem(StdItem.CROSS)
         .addItem(StdItem.BLACK))
@@ -101,6 +103,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="gaps") {
     var maxValue = this.rows-2;
     this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
       .add(controller().forAuthor().cell().inner().clickSwitch()
         .addItem(StdItem.CROSS)
         .addItem(StdItem.WHITE_CIRCLE))
@@ -124,6 +127,25 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE))
       .add(controller().forSolver().cell().noClue().copyPaste())
       .add(controller().forSolver().cell().clue().copy())
+      .build(this);
+
+  } else if (typeCode=="easy_as_coral") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.BLACK))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(1,maxValue))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.BLACK)
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
   } else {

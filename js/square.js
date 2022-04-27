@@ -15,7 +15,7 @@ squarePuzzle.prototype.parseDimension = function(dimension) {
     var size = dimension;
   }
   // rows - size of the vertical sides of the grid
-  // cols - size of top (and bottom) inclined sedes
+  // cols - size of top (and bottom) inclined sides
   this.rows = parseInt(size.split("x")[1]);
   this.cols = parseInt(size.split("x")[0]);
 }
@@ -45,6 +45,22 @@ squarePuzzle.prototype.createBoard = function() {
       this.right[y] = new squarePuzzleCell(this, this.cols, y);
       this.right[y].outerCell = true;
       this.elements.push(this.right[y]);
+    }
+  }
+  if (this.typeProperties.needTop) {
+    this.top = [];
+    for (var x = 0; x < this.cols; x++) {
+      this.top[x] = new squarePuzzleCell(this, x, -1);
+      this.top[x].outerCell = true;
+      this.elements.push(this.top[x]);
+    }
+  }
+  if (this.typeProperties.needLeft) {
+    this.left = [];
+    for (var y = 0; y < this.rows; y++) {
+      this.left[y] = new squarePuzzleCell(this, -1, y);
+      this.left[y].outerCell = true;
+      this.elements.push(this.left[y]);
     }
   }
   //
@@ -185,6 +201,16 @@ squarePuzzle.prototype.initController = function () {
       this.typeProperties.cellController(this.right[y]);
     }
   }
+  if (this.typeProperties.needTop && typeof this.typeProperties.cellController == "function") {
+    for (var x = 0; x < this.cols; x++) {
+      this.typeProperties.cellController(this.top[x]);
+    }
+  }
+  if (this.typeProperties.needLeft && typeof this.typeProperties.cellController == "function") {
+    for (var y = 0; y < this.rows; y++) {
+      this.typeProperties.cellController(this.left[y]);
+    }
+  }
 }
 
 squarePuzzle.prototype.initEditController = function() {
@@ -228,6 +254,16 @@ squarePuzzle.prototype.initEditController = function() {
       this.typeProperties.cellEditController(this.right[y]);
     }
   }
+  if (this.typeProperties.needTop && typeof this.typeProperties.cellEditController == "function") {
+    for (var x = 0; x < this.cols; x++) {
+      this.typeProperties.cellEditController(this.top[x]);
+    }
+  }
+  if (this.typeProperties.needLeft && typeof this.typeProperties.cellEditController == "function") {
+    for (var y = 0; y < this.rows; y++) {
+      this.typeProperties.cellEditController(this.left[y]);
+    }
+  }
 }
 
 squarePuzzle.prototype.findSize = function() {
@@ -241,6 +277,8 @@ squarePuzzle.prototype.findSize = function() {
   var rows = this.rows;
   if (this.typeProperties.needBottom) rows++;
   if (this.typeProperties.needRight) cols++;
+  if (this.typeProperties.needTop) rows++;
+  if (this.typeProperties.needLeft) cols++;
   // unitSize - length of a cell edge
   var unitSize = Math.min(hSizeLimit / cols, vSizeLimit / rows);
   var leftGap = (width - unitSize * cols) /2;
@@ -248,6 +286,9 @@ squarePuzzle.prototype.findSize = function() {
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   var height = rows*unitSize + topGap + unitSize / (isSafari ? 1.5 : 4);
   this.chooserSize = Math.min(25 + leftGap + unitSize / 2, unitSize * (isSafari ? 1.4 : 1.6));
+
+  if (this.typeProperties.needLeft) leftGap += unitSize;
+  if (this.typeProperties.needTop) topGap += unitSize;
 
   return {height: height, width: width, unitSize: unitSize, leftGap: leftGap, topGap: topGap};
 }
@@ -273,6 +314,10 @@ squarePuzzle.prototype.showClues = function(data) {
       this.drawBottomClues(value);
     } else if (key=="right") {
       this.drawRightClues(value);
+    } else if (key=="top") {
+      this.drawTopClues(value);
+    } else if (key=="left") {
+      this.drawLeftClues(value);
     } else {
       var coord = this.decodeCoordinate(key);
       if (this.cells[coord.y] && this.cells[coord.y][coord.x]) {
@@ -340,11 +385,31 @@ squarePuzzle.prototype.drawBottomClues = function(bottom) {
   }
 }
 
+squarePuzzle.prototype.drawTopClues = function(top) {
+  if (this.top) {
+    for(var i=0; i<top.length;i++) {
+      if (this.top[i]) {
+        this.top[i].setClue(this.decodeClue(top[i]));
+      }
+    }
+  }
+}
+
 squarePuzzle.prototype.drawRightClues = function(right) {
   if (this.right) {
     for(var i=0; i<right.length;i++) {
       if (this.right[i]) {
         this.right[i].setClue(this.decodeClue(right[i]));
+      }
+    }
+  }
+}
+
+squarePuzzle.prototype.drawLeftClues = function(left) {
+  if (this.left) {
+    for(var i=0; i<left.length;i++) {
+      if (this.left[i]) {
+        this.left[i].setClue(this.decodeClue(left[i]));
       }
     }
   }
@@ -412,6 +477,34 @@ squarePuzzle.prototype.collectData = function() {
     }
     if (exists) {
       data["right"] = rightValues;
+    }
+  }
+  if (this.typeProperties.needTop) {
+    let topValues = [];
+    let exists = false;
+    for (var x = 0; x < this.cols; x++) {
+      let value = this.top[x].getValue();
+      topValues.push(value);
+      if (value != null) {
+        exists = true;
+      }
+    }
+    if (exists) {
+      data["top"] = topValues;
+    }
+  }
+  if (this.typeProperties.needLeft) {
+    let leftValues = [];
+    let exists = false;
+    for (var y = 0; y < this.rows; y++) {
+      let value = this.left[y].getValue();
+      leftValues.push(value);
+      if (value != null) {
+        exists = true;
+      }
+    }
+    if (exists) {
+      data["left"] = leftValues;
     }
   }
   return data;

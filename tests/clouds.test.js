@@ -27,7 +27,7 @@ after((suite)=> {
   Snap(suite.GRID_SELECTOR).clear();
 }),
 
-test('Soler controllers',(suite) => {
+test('Solver controllers',(suite) => {
   let puzzle = suite.showPuzzle(
     "clouds", "5x5",
     {"a1": "cross", "b2": "black", "bottom": ["2","4","2","4","2"], "right": ["3","3",null,"4","4"]}
