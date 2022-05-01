@@ -2,11 +2,11 @@ if (typeof util=="undefined") {
   var util = require('./util');
 }
 
-const Checker = {
+var Checker = {
 check:function(dimension, clues, data){
   // Create array
   var dim = util.parseDimension(dimension);
-  var cells = util.create2DArray(dim.rows, dim.cols, "")
+  var cells = util.create2DArray(dim.rows, dim.cols, "white")
   var cluecells = util.create2DArray(dim.rows, dim.cols, "")
 
   // Parse data.

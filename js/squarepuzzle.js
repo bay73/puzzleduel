@@ -190,6 +190,38 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="tapa_classic") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(controllerItem({image: "0", returnValue: "0"}))
+        .addItem(controllerItem({image: "1", returnValue: "1"}))
+        .addItem(controllerItem({image: "2", returnValue: "2"}))
+        .addItem(controllerItem({image: "3", returnValue: "3"}))
+        .addItem(controllerItem({image: "4", returnValue: "4"}))
+        .addItem(controllerItem({image: "5", returnValue: "5"}))
+        .addItem(controllerItem({image: "6", returnValue: "6"}))
+        .addItem(controllerItem({image: "7", returnValue: "7"}))
+        .addItem(controllerItem({image: "8", returnValue: "8"}))
+        .addItem(controllerItem({image: "1_1", returnValue: "1_1"}))
+        .addItem(controllerItem({image: "1_2", returnValue: "1_2"}))
+        .addItem(controllerItem({image: "1_3", returnValue: "1_3"}))
+        .addItem(controllerItem({image: "1_4", returnValue: "1_4"}))
+        .addItem(controllerItem({image: "1_5", returnValue: "1_5"}))
+        .addItem(controllerItem({image: "2_2", returnValue: "2_2"}))
+        .addItem(controllerItem({image: "2_3", returnValue: "2_3"}))
+        .addItem(controllerItem({image: "2_4", returnValue: "2_4"}))
+        .addItem(controllerItem({image: "3_3", returnValue: "3_3"}))
+        .addItem(controllerItem({image: "1_1_1", returnValue: "1_1_1"}))
+        .addItem(controllerItem({image: "1_1_2", returnValue: "1_1_2"}))
+        .addItem(controllerItem({image: "1_1_3", returnValue: "1_1_3"}))
+        .addItem(controllerItem({image: "1_2_2", returnValue: "1_2_2"}))
+        .addItem(controllerItem({image: "1_1_1_1", returnValue: "1_1_1_1"})))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.BLACK)
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .build(this);
+
   } else {
 
   var typeProperties = {}

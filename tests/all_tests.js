@@ -108,6 +108,10 @@ requirejs(["tests/spiral_galaxies.test.js"], ()=>{
   allTestSuites.push(spiralGalaxiesTestSuite);
 })
 
+requirejs(["tests/tapa_classic.test.js"], ()=>{
+  allTestSuites.push(tapaClassicTestSuite);
+})
+
 requirejs(["tests/two_apiece.test.js"], ()=>{
   allTestSuites.push(twoApieceTestSuite);
 })
