@@ -19,14 +19,17 @@ beforeSuite((suite, cb)=> {
     var puzzle = new squarePuzzleType(puzzleData, controls, settings);
     puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
-  }
+  };
+  suite.mouseEvent = function(x, y) {
+    return {clientX: x, clientY: y, preventDefault: ()=>{}};
+  };
   requirejs(["squarepuzzle"], cb);
 }),
 
 after((suite)=> {
   Snap(suite.GRID_SELECTOR).clear();
 }),
-
+// Controller definition tests
 test('Solver controllers',(suite) => {
   let puzzle = suite.showPuzzle(
     "clouds", "5x5",
@@ -62,6 +65,29 @@ test('Author controllers',(suite) => {
   assert("Bottom clue click").that(puzzle.bottom[0].clickSwitch).isNull();
   assert("Right clue chooser").that(puzzle.right[0].chooserValues).containsExactly([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'},{text: '4', returnValue: '4'},{text: '5', returnValue: '5'}]);
   assert("Right clue click").that(puzzle.right[0].clickSwitch).isNull();
+}),
+// Mouse processing tests
+test('Drag outer clue inside the grid',(suite) => {
+  let puzzle = suite.showPuzzle(
+    "clouds", "5x5",
+    {"a1": "cross", "b2": "black", "bottom": ["2","4","2","4","2"], "right": ["3","3",null,"4","4"]}
+  );
+  puzzle.start();
+
+  let x = puzzle.size.leftGap + puzzle.size.unitSize/2 + 5*puzzle.size.unitSize;
+  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+
+  assert("Target data before move").that(puzzle.cells[0][4].data).isEqualTo({});
+
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  x -= puzzle.size.unitSize;
+  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+
+  assert("Target data after move").that(puzzle.cells[0][4].data).isEqualTo({});
+
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  assert("Target data after drag end").that(puzzle.cells[0][4].data).isEqualTo({});
 }),
 );
 

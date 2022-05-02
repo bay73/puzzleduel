@@ -69,7 +69,7 @@ mouseController.prototype.onMouseUp = function(event) {
     if (element) {
       if (element == this.mouseDownElement && !this.dragRestarted) {
         element.processClick();
-      } else {
+      } else if (this.mouseStartElement.canDragStart()) {
         element.processDragEnd(this.mouseStartElement);
       }
     }
@@ -156,7 +156,7 @@ mouseController.prototype.drawCopyHandler = function(startElement, end) {
     var attr = Object.assign({}, puzzle.gridProperty.font);
     var textColor = data.textColor;
     if (typeof textColor == 'undefined'){
-      textColor = this.puzzle.colorSchema.textColor;
+      textColor = puzzle.colorSchema.textColor;
     }
     Object.assign(attr, {"fill": textColor, "filter": this.handlerFilter, "font-size": unitSize*0.7, "textLength": width });
     text.attr(attr);
