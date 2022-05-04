@@ -669,7 +669,11 @@ squarePuzzleCell.prototype.drawText = function() {
   var textColor = this.data.textColor;
   if (!textColor) {
     if (this.outerCell) {
-      textColor = this.puzzle.colorSchema.outerClueColor;
+      if (typeof this.puzzle.typeProperties.outerColorMap != 'undefined') {
+        textColor = this.puzzle.typeProperties.outerColorMap(this).textColor;
+      } else {
+        textColor = this.puzzle.colorSchema.outerClueColor;
+      }
     } else {
       textColor = this.isClue ? this.puzzle.colorSchema.clueColor : this.puzzle.colorSchema.textColor;
     }

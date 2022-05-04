@@ -94,8 +94,10 @@ basePuzzle.prototype.chooseColorSchema = function() {
       traceColor: "#007bff",
       gridColor: "#000",
       bgColor: "#fff",
+      brightColor: "#38e",
       errorColor: "#efa4a7",
       outerClueColor: "#06d",
+      outerClueSecondColor: "#026",
     }
   } else if (this.settings.theme=="contrast") {
     return {
@@ -107,8 +109,10 @@ basePuzzle.prototype.chooseColorSchema = function() {
       traceColor: "#66efbf",
       gridColor: "#000",
       bgColor: "#fff",
+      brightColor: "#5577bb",
       errorColor: "#f52b14",
       outerClueColor: "#fff",
+      outerClueSecondColor: "#9ac",
     }
   } else {
     return {
@@ -120,8 +124,10 @@ basePuzzle.prototype.chooseColorSchema = function() {
       traceColor: "#777777",
       gridColor: "#000",
       bgColor: "#fff",
+      brightColor: "#2aa198",
       errorColor: "#e72381",
       outerClueColor: "#8db",
+      outerClueSecondColor: "#000",
     }
   }
 }

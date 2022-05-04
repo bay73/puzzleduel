@@ -16,6 +16,7 @@ controllerItem = function(data) {
 PuzzleTypeBuilder = function() {
   this.controllers = [];
   this.outerCellType = undefined;
+  this.outerColor = {};
   this.upgradeClue = undefined;
 }
 
@@ -46,6 +47,12 @@ PuzzleTypeBuilder.prototype.useOuterCells = function(outerCellType) {
   return this;
 }
 
+// Defines color schema for outer cells
+PuzzleTypeBuilder.prototype.useOuterColors = function(sides, color) {
+  this.outerColor[sides] = color;
+  return this;
+}
+
 // Adds function which converts clues from the old to the new format.
 PuzzleTypeBuilder.prototype.addUpgradeClue = function(upgradeClue){
   this.upgradeClue = upgradeClue;
@@ -54,6 +61,7 @@ PuzzleTypeBuilder.prototype.addUpgradeClue = function(upgradeClue){
 
 // Build puzzle type descriptor.
 PuzzleTypeBuilder.prototype.build = function(puzzle) {
+  var self = this;
   var controllers = this.controllers;
   var typeDesc = Object.assign({}, puzzle.typeProperties);
 
@@ -148,6 +156,16 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
   typeDesc.needRight = this.outerCellType & StdOuter.RIGHT;
   typeDesc.needTop = this.outerCellType & StdOuter.TOP;
   typeDesc.needLeft = this.outerCellType & StdOuter.LEFT;
+  if (Object.keys(this.outerColor).length) {
+    typeDesc.outerColorMap = (cell) => {
+      for (const [key, value] of Object.entries(self.outerColor)) {
+        if((key & StdOuter.TOP) && cell.row < 0) return processControllerData(value, cell, cell.puzzle, false);
+        if((key & StdOuter.BOTTOM) && cell.row >= cell.puzzle.rows) return processControllerData(value, cell, cell.puzzle, false);
+        if((key & StdOuter.LEFT) && cell.col < 0) return processControllerData(value, cell, cell.puzzle, false);
+        if((key & StdOuter.RIGHT) && cell.col >= cell.puzzle.cols) return processControllerData(value, cell, cell.puzzle, false);
+      }
+    };
+  }
 
   if (typeof this.upgradeClue != "undefined") {
     typeDesc.upgradeClue = this.upgradeClue;
@@ -484,7 +502,9 @@ ControllerItemBuilder.prototype.asAreaBorder = function(){
 
 StdColor = {
 BLACK: {color: (puzzle, isPencil) => puzzle.colorSchema.gridColor,
-        textColor: "#fff"}
+        textColor: "#fff"},
+OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueColor},
+DARK_OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueSecondColor},
 }
 
 // Standard items
@@ -493,6 +513,7 @@ EMPTY: controllerItem({}),
 BLACK: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.greyColor:puzzle.colorSchema.gridColor, returnValue: "black"}),
 CLUE_COLOR: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.greyColor:puzzle.colorSchema.clueColor, returnValue: "black"}),
 GREY: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.lightGreyColor:puzzle.colorSchema.greyColor, returnValue: "grey"}),
+BRIGHT: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema.lightGreyColor:puzzle.colorSchema.brightColor, returnValue: "bright"}),
 LINE: controllerItem({color: (puzzle, isPencil) => puzzle.colorSchema.lineColor, returnValue: "line"}),
 WHITE_CIRCLE: controllerItem({image: "white_circle", returnValue: "white_circle"}),
 BLACK_CIRCLE: controllerItem({image: "black_circle", returnValue: "black_circle"}),
