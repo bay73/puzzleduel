@@ -222,6 +222,23 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().inner().noClue().copyPaste())
       .build(this);
 
+  } else if (typeCode=="paint_by_max") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .useOuterColors(StdOuter.LEFT | StdOuter.TOP, StdColor.DARK_OUTER)
+      .useOuterColors(StdOuter.RIGHT | StdOuter.BOTTOM, StdColor.OUTER)
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(1,maxValue))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.BLACK)
+        .addItem(StdItem.BRIGHT.submitAs('grey')))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else {
 
   var typeProperties = {}
