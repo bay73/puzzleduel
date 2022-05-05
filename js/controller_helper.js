@@ -371,6 +371,18 @@ ControllerBuilder.prototype.addNumbers = function(start, end, color){
   return this;
 }
 
+// Adds items with letters from the given list.
+ControllerBuilder.prototype.addLetters = function(letters, color){
+  for (var i=0; i<letters.length; i++) {
+    if (typeof color != "undefined") {
+      this.addItem(controllerItem({text: letters[i], color: color.color, textColor: color.textColor, returnValue: letters[i]}));
+    } else {
+      this.addItem(controllerItem({text: letters[i], returnValue: letters[i]}));
+    }
+  }
+  return this;
+}
+
 // Auxiliary method. Don't use in definition.
 ControllerBuilder.prototype.build = function(){
   var self = this;

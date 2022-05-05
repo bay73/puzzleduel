@@ -32,6 +32,10 @@ requirejs(["tests/easy_as_coral.test.js"], ()=>{
   allTestSuites.push(easyAsCoralTestSuite);
 })
 
+requirejs(["tests/easy_as_abc.test.js"], ()=>{
+  allTestSuites.push(easyAsAbcTestSuite);
+})
+
 requirejs(["tests/fence.test.js"], ()=>{
   allTestSuites.push(fenceTestSuite);
 })

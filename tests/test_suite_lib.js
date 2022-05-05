@@ -202,6 +202,23 @@ assertSubject.prototype.containsAtLeast = function(expected) {
   return this;
 }
 
+assertSubject.prototype.isEmptyArray = function() {
+  let subject = this.subject;
+  if (!(subject instanceof Array)) {
+    throw this.text + " expected to be Array but was " + (typeof subject);
+  }
+  return this.assertWithMessage("expected to be empty Array, but was " + JSON.stringify(subject), subject.length==0);
+}
+
+
+assertSubject.prototype.isNonEmptyArray = function() {
+  let subject = this.subject;
+  if (!(subject instanceof Array)) {
+    throw this.text + " expected to be non empty Array but was " + (typeof subject);
+  }
+  return this.assertWithMessage("expected to be non empty Array, but was " + subject, subject.length != 0);
+}
+
 
 function deepCompare () {
   var i, l, leftChain, rightChain;
