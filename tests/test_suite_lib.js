@@ -207,7 +207,7 @@ assertSubject.prototype.isEmptyArray = function() {
   if (!(subject instanceof Array)) {
     throw this.text + " expected to be Array but was " + (typeof subject);
   }
-  return this.assertWithMessage("expected to be empty Array, but was " + JSON.stringify(subject), subject.length==0);
+  return this.assertWithMessage("expected to be empty Array, but has " + subject.length + " elements", subject.length==0);
 }
 
 
