@@ -69,6 +69,8 @@ mouseController.prototype.onMouseUp = function(event) {
     if (element) {
       if (element == this.mouseDownElement && !this.dragRestarted) {
         element.processClick();
+      } else if (element instanceof chooserElement){
+        element.processDragEnd(this.mouseStartElement);
       } else if (this.mouseStartElement.canDragStart()) {
         element.processDragEnd(this.mouseStartElement);
       }
