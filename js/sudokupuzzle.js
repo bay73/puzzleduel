@@ -1,4 +1,4 @@
-define(["square"], function() {
+define(["square","controller_helper"], function() {
 
 sudokuPuzzleType = function(puzzleData, controls, settings) {
   squarePuzzle.call(this, puzzleData, controls, settings);
@@ -8,6 +8,21 @@ Object.setPrototypeOf(sudokuPuzzleType.prototype, squarePuzzle.prototype);
 
 sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
+
+  if (typeCode=="sudoku_skyscrapers") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else {
   var typeProperties = {}
 
   typeProperties["sudoku_classic"] = {
@@ -249,6 +264,7 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
+  }
   }
 }
 

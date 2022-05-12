@@ -1,4 +1,4 @@
-skyscrapersTestSuite = testSuite("Skyscrapers",
+sudokuSyscrapersTestSuite = testSuite("Skyscrapers Sudoku",
 
 beforeSuite((suite, cb)=> {
   suite.GRID_SELECTOR = "#mainGrid";
@@ -16,7 +16,7 @@ beforeSuite((suite, cb)=> {
       local: true,
       data: data || {}
     };
-    var puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    var puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
     puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
   };
@@ -24,12 +24,12 @@ beforeSuite((suite, cb)=> {
     return {clientX: x, clientY: y, preventDefault: ()=>{}};
   };
   module = {};
-  requirejs(['puzzle_types/util.js', 'squarepuzzle'], function() {
+  requirejs(['puzzle_types/util.js', 'sudokupuzzle'], function() {
     window.util=Util;
     requirejs(['puzzle_types/sudoku_util.js'], function() {
       window.sudoku_util=SudokuUtil;
-      requirejs.undef('puzzle_types/skyscrapers.js');
-      requirejs(['puzzle_types/skyscrapers.js'], cb);
+      requirejs.undef('puzzle_types/sudoku_skyscrapers.js');
+      requirejs(['puzzle_types/sudoku_skyscrapers.js'], cb);
     });
   });
 }),
@@ -41,7 +41,7 @@ after((suite)=> {
 // Controller definition tests
 test('Solver controllers',(suite) => {
   let puzzle = suite.showPuzzle(
-    "skyscrapers", "4x4",
+    "sudoku_skyscrapers", "4x4",
     {"a1": "1", "bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
@@ -63,7 +63,7 @@ test('Solver controllers',(suite) => {
 }),
 
 test('Author controllers',(suite) => {
-  let puzzle = suite.showPuzzle("skyscrapers", "4x4");
+  let puzzle = suite.showPuzzle("sudoku_skyscrapers", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsExactly([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'},{text: '4', returnValue: '4'}]);
@@ -80,7 +80,7 @@ test('Author controllers',(suite) => {
 // Mouse processing tests
 test('Process click to empty cell',(suite) => {
   let puzzle = suite.showPuzzle(
-    "skyscrapers", "4x4",
+    "sudoku_skyscrapers", "4x4",
     {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
@@ -111,7 +111,7 @@ test('Process click to empty cell',(suite) => {
 
 test('Choose value in one click',(suite) => {
   let puzzle = suite.showPuzzle(
-    "skyscrapers", "4x4",
+    "sudoku_skyscrapers", "4x4",
     {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
@@ -142,7 +142,7 @@ test('Choose value in one click',(suite) => {
 
 test('Process click to top clue',(suite) => {
   let puzzle = suite.showPuzzle(
-    "skyscrapers", "4x4",
+    "sudoku_skyscrapers", "4x4",
     {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
@@ -162,7 +162,7 @@ test('Process click to top clue',(suite) => {
 
 test('Process click to left clue',(suite) => {
   let puzzle = suite.showPuzzle(
-    "skyscrapers", "4x4",
+    "sudoku_skyscrapers", "4x4",
     {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
@@ -182,22 +182,36 @@ test('Process click to left clue',(suite) => {
 
 // Checker tests
 test('Correct solution',(suite) => {
-  let clues = {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]};
-  let data = {"a1": "1", "a2": "2", "a3": "3", "a4": "4", "b1": "4", "b2": "3", "b3": "2", "b4": "1", "c1": "2", "c2": "4","c3": "1", "c4": "3", "d1": "3", "d2": "1", "d3": "4", "d4": "2"}
+  let clues = {"bottom": [null,null,null,"2"], "right": ["1",null,null,null], "top": ["4",null,null,null], "left": [null,null,null,null]};
+  let data = {"a1": "1", "a2": "2", "a3": "3", "a4": "4", "b1": "3", "b2": "4", "b3": "1", "b4": "2", "c1": "2", "c2": "3","c3": "4", "c4": "1", "d1": "4", "d2": "1", "d3": "2", "d4": "3"}
 
   assert("Correct solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
 }),
 
-test('Repeated digits',(suite) => {
-  let clues = {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]};
-  let data = {"a1": "2", "a2": "2", "a3": "3", "a4": "4", "b1": "4", "b2": "3", "b3": "2", "b4": "1", "c1": "2", "c2": "4","c3": "1", "c4": "3", "d1": "3", "d2": "1", "d3": "4", "d4": "2"}
+test('Repeated digits in row',(suite) => {
+  let clues = {"bottom": [null,null,null,"2"], "right": ["1",null,null,null], "top": ["4",null,null,null], "left": [null,null,null,null]};
+  let data = {"a1": "2", "a2": "2", "a3": "3", "a4": "4", "b1": "3", "b2": "4", "b3": "1", "b4": "2", "c1": "2", "c2": "3","c3": "4", "c4": "1", "d1": "4", "d2": "1", "d3": "2", "d4": "3"}
 
-  assert("Repeated digits solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"All digits should be exactly once in every row",errors:["a1","b1","c1","d1"]});
+  assert("Repeated digits in row solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"All digits should be exactly once in every row",errors:["a1","b1","c1","d1"]});
+}),
+
+test('Correct 6x6',(suite) => {
+  let clues = {"bottom": [null,null,"3",null,null,"2"], "right": ["1","3",null,"5",null,null], "top": ["6",null,null,null,"3",null], "left": [null,null,null,null,null,null]};
+  let data = {"a1":"1","a2":"2","a3":"3","a4":"4","a5":"5","a6":"6", "b1":"5","b2":"4","b3":"1","b4":"6","b5":"3","b6":"2", "c1":"3","c2":"6","c3":"2","c4":"5","c5":"1","c6":"4", "d1":"2","d2":"5","d3":"6","d4":"3","d5":"4","d6":"1", "e1":"4","e2":"1","e3":"5","e4":"2","e5":"6","e6":"3", "f1":"6","f2":"3","f3":"4","f4":"1","f5":"2","f6":"5"}
+
+  assert("Correct 6x6 solution response").that(Checker.check("6x6", clues, data)).isEqualTo({status:"OK"});
+}),
+
+test('Repeated digits in area',(suite) => {
+  let clues = {"bottom": [null,null,"3",null,null,"2"], "right": ["1","3",null,"5",null,null], "top": ["6",null,null,null,"3",null], "left": [null,null,null,null,null,null]};
+  let data = {"a1":"1","a2":"2","a3":"3","a4":"4","a5":"5","a6":"6", "b1":"5","b2":"4","b3":"1","b4":"6","b5":"3","b6":"2", "c1":"2","c2":"5","c3":"6","c4":"3","c5":"4","c6":"1", "d1":"3","d2":"6","d3":"2","d4":"5","d5":"1","d6":"4", "e1":"4","e2":"1","e3":"5","e4":"2","e5":"6","e6":"3", "f1":"6","f2":"3","f3":"4","f4":"1","f5":"2","f6":"5"}
+
+  assert("Repeated digits in area solution response").that(Checker.check("6x6", clues, data)).isEqualTo({status:"All digits should be exactly once in every area",errors:["a1","a2","b1","b2","c1","c2"]});
 }),
 
 test('Wrong clue',(suite) => {
-  let clues = {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]};
-  let data = {"a1": "1", "a2": "2", "a3": "3", "a4": "4", "b1": "4", "b2": "3", "b3": "2", "b4": "1", "c1": "3", "c2": "4","c3": "1", "c4": "2", "d1": "2", "d2": "1", "d3": "4", "d4": "3"}
+  let clues = {"bottom": [null,null,null,"2"], "right": ["1",null,null,null], "top": ["4",null,null,null], "left": [null,null,null,null]};
+  let data = {"a1": "1", "a2": "2", "a3": "3", "a4": "4", "b1": "3", "b2": "4", "b3": "1", "b4": "2", "c1": "4", "c2": "3","c3": "2", "c4": "1", "d1": "2", "d2": "1", "d3": "4", "d4": "3"}
 
   assert("Wrong clue solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"Wrong number of visible buldings in the row",errors:["d1","c1","b1","a1"]});
 }),

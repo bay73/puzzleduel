@@ -121,6 +121,10 @@ requirejs(["tests/spiral_galaxies.test.js"], ()=>{
   allTestSuites.push(spiralGalaxiesTestSuite);
 })
 
+requirejs(["tests/sudoku_skyscrapers.test.js"], ()=>{
+  allTestSuites.push(sudokuSyscrapersTestSuite);
+})
+
 requirejs(["tests/tapa_classic.test.js"], ()=>{
   allTestSuites.push(tapaClassicTestSuite);
 })
