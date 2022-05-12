@@ -162,7 +162,7 @@ gridElement.prototype.switchOnChooser = function(index) {
   if (this.chooserValues != null) {
     if (this.puzzle.typeProperties.usePlus10 > 0 && this.chooserValues.length > this.puzzle.typeProperties.usePlus10 && index == this.puzzle.typeProperties.usePlus10) {
       var currentIndex = this.findCurrent(this.chooserValues);
-      var index = currentIndex + 10;
+      index = currentIndex + 10;
       if (index >= this.chooserValues.length) {
         index -= this.chooserValues.length;
       }

@@ -125,6 +125,10 @@ requirejs(["tests/sudoku_skyscrapers.test.js"], ()=>{
   allTestSuites.push(sudokuSyscrapersTestSuite);
 })
 
+requirejs(["tests/sudoku_x_sums.test.js"], ()=>{
+  allTestSuites.push(sudokuXSumsTestSuite);
+})
+
 requirejs(["tests/tapa_classic.test.js"], ()=>{
   allTestSuites.push(tapaClassicTestSuite);
 })

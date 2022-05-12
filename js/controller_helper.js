@@ -167,6 +167,19 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
     };
   }
 
+  let usePlus10 = {edit: 0, solve: 0};
+  this.controllers
+    .filter(controller=>controller.isNumberController && controller.items.length>10)
+    .forEach(controller=>{
+      if (controller.editMode && controller.Number10Item > usePlus10.edit) {
+        usePlus10.edit = controller.Number10Item;
+      }
+      if (!controller.editMode && controller.Number10Item > usePlus10.edit) {
+        usePlus10.solve = controller.Number10Item;
+      }
+    });
+  typeDesc.usePlus10 = puzzle.editMode?usePlus10.edit:usePlus10.solve;
+
   if (typeof this.upgradeClue != "undefined") {
     typeDesc.upgradeClue = this.upgradeClue;
   }
@@ -184,6 +197,7 @@ ControllerBuilder = function() {
   this.collectAreas = false;
   this.addDrag = false;
   this.items = [StdItem.EMPTY];
+  this.isNumberController = false;
 }
 
 ControllerBuilder.CHOOSER = 1;
@@ -361,7 +375,12 @@ ControllerBuilder.prototype.addItem = function(item){
 
 // Adds items with numbers from the given range (ends included).
 ControllerBuilder.prototype.addNumbers = function(start, end, color){
+  this.isNumberController = true;
+  this.Number10Item = null;
   for (var i=start; i<=end; i++) {
+    if (i==10) {
+      this.Number10Item = this.items.length;
+    }
     if (typeof color != "undefined") {
       this.addItem(controllerItem({text: i.toString(), color: color.color, textColor: color.textColor, returnValue: i.toString()}));
     } else {
