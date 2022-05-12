@@ -6,6 +6,12 @@ sudokuPuzzleType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(sudokuPuzzleType.prototype, squarePuzzle.prototype);
 
+diagonalPuzzleType = function(puzzleData, controls, settings) {
+  sudokuPuzzleType.call(this, puzzleData, controls, settings);
+}
+
+Object.setPrototypeOf(diagonalPuzzleType.prototype, sudokuPuzzleType.prototype);
+
 sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
 
@@ -284,6 +290,29 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
   }
 }
 
+diagonalPuzzleType.prototype.setTypeProperties = function(typeCode) {
+  var self = this;
+
+  if (typeCode=="sudoku_diagonal") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+  } else if (typeCode=="sudoku_antidiagonal") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+  }
+}
 sudokuPuzzleType.prototype.createBoard = function() {
   squarePuzzle.prototype.createBoard.call(this);
   var dx = this.cols==8?4:3;
@@ -300,6 +329,24 @@ sudokuPuzzleType.prototype.createBoard = function() {
       this.edges[y][x][2].data = {text: null, image: null, color: this.colorSchema.gridColor, textColor: null};
     }
   }
+}
+
+diagonalPuzzleType.prototype.drawBoard = function() {
+  sudokuPuzzleType.prototype.drawBoard.call(this);
+  let gap = Math.ceil(this.size.unitSize/12);
+  var attr = {
+    "stroke-linecap": "round",
+    "stroke": this.colorSchema.gridColor,
+    "stroke-dasharray": gap +"," + (gap*1.5)
+  };
+  var line = this.snap.line(
+    this.size.leftGap, this.size.topGap,
+    this.size.leftGap + this.cols * this.size.unitSize, this.size.topGap + this.rows * this.size.unitSize);
+  line.attr(attr);
+  line = this.snap.line(
+    this.size.leftGap + this.cols * this.size.unitSize, this.size.topGap,
+    this.size.leftGap, this.size.topGap + this.rows * this.size.unitSize);
+  line.attr(attr);
 }
 
 function setNumberChooser(cell, start, end) {
