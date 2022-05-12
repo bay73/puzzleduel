@@ -210,9 +210,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     var maxValue = Math.max(this.rows, this.cols);
     this.typeProperties = decribePuzzleType()
       .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
-      .add(controller().forAuthor().cell().inner().clickSwitch()
-        .addItem(StdItem.CROSS))
-      .add(controller().forAuthor().cell().outer().chooser()
+      .add(controller().forAuthor().cell().chooser()
         .addNumbers(1, maxValue))
       .add(controller().forSolver().cell().inner().noClue().chooser()
         .addNumbers(1, maxValue))

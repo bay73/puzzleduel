@@ -42,14 +42,14 @@ after((suite)=> {
 test('Solver controllers',(suite) => {
   let puzzle = suite.showPuzzle(
     "skyscrapers", "4x4-ABC",
-    {"a4": "cross", "bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
+    {"a1": "1", "bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
 
   assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'},{text: '4', returnValue: '4'}]);
   assert("Empty cell click").that(puzzle.cells[2][2].clickSwitch).isNull();
-  assert("Cross cell chooser").that(puzzle.cells[3][0].chooserValues).isNull();
-  assert("Cross cell click").that(puzzle.cells[3][0].clickSwitch).isNull();;
+  assert("Clue cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
+  assert("Clue cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
   assert("Bottom clue chooser").that(puzzle.bottom[2].chooserValues).isNull();
   assert("Bottom clue click").that(puzzle.bottom[2].clickSwitch).containsExactly([{text: '2'}, {text: '2', image: 'white_circle'}]);
   assert("Right clue chooser").that(puzzle.right[0].chooserValues).isNull();
@@ -66,8 +66,8 @@ test('Author controllers',(suite) => {
   let puzzle = suite.showPuzzle("skyscrapers", "4x4-ABC");
   puzzle.edit();
 
-  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
-  assert("Cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'cross', returnValue: 'cross'}]);
+  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsExactly([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'},{text: '4', returnValue: '4'}]);
+  assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
   assert("Bottom clue chooser").that(puzzle.bottom[0].chooserValues).containsExactly([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'},{text: '4', returnValue: '4'}]);
   assert("Bottom clue click").that(puzzle.bottom[0].clickSwitch).isNull();
   assert("Right clue chooser").that(puzzle.right[0].chooserValues).containsExactly([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'},{text: '4', returnValue: '4'}]);
@@ -81,7 +81,7 @@ test('Author controllers',(suite) => {
 test('Process click to empty cell',(suite) => {
   let puzzle = suite.showPuzzle(
     "skyscrapers", "4x4-ABC",
-    {"a4": "cross", "bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
+    {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
 
@@ -112,7 +112,7 @@ test('Process click to empty cell',(suite) => {
 test('Choose value in one click',(suite) => {
   let puzzle = suite.showPuzzle(
     "skyscrapers", "4x4-ABC",
-    {"a4": "cross", "bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
+    {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
 
@@ -143,7 +143,7 @@ test('Choose value in one click',(suite) => {
 test('Process click to top clue',(suite) => {
   let puzzle = suite.showPuzzle(
     "skyscrapers", "4x4-ABC",
-    {"a4": "cross", "bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
+    {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
 
@@ -163,7 +163,7 @@ test('Process click to top clue',(suite) => {
 test('Process click to left clue',(suite) => {
   let puzzle = suite.showPuzzle(
     "skyscrapers", "4x4-ABC",
-    {"a4": "cross", "bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
+    {"bottom": [null,null,"2",null], "right": ["2",null,"1",null], "top": ["4",null,null,null], "left": [null,"3",null,null]}
   );
   puzzle.start();
 
