@@ -664,7 +664,9 @@ squarePuzzleCell.prototype.clearColor = function() {
 
 squarePuzzleCell.prototype.drawImage = function() {
   let image = this.snapImage(this.center(), this.puzzle.size.unitSize, this.data.image);
-  image.attr({"filter": this.puzzle.snap.filter(this.puzzle.colorSchema.outerClueFilter)});
+  if (this.outerCell) {
+    image.attr({"filter": this.puzzle.snap.filter(this.puzzle.colorSchema.outerClueFilter)});
+  }
   return image;
 }
 
