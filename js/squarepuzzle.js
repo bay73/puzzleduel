@@ -6,6 +6,12 @@ squarePuzzleType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(squarePuzzleType.prototype, squarePuzzle.prototype);
 
+snailPuzzleType = function(puzzleData, controls, settings) {
+  squarePuzzleType.call(this, puzzleData, controls, settings);
+}
+
+Object.setPrototypeOf(snailPuzzleType.prototype, squarePuzzleType.prototype);
+
 squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
 
@@ -1415,6 +1421,49 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
+  }
+}
+
+snailPuzzleType.prototype.setTypeProperties = function(typeCode) {
+  var self = this;
+
+  if (typeCode=="magic_snail") {
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addLetters(letters))
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addLetters(letters)
+        .addItem(StdItem.CROSS))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addLetters(letters)
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+  }
+}
+
+snailPuzzleType.prototype.drawBoard = function() {
+  console.log("snailPuzzleType.drawBoard");
+  squarePuzzleType.prototype.drawBoard.call(this);
+  var lineLength = this.rows - 1;
+  var start = {x:0, y: 1};
+  var direction = {x:1, y:0};
+  while (lineLength > 0) {
+    var end = {x: start.x + direction.x * lineLength, y: start.y + direction.y * lineLength};
+    var line = this.snap.line(
+      this.size.leftGap + this.size.unitSize * start.x, this.size.topGap + this.size.unitSize * start.y,
+      this.size.leftGap + this.size.unitSize * end.x, this.size.topGap + this.size.unitSize * end.y);
+      let attr = Object.assign({fill: "none", "stroke": this.colorSchema.gridColor}, this.gridProperty.edge);
+      console.log(attr);
+      line.attr(attr);
+    start = end;
+    direction = {x: -direction.y, y: direction.x};
+    if (direction.x==0) lineLength--;
   }
 }
 

@@ -64,6 +64,10 @@ requirejs(["tests/lits.test.js"], ()=>{
   allTestSuites.push(litsTestSuite);
 })
 
+requirejs(["tests/magic_snail.test.js"], ()=>{
+  allTestSuites.push(magicSnailTestSuite);
+})
+
 requirejs(["tests/minesweeper_classic.test.js"], ()=>{
   allTestSuites.push(minesweeperClassicTestSuite);
 })
