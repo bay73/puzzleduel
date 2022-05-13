@@ -44,6 +44,24 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="sudoku_odd_even_big_small") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addItem(controllerItem({image: "odd", returnValue: "odd"}))
+        .addItem(controllerItem({image: "even", returnValue: "even"}))
+        .addItem(controllerItem({image: "big", returnValue: "big"}))
+        .addItem(controllerItem({image: "small", returnValue: "small"})))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.BRIGHT.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else {
   var typeProperties = {}
 

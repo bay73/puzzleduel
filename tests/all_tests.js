@@ -129,6 +129,10 @@ requirejs(["tests/sudoku_diagonal.test.js"], ()=>{
   allTestSuites.push(sudokuDiagonalTestSuite);
 })
 
+requirejs(["tests/sudoku_odd_even_big_small.test.js"], ()=>{
+  allTestSuites.push(sudokuOddEvenBigSmallTestSuite);
+})
+
 requirejs(["tests/sudoku_skyscrapers.test.js"], ()=>{
   allTestSuites.push(sudokuSyscrapersTestSuite);
 })

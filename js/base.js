@@ -98,6 +98,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       errorColor: "#efa4a7",
       outerClueColor: "#06d",
       outerClueSecondColor: "#026",
+      outerClueFilter: "<feColorMatrix type='matrix' values='0 0 0 0 0 0 0.5 0 0 0.1 0 0 1 0 0.5 0 0 0 1 0'/>",
     }
   } else if (this.settings.theme=="contrast") {
     return {
@@ -113,6 +114,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       errorColor: "#f52b14",
       outerClueColor: "#fff",
       outerClueSecondColor: "#9ac",
+      outerClueFilter: "<feColorMatrix type='matrix' values='1 0 0 0 1 0 1 0 0 1 0 0 1 0 1 0 0 0 1 0'/>"
     }
   } else {
     return {
@@ -128,6 +130,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       errorColor: "#e72381",
       outerClueColor: "#8db",
       outerClueSecondColor: "#000",
+      outerClueFilter: "<feColorMatrix type='matrix' values='0 0 0 0 0.2 0 0 0 0 0.6 0 0 0 0 0.6 0 0 0 1 0'/>"
     }
   }
 }

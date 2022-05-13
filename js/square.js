@@ -652,7 +652,9 @@ squarePuzzleCell.prototype.drawColor = function() {
   } else {
     var attr = Object.assign({}, this.puzzle.gridProperty.cell);
   }
-  Object.assign(attr, {fill: this.data.color});
+  if (this.data.color) {
+    Object.assign(attr, {"fill-opacity": 1, "fill": this.data.color});
+  }
   this.elements.path.attr(attr);
 }
 
@@ -661,7 +663,9 @@ squarePuzzleCell.prototype.clearColor = function() {
 }
 
 squarePuzzleCell.prototype.drawImage = function() {
-  return this.snapImage(this.center(), this.puzzle.size.unitSize, this.data.image);
+  let image = this.snapImage(this.center(), this.puzzle.size.unitSize, this.data.image);
+  image.attr({"filter": this.puzzle.snap.filter(this.puzzle.colorSchema.outerClueFilter)});
+  return image;
 }
 
 squarePuzzleCell.prototype.drawText = function() {
