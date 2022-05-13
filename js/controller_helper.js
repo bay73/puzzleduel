@@ -179,6 +179,11 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
       }
     });
   typeDesc.usePlus10 = puzzle.editMode?usePlus10.edit:usePlus10.solve;
+  typeDesc.cellMultiPencil =
+    this.controllers
+      .filter(controller=>controller.editMode)
+      .filter(controller=>controller.isNumberController && controller.items.length>4)
+      .length > 0;
 
   if (typeof this.upgradeClue != "undefined") {
     typeDesc.upgradeClue = this.upgradeClue;
