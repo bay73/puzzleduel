@@ -738,22 +738,31 @@ squarePuzzleCell.prototype.drawPencilText = function() {
 
 squarePuzzleCell.prototype.pencilMarkAttribute = function(pencilMark) {
   var markRows = 4;
-  if (this.chooserValues.length <= 10) {
-    markRows = 3;
-  }
-  if (this.chooserValues.length <= 5) {
-    markRows = 2;
-  }
-  var pencilIndex = 0;
-  for (var j=0; j<this.chooserValues.length; j++){
-    if (this.compareData(this.chooserValues[j], pencilMark)) {
-      pencilIndex = j;
+  if (this.chooserValues) {
+    if (this.chooserValues.length <= 10) {
+      markRows = 3;
     }
-  }
-  var row = Math.floor((pencilIndex - 1)/markRows);
-  var col = (pencilIndex - 1)%markRows;
-  if (this.chooserValues.length == 3 && pencilIndex == 2) {
-    row = 1;
+    if (this.chooserValues.length <= 5) {
+      markRows = 2;
+    }
+    if (this.chooserValues.length == 0) {
+      markRows = 1;
+    }
+    var pencilIndex = 0;
+    for (var j=0; j<this.chooserValues.length; j++){
+      if (this.compareData(this.chooserValues[j], pencilMark)) {
+        pencilIndex = j;
+      }
+    }
+    var row = Math.floor((pencilIndex - 1)/markRows);
+    var col = (pencilIndex - 1)%markRows;
+    if (this.chooserValues.length == 3 && pencilIndex == 2) {
+      row = 1;
+    }
+  } else {
+    var markRows = 1;
+    var row = 0;
+    var col = 0;
   }
   var innerSize = this.puzzle.size.unitSize*0.75;
   return {
@@ -772,7 +781,11 @@ squarePuzzleCell.prototype.isPointInside = function(position) {
 }
 
 squarePuzzleCell.prototype.hasMultiPencil = function() {
-  return this.puzzle.typeProperties.cellMultiPencil;
+  if (this.chooserValues) {
+    return this.puzzle.typeProperties.cellMultiPencil;
+  } else {
+    return false;
+  }
 }
 
 squarePuzzleCell.prototype.processDragEnd = function(startElement) {
