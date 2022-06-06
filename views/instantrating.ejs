@@ -10,6 +10,8 @@
             <tbody>
               <tr>
                 <th></th>
+                <th></th>
+                <th></th>
                 <th>Avg</th>
                 <% dates.forEach(function(d) { %>
                 <th>
@@ -20,6 +22,8 @@
               <% data.sort((r1,r2) => r2.avg - r1.avg).forEach(function(item) { %>
               <tr>
                 <td><%= item.userName %></td>
+                <td><%= item.userCountry %>(<%= item.ipCountries.join(", ") %>)</td>
+                <td><%= item.userAddress %></td>
                 <td><%= Math.round(item.avg) %></td>
                 <% dates.forEach(function(d) { %>
                 <td><%= item[d]?Math.round(item[d]):"" %></td>

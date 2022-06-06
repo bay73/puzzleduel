@@ -272,7 +272,7 @@ router.get('/instantrating', ensureAuthenticated, async (req, res, next) => {
     }
     var userData = {}
     var users = await User.find();
-    users.forEach(user => userData[user._id] = {name: user.name});
+    users.forEach(user => userData[user._id] = {name: user.name, country: user.country, email: user.email, ipCountries: []});
     var lastDate = new Date();
     if (lastDate.getUTCDay() != 0) {
       lastDate.setDate(lastDate.getDate() + 7 - lastDate.getUTCDay());
@@ -286,11 +286,16 @@ router.get('/instantrating', ensureAuthenticated, async (req, res, next) => {
       const ratingList = await Rating.find({date: d});
       ratingList.forEach(rating => userData[rating.userId][d] = rating.details.weekValue);
     }
+    var date = new Date(lastDate);
+    date.setDate(lastDate.getDate() - 42);
+    const actionLog = await UserActionLog.find({date: {$gt: date}});
+    actionLog.forEach(log => {if (userData[log.userId].ipCountries.indexOf(log.ipInfo.country)==-1) userData[log.userId].ipCountries.push(log.ipInfo.country)});
+    console.log(userData)
     var allData = [];
     for (let [userId, data] of Object.entries(userData)) {
       var sum = 0;
       var count = 0;
-      var item = {userId: userId, userName: data.name}
+      var item = {userId: userId, userName: data.name, userCountry: data.country, userAddress: data.email, ipCountries: data.ipCountries }
       dates.forEach(d => {
         if (data[d]) {
          sum = sum + data[d];
