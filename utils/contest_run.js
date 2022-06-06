@@ -8,7 +8,7 @@ require('dotenv').config();
 const db = require('../config/keys').mongoURI;
 
 recount = async function () {
-  await recountContest('ef0ey1kyqecvq1');
+  await recountContest('bjhute1kiujaiue');
 }
 
 // Connect to MongoDB
