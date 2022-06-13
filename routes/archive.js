@@ -68,7 +68,7 @@ router.get(['/','/tester'],
     from.setDate(from.getDate() + 1);
     let to = new Date();
     to.setDate(to.getDate() + 6);
-    var filter = {daily: {$gte: from, $lte: to} };
+    var filter = {$or: [{daily: {$gte: from, $lte: to} }, {'contest.puzzleDate': {$gte: from, $lte: to} }] };
     if (req.user) {
       var userTimesPromise = util.userSolvingTimeMap(req.user._id, true);
     }
