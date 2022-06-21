@@ -1448,7 +1448,6 @@ snailPuzzleType.prototype.setTypeProperties = function(typeCode) {
 }
 
 snailPuzzleType.prototype.drawBoard = function() {
-  console.log("snailPuzzleType.drawBoard");
   squarePuzzleType.prototype.drawBoard.call(this);
   var lineLength = this.rows - 1;
   var start = {x:0, y: 1};
@@ -1459,7 +1458,6 @@ snailPuzzleType.prototype.drawBoard = function() {
       this.size.leftGap + this.size.unitSize * start.x, this.size.topGap + this.size.unitSize * start.y,
       this.size.leftGap + this.size.unitSize * end.x, this.size.topGap + this.size.unitSize * end.y);
       let attr = Object.assign({fill: "none", "stroke": this.colorSchema.gridColor}, this.gridProperty.edge);
-      console.log(attr);
       line.attr(attr);
     start = end;
     direction = {x: -direction.y, y: direction.x};
