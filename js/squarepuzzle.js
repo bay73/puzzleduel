@@ -48,6 +48,28 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
      .build(this);
 
+  } else if (typeCode=="starbattle_smallregions") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.STAR)
+        .addItem(StdItem.CROSS.doNotSubmit()))
+     .build(this);
+
+  } else if (typeCode=="lits") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+     .build(this);
+
   } else if (typeCode=="akari") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
@@ -278,24 +300,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   var typeProperties = {}
 
-  typeProperties["starbattle_smallregions"] = {
-    needNodes: true,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{image: "star", returnValue: "star"},{image: "cross"}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    decodeClue: value => {return {image: value} },
-    collectAreas: this.editMode,
-  }
-
   typeProperties["domino_castle_sum"] = {
     needNodes: true,
     needBottom: true,
@@ -333,24 +337,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
     collectAreas: this.editMode,
     usePlus10: this.editMode?10:0,
-  }
-
-  typeProperties["lits"] = {
-    needNodes: true,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    decodeClue: value => {return {image: value} },
-    collectAreas: this.editMode,
   }
 
   typeProperties["heyawake"] = {

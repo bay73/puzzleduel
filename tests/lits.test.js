@@ -35,7 +35,7 @@ test('Solver controllers',(suite) => {
   puzzle.start();
 
   assert("Empty cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
-  assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {color: '#606060', returnValue: '1'}, {image: 'cross'}]);
+  assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}, {image: 'cross'}]);
   assert("Cross chooser").that(puzzle.cells[2][2].chooserValues).isNull();
   assert("Cross click").that(puzzle.cells[2][2].clickSwitch).isNull();
 }),
