@@ -1,4 +1,4 @@
-sudokuDiagonalTestSuite = testSuite("Diagonal Sudoku",
+sudokuAntiknightTestSuite = testSuite("Antiknight Sudoku",
 
 beforeSuite((suite, cb)=> {
   suite.GRID_SELECTOR = "#mainGrid";
@@ -16,7 +16,7 @@ beforeSuite((suite, cb)=> {
       local: true,
       data: data || {}
     };
-    var puzzle = new diagonalPuzzleType(puzzleData, controls, settings);
+    var puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
     puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
   };
@@ -28,8 +28,8 @@ beforeSuite((suite, cb)=> {
     window.util=Util;
     requirejs(['puzzle_types/sudoku_util.js'], function() {
       window.sudoku_util=SudokuUtil;
-      requirejs.undef('puzzle_types/sudoku_diagonal.js');
-      requirejs(['puzzle_types/sudoku_diagonal.js'], cb);
+      requirejs.undef('puzzle_types/sudoku_antiknight.js');
+      requirejs(['puzzle_types/sudoku_antiknight.js'], cb);
     });
   });
 }),
@@ -40,7 +40,7 @@ after((suite)=> {
 
 // Controller definition tests
 test('Solver controllers',(suite) => {
-  let puzzle = suite.showPuzzle("sudoku_diagonal", "4x4",{"a1": "1", "d2":"2","b3":"3"});
+  let puzzle = suite.showPuzzle("sudoku_antiknight", "4x4",{"a1": "1", "d2":"2","b3":"3"});
   puzzle.start();
 
   assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'},{text: '4', returnValue: '4'}]);
@@ -52,7 +52,7 @@ test('Solver controllers',(suite) => {
 }),
 
 test('Author controllers',(suite) => {
-  let puzzle = suite.showPuzzle("sudoku_diagonal", "4x4");
+  let puzzle = suite.showPuzzle("sudoku_antiknight", "4x4");
   puzzle.edit();
 
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsExactly([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'},{text: '4', returnValue: '4'}]);
@@ -60,7 +60,7 @@ test('Author controllers',(suite) => {
 }),
 // Mouse processing tests
 test('Process click to empty cell',(suite) => {
-  let puzzle = suite.showPuzzle("sudoku_diagonal", "4x4",{"b2": "4", "d2":"2","b3":"3"});
+  let puzzle = suite.showPuzzle("sudoku_antiknight", "4x4",{"b2": "4", "d2":"2","b3":"3"});
   puzzle.start();
 
   let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
@@ -88,7 +88,7 @@ test('Process click to empty cell',(suite) => {
 }),
 
 test('Choose value in one click',(suite) => {
-  let puzzle = suite.showPuzzle("sudoku_diagonal", "4x4",{"b2": "4", "d2":"2","b3":"3"});
+  let puzzle = suite.showPuzzle("sudoku_antiknight", "4x4",{"b2": "4", "d2":"2","b3":"3"});
   puzzle.start();
 
   let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
@@ -116,24 +116,24 @@ test('Choose value in one click',(suite) => {
 
 // Checker tests
 test('Correct solution',(suite) => {
-  let clues = {"a1": "1", "d2":"2","b3":"3"};
-  let data = {"a1": "1", "a2": "3", "a3": "4", "a4": "2", "b1": "2", "b2": "4", "b3": "3", "b4": "1", "c1": "3", "c2": "1","c3": "2", "c4": "4", "d1": "4", "d2": "2", "d3": "1", "d4": "3"}
+  let clues = {"a1": "1", "a2":"2","a3":"3"};
+  let data = {"a1": "1", "a2": "2", "a3": "3", "a4": "4", "b1": "4", "b2": "3", "b3": "2", "b4": "1", "c1": "3", "c2": "4","c3": "1", "c4": "2", "d1": "2", "d2": "1", "d3": "4", "d4": "3"}
 
   assert("Correct solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
 }),
 
 test('Repeated digits in row',(suite) => {
-  let clues = {"a1": "1", "d2":"2","b3":"3"};
-  let data = {"a1": "1", "a2": "3", "a3": "4", "a4": "2", "b1": "1", "b2": "4", "b3": "3", "b4": "1", "c1": "3", "c2": "1","c3": "2", "c4": "4", "d1": "4", "d2": "2", "d3": "1", "d4": "3"}
+  let clues = {"a1": "1", "a2":"2","a3":"3"};
+  let data = {"a1": "1", "a2": "2", "a3": "3", "a4": "3", "b1": "4", "b2": "3", "b3": "2", "b4": "1", "c1": "3", "c2": "4","c3": "1", "c4": "2", "d1": "2", "d2": "1", "d3": "4", "d4": "3"}
 
-  assert("Repeated digits in row solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"All digits should be exactly once in every row",errors:["a1","b1","c1","d1"]});
+  assert("Repeated digits in row solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"All digits should be exactly once in every column",errors:["a1","a2","a3","a4"]});
 }),
 
-test('Repeated digits in diagonal',(suite) => {
-  let clues = {"a1": "1", "d2":"2","b3":"3"};
-  let data = {"a1": "1", "a2": "3", "a3": "2", "a4": "4", "b1": "2", "b2": "4", "b3": "3", "b4": "1", "c1": "3", "c2": "1","c3": "4", "c4": "2", "d1": "4", "d2": "2", "d3": "1", "d4": "3"}
+test('Knight rule violated',(suite) => {
+  let clues = {"a1": "1", "a2":"2","a3":"3"};
+  let data = {"a1": "1", "a2": "2", "a3": "3", "a4": "4", "b1": "4", "b2": "3", "b3": "1", "b4": "2", "c1": "3", "c2": "4","c3": "2", "c4": "1", "d1": "2", "d2": "1", "d3": "4", "d4": "3"}
 
-  assert("Repeated digits in diagonal solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"All digits should be exactly once in the diagonal",errors:["a1","b2","c3","d4"]});
+  assert("Knight rule violated solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"Two cells connected by the knight move should contain different digits",errors:["a1","b3"]});
 }),
 
 );

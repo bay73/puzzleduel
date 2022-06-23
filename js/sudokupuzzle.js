@@ -62,26 +62,17 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="sudoku_classic" || typeCode == "sudoku_antiknight" || typeCode == "sudoku_notouch") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
   } else {
   var typeProperties = {}
-
-  typeProperties["sudoku_classic"] = {
-    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
-    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
-    cellMultiPencil: true,
-  }
-
-  typeProperties["sudoku_antiknight"] = {
-    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
-    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
-    cellMultiPencil: true,
-  }
-
-  typeProperties["sudoku_notouch"] = {
-    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
-    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
-    cellMultiPencil: true,
-  }
 
   typeProperties["sudoku_square_number"] = {
     cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},

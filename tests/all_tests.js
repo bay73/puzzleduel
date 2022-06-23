@@ -129,8 +129,20 @@ requirejs(["tests/sudoku_antidiagonal.test.js"], ()=>{
   allTestSuites.push(sudokuAntidiagonalTestSuite);
 })
 
+requirejs(["tests/sudoku_antiknight.test.js"], ()=>{
+  allTestSuites.push(sudokuAntiknightTestSuite);
+})
+
+requirejs(["tests/sudoku_classic.test.js"], ()=>{
+  allTestSuites.push(sudokuClassicTestSuite);
+})
+
 requirejs(["tests/sudoku_diagonal.test.js"], ()=>{
   allTestSuites.push(sudokuDiagonalTestSuite);
+})
+
+requirejs(["tests/sudoku_notouch.test.js"], ()=>{
+  allTestSuites.push(sudokuNotouchTestSuite);
 })
 
 requirejs(["tests/sudoku_odd_even_big_small.test.js"], ()=>{
