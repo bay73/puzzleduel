@@ -57,7 +57,7 @@ async function recountPuzzle(puzzle, scoring) {
     var result = time.toObject();
     var score = scoreFn(result.solvingTime + median * result.errCount, complexity);
     score = Math.round(score*10)/10;
-    results.push({userId: result.userId, userName: result.userName, score: score});
+    results.push({userId: result.userId, userName: result.userName, score: score, time: result.solvingTime, errCount: result.errCount});
   });
   return {
     results: results, 
@@ -86,15 +86,18 @@ async function recountContest(contestId) {
       results.results.forEach(result => {
         contest.puzzles[i].results.push({userId: result.userId, score: result.score});
         if (typeof userTotals[result.userId]=='undefined'){
-          userTotals[result.userId] = {userName: result.userName, score: 0 };
+          userTotals[result.userId] = {userName: result.userName, score: 0, solvedCount: 0, totalTime: 0, totalErr: 0 };
         }
         userTotals[result.userId].score += result.score;
+        userTotals[result.userId].solvedCount++;
+        userTotals[result.userId].totalTime += result.time;
+        userTotals[result.userId].totalErr += result.errCount;
       });
     }
   }
   contest.results = [];
   for (let [userId, value] of Object.entries(userTotals)) {
-    contest.results.push({userId: userId, userName: value.userName, score: Math.round(value.score*10)/10});
+    contest.results.push({userId: userId, userName: value.userName, score: Math.round(value.score*10)/10, solvedCount: value.solvedCount, totalTime: value.totalTime, errCount: value.totalErr});
   }
   await contest.save();
   return true;

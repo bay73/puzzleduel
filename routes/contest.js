@@ -37,6 +37,9 @@ router.get('/:contestid/results', async (req, res, next) => {
         contestObj.description = contest.translations[locale].description;
       }
     }
+    contestObj.results.forEach(result => {
+      result.totalTimeStr = util.timeToString(result.totalTime);
+    })
     res.render('contest_result', {user: req.user, contest: contestObj})
     profiler.log('contestResult', processStart);
   } catch (e) {

@@ -90,6 +90,18 @@ const ContestSchema = new mongoose.Schema({
       type: Number,
       required: true
     },
+    solvedCount:  {
+      type: Number,
+      required: false
+    },
+    totalTime:  {
+      type: Number,
+      required: false
+    },
+    errCount:  {
+      type: Number,
+      required: false
+    },
     tiebreakScore: {
       type: Number,
       required: false

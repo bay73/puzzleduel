@@ -33,6 +33,10 @@
                 </th>
                 <% } %>
                 <% }) %>
+                <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                <th>
+                </th>
+                <% } %>
               </tr>
               <% var orderNum = 0; %>
               <% contest.results.sort((r1,r2) => r2.score - r1.score).forEach(function(result) { orderNum++; %>
@@ -45,6 +49,11 @@
                 <td><%= userRes==0 ? "":userRes[0].score %></td>
                 <% } %>
                 <% }) %>
+                <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                <td>
+                  <%= result.solvedCount %> puzzles: <%= result.totalTimeStr %> <%= result.errCount > 0?"("+result.errCount+" errors)":"" %>
+                </td>
+                <% } %>
               </tr>
               <% }) %>
               <tr>
@@ -59,6 +68,10 @@
                 </th>
                 <% } %>
                 <% }) %>
+                <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                <th>
+                </th>
+                <% } %>
               </tr>
               <% if (typeof user != 'undefined' && user.role=='admin') { %>
               <tr>
@@ -73,6 +86,8 @@
                 </td>
                 <% } %>
                 <% }) %>
+                <td>
+                </td>
               </tr>
               <% } %>
             </tbody>
