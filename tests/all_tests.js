@@ -80,6 +80,9 @@ requirejs(["tests/paint_by_max.test.js"], ()=>{
   allTestSuites.push(paintByMaxTestSuite);
 })
 
+requirejs(["tests/pentomino_hungarian.test.js"], ()=>{
+  allTestSuites.push(pentominoHungarianTestSuite);
+})
 
 requirejs(["tests/point_a_star.test.js"], ()=>{
   allTestSuites.push(pointAStarTestSuite);

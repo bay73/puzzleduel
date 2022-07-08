@@ -130,6 +130,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="pentomino_hungarian") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.CLUE_COLOR.submitAs("1")))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .build(this);
+
   } else if (typeCode=="snake_simple") {
     var maxValue = Math.max(this.rows, this.cols);
     this.typeProperties = decribePuzzleType()
@@ -947,21 +959,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         return {image: "battenberg_small"};
       } else {
         return {text: value};
-      }
-    },
-  }
-
-  typeProperties["pentomino_hungarian"] = {
-    needNodes: false,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-    },
-    cellEditController: cell => {
-      cell.clickSwitch = [{},{color: self.colorSchema.clueColor, returnValue: "1"}];
-    },
-    decodeClue: value => {
-      if (value=="1") {
-        return {color: self.colorSchema.clueColor};
       }
     },
   }
