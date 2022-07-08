@@ -31,6 +31,9 @@ check:function(dimension, clues, data){
       cells[pos.y][pos.x] = true;
       clue[pos.y][pos.x] = true;
     }
+    if (value=="cross"){
+      cells[pos.y][pos.x] = false;
+    }
   }
   var res = pentomino_util.checkPento(cells, requiredLetters);
   if (res.status != "OK") {
