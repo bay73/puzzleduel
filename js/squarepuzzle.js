@@ -133,12 +133,25 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="pentomino_hungarian") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().inner().clickSwitch()
-        .addItem(StdItem.CROSS)
-        .addItem(StdItem.CLUE_COLOR.submitAs("1")))
+        .addItem(StdItem.CLUE_COLOR.submitAs("1"))
+        .addItem(StdItem.CROSS))
       .add(controller().forSolver().cell().inner().noClue().clickSwitch()
         .addItem(StdItem.GREY.submitAs("1"))
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.color==self.colorSchema.clueColor?{color:self.colorSchema.greyColor}:data ))
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .build(this);
+
+  } else if (typeCode=="pentomino_touch") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().node().inner().clickSwitch()
+        .addItem(StdItem.BATTENBERG.submitAs("1")))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
       .add(controller().forSolver().cell().inner().clue().copy())
       .build(this);
 
@@ -944,21 +957,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         return {image: "cross"};
       } else {
         return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
-      }
-    },
-  }
-
-  typeProperties["pentomino_touch"] = {
-    needNodes: true,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-    },
-    nodeEditController: node => {node.isClue = true; node.clickSwitch = [{},{image: "battenberg_small", returnValue: "1"}];},
-    decodeClue: value => {
-      if (value=="1") {
-        return {image: "battenberg_small"};
-      } else {
-        return {text: value};
       }
     },
   }

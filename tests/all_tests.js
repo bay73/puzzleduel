@@ -84,6 +84,10 @@ requirejs(["tests/pentomino_hungarian.test.js"], ()=>{
   allTestSuites.push(pentominoHungarianTestSuite);
 })
 
+requirejs(["tests/pentomino_touch.test.js"], ()=>{
+  allTestSuites.push(pentominoTouchTestSuite);
+})
+
 requirejs(["tests/point_a_star.test.js"], ()=>{
   allTestSuites.push(pointAStarTestSuite);
 })

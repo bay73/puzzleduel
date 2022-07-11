@@ -5,7 +5,7 @@ if (typeof pentomino_util=="undefined") {
   var pentomino_util = require('./pentomino_util');
 }
 
-const Checker = {
+var Checker = {
 check:function(dimension, clues, data){
   // Create array
   var part = dimension.split("-");
