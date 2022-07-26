@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 
 module.exports = {
   ensureAuthenticated: function(req, res, next) {
@@ -23,6 +22,6 @@ module.exports = {
     cookie: {
       maxAge: 900000000 // 10*24*60*60*1000 + delta
     },
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
+    store: MongoStore.create({ mongoUrl: require('./keys').mongoURI })
   },
 };
