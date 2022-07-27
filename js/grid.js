@@ -41,7 +41,7 @@ gridElement.prototype.setClue = function(clueData) {
 
 gridElement.prototype.revertTo = function(oldData) {
   this.data = oldData;
-  var coord = this.getCoordinates();
+  var coord = this.getLogCoordinates();
   let logItem = this.dataToLog(oldData);
   logItem.a = "revert";
   this.puzzle.logStep(coord, logItem);
@@ -51,7 +51,7 @@ gridElement.prototype.revertTo = function(oldData) {
 gridElement.prototype.switchToData = function(data) {
   var oldData = this.data;
   var self = this;
-  var coord = this.getCoordinates();
+  var coord = this.getLogCoordinates();
   this.puzzle.addStep(()=>self.revertTo(oldData));
   this.data = Object.assign({text: null, image: null, color: null, textColor: null}, data);
   this.puzzle.logStep(coord, this.dataToLog(data))
@@ -102,7 +102,7 @@ gridElement.prototype.setPencilData = function(data) {
     this.pencilData = Object.assign({text: null, image: null, color: null, textColor: null}, data);
   }
   let logItem = {a: "pencil", v: this.dataToLog(this.pencilData)};
-  this.puzzle.logStep(this.getCoordinates(), logItem);
+  this.puzzle.logStep(this.getLogCoordinates(), logItem);
   this.redraw();
 }
 
@@ -418,6 +418,11 @@ gridElement.prototype.drawPencilText = function() {
 gridElement.prototype.getCoordinates = function() {
   // Returns the coordinate of element in the grid.
   throw 'getCoordinates is not implemented for ' + this.constructor.name + '!';
+}
+
+gridElement.prototype.getLogCoordinates = function() {
+  // Returns the coordinate of element in the grid suitable fo logging.
+  throw 'getLogCoordinates is not implemented for ' + this.constructor.name + '!';
 }
 
 gridElement.prototype.hasMultiPencil = function() {

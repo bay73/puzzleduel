@@ -626,6 +626,10 @@ squarePuzzleCell.prototype.getCoordinates = function() {
   return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString();
 }
 
+squarePuzzleCell.prototype.getLogCoordinates = function() {
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString();
+}
+
 squarePuzzleCell.prototype.center = function() {
   var s = this.puzzle.size.unitSize;
   var corner = this.baseCorner();
@@ -872,6 +876,10 @@ squarePuzzleEdge.prototype.getCoordinates = function() {
   return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ this.side.toString();
 }
 
+squarePuzzleEdge.prototype.getLogCoordinates = function() {
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-e"+ this.side.toString();
+}
+
 squarePuzzleEdge.prototype.center = function() {
   var corners = this.cellCorners();
   var start = corners[this.side];
@@ -968,6 +976,10 @@ squarePuzzleConnector = function(puzzle, col, row, side) {
 Object.setPrototypeOf(squarePuzzleConnector.prototype, squareGridElement.prototype);
 
 squarePuzzleConnector.prototype.getCoordinates = function() {
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ this.side;
+}
+
+squarePuzzleConnector.prototype.getLogCoordinates = function() {
   return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ this.side;
 }
 
@@ -1073,6 +1085,10 @@ Object.setPrototypeOf(squarePuzzleNode.prototype, squareGridElement.prototype);
 
 squarePuzzleNode.prototype.getCoordinates = function() {
   return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ this.side;
+}
+
+squarePuzzleNode.prototype.getLogCoordinates = function() {
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-n"+ this.side;
 }
 
 squarePuzzleNode.prototype.center = function() {

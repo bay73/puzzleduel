@@ -285,6 +285,10 @@ hexaPuzzleCell.prototype.getCoordinates = function() {
   return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString();
 }
 
+hexaPuzzleCell.prototype.getLogCoordinates = function() {
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString();
+}
+
 hexaPuzzleCell.prototype.center = function() {
   var s = this.puzzle.size.unitSize;
   var h = s * Math.sqrt(3)/2.;
@@ -360,6 +364,10 @@ Object.setPrototypeOf(hexaPuzzleEdge.prototype, hexaGridElement.prototype);
 
 hexaPuzzleEdge.prototype.getCoordinates = function() {
   return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ this.side;
+}
+
+hexaPuzzleEdge.prototype.getLogCoordinates = function() {
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-e"+ this.side;
 }
 
 hexaPuzzleEdge.prototype.center = function() {
@@ -449,6 +457,9 @@ Object.setPrototypeOf(hexaPuzzleNode.prototype, hexaGridElement.prototype);
 
 hexaPuzzleNode.prototype.getCoordinates = function() {
   return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-"+ this.side;
+}
+hexaPuzzleNode.prototype.getLogCoordinates = function() {
+  return String.fromCharCode('a'.charCodeAt(0) + this.col) + (this.row+1).toString() + "-n"+ this.side;
 }
 
 hexaPuzzleNode.prototype.center = function() {
