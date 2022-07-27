@@ -28,9 +28,9 @@
                 <td><%= cell %></td>
                 <td><%= data %></td>
               </tr>
-              <% cell = logElement.cell??logElement.c; data = logElement.data??logElement.d; time = logElement.time??logElement.t %>
+              <% cell = logElement.cell??logElement.c; data = JSON.stringify(logElement.data??logElement.d); time = logElement.time??logElement.t %>
               <% } else { %>
-              <% data += ", " + logElement.data??logElement.d; time = logElement.time??logElement.t %>
+              <% data += "; " + JSON.stringify(logElement.data??logElement.d); time = logElement.time??logElement.t %>
               <% } %>
               <% }) %>
               <tr>
