@@ -20,7 +20,7 @@
               <% var data = null; %>
               <% var time = null; %>
               <% logItem.data.log.forEach(function(logElement) { %>
-              <% if (logElement.cell != cell){ %>
+              <% if (logElement.cell??logElement.c != cell){ %>
               <tr>
                 <td></td>
                 <td><%= time %></td>
@@ -28,9 +28,9 @@
                 <td><%= cell %></td>
                 <td><%= data %></td>
               </tr>
-              <% cell = logElement.cell; data = logElement.data; time = logElement.time %>
+              <% cell = logElement.cell??logElement.c; data = logElement.data??logElement.d; time = logElement.time??logElement.t %>
               <% } else { %>
-              <% data += ", " + logElement.data; time = logElement.time %>
+              <% data += ", " + logElement.data??logElement.d; time = logElement.time??logElement.t %>
               <% } %>
               <% }) %>
               <tr>

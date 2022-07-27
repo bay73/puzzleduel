@@ -42,7 +42,9 @@ gridElement.prototype.setClue = function(clueData) {
 gridElement.prototype.revertTo = function(oldData) {
   this.data = oldData;
   var coord = this.getCoordinates();
-  this.puzzle.logStep(coord, "revert");
+  let logItem = this.dataToLog(oldData);
+  logItem.a = "revert";
+  this.puzzle.logStep(coord, logItem);
   this.redraw();
 }
 
@@ -52,27 +54,33 @@ gridElement.prototype.switchToData = function(data) {
   var coord = this.getCoordinates();
   this.puzzle.addStep(()=>self.revertTo(oldData));
   this.data = Object.assign({text: null, image: null, color: null, textColor: null}, data);
-  this.puzzle.logStep(coord, this.diffToString(oldData, data))
+  this.puzzle.logStep(coord, this.dataToLog(data))
   this.pencilData = null;
   this.redraw();
 }
 
-gridElement.prototype.diffToString = function(oldData, data) {
-  var diff = "";
-  if (data.text && data.text != oldData.text) {
-    diff += data.text;
+gridElement.prototype.dataToLog = function(data) {
+  if (Array.isArray(data)) {
+    let self = this;
+    let result = [];
+    data.forEach(item => result.push(self.dataToLog(item)));
+    return result;
+  } else {
+    let result  = {};
+    if (data.text) {
+      result.t = data.text;
+    }
+    if (data.image) {
+      result.i = data.image;
+    }
+    if (data.color) {
+      result.c = data.color;
+    }
+    if (data.textColor) {
+      result.f = data.textColor;
+    }
+    return result;
   }
-  if (data.image && data.image != oldData.image) {
-    if (diff)
-      diff += "|";
-    diff += data.image;
-  }
-  if (data.color && data.color != oldData.color) {
-    if (diff)
-      diff += "|";
-    diff += data.color;
-  }
-  return diff;
 }
 
 gridElement.prototype.setPencilData = function(data) {
@@ -93,7 +101,8 @@ gridElement.prototype.setPencilData = function(data) {
   } else {
     this.pencilData = Object.assign({text: null, image: null, color: null, textColor: null}, data);
   }
-  this.puzzle.logStep(this.getCoordinates(), "pencil mark");
+  let logItem = {a: "pencil", v: this.dataToLog(this.pencilData)};
+  this.puzzle.logStep(this.getCoordinates(), logItem);
   this.redraw();
 }
 

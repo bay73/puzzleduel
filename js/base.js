@@ -279,7 +279,7 @@ basePuzzle.prototype.edit = function() {
 
 basePuzzle.prototype.check = function() {
   var self = this;
-  this.log.push({time: new Date() - this.startTime, data: 'check'});
+  this.logStep('', 'check');
   var data = this.collectData();
   data.time = new Date() - this.startTime;
   data.log = this.log;
@@ -355,7 +355,7 @@ basePuzzle.prototype.processClueData = function(data) {
   this.steps = [];
   this.convertControls();
   this.startTimer();
-  this.log.push({time: new Date() - this.startTime, data: 'start'});
+  this.logStep('', 'start');
 }
 
 basePuzzle.prototype.showForEdit = function (data) {
@@ -374,9 +374,13 @@ basePuzzle.prototype.togglePencilMarkMode = function() {
 
 basePuzzle.prototype.logStep = function(cell, data ) {
   if (this.log.length < 201) {
-    this.log.push({time: new Date() - this.startTime, cell: cell, data: data});
+    let logItem = {t: new Date() - this.startTime, d: data};
+    if (cell) {
+      logItem.c = cell;
+    }
+    this.log.push(logItem);
   } else {
-    this.log[200].data = 'truncated';
+    this.log[200].d = 'truncated';
   }
 }
 
