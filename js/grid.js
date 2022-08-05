@@ -83,6 +83,39 @@ gridElement.prototype.dataToLog = function(data) {
   }
 }
 
+gridElement.prototype.applyLogData = function(logData) {
+  function decodeLogData(logData) {
+    let data = {text: null, image: null, color: null, textColor: null};
+    if (logData) {
+      if (logData.t) {
+        data.text = logData.t;
+      }
+      if (logData.c) {
+        data.color = logData.c;
+      }
+      if (logData.i) {
+        data.image = logData.i;
+      }
+      if (logData.f) {
+        data.textColor = logData.f;
+      }
+    }
+    return data
+  }
+  if (logData && logData.a=='pencil') {
+    var data;
+    if(Array.isArray(logData.v)) {
+      data = logData.v.map(item => decodeLogData(item));
+    } else {
+      data = decodeLogData(logData.v);
+    }
+    this.pencilData = data;
+    this.redraw();
+  } else {
+    this.switchToData(decodeLogData(logData));
+  }
+}
+
 gridElement.prototype.setPencilData = function(data) {
   if (this.hasMultiPencil()){
     if (!this.pencilData) {

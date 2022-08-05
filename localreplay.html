@@ -1,0 +1,183 @@
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta property="og:image" content="images/logo.png" />
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+    <;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css"/>
+    <;link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.min.css"/>
+    <style>
+      html {font-size: 100%;}
+      svg text {cursor: default;}
+    </style>
+    <title>Puzzle duel</title>
+  </head>
+  <body>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"
+      integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
+      integrity="sha256-1fEPhSsRKlFKGfK3eO710tEweHh1fwokU5wFGDHO+vg="
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/jquery.rateit.js"></script>
+    <script>
+      requirejs.config({baseUrl: 'js'});
+    </script>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <div class="card">
+<div id="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none; position: absolute; top: 0; left: 0; z-index: 100;">
+  <span id="errorMessageText"></span>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden='true'>&times;</span>
+  </button>
+</div>
+<div id="successMessage" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none; position: absolute; top: 0; left: 0; z-index: 100;"><span id="successMessageText"></span>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<h2 class="card-body pt-0 pb-0 mb-0"><%= puzzle.type.name %></h2>
+<p class="card-body text-right pb-0 pt-0 mb-0"><small>Author: <%= puzzle.author %></small></p>
+<svg id="mainGrid"
+     class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
+  Sorry, but your browser is not supported. Try to setup the new version.
+</svg>
+<div class="row card-body pb-1" id="puzzleControls">
+  <div class="col-8">
+    <div class="d-flex flex-row flex-wrap">
+      <div class="modal" name="restartModal">
+        <div class="modal-dialog" role="document">
+           <div class="modal-content">
+             <div class="modal-body">
+              <p>Do you want to restart the puzzle? All progress will be lost!</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" name="confirmYes">Yes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal" name="voteModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content alert-success show" '>
+            <div class="modal-header">
+               <p class="mb-0"><%= __("Congratulations! The puzzle has been solved correctly!!") %></p>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <% if(user && !puzzle.authorId.equals(user._id) ) { %>
+            <div class="modal-body">
+              <p><%= __("You can rate the quality of the puzzle") %><br>
+              <span name="voteRating" class="rateit" data-rateit-resetable="false" data-rateit-step="1" data-rateit-starwidth="32" data-rateit-starheight="32"></span>
+              </p>
+              <div class="form-group">
+                <label><%= __("You can add a comment for the puzzle author. It will be shown anonymously.") %></label>
+                <textarea class="form-control rounded-0" name="voteComment" rows="3"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" name="voteSave"><%= __("Save") %></button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" name="voteClose"><%= __("Close") %></button>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <button name="startBtn" type="button" class="btn btn-primary mb-3 mr-3">Start</button>
+      <button name="revertBtn" type="button" class="btn btn-primary mb-3 mr-3" style="display: none;">Undo</button>
+      <div class="mt-1 mr-3" name="pencilMarkCtrl" style="display: none;">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" name="pencilMarkCb"
+                 id="pencilMarkCb">
+          <label class="custom-control-label"
+                 for="pencilMarkCb">
+            Pencil-marks
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="d-flex flex-row-reverse flex-wrap">
+      <button name="checkBtn" type="button" class="btn btn-primary mb-3 ml-3">Check</button>
+      <span name="timer" class="align-top" style="font-family: Lucida Console; font-size: 130%; display: none;"></span>
+    </div>
+  </div>
+</div>
+<div class="d-flex flex-wrap card-body pt-0" id="puzzleRules">
+  <div class="col-lg-4">
+    <span class="puzzle-figures w-100 d-block" theme="contrast"></span>
+  </div>
+  <div class="col-lg-8">
+    <p class="card-text text-left mt-2 w-100">Shade some empty cells black to create a single connected wall. No 2x2 square can be completely shaded. Numbers in a cell indicate the length of consecutive shaded blocks in the neighboring cells. If there is more than one number in a cell, then there must be at least one white (unshaded) cell between the black cell groups.></p>
+    <p class="card-text text-left mt-1"><b>Grid control</b>:
+      Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.
+      More details about grid control are at the <a href='/help'>help page</a>.
+    </p>
+  </div>
+</div>
+<script src="js/locale_ru.js"></script>
+<script src="js/puzzle_figures.js"></script>
+<script>
+  function showPuzzle() {
+    var controls = "#puzzleControls";
+    var puzzleData = {
+      typeCode: "sudoku_even_odd",
+      id: "puzzle.code",
+      dimension: "9x9"
+    };
+    var settings = {
+      local: true,
+      data: {"b1":"-","c1":"-","d1":"-","e1":"-","i1":"7","b2":"-","e2":"-","g2":"-","i2":"-","b3":"-4","c3":"5","e3":"-6","g3":"-","i3":"-","a4":"-","b4":"-","e4":"-","f4":"-","h4":"1","a5":"-","f5":"-8","h5":"-","i5":"-","a6":"-","c6":"7","d6":"1","f6":"-","h6":"-","i6":"-","a7":"-","c7":"-","d7":"-","e7":"3","f7":"-","g7":"9","c8":"-","d8":"-4","g8":"-","h8":"-8","c9":"-","d9":"-6","f9":"7","g9":"-","h9":"-"}
+    };
+    var log = [{"t":"4","d":"start"},{"t":"16828","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"g3"},{"t":"18576","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"8","c":"grey"}]},"c":"g3"},{"t":"20045","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"i3"},{"t":"21236","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"8","c":"grey"}]},"c":"i3"},{"t":"24506","d":{"a":"pencil","v":[{"t":"4","c":"grey"}]},"c":"g2"},{"t":"25980","d":{"a":"pencil","v":[{"t":"4","c":"grey"},{"t":"6","c":"grey"}]},"c":"g2"},{"t":"27203","d":{"a":"pencil","v":[{"t":"4","c":"grey"}]},"c":"i2"},{"t":"28626","d":{"a":"pencil","v":[{"t":"4","c":"grey"},{"t":"6","c":"grey"}]},"c":"i2"},{"t":"32064","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"e2"},{"t":"33397","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"8","c":"grey"}]},"c":"e2"},{"t":"36411","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"b2"},{"t":"37680","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"8","c":"grey"}]},"c":"b2"},{"t":"44459","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"d7"},{"t":"45801","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"8","c":"grey"}]},"c":"d7"},{"t":"47584","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"d1"},{"t":"48852","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"8","c":"grey"}]},"c":"d1"},{"t":"51690","d":{"t":"4","c":"grey"},"c":"e1"},{"t":"56710","d":{"t":"2","c":"grey"},"c":"e4"},{"t":"58320","d":{"t":"8","c":"grey"},"c":"e2"},{"t":"59751","d":{"t":"2","c":"grey"},"c":"d1"},{"t":"61969","d":{"t":"8","c":"grey"},"c":"d7"},{"t":"68741","d":{"t":"2","c":"grey"},"c":"b2"},{"t":"74578","d":{"a":"pencil","v":[{"t":"6","c":"grey"}]},"c":"b1"},{"t":"75747","d":{"a":"pencil","v":[{"t":"6","c":"grey"},{"t":"8","c":"grey"}]},"c":"b1"},{"t":"77250","d":{"a":"pencil","v":[{"t":"6","c":"grey"}]},"c":"c1"},{"t":"78341","d":{"a":"pencil","v":[{"t":"6","c":"grey"},{"t":"8","c":"grey"}]},"c":"c1"},{"t":"84308","d":{"a":"pencil","v":[{"t":"4","c":"grey"}]},"c":"f4"},{"t":"85585","d":{"a":"pencil","v":[{"t":"4","c":"grey"},{"t":"6","c":"grey"}]},"c":"f4"},{"t":"87188","d":{"a":"pencil","v":[{"t":"4","c":"grey"}]},"c":"f6"},{"t":"88726","d":{"a":"pencil","v":[{"t":"4","c":"grey"},{"t":"6","c":"grey"}]},"c":"f6"},{"t":"97135","d":{"t":"2","c":"grey"},"c":"f7"},{"t":"101387","d":{"a":"pencil","v":[{"t":"4","c":"grey"}]},"c":"c7"},{"t":"102491","d":{"a":"pencil","v":[{"t":"4","c":"grey"},{"t":"6","c":"grey"}]},"c":"c7"},{"t":"103880","d":{"a":"pencil","v":[{"t":"4","c":"grey"}]},"c":"a7"},{"t":"105023","d":{"a":"pencil","v":[{"t":"4","c":"grey"},{"t":"6","c":"grey"}]},"c":"a7"},{"t":"108858","d":{"t":"2","c":"grey"},"c":"c8"},{"t":"110332","d":{"t":"8","c":"grey"},"c":"c9"},{"t":"116133","d":{"t":"6","c":"grey"},"c":"c1"},{"t":"117970","d":{"t":"4","c":"grey"},"c":"c7"},{"t":"119608","d":{"t":"6","c":"grey"},"c":"a7"},{"t":"121622","d":{"t":"8","c":"grey"},"c":"b1"},{"t":"125948","d":{"t":"6","c":"grey"},"c":"g8"},{"t":"130710","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"g9"},{"t":"132229","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"4","c":"grey"}]},"c":"g9"},{"t":"133420","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"h9"},{"t":"134644","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"4","c":"grey"}]},"c":"h9"},{"t":"140845","d":{"t":"4","c":"grey"},"c":"g2"},{"t":"142528","d":{"t":"6","c":"grey"},"c":"i2"},{"t":"144961","d":{"t":"2","c":"grey"},"c":"g9"},{"t":"146542","d":{"t":"4","c":"grey"},"c":"h9"},{"t":"148776","d":{"t":"8","c":"grey"},"c":"g3"},{"t":"150300","d":{"t":"2","c":"grey"},"c":"i3"},{"t":"158262","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"h5"},{"t":"159831","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"6","c":"grey"}]},"c":"h5"},{"t":"161110","d":{"a":"pencil","v":[{"t":"2","c":"grey"}]},"c":"h6"},{"t":"162666","d":{"a":"pencil","v":[{"t":"2","c":"grey"},{"t":"6","c":"grey"}]},"c":"h6"},{"t":"165888","d":{"t":"4","c":"grey"},"c":"i5"},{"t":"167358","d":{"t":"8","c":"grey"},"c":"i6"},{"t":"173536","d":{"t":"6","c":"grey"},"c":"b4"},{"t":"176318","d":{"t":"4","c":"grey"},"c":"f4"},{"t":"178040","d":{"t":"6","c":"grey"},"c":"f6"},{"t":"179404","d":{"t":"2","c":"grey"},"c":"h6"},{"t":"181274","d":{"t":"6","c":"grey"},"c":"h5"},{"t":"183348","d":{"t":"2","c":"grey"},"c":"a5"},{"t":"185808","d":{"t":"4","c":"grey"},"c":"a6"},{"t":"187888","d":{"t":"8","c":"grey"},"c":"a4"},{"t":"203274","d":{"a":"pencil","v":[{"t":"3"}]},"c":"b6"},{"t":"204548","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"b6"},{"t":"206069","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"},{"t":"9"}]},"c":"b6"},{"t":"208353","d":{"a":"pencil","v":[{"t":"5"}]},"c":"e6"},{"t":"209737","d":{"a":"pencil","v":[{"t":"5"},{"t":"9"}]},"c":"e6"},{"t":"211589","d":{"a":"pencil","v":[{"t":"3"}]},"c":"g6"},{"t":"213291","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"g6"},{"t":"218300","d":{"a":"pencil","v":[{"t":"1"}]},"c":"b7"},{"t":"220052","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"}]},"c":"b7"},{"t":"221378","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"},{"t":"7"}]},"c":"b7"},{"t":"224022","d":{"a":"pencil","v":[{"t":"5"}]},"c":"h7"},{"t":"225255","d":{"a":"pencil","v":[{"t":"5"},{"t":"7"}]},"c":"h7"},{"t":"226930","d":{"a":"pencil","v":[{"t":"1"}]},"c":"i7"},{"t":"228296","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"}]},"c":"i7"},{"t":"236763","d":{"a":"pencil","v":[{"t":"1"}]},"c":"e8"},{"t":"238107","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"}]},"c":"e8"},{"t":"240070","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"},{"t":"9"}]},"c":"e8"},{"t":"242544","d":{"a":"pencil","v":[{"t":"1"}]},"c":"e9"},{"t":"244036","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"}]},"c":"e9"},{"t":"245505","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"},{"t":"9"}]},"c":"e9"},{"t":"248485","d":{"a":"pencil","v":[{"t":"1"}]},"c":"f8"},{"t":"249938","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"}]},"c":"f8"},{"t":"251274","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"},{"t":"9"}]},"c":"f8"},{"t":"254453","d":{"t":"7"},"c":"e5"},{"t":"259291","d":{"a":"pencil","v":[{"t":"3"}]},"c":"d4"},{"t":"260592","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"d4"},{"t":"261786","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"},{"t":"9"}]},"c":"d4"},{"t":"262948","d":{"a":"pencil","v":[{"t":"3"}]},"c":"d5"},{"t":"264183","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"d5"},{"t":"265227","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"},{"t":"9"}]},"c":"d5"},{"t":"284220","d":{"a":"pencil","v":[{"t":"3"}]},"c":"h3"},{"t":"286963","d":{"a":"pencil","v":[{"t":"3"},{"t":"9"}]},"c":"h3"},{"t":"289344","d":{"a":"pencil","v":[{"t":"3"}]},"c":"h2"},{"t":"290945","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"h2"},{"t":"292381","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"},{"t":"9"}]},"c":"h2"},{"t":"293890","d":{"a":"pencil","v":[{"t":"3"}]},"c":"h1"},{"t":"295195","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"h1"},{"t":"296352","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"},{"t":"9"}]},"c":"h1"},{"t":"298984","d":{"t":"7"},"c":"h7"},{"t":"302233","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"}]},"c":"b7"},{"t":"309095","d":{"a":"pencil","v":[{"t":"1"}]},"c":"i8"},{"t":"310171","d":{"a":"pencil","v":[{"t":"1"},{"t":"3"}]},"c":"i8"},{"t":"311642","d":{"a":"pencil","v":[{"t":"1"},{"t":"3"},{"t":"5"}]},"c":"i8"},{"t":"312784","d":{"a":"pencil","v":[{"t":"1"}]},"c":"i9"},{"t":"314005","d":{"a":"pencil","v":[{"t":"1"},{"t":"3"}]},"c":"i9"},{"t":"315180","d":{"a":"pencil","v":[{"t":"1"},{"t":"3"},{"t":"5"}]},"c":"i9"},{"t":"319415","d":{"t":"9"},"c":"i4"},{"t":"322685","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"d4"},{"t":"329508","d":{"t":"3"},"c":"c4"},{"t":"331194","d":{"t":"5"},"c":"d4"},{"t":"333243","d":{"t":"7"},"c":"g4"},{"t":"336238","d":{"t":"9"},"c":"e6"},{"t":"337976","d":{"t":"3"},"c":"d5"},{"t":"343244","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"}]},"c":"e8"},{"t":"344634","d":{"a":"pencil","v":[{"t":"1"},{"t":"5"}]},"c":"e9"},{"t":"347116","d":{"t":"9"},"c":"f8"},{"t":"354231","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"b6"},{"t":"362112","d":{"t":"5"},"c":"g5"},{"t":"363780","d":{"t":"3"},"c":"g6"},{"t":"368607","d":{"a":"pencil","v":[{"t":"1"}]},"c":"b5"},{"t":"370340","d":{"a":"pencil","v":[{"t":"1"},{"t":"9"}]},"c":"b5"},{"t":"371446","d":{"a":"pencil","v":[{"t":"1"}]},"c":"c5"},{"t":"372635","d":{"a":"pencil","v":[{"t":"1"},{"t":"9"}]},"c":"c5"},{"t":"375488","d":{"t":"5"},"c":"b6"},{"t":"376903","d":{"t":"1"},"c":"b7"},{"t":"378720","d":{"t":"9"},"c":"b5"},{"t":"380088","d":{"t":"1"},"c":"c5"},{"t":"382457","d":{"t":"5"},"c":"i7"},{"t":"386302","d":{"a":"pencil","v":[{"t":"1"},{"t":"3"}]},"c":"i8"},{"t":"387823","d":{"a":"pencil","v":[{"t":"1"},{"t":"3"}]},"c":"i9"},{"t":"397661","d":{"a":"pencil","v":[{"t":"1"}]},"c":"g1"},{"t":"400441","d":{"t":"1"},"c":"g1"},{"t":"407329","d":{"a":"pencil","v":[{"t":"3"}]},"c":"f1"},{"t":"408672","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"f1"},{"t":"410108","d":{"a":"pencil","v":[{"t":"1"}]},"c":"f2"},{"t":"411616","d":{"a":"pencil","v":[{"t":"1"},{"t":"3"}]},"c":"f2"},{"t":"413149","d":{"a":"pencil","v":[{"t":"1"},{"t":"3"},{"t":"5"}]},"c":"f2"},{"t":"414371","d":{"a":"pencil","v":[{"t":"1"}]},"c":"f3"},{"t":"415513","d":{"a":"pencil","v":[{"t":"1"},{"t":"3"}]},"c":"f3"},{"t":"418605","d":{"a":"pencil","v":[{"t":"7"}]},"c":"d2"},{"t":"419842","d":{"a":"pencil","v":[{"t":"7"},{"t":"9"}]},"c":"d2"},{"t":"421199","d":{"a":"pencil","v":[{"t":"7"}]},"c":"d3"},{"t":"423480","d":{"a":"pencil","v":[{"t":"7"},{"t":"9"}]},"c":"d3"},{"t":"428905","d":{"t":"9"},"c":"c2"},{"t":"430273","d":{"t":"7"},"c":"d2"},{"t":"431618","d":{"t":"9"},"c":"d3"},{"t":"442723","d":{"t":"3"},"c":"h3"},{"t":"444362","d":{"t":"1"},"c":"f3"},{"t":"447884","d":{"t":"7"},"c":"a3"},{"t":"451288","d":{"a":"pencil","v":[{"t":"5"},{"t":"9"}]},"c":"h2"},{"t":"452717","d":{"a":"pencil","v":[{"t":"5"},{"t":"9"}]},"c":"h1"},{"t":"454591","d":{"a":"pencil","v":[{"t":"3"},{"t":"5"}]},"c":"f2"},{"t":"460355","d":{"a":"pencil","v":[{"t":"9"}]},"c":"h2"},{"t":"463386","d":{"t":"5"},"c":"h2"},{"t":"465485","d":{"t":"9"},"c":"h1"},{"t":"467254","d":{"t":"3"},"c":"f2"},{"t":"469324","d":{"t":"5"},"c":"f1"},{"t":"471518","d":{"t":"3"},"c":"a1"},{"t":"474558","d":{"t":"1"},"c":"a2"},{"t":"477337","d":{"t":"5"},"c":"a8"},{"t":"478976","d":{"t":"9"},"c":"a9"},{"t":"482048","d":{"t":"3"},"c":"b9"},{"t":"483437","d":{"t":"7"},"c":"b8"},{"t":"486506","d":{"t":"1"},"c":"i9"},{"t":"487745","d":{"t":"3"},"c":"i8"},{"t":"490344","d":{"t":"5"},"c":"e9"},{"t":"491832","d":{"t":"1"},"c":"e8"},{"t":"494063","d":"check"}]
+    settings.theme = "contrast";
+    var grid = "#mainGrid"
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
+      puzzle.render(Snap(grid));
+      puzzle.replay(log);
+    });
+  }
+</script>
+      </div>
+      <script>
+        $(document).ready(function () {
+          showPuzzle();
+        });
+      </script>
+      <div class="card card-body">
+      </div>
+    </div>
+  </div>
+</div>
+  </body>
+</html>

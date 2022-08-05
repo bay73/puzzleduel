@@ -360,6 +360,33 @@ router.get('/:puzzleid/comments', async (req, res, next) => {
   }
 });
 
+// Read solving log
+router.get('/:puzzleid/log/:userid', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    if (!req.user || req.user.role != "admin") {
+      res.sendStatus(404);
+      return;
+    }
+    const logs = await UserActionLog.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort('date');
+    let result = {}
+    for (let i=0;i<logs.length;i++) {
+      let logItem = logs[i];
+      if (typeof logItem.data!="undefined") {
+        let data = JSON.parse(logItem.data)
+        if (typeof data.log != "undefined") {
+          result = data.log;
+          break;
+        }
+      }
+    }
+    res.json(result);
+    profiler.log('puzzleLog', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
 // Delete puzzle
 router.post('/:puzzleid/delete', async (req, res, next) => {
   try {

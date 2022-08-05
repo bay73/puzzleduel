@@ -79,7 +79,7 @@
                 <td><%= time.userName %></td>
                 <td>
                   <% if (typeof user != 'undefined' && user.role=='admin') { %>
-                  <a href="/admin/actionlog/<%= puzzle.code %>/<%= time.userId %>"><%= time.time %></a>
+                  <a href="/archive/<%= puzzle.code %>/replay/<%= time.userId %>"><%= time.time %></a>
                   <% } else { %>
                   <%= time.time %>
                   <% } %>

@@ -210,6 +210,12 @@ basePuzzle.prototype.convertEditControls = function () {
   this.setButtonEnabled(false);
 }
 
+basePuzzle.prototype.convertReplayControls = function () {
+  $(this.controls.startBtn).hide();
+  $(this.controls.checkBtn).hide();
+  this.setButtonEnabled(false);
+}
+
 basePuzzle.prototype.setButtonEnabled = function (enabled) {
   $(this.controls.checkBtn).prop('disabled', !enabled);
   $(this.controls.saveBtn).prop('disabled', !enabled);
@@ -449,6 +455,70 @@ basePuzzle.prototype.decodeClue = function(value) {
   }
 }
 
+basePuzzle.prototype.replay = function(log) {
+  var self = this;
+  this.removeMessages();
+  if (typeof this.settings != 'undefined' && this.settings.local) {
+    self.startReplay(this.settings.data, log);
+    return;
+  }
+  // Read clues from server and show
+  $.getJSON("/puzzles/" + this.id + "/start")
+    .done(data => self.startReplay(data, log))
+    .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
+}
+
+basePuzzle.prototype.startReplay = function (data, log) {
+  this.replayMode = true;
+  this.setTypeProperties(this.typeCode);
+  this.clearAll();
+  this.showClues(data);
+  this.initController();
+  this.steps = [];
+  this.convertReplayControls();
+  var self = this;
+  this.replay = {
+    log: log,
+    step: 0
+  }
+  this.startTimer();
+  this.replay.timeout = setTimeout(()=>self.replayStep(0), this.replay.log[0].t);
+}
+
+basePuzzle.prototype.replayStep = function () {
+  let self = this;
+  let mergeWithNext = function() {
+    let step = self.replay.log[self.replay.step]
+    if (self.replay.step + 1 < self.replay.log.length) {
+      let nextStep = self.replay.log[self.replay.step + 1];
+      if (step.c == nextStep.c && nextStep.t - step.t < 200) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  let step = this.replay.log[this.replay.step];
+  this.startTime.setTime(new Date().getTime() - step.t);
+  console.log(step)
+  if (typeof step.c != 'undefined') {
+    if (!mergeWithNext()) {
+      let element = this.getElementByCoordinate(step.c);
+      if (element) {
+        element.applyLogData(step.d);
+      }
+    }
+  }
+  let nextStepNumber = this.replay.step + 1;
+  if (nextStepNumber < this.replay.log.length) {
+    this.replay.step = nextStepNumber;
+    this.replay.timeout = setTimeout(()=>self.replayStep(), this.replay.log[nextStepNumber].t - step.t);
+  } else {
+    this.stopTimer();
+  }
+}
+
+
 //////////////////////////// virtual methods ////////////////////////
 basePuzzle.prototype.parseDimension = function() {
   // Parse dimension string to values.
@@ -504,3 +574,6 @@ basePuzzle.prototype.setTypeProperties = function(typeCode) {
   throw 'setTypeProperties is not implemented for ' + this.constructor.name + '!';
 }
 
+basePuzzle.prototype.getElementByCoordinate = function(coordinate) {
+  throw 'getElementByCoordinate is not implemented for ' + this.constructor.name + '!';
+}

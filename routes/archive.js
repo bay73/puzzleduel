@@ -329,6 +329,32 @@ router.get('/scores', (req, res) => {
   res.redirect('/archive/' + d + '/scores');
 });
 
+// Replay solution for a single puzzle and user
+router.get('/:puzzleid/replay/:userid', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    if (!req.user || req.user.role != "admin") {
+      res.sendStatus(404);
+      return;
+    }
+    var puzzle = await cache.readPuzzle(req.params.puzzleid);
+    let isAdmin = req.user && req.user.role == "admin";
+    if (!puzzle || !isAdmin) {
+      res.sendStatus(404);
+      return;
+    }
+    var puzzleObj = await util.puzzleToPresent(puzzle, req.getLocale());
+    res.render('single_replay', {
+      user: req.user,
+      loguserid: req.params.userid,
+      puzzle: puzzleObj
+    });
+    profiler.log('archiveLog', processStart);
+  } catch (e) {
+    next(e)
+  }
+});
+
 // Author puzzle list
 router.get('/author', ensureAuthenticated, async (req, res, next) => {
   try {

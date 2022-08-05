@@ -232,12 +232,32 @@ hexaPuzzle.prototype.collectData = function() {
   return data;
 }
 
-basePuzzle.prototype.showErrorCells = function(result) {
+hexaPuzzle.prototype.decodeCoordinate = function(key) {
+  return {x: key.charCodeAt(0) - 'a'.charCodeAt(0), y: parseInt(key.substring(1)) - 1};
+}
+
+hexaPuzzle.prototype.getElementByCoordinate = function(coordinate) {
+  let parts = coordinate.split('-');
+  coord = this.decodeCoordinate(parts[0])
+  if (parts.length==1) {
+    return this.cells[coord.y][coord.x];
+  } else {
+    switch (parts[1].charAt(0)) {
+      case 'e':
+        return this.typeProperties.needEdges ? this.edges[coord.y][coord.x][parts[1].slice(1)] : null;
+      case 'n':
+        return this.typeProperties.needNodes ? this.nodes[coord.y][coord.x][parts[1].slice(1)] : null;
+      default:
+        return null;
+    }
+  }
+}
+
+hexaPuzzle.prototype.showErrorCells = function(result) {
   if (!Array.isArray(result.errors)) return;
   result.errors.forEach(coord => {
-    var x = coord.charCodeAt(0) - 'a'.charCodeAt(0);
-    var y = parseInt(coord.substring(1)) - 1;
-    this.cells[y][x].markError();
+    var coord = this.decodeCoordinate(key);
+    this.cells[coord.y][coord.x].markError();
   });
 }
 

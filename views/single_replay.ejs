@@ -1,0 +1,70 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-lg-8 m-auto">
+      <%- include ('./partials/messages') %>
+      <% if(puzzle){ %> 
+        <% prefix = ''; %>
+        <div class="card">
+          <% if(typeof puzzle.tag != 'undefined') { %>
+          <% if(puzzle.tag.includes("daily")) { %>
+          <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+            <h1><%= __('Daily puzzle') %> (<%= puzzle.daily?puzzle.daily.toISOString().split('T')[0]:"" %>)</h1>
+            <a class="p-2 align-bottom text-right" style="position: relative;" href="/archive/<%= puzzle.code %>/scores"><%= __('Scores') %></a>
+          </div>
+          <% } else if (puzzle.tag.includes("example")) { %>
+          <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+            <h1><%= __('Example puzzle') %></h1>
+            <div class="p-2 align-bottom text-right" style="position: relative;">
+              <a data-toggle="collapse" href="#answer" aria-expanded="false" aria-controls="Collapse">
+                <span><%= __('Show answer') %></span>
+              </a>
+              <div class="collapse bg-secondary text-white"
+                   style="position: absolute; top: 45px; left: -50px; z-index: 100;" id="answer">
+                <div class="card card-body">
+                  <img src="<%= puzzle.answerImg %>" width="180">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <%= __('Sinlge example text') %>
+          </div>
+          <% } %>
+          <% } %>
+          <%- include ('./partials/puzzle') %>
+        </div>
+        <script>
+          function showPuzzleReplay() {
+            var controls = "#Controls";
+            var puzzleData = {
+              typeCode: "<%= puzzle.type.code %>",
+              id: "<%= puzzle.code %>",
+              dimension: "<%= puzzle.dimension %>"
+            };
+            var settings = {};
+            settings.theme = "<%= (typeof theme != "undefined")?theme:"" %>";
+            var grid = "#Grid"
+            requirejs(["<%= puzzle.type.puzzleJs.replace(/\.js$/, '') %>"], function() {
+              puzzle = new <%= puzzle.type.puzzleObj %>(puzzleData, controls, settings);
+              puzzle.render(Snap(grid));
+              $.getJSON("/puzzles/<%= puzzle.code %>/log/<%= loguserid %>")
+                .done(data => {
+                  puzzle.replay(data)
+                })
+                .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
+            });
+
+          }
+          $(document).ready(function () {
+            $('#Controls [name=startBtn]').hide();
+            $('#Controls [name=checkBtn]').hide();
+            showPuzzleReplay();
+          });
+        </script>
+      <% } %>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+
