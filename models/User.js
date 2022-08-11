@@ -45,6 +45,10 @@ const UserSchema = new mongoose.Schema({
   isTester: {
     type: Boolean,
     required: false
+  },
+  isReplayVisible: {
+    type: Boolean,
+    required: false
   }
 });
 

@@ -364,7 +364,7 @@ router.get('/:puzzleid/comments', async (req, res, next) => {
 router.get('/:puzzleid/log/:userid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    if (!req.user || req.user.role != "admin") {
+    if (!req.user || !req.user.isReplayVisible) {
       res.sendStatus(404);
       return;
     }

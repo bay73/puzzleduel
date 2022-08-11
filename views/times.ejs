@@ -78,7 +78,7 @@
               <tr>
                 <td><%= time.userName %></td>
                 <td>
-                  <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                  <% if (typeof user != 'undefined' && user.isReplayVisible && !puzzle.needLogging) { %>
                   <a href="/archive/<%= puzzle.code %>/replay/<%= time.userId %>"><%= time.time %></a>
                   <% } else { %>
                   <%= time.time %>

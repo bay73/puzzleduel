@@ -300,6 +300,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
         type: puzzleType,
         dimension: puzzle.dimension,
         daily: puzzle.daily,
+        needLogging: puzzle.needLogging,
         rating: puzzle.needLogging?null:puzzle.rating,
         difficulty: puzzle.needLogging?null:puzzle.difficulty
       },
@@ -333,13 +334,12 @@ router.get('/scores', (req, res) => {
 router.get('/:puzzleid/replay/:userid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    if (!req.user || req.user.role != "admin") {
+    if (!req.user || !req.user.isReplayVisible) {
       res.sendStatus(404);
       return;
     }
     var puzzle = await cache.readPuzzle(req.params.puzzleid);
-    let isAdmin = req.user && req.user.role == "admin";
-    if (!puzzle || !isAdmin) {
+    if (!puzzle) {
       res.sendStatus(404);
       return;
     }
