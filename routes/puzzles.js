@@ -369,13 +369,16 @@ router.get('/:puzzleid/log/:userid', async (req, res, next) => {
       return;
     }
     const logs = await UserActionLog.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort('date');
-    let result = {}
+    let result = [];
     for (let i=0;i<logs.length;i++) {
       let logItem = logs[i];
       if (typeof logItem.data!="undefined") {
         let data = JSON.parse(logItem.data)
         if (typeof data.log != "undefined") {
-          result = data.log;
+          result.push(...data.log);
+        }
+        if (logItem.action=="solved") {
+          result.push({d: "solved"});
           break;
         }
       }
