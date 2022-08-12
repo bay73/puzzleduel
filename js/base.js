@@ -226,9 +226,16 @@ basePuzzle.prototype.startTimer = function() {
   if (!this.controls.timer || this.timer) {
     return;
   }
-  var self = this;
   this.startTime = new Date();
   this.showTime();
+  this.runTimer();
+}
+
+basePuzzle.prototype.runTimer = function() {
+  if (!this.controls.timer || this.timer) {
+    return;
+  }
+  var self = this;
   this.timer = setInterval(() => self.showTime(),1000);
 }
 
@@ -476,16 +483,50 @@ basePuzzle.prototype.startReplay = function (data, log) {
   this.initController();
   this.steps = [];
   this.convertReplayControls();
+  this.startTime = new Date();
   var self = this;
   this.replay = {
+    clueData: data,
     log: log,
-    step: 0
+    step: 0,
+    revertStep: 0
   }
-  this.startTimer();
-  this.replay.timeout = setTimeout(()=>self.replayStep(0), this.replay.log[0].t);
+  this.replay.log[0].revertStep = 0;
 }
 
-basePuzzle.prototype.replayStep = function () {
+basePuzzle.prototype.replayPause = function () {
+  clearTimeout(this.replay.timeout);
+  this.stopTimer()
+}
+
+basePuzzle.prototype.replayContinue = function () {
+  this.runTimer()
+  this.replayStep(true)
+}
+
+basePuzzle.prototype.replayStepForward = function () {
+  if (this.replay.step + 1 >= this.replay.log.length) {
+    return false;
+  }
+  this.replayStep(false);
+  return true;
+}
+
+basePuzzle.prototype.replayStepBackward = function () {
+  if (this.replay.step <= 0) {
+    return false;
+  }
+  this.replay.step--;
+  let revertStep = this.replay.log[this.replay.step].revertStep;
+  if (typeof revertStep != 'undefined') {
+    while (revertStep < this.steps.length) {
+      this.revertStep();
+    }
+  }
+  return true;
+}
+
+basePuzzle.prototype.replayStep = function (autoContinue) {
   let self = this;
   let mergeWithNext = function() {
     let step = self.replay.log[self.replay.step]
@@ -500,19 +541,32 @@ basePuzzle.prototype.replayStep = function () {
 
   let step = this.replay.log[this.replay.step];
   this.startTime.setTime(new Date().getTime() - step.t);
+  this.showTime();
+  let revertStep = step.revertStep;
+  if (typeof revertStep != 'undefined') {
+    while (revertStep < this.steps.length) {
+      this.revertStep();
+    }
+  }
   console.log(step)
   if (typeof step.c != 'undefined') {
     if (!mergeWithNext()) {
       let element = this.getElementByCoordinate(step.c);
       if (element) {
         element.applyLogData(step.d);
+        step.revertStep = this.steps.length;
       }
     }
+  } else if (step.d == 'start') {
+    this.clearAll();
+    this.showClues(this.replay.clueData);
   }
   let nextStepNumber = this.replay.step + 1;
   if (nextStepNumber < this.replay.log.length) {
     this.replay.step = nextStepNumber;
-    this.replay.timeout = setTimeout(()=>self.replayStep(), this.replay.log[nextStepNumber].t - step.t);
+    if (autoContinue) {
+      this.replay.timeout = setTimeout(()=>self.replayStep(true), this.replay.log[nextStepNumber].t - step.t);
+    }
   } else {
     this.stopTimer();
   }

@@ -343,10 +343,14 @@ router.get('/:puzzleid/replay/:userid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    var puzzleObj = await util.puzzleToPresent(puzzle, req.getLocale());
+    const [puzzleObj, solverName] = await Promise.all([
+      util.puzzleToPresent(puzzle, req.getLocale()),
+      cache.readUserName(req.params.userid)
+    ]);
     res.render('single_replay', {
       user: req.user,
       loguserid: req.params.userid,
+      logusername: solverName,
       puzzle: puzzleObj
     });
     profiler.log('archiveLog', processStart);
