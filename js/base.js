@@ -561,6 +561,8 @@ basePuzzle.prototype.replayStepBackward = function () {
       this.revertStep();
     }
   }
+  this.startTime.setTime(new Date().getTime() - this.replay.log[this.replay.step].t);
+  this.showTime();
   return true;
 }
 
