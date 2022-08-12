@@ -255,7 +255,7 @@ hexaPuzzle.prototype.getElementByCoordinate = function(coordinate) {
 
 hexaPuzzle.prototype.showErrorCells = function(result) {
   if (!Array.isArray(result.errors)) return;
-  result.errors.forEach(coord => {
+  result.errors.forEach(key => {
     var coord = this.decodeCoordinate(key);
     this.cells[coord.y][coord.x].markError();
   });
