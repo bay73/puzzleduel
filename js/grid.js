@@ -91,7 +91,7 @@ gridElement.prototype.applyLogData = function(logData) {
         data.text = logData.t;
       }
       if (logData.c) {
-        data.color = logData.c;
+        data.color = this.puzzle.decodeColor(logData.c);
       }
       if (logData.i) {
         data.image = logData.i;

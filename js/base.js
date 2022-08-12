@@ -112,14 +112,14 @@ basePuzzle.prototype.chooseColorSchema = function() {
       bgColor: "#fff",
       brightColor: "#5577bb",
       errorColor: "#f52b14",
-      outerClueColor: "#fff",
+      outerClueColor: "#ffe",
       outerClueSecondColor: "#9ac",
       outerClueFilter: "<feColorMatrix type='matrix' values='1 0 0 0 1 0 1 0 0 1 0 0 1 0 1 0 0 0 1 0'/>"
     }
   } else {
     return {
       textColor: "#00121d",
-      lineColor: "#00121d",
+      lineColor: "#002436",
       clueColor: "#042632",
       greyColor: "#38585c",
       lightGreyColor: "#a0c0c5",
@@ -129,9 +129,47 @@ basePuzzle.prototype.chooseColorSchema = function() {
       brightColor: "#2aa198",
       errorColor: "#e72381",
       outerClueColor: "#8db",
-      outerClueSecondColor: "#000",
+      outerClueSecondColor: "#001",
       outerClueFilter: "<feColorMatrix type='matrix' values='0 0 0 0 0.2 0 0 0 0 0.6 0 0 0 0 0.6 0 0 0 1 0'/>"
     }
+  }
+}
+
+basePuzzle.prototype.decodeColor = function(color) {
+  switch (color) {
+    case "#10153d": return this.colorSchema.textColor;
+    case "#101010": return this.colorSchema.textColor;
+    case "#00121d": return this.colorSchema.textColor;
+    case "#18254d": return this.colorSchema.lineColor;
+    case "#008959": return this.colorSchema.lineColor;
+    case "#002436": return this.colorSchema.lineColor;
+    case "#203063": return this.colorSchema.clueColor;
+    case "#404040": return this.colorSchema.clueColor;
+    case "#042632": return this.colorSchema.clueColor;
+    case "#4060b6": return this.colorSchema.greyColor;
+    case "#707070": return this.colorSchema.greyColor;
+    case "#38585c": return this.colorSchema.greyColor;
+    case "#90b0e2": return this.colorSchema.lightGreyColor;
+    case "#b0b0b0": return this.colorSchema.lightGreyColor;
+    case "#a0c0c5": return this.colorSchema.lightGreyColor;
+    case "#007bff": return this.colorSchema.traceColor;
+    case "#66efbf": return this.colorSchema.traceColor;
+    case "#777777": return this.colorSchema.traceColor;
+    case "#000": return this.colorSchema.gridColor;
+    case "#fff": return this.colorSchema.bgColor;
+    case "#38e": return this.colorSchema.brightColor;
+    case "#5577bb": return this.colorSchema.brightColor;
+    case "#2aa198": return this.colorSchema.brightColor;
+    case "#efa4a7": return this.colorSchema.errorColor;
+    case "#f52b14": return this.colorSchema.errorColor;
+    case "#e72381": return this.colorSchema.errorColor;
+    case "#06d": return this.colorSchema.outerClueColor;
+    case "#ffe": return this.colorSchema.outerClueColor;
+    case "#8db": return this.colorSchema.outerClueColor;
+    case "#026": return this.colorSchema.outerClueSecondColor;
+    case "#9ac": return this.colorSchema.outerClueSecondColor;
+    case "#001": return this.colorSchema.outerClueSecondColor;
+    default: return color;
   }
 }
 
