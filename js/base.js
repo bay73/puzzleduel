@@ -382,6 +382,7 @@ basePuzzle.prototype.showResult = function(result) {
     $(this.controls.voteComment).val(result.comment);
     $(this.controls.voteModal).modal();
   } else {
+    this.logStep('', {error: result});
     this.showError(__["Sorry, there is a mistake. "] + result.status + ". " + __["Try again."]);
     this.showErrorCells(result);
   }
@@ -600,6 +601,32 @@ basePuzzle.prototype.replayStep = function (autoContinue) {
   } else if (step.d == 'start') {
     this.clearAll();
     this.showClues(this.replay.clueData);
+  } else if (step.d == 'solved') {
+    var greenCircle = this.snap.circle(this.size.width/2, this.size.height/2, 0);
+    greenCircle.attr({fill: "#009900", opacity: 0.5});
+    var radius = Math.min(this.size.width/2, this.size.height/2);
+    // Blinking animation
+    var greenInterval = setInterval(() => {
+        greenCircle.attr({r: 0});
+        greenCircle.animate({r: radius}, 200);
+      }, 800);
+    // Remove animation after 5 sec.
+    setTimeout(() => {greenCircle.remove(); clearInterval(greenInterval);}, 5000);
+  } else if (typeof step.d.error != 'undefined') {
+    if (Array.isArray(result.errors)) {
+      this.showErrorCells(step.d.error);
+    } else {
+      var redCircle = this.snap.circle(this.size.width/2, this.size.height/2, 0);
+      redCircle.attr({fill: "#990000", opacity: 0.5});
+      var radius = Math.min(this.size.width/2, this.size.height/2);
+      // Blinking animation
+      var redInterval = setInterval(() => {
+          redCircle.attr({r: 0});
+          redCircle.animate({r: radius}, 200);
+        }, 800);
+      // Remove animation after 5 sec.
+      setTimeout(() => {redCircle.remove(); clearInterval(redInterval);}, 5000);
+    }
   }
   let nextStepNumber = this.replay.step + 1;
   if (nextStepNumber < this.replay.log.length) {
