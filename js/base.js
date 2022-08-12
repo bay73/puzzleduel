@@ -581,8 +581,10 @@ basePuzzle.prototype.replayStep = function (autoContinue) {
   }
 
   let step = this.replay.log[this.replay.step];
-  this.startTime.setTime(new Date().getTime() - step.t);
-  this.showTime();
+  if (!isNaN(step.t)) {
+    this.startTime.setTime(new Date().getTime() - step.t);
+    this.showTime();
+  }
   let revertStep = step.revertStep;
   if (typeof revertStep != 'undefined') {
     while (revertStep < this.steps.length) {
@@ -608,10 +610,10 @@ basePuzzle.prototype.replayStep = function (autoContinue) {
     // Blinking animation
     var greenInterval = setInterval(() => {
         greenCircle.attr({r: 0});
-        greenCircle.animate({r: radius}, 200);
+        greenCircle.animate({r: radius}, 800);
       }, 800);
     // Remove animation after 5 sec.
-    setTimeout(() => {greenCircle.remove(); clearInterval(greenInterval);}, 5000);
+    setTimeout(() => {greenCircle.remove(); clearInterval(greenInterval);}, 4000);
   } else if (typeof step.d.error != 'undefined') {
     if (Array.isArray(result.errors)) {
       this.showErrorCells(step.d.error);
@@ -622,10 +624,10 @@ basePuzzle.prototype.replayStep = function (autoContinue) {
       // Blinking animation
       var redInterval = setInterval(() => {
           redCircle.attr({r: 0});
-          redCircle.animate({r: radius}, 200);
+          redCircle.animate({r: radius}, 800);
         }, 800);
       // Remove animation after 5 sec.
-      setTimeout(() => {redCircle.remove(); clearInterval(redInterval);}, 5000);
+      setTimeout(() => {redCircle.remove(); clearInterval(redInterval);}, 4000);
     }
   }
   let nextStepNumber = this.replay.step + 1;
