@@ -357,6 +357,7 @@ basePuzzle.prototype.check = function() {
   $.post("/puzzles/" + this.id + "/check", data)
     .done(response => self.showResult(response))
     .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
+  this.log = [];
 }
 
 basePuzzle.prototype.save = function() {
@@ -425,14 +426,18 @@ basePuzzle.prototype.togglePencilMarkMode = function() {
 }
 
 basePuzzle.prototype.logStep = function(cell, data ) {
-  if (this.log.length < 201) {
-    let logItem = {t: new Date() - this.startTime, d: data};
-    if (cell) {
-      logItem.c = cell;
-    }
-    this.log.push(logItem);
-  } else {
-    this.log[200].d = 'truncated';
+  let logItem = {t: new Date() - this.startTime, d: data};
+  if (cell) {
+    logItem.c = cell;
+  }
+  this.log.push(logItem);
+  if (this.log.length > 300) {
+    let self = this;
+    let postData = {log: this.log};
+    $.post("/puzzles/" + this.id + "/log", postData)
+      .done(response => {})
+      .fail((jqxhr, textStatus, error) => {self.logStep('', 'failed to save log');});
+    this.log = [];
   }
 }
 

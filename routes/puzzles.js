@@ -191,6 +191,39 @@ router.get('/:puzzleid/get', async (req, res, next) => {
   }
 });
 
+// Save puzzle log
+router.post('/:puzzleid/log', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
+    if (!puzzle) {
+      res.sendStatus(404);
+      profiler.log('puzzleLogFailed', processStart);
+      return;
+    }
+    if (puzzle.needLogging) {
+      if (!req.user) {
+        res.status(403).send(res.__('You should log in to log this puzzle data!'));
+        profiler.log('puzzleLogFailed', processStart);
+        return;
+      }
+      if (req.user.role != "test") {
+        await logAction(
+          req.user,
+          req.params.puzzleid,
+          "log",
+          req.ipInfo,
+          JSON.stringify(req.body)
+        );
+      }
+    }
+    res.json(null);
+    profiler.log('puzzleLog', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
 // Check puzzle solution
 router.post('/:puzzleid/check', async (req, res, next) => {
   try {
@@ -214,7 +247,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
           req.params.puzzleid,
           result.status == "OK" ? "solved" : "submitted",
           req.ipInfo,
-          result.status == "OK" ? JSON.stringify(req.body) : null
+          JSON.stringify(req.body)
         );
         var hidden = puzzle.author.equals(req.user._id);
         if (result.status == "OK") {
@@ -384,7 +417,7 @@ router.get('/:puzzleid/log/:userid', async (req, res, next) => {
       }
     }
     res.json(result);
-    profiler.log('puzzleLog', processStart);
+    profiler.log('readPuzzleLog', processStart);
   } catch (e) {
     next(e);
   }
