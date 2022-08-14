@@ -620,7 +620,7 @@ basePuzzle.prototype.replayStep = function (autoContinue) {
     // Remove animation after 5 sec.
     setTimeout(() => {greenCircle.remove(); clearInterval(greenInterval);}, 4000);
   } else if (typeof step.d.error != 'undefined') {
-    if (Array.isArray(result.errors)) {
+    if (Array.isArray(step.d.error.errors)) {
       this.showErrorCells(step.d.error);
     } else {
       var redCircle = this.snap.circle(this.size.width/2, this.size.height/2, 0);
