@@ -582,7 +582,22 @@ squarePuzzle.prototype.getElementByCoordinate = function(coordinate) {
   let parts = coordinate.split('-');
   coord = this.decodeCoordinate(parts[0])
   if (parts.length==1) {
-    return this.cells[coord.y][coord.x];
+    if (coord.x>=0 && coord.x<this.cols && coord.y>=0 && coord.y<this.rows) {
+      return this.cells[coord.y][coord.x];
+    }
+    if (coord.x==-1 && coord.y>=0 && coord.y<this.rows && this.typeProperties.needLeft) {
+      return this.left[coord.y];
+    }
+    if (coord.x==this.cols && coord.y>=0 && coord.y<this.rows && this.typeProperties.needRight) {
+      return this.right[coord.y];
+    }
+    if (coord.x>=0 && coord.x<this.cols && coord.y==-1 && this.typeProperties.needTop) {
+      return this.top[coord.x];
+    }
+    if (coord.x>=0 && coord.x<this.cols && coord.y==this.rows && this.typeProperties.needBottom) {
+      return this.bottom[coord.x];
+    }
+    return null;
   } else {
     switch (parts[1].charAt(0)) {
       case 'e':
