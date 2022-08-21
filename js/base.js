@@ -530,25 +530,42 @@ basePuzzle.prototype.startReplay = function (data, log) {
   this.startTime = new Date();
   var self = this;
   this.replay = {
+    available: log.length >= 3,
     clueData: data,
     log: log,
     step: 0,
     revertStep: 0
   }
+  if (!this.replay.available) {
+    this.showError("Sorry replay is not available!");
+    return;
+  }
   this.replay.log[0].revertStep = 0;
 }
 
 basePuzzle.prototype.replayPause = function () {
+  if (!this.replay.available) {
+    this.showError("Sorry replay is not available!");
+    return;
+  }
   clearTimeout(this.replay.timeout);
   this.stopTimer()
 }
 
 basePuzzle.prototype.replayContinue = function () {
+  if (!this.replay.available) {
+    this.showError("Sorry replay is not available!");
+    return;
+  }
   this.runTimer()
   this.replayStep(true)
 }
 
 basePuzzle.prototype.replayStepForward = function () {
+  if (!this.replay.available) {
+    this.showError("Sorry replay is not available!");
+    return;
+  }
   if (this.replay.step + 1 >= this.replay.log.length) {
     return false;
   }
@@ -557,6 +574,10 @@ basePuzzle.prototype.replayStepForward = function () {
 }
 
 basePuzzle.prototype.replayStepBackward = function () {
+  if (!this.replay.available) {
+    this.showError("Sorry replay is not available!");
+    return;
+  }
   if (this.replay.step <= 0) {
     return false;
   }

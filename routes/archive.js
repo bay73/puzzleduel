@@ -292,6 +292,9 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
 
     const times = await cache.readSolvingTime(puzzle.code);
     const notFinished = times.filter(time => typeof time.solvingTime=="undefined").map(time => time.userName);
+    var today = new Date();
+    today.setDate(today.getDate()-30);
+    var replayAvailable = puzzle.publishDate > today;
 
     res.render('times', {
       user: req.user,
@@ -301,6 +304,7 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
         dimension: puzzle.dimension,
         daily: puzzle.daily,
         needLogging: puzzle.needLogging,
+        canReplay: replayAvailable && !puzzle.needLogging,
         rating: puzzle.needLogging?null:puzzle.rating,
         difficulty: puzzle.needLogging?null:puzzle.difficulty
       },

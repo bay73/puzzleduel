@@ -57,6 +57,7 @@ var puzzleToObj = function(puzzle) {
   puzzleObj.hiddenScore = puzzle.hiddenScore;
   puzzleObj.published = puzzle.published;
   puzzleObj.changeDate = puzzle.changeDate;
+  puzzleObj.publishDate = puzzle.publishDate;
   return puzzleObj;
 }
 

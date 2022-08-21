@@ -61,10 +61,10 @@ PuzzleSchema.virtual('changeDate').get(function() {
   if (!this.tag) return null;
   var date = null;
   if (this.tag.includes("daily")) {
-    date = this.daily;
+    date = new Date(this.daily);
   } else if (this.tag.includes("contest")) {
     if (this.contest && this.contest.puzzleDate) {
-      date = this.contest.puzzleDate;
+      date = new Date(this.contest.puzzleDate);
     }
   }
   if (date && date <= new Date()) {
@@ -91,6 +91,18 @@ PuzzleSchema.virtual('needLogging').get(function() {
     return false;
   }
   return true;
+});
+
+PuzzleSchema.virtual('publishDate').get(function() {
+  if (!this.tag) return null;
+  if (this.tag.includes("daily")) {
+    return this.daily;
+  } else if (this.tag.includes("contest")) {
+    if (this.contest && this.contest.puzzleDate) {
+      return this.contest.puzzleDate;
+    }
+  }
+  return null;
 });
 
 PuzzleSchema.virtual('hidden').get(function() {
