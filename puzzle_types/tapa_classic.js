@@ -44,7 +44,7 @@ checkNo2x2: function(cells, color) {
 },
 
 checkConnected: function(cells) {
-  if (!util.checkConnected(cells, "black")) {
+  if (!util.checkConnected(cells, ["black"])) {
     return {status: "Black area should be connected"};
   }
   return {status: "OK"};

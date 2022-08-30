@@ -52,7 +52,7 @@ check:function(dimension, clues, data){
 },
 
 checkConnected: function(cells) {
-  if (!util.checkConnected(cells, false)) {
+  if (!util.checkConnected(cells, [false])) {
     return {status: "White area should be connected"};
   }
   return {status: "OK"};

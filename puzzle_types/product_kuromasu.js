@@ -49,7 +49,7 @@ check:function(dimension, clues, data){
   return {status: "OK"};
 },
 checkConnected: function(cells) {
-  if (!util.checkConnected(cells, "X")) {
+  if (!util.checkConnected(cells, ["X"])) {
     return {status: "White area should be connected"};
   }
   return {status: "OK"};

@@ -70,14 +70,14 @@ const Util = {
     return String.fromCharCode('a'.charCodeAt(0) + x) + (y+1).toString();
   },
 
-  checkConnected: function(cells, color) {
+  checkConnected: function(cells, colors) {
     // Returns true if all cells of one color are orthogonally connected.
     // Returns false if not.
-    var first = ConnectedChecker.findFirst(cells, [color]);
+    var first = ConnectedChecker.findFirst(cells, colors);
     if(first) {
       var filled = Util.create2DArray(cells.rows, cells.cols, false)
-      ConnectedChecker.fill(cells, filled, first, [color]);
-      if (!ConnectedChecker.checkAllFilled(cells, filled, [color])) {
+      ConnectedChecker.fill(cells, filled, first, colors);
+      if (!ConnectedChecker.checkAllFilled(cells, filled, colors)) {
         return false;
       }
     }

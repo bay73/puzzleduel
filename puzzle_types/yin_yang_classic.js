@@ -65,7 +65,7 @@ checkNoEmptyCells: function(cells) {
 },
 
 checkConnected: function(cells, color) {
-  if (!util.checkConnected(cells, color)) {
+  if (!util.checkConnected(cells, [color])) {
     return {status: "Area of one color should be connected"};
   }
   return {status: "OK"};
