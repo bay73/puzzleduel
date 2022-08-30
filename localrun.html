@@ -130,123 +130,48 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "domino_castle_sum",
+      typeCode: "nanro",
       id: "puzzle.code",
-      dimension: "8x6-12345"
+      dimension: "4x4"
     };
     var settings = {
       local: true,
       data: {
-    "a1": "black",
-    "b1": "black",
-    "d1": "black",
-    "e1": "black",
-    "g1": "black",
-    "h1": "black",
-    "b2": "black",
-    "d2": "black",
-    "e2": "black",
-    "g2": "black",
-    "d3": "black",
-    "e3": "black",
-    "b4": "black",
-    "g4": "black",
-    "b5": "black",
-    "d5": "black",
-    "e5": "black",
-    "g5": "black",
+    "a1": "2",
+    "d2": "1",
+    "a3": "3",
     "areas": [
         [
             "a1",
             "b1",
-            "c1",
-            "d1",
-            "e1",
-            "f1",
-            "g1",
-            "h1",
             "a2",
-            "b2",
+            "b2"
+        ],
+        [
+            "c1",
             "c2",
-            "d2",
-            "e2",
-            "f2",
-            "g2",
-            "h2",
             "a3",
-            "d3",
-            "e3",
-            "h3",
-            "b4",
-            "e4",
-            "f4",
-            "g4",
-            "b5",
-            "c5",
-            "d5",
-            "e5",
-            "g5",
-            "c6"
-        ],
-        [
             "b3",
-            "c3"
+            "c3",
+            "d3",
+            "c4"
         ],
         [
-            "f3",
-            "g3"
-        ],
-        [
-            "c4",
-            "d4"
+            "d1",
+            "d2"
         ],
         [
             "a4",
-            "a5"
+            "b4"
         ],
         [
-            "h4",
-            "h5"
-        ],
-        [
-            "a6",
-            "b6"
-        ],
-        [
-            "d6",
-            "e6"
-        ],
-        [
-            "f5",
-            "f6"
-        ],
-        [
-            "g6",
-            "h6"
+            "d4"
         ]
-    ],
-    "bottom": [
-        null,
-        "6",
-        null,
-        null,
-        null,
-        null,
-        "8",
-        null
-    ],
-    "right": [
-        null,
-        "11",
-        null,
-        "14",
-        null,
-        null
     ],
     "tag": ""
 }
     };
-    settings.theme = "contrast";
+    settings.theme = "default";
     var grid = "#mainGrid"
     requirejs(["squarepuzzle"], function() {
       puzzle = new squarePuzzleType(puzzleData, controls, settings);

@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta property="og:image" content="images/logo.png" />
     <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+    <link rel="stylesheet" href="localcache/all.css">
+    <link rel="stylesheet" href="localcache/bootstrap-glyphicons.css">
     <;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
     <;link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.min.css"/>
+    <link rel="stylesheet" href="localcache/bootstrap.min.css"/>
     <style>
       html {font-size: 100%;}
       svg text {cursor: default;}
@@ -18,31 +18,11 @@
     <title>Puzzle duel</title>
   </head>
   <body>
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"
-      integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
-      integrity="sha256-1fEPhSsRKlFKGfK3eO710tEweHh1fwokU5wFGDHO+vg="
-      crossorigin="anonymous"
-    ></script>
+    <script src="localcache/jquery-3.4.1.min.js"></script>
+    <script src="localcache/popper.min.js"></script>
+    <script src="localcache/bootstrap.min.js"></script>
+    <script src="localcache/snap.svg-min.js"></script>
+    <script src="localcache/require.min.js"></script>
     <script>
       requirejs.config({baseUrl: 'js'});
     </script>
@@ -73,121 +53,13 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "domino_castle_sum",
+      typeCode: "nanro",
       id: "puzzle.code",
-      dimension: "8x6-12345"
+      dimension: "4x4"
     };
     var settings = {
       local: true,
-      data:  {
-    "a1": "black",
-    "b1": "black",
-    "d1": "black",
-    "e1": "black",
-    "g1": "black",
-    "h1": "black",
-    "b2": "black",
-    "d2": "black",
-    "e2": "black",
-    "g2": "black",
-    "d3": "black",
-    "e3": "black",
-    "b4": "black",
-    "g4": "black",
-    "b5": "black",
-    "d5": "black",
-    "e5": "black",
-    "g5": "black",
-    "areas": [
-        [
-            "a1",
-            "b1",
-            "c1",
-            "d1",
-            "e1",
-            "f1",
-            "g1",
-            "h1",
-            "a2",
-            "b2",
-            "c2",
-            "d2",
-            "e2",
-            "f2",
-            "g2",
-            "h2",
-            "a3",
-            "d3",
-            "e3",
-            "h3",
-            "b4",
-            "e4",
-            "f4",
-            "g4",
-            "b5",
-            "c5",
-            "d5",
-            "e5",
-            "g5",
-            "c6"
-        ],
-        [
-            "b3",
-            "c3"
-        ],
-        [
-            "f3",
-            "g3"
-        ],
-        [
-            "c4",
-            "d4"
-        ],
-        [
-            "a4",
-            "a5"
-        ],
-        [
-            "h4",
-            "h5"
-        ],
-        [
-            "a6",
-            "b6"
-        ],
-        [
-            "d6",
-            "e6"
-        ],
-        [
-            "f5",
-            "f6"
-        ],
-        [
-            "g6",
-            "h6"
-        ]
-    ],
-    "bottom": [
-        null,
-        "6",
-        null,
-        null,
-        null,
-        null,
-        "8",
-        null
-    ],
-    "right": [
-        null,
-        "11",
-        null,
-        "14",
-        null,
-        null
-    ],
-    "tag": ""
-}
+      data:  {}
     };
     settings.theme = "default";
     requirejs(["squarepuzzle"], function() {

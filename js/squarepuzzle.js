@@ -59,6 +59,17 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
      .build(this);
 
+  } else if (typeCode=="nanro") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1,6))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().noClue().chooser()
+        .addNumbers(1,6)
+        .addItem(StdItem.CROSS.doNotSubmit()))
+     .build(this);
+
   } else if (typeCode=="lits") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()

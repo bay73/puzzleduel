@@ -80,6 +80,10 @@ requirejs(["tests/neighbors.test.js"], ()=>{
   allTestSuites.push(neighborsTestSuite);
 })
 
+requirejs(["tests/nanro.test.js"], ()=>{
+  allTestSuites.push(nanroTestSuite);
+})
+
 requirejs(["tests/paint_by_max.test.js"], ()=>{
   allTestSuites.push(paintByMaxTestSuite);
 })
