@@ -8,6 +8,7 @@ basePuzzle = function(puzzleData, controls, settings) {
     needConnectors: false,
     thinConnectors: false,
   };
+  this.editMode = false;
   this.id = puzzleData.id;
   this.colorSchema = this.chooseColorSchema();
   this.typeCode = puzzleData.typeCode;

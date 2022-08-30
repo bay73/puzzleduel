@@ -1,4 +1,4 @@
-define(["square"], function() {
+define(["square","controller_helper"], function() {
 
 areaPuzzleType = function(puzzleData, controls, settings) {
   squarePuzzle.call(this, puzzleData, controls, settings);
@@ -17,6 +17,12 @@ dominoType = function(puzzleData, controls, settings) {
 }
 
 Object.setPrototypeOf(dominoType.prototype, areaPuzzleType.prototype);
+
+fillominoPuzzleType = function(puzzleData, controls, settings) {
+  squarePuzzle.call(this, puzzleData, controls, settings);
+}
+
+Object.setPrototypeOf(fillominoPuzzleType.prototype, squarePuzzle.prototype);
 
 areaPuzzleType.prototype.recountConnectorAreas = function() {
   if (!this.typeProperties.recountConnector) {
@@ -220,6 +226,48 @@ squarePuzzleConnector.prototype.switchToData = function(data) {
   }
   this.puzzle.addConnector(this);
   this.puzzle.recountConnectorAreas();
+}
+
+fillominoPuzzleType.prototype.processClueData = function(data) {
+  squarePuzzle.prototype.processClueData.call(this, data);
+  this.recountCellBorders();
+}
+
+fillominoPuzzleType.prototype.recountCellBorders = function() {
+  if (this.editMode) {
+    return;
+  }
+  function differentText(oneData, otherData) {
+    return oneData.text && otherData.text && oneData.text != otherData.text;
+  }
+  for (let row=0; row < this.rows - 1; row++) {
+    for (let col=0; col < this.cols; col++) {
+      var edge = this.edges[row][col][2];
+      edge.setGray(differentText(this.cells[row][col].data, this.cells[row+1][col].data));
+    }
+  }
+  for (let row=0; row < this.rows; row++) {
+    for (let col=0; col < this.cols-1; col++) {
+      var edge = this.edges[row][col][1];
+      edge.setGray(differentText(this.cells[row][col].data, this.cells[row][col+1].data));
+    }
+  }
+}
+
+squarePuzzleCell.prototype.revertTo = function(oldData) {
+  squareGridElement.prototype.revertTo.call(this, oldData);
+  if (!(this.puzzle instanceof fillominoPuzzleType)) {
+    return;
+  }
+  this.puzzle.recountCellBorders();
+}
+
+squarePuzzleCell.prototype.switchToData = function(data) {
+  squareGridElement.prototype.switchToData.call(this, data);
+  if (!(this.puzzle instanceof fillominoPuzzleType)) {
+    return;
+  }
+  this.puzzle.recountCellBorders();
 }
 
 squarePuzzleEdge.prototype.revertTo = function(oldData) {
@@ -547,6 +595,20 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   if (typeCode in typeProperties) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
+  }
+}
+
+fillominoPuzzleType.prototype.setTypeProperties = function(typeCode) {
+  var self = this;
+  if (typeCode =="fillomino") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,15))
+      .add(controller().forSolver().cell().noClue().chooser()
+        .addNumbers(0,10,"",true))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .build(this);
   }
 }
 

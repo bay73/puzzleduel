@@ -40,6 +40,10 @@ requirejs(["tests/fence.test.js"], ()=>{
   allTestSuites.push(fenceTestSuite);
 })
 
+requirejs(["tests/fillomino.test.js"], ()=>{
+  allTestSuites.push(fillominoTestSuite);
+})
+
 requirejs(["tests/foseruzu.test.js"], ()=>{
   allTestSuites.push(foseruzuTestSuite);
 })
