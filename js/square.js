@@ -564,17 +564,20 @@ squarePuzzle.prototype.computeAreas = function() {
 }
 
 squarePuzzle.prototype.canJoinAreas = function(pos1, pos2) {
+  function isBold(edge) {
+    return edge.getValue() == "1" || edge.getValue() == "bold";
+  }
   if (pos1.x == pos2.x && pos1.y+1 == pos2.y) {
-    return this.edges[pos1.y][pos1.x][2].getValue() != "1";
+    return !isBold(this.edges[pos1.y][pos1.x][2]);
   }
   if (pos1.x == pos2.x && pos1.y == pos2.y+1) {
-    return this.edges[pos2.y][pos2.x][2].getValue() != "1";
+    return !isBold(this.edges[pos2.y][pos2.x][2]);
   }
   if (pos1.x+1 == pos2.x && pos1.y == pos2.y) {
-    return this.edges[pos1.y][pos1.x][1].getValue() != "1";
+    return !isBold(this.edges[pos1.y][pos1.x][1]);
   }
   if (pos1.x == pos2.x+1 && pos1.y == pos2.y) {
-    return this.edges[pos2.y][pos2.x][1].getValue() != "1";
+    return !isBold(this.edges[pos2.y][pos2.x][1]);
   }
 }
 

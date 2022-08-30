@@ -538,7 +538,7 @@ ControllerItemBuilder.prototype.doNotSubmit = function(){
 
 // Defines the element which is used as an area border. Should be used for controlles having "toAreas" property.
 ControllerItemBuilder.prototype.asAreaBorder = function(){
-  return this.submitAs("1");
+  return this.submitAs("bold");
 }
 
 StdColor = {
