@@ -379,18 +379,23 @@ ControllerBuilder.prototype.addItem = function(item){
 }
 
 // Adds items with numbers from the given range (ends included).
-ControllerBuilder.prototype.addNumbers = function(start, end, color){
+ControllerBuilder.prototype.addNumbers = function(start, end, color, doNotSubmit){
   this.isNumberController = true;
   this.Number10Item = null;
   for (var i=start; i<=end; i++) {
     if (i==10) {
       this.Number10Item = this.items.length;
     }
+    var itemData = {text: i.toString()};
     if (typeof color != "undefined") {
-      this.addItem(controllerItem({text: i.toString(), color: color.color, textColor: color.textColor, returnValue: i.toString()}));
-    } else {
-      this.addItem(controllerItem({text: i.toString(), returnValue: i.toString()}));
+      itemData.color = color.color;
+      itemData.textColor = color.textColor;
     }
+    if (doNotSubmit) {
+    } else {
+      itemData.returnValue = i.toString();
+    }
+    this.addItem(controllerItem(itemData));
   }
   return this;
 }
