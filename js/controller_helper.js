@@ -229,7 +229,7 @@ ControllerBuilder.prototype.forSolver = function(){
 }
 
 // Defines controller as a values chooser.
-ControllerBuilder.prototype.chooser = function(){
+ControllerBuilder.prototype.chooser = function(disableOneClick){
   if (typeof this.type!="undefined") {
     throw "Controller type is already defined"
   }
@@ -237,6 +237,7 @@ ControllerBuilder.prototype.chooser = function(){
     throw "chooser can't be used for connector conroller"
   }
   this.type = ControllerBuilder.CHOOSER;
+  this.disableOneClickChooser = disableOneClick || false;
   return this;
 }
 
@@ -423,6 +424,7 @@ ControllerBuilder.prototype.build = function(){
       } else {
         gridElement.chooserValues = self.items.map(item => processControllerData(item.data, gridElement, gridElement.puzzle, false));
       }
+      gridElement.disableOneClickChooser = self.disableOneClickChooser;
     }
   } else if (this.type==ControllerBuilder.CLICK_SWITCH) {
     return function(gridElement) {

@@ -48,11 +48,15 @@ mouseController.prototype.onMouseDown = function(event) {
       this.snap.node.addEventListener("mouseleave", this.dragHandler.leaveListener, {passive: true});
     }
     if (element.useChooser()) {
-      this.chooserBuilder.createChooser(element);
-      self = this;
-      this.chooserBuilder.listener = function(event){self.onMouseMove(event)};
-      this.snap.node.addEventListener("touchmove", this.chooserBuilder.listener, {passive: true});
-      this.snap.node.addEventListener("mousemove", this.chooserBuilder.listener, {passive: true});
+      if (element.oneClickChooser()) {
+        this.chooserBuilder.createChooser(element);
+        self = this;
+        this.chooserBuilder.listener = function(event){self.onMouseMove(event)};
+        this.snap.node.addEventListener("touchmove", this.chooserBuilder.listener, {passive: true});
+        this.snap.node.addEventListener("mousemove", this.chooserBuilder.listener, {passive: true});
+      } else {
+        this.chooserBuilder.remove();
+      }
     }
   }
 }
@@ -68,7 +72,15 @@ mouseController.prototype.onMouseUp = function(event) {
     var element = this.eventElement(event);
     if (element) {
       if (element == this.mouseDownElement && !this.dragRestarted) {
-        element.processClick();
+        if (!element.processClick()){
+          if (element.useChooser()) {
+            this.chooserBuilder.createChooser(element);
+            self = this;
+            this.chooserBuilder.listener = function(event){self.onMouseMove(event)};
+            this.snap.node.addEventListener("touchmove", this.chooserBuilder.listener, {passive: true});
+            this.snap.node.addEventListener("mousemove", this.chooserBuilder.listener, {passive: true});
+          }
+        }
       } else if (element instanceof chooserElement){
         element.processDragEnd(this.mouseStartElement);
       } else if (this.mouseStartElement.canDragStart()) {

@@ -174,14 +174,16 @@ gridElement.prototype.processClick = function() {
     if (this.pencilClickSwitch != null) {
       var currentIndex = this.findCurrentPencil(this.pencilClickSwitch);
       this.setPencilData(this.pencilClickSwitch[(currentIndex + 1)%this.pencilClickSwitch.length]);
+      return true;
     }
   } else {
     if (this.clickSwitch != null) {
       var currentIndex = this.findCurrent(this.clickSwitch);
       this.switchToData(this.clickSwitch[(currentIndex + 1)%this.clickSwitch.length]);
+      return true;
     }
   }
-  return null;
+  return false;
 }
 
 gridElement.prototype.switchOnDrag = function() {
@@ -376,6 +378,10 @@ gridElement.prototype.canDragStart = function() {
 
 gridElement.prototype.useChooser = function() {
   return this.chooserValues != null;
+}
+
+gridElement.prototype.oneClickChooser = function() {
+  return !this.disableOneClickChooser;
 }
 
 gridElement.prototype.chooserData = function() {
