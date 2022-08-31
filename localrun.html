@@ -130,51 +130,24 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "nanro",
+      typeCode: "fillomino",
       id: "puzzle.code",
       dimension: "4x4"
     };
     var settings = {
       local: true,
       data: {
-    "a1": "2",
-    "d2": "1",
-    "a3": "3",
-    "areas": [
-        [
-            "a1",
-            "b1",
-            "a2",
-            "b2"
-        ],
-        [
-            "c1",
-            "c2",
-            "a3",
-            "b3",
-            "c3",
-            "d3",
-            "c4"
-        ],
-        [
-            "d1",
-            "d2"
-        ],
-        [
-            "a4",
-            "b4"
-        ],
-        [
-            "d4"
-        ]
-    ],
+    "a1": "3",
+    "b1": "2",
+    "a4": "3",
+    "d2": "2",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new fillominoPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

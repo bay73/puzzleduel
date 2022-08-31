@@ -19,10 +19,10 @@ dominoType = function(puzzleData, controls, settings) {
 Object.setPrototypeOf(dominoType.prototype, areaPuzzleType.prototype);
 
 fillominoPuzzleType = function(puzzleData, controls, settings) {
-  squarePuzzle.call(this, puzzleData, controls, settings);
+  areaPuzzleType.call(this, puzzleData, controls, settings);
 }
 
-Object.setPrototypeOf(fillominoPuzzleType.prototype, squarePuzzle.prototype);
+Object.setPrototypeOf(fillominoPuzzleType.prototype, areaPuzzleType.prototype);
 
 areaPuzzleType.prototype.recountConnectorAreas = function() {
   if (!this.typeProperties.recountConnector) {
@@ -45,6 +45,10 @@ areaPuzzleType.prototype.recountConnectorAreas = function() {
       areaData[root2].volume += areaData[root1].volume;
     }
   }
+  var isConnected = function (connector) {
+    return connector.getValue() == "1" || connector.getValue() == "line";
+  }
+
   var areaLink = [];
   var cellCount = 0;
   for (var y = 0; y < this.rows; y++) {
@@ -57,10 +61,10 @@ areaPuzzleType.prototype.recountConnectorAreas = function() {
   }
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
-      if (x < this.cols-1 && this.connectors[y][x]['h'].getValue() == "1") {
+      if (x < this.cols-1 && isConnected(this.connectors[y][x]['h'])) {
         join(areaLink[y][x], areaLink[y][x+1]);
       }
-      if (y < this.rows-1 && this.connectors[y][x]['v'].getValue() == "1") {
+      if (y < this.rows-1 && isConnected(this.connectors[y][x]['v'])) {
         join(areaLink[y][x], areaLink[y+1][x]);
       }
     }
@@ -603,11 +607,13 @@ fillominoPuzzleType.prototype.setTypeProperties = function(typeCode) {
   if (typeCode =="fillomino") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
-        .addNumbers(0,15))
-      .add(controller().forSolver().cell().noClue().chooser()
-        .addNumbers(0,10,"",true))
+        .addNumbers(1,15))
+      .add(controller().forSolver().cell().noClue().chooser(true)
+        .addNumbers(1,10,"",true))
       .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
         .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
       .build(this);
   }
 }

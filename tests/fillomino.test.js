@@ -36,8 +36,7 @@ after((suite)=> {
 }),
 
 test('Solver controllers',(suite) => {
-  let puzzle = suite.showPuzzle(
-    "fillomino", "4x4", {"a1": "3"});
+  let puzzle = suite.showPuzzle("fillomino", "4x4", {"a1": "3"});
   puzzle.start();
 
   assert("Cell chooser").that(puzzle.cells[1][1].chooserValues).containsAtLeast([{},{text: '1'},{text: '2'},{text: '10'}]);
@@ -45,6 +44,7 @@ test('Solver controllers',(suite) => {
   assert("Edge chooser").that(puzzle.edges[0][0][1].chooserValues).isNull();
   assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
   assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
+  assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.lineColor, returnValue:"line"}]);
 }),
 test('Author controllers',(suite) => {
   let puzzle = suite.showPuzzle("fillomino", "4x4");
@@ -56,9 +56,71 @@ test('Author controllers',(suite) => {
   assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).isNull();
   assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).isNull();
 }),
+// Mouse processing tests
+test('Process click to empty cell',(suite) => {
+  let puzzle = suite.showPuzzle("fillomino", "4x4", {"a1": "3", "b2": "3", "a3": "2"});
+  puzzle.start();
+
+  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
+  let y = puzzle.size.topGap + puzzle.size.unitSize + puzzle.size.unitSize/2;
+
+  assert("Cell value before click").that(puzzle.cells[1][0].getValue()).isNull();
+  assert("Cell data before click").that(puzzle.cells[1][0].data).isEqualTo({});
+  assert("Chooser before click").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
+
+  // Click at cell a2
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  assert("Chooser after click").that(puzzle.controller.chooserBuilder.chooserElements).isNonEmptyArray();
+  assert("Chooser connected to the cell").that(puzzle.controller.chooserBuilder.element.col).isEqualTo(0);
+  assert("Chooser connected to the cell").that(puzzle.controller.chooserBuilder.element.row).isEqualTo(1);
+  assert("Cell data after one click").that(puzzle.cells[1][0].data).isEqualTo({});
+
+  x += puzzle.size.unitSize;
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  assert("Chooser after click on value").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
+  assert("Cell data after two clicks").that(puzzle.cells[1][0].data).isEqualTo({text:"3"});
+  assert("Cell value after two clicks").that(puzzle.cells[1][0].getValue()).isNull();
+}),
+
+test('Draw connector on drag',(suite) => {
+  let puzzle = suite.showPuzzle("fillomino", "4x4", {"a2": "3"});
+  puzzle.start();
+
+  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
+  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+
+  assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
+  assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({});
+  assert("Chooser before click").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
+
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+
+  assert("Chooser after mouse down").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
+  assert("Cell data after mouse down").that(puzzle.cells[0][0].data).isEqualTo({});
+
+  x += puzzle.size.unitSize/2;
+  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+
+  let path = puzzle.controller.dragHandler.path;
+  assert("Drag path after mouse move").that(path).isNotNull();
+
+  x += puzzle.size.unitSize/2;
+  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+
+  assert("Connector after mouse move").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue:"line"});
+
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  assert("Chooser after mouse up").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
+  assert("Cell value after mouse up").that(puzzle.cells[0][0].getValue()).isNull();
+  assert("Cell data after mouse up").that(puzzle.cells[0][0].data).isEqualTo({});
+}),
 test('Automatically set borders',(suite) => {
-  let puzzle = suite.showPuzzle(
-    "fillomino", "4x4", {"a1": "3", "b2": "3", "a3": "2"});
+  let puzzle = suite.showPuzzle("fillomino", "4x4", {"a1": "3", "b2": "3", "a3": "2"});
   puzzle.start();
 
   let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
@@ -70,6 +132,7 @@ test('Automatically set borders',(suite) => {
 
   // Click at value chooser (choosing "2")
   x += puzzle.size.unitSize;
+  y -=  puzzle.size.unitSize/4;
   puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 

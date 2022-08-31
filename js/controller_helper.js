@@ -10,7 +10,7 @@ controller = function() {
 
 // Creates controller item descriptor.
 controllerItem = function(data) {
-  return new ControllerItemBuilder(data);
+  return new ControllerItemBuilder(data, false);
 }
 
 PuzzleTypeBuilder = function() {
@@ -130,6 +130,7 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
     typeDesc.needNodes = true;
   }
   typeDesc.needConnectors = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.CONNECTOR).length > 0;
+  typeDesc.recountConnector = this.controllers.filter(controller=>controller.useAsAreaConnector).length > 0;
   var clueValues = {};
   this.controllers.forEach(controller => {
     if (controller.editMode) {
@@ -203,6 +204,7 @@ ControllerBuilder = function() {
   this.addDrag = false;
   this.items = [StdItem.EMPTY];
   this.isNumberController = false;
+  this.useAsAreaConnector = false;
 }
 
 ControllerBuilder.CHOOSER = 1;
@@ -375,6 +377,9 @@ ControllerBuilder.prototype.withDrag = function(withDarg){
 
 // Adds item to the controller.
 ControllerBuilder.prototype.addItem = function(item){
+  if (item.useAsAreaConnector) {
+    this.useAsAreaConnector = true;
+  }
   this.items.push(item);
   return this;
 }
@@ -522,7 +527,8 @@ containClues = function(gridElement, clueItems) {
   return false;
 } 
 
-ControllerItemBuilder = function(data){
+ControllerItemBuilder = function(data, useAsAreaConnector){
+  this.useAsAreaConnector = useAsAreaConnector;
   this.data = data;
 }
 
@@ -530,7 +536,7 @@ ControllerItemBuilder = function(data){
 ControllerItemBuilder.prototype.submitAs = function(value){
   var newData = Object.assign({}, this.data);
   newData.returnValue = value;
-  return new ControllerItemBuilder(newData);
+  return new ControllerItemBuilder(newData, this.useAsAreaConnector);
 }
 
 // Defines the value which is not sent when the puzzle is submitted.
@@ -541,6 +547,11 @@ ControllerItemBuilder.prototype.doNotSubmit = function(){
 // Defines the element which is used as an area border. Should be used for controlles having "toAreas" property.
 ControllerItemBuilder.prototype.asAreaBorder = function(){
   return this.submitAs("bold");
+}
+
+// Defines the element which is used as an area connector.
+ControllerItemBuilder.prototype.asAreaConnector = function(){
+  return new ControllerItemBuilder(this.data, true);
 }
 
 StdColor = {
