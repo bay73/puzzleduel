@@ -441,7 +441,16 @@ router.get('/:puzzleid/log', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    const logs = await UserActionLog.find({puzzleId: req.params.puzzleid}).sort('userId date');
+    const [times, logs] = await Promise.all([
+      cache.readSolvingTime(req.params.puzzleid),
+      UserActionLog.find({puzzleId: req.params.puzzleid}).sort('userId date')
+    ]);
+    var userSolvingTime = {};
+    times.forEach(time => {
+      if (typeof time.solvingTime != 'undefined') {
+        userSolvingTime[time.userId.toString()] = time.solvingTime;
+      }
+    });
     let result = [];
     let singleUserLog = {};
     let currentUser = null;
@@ -453,9 +462,10 @@ router.get('/:puzzleid/log', async (req, res, next) => {
         }
         currentUser = logItem.userId;
         singleUserLog = {
-          _id: logItem._id,
-          userId: logItem.userId,
+          _id: logItem._id.toString(),
+          userId: logItem.userId.toString(),
           puzzleId: logItem.puzzleId,
+          solvingTime: userSolvingTime[logItem.userId.toString()],
           log: []
         };
       }
