@@ -114,6 +114,10 @@ dominoType.prototype.recountConnectorAreas = function() {
       areaData[root2].volume += areaData[root1].volume;
     }
   }
+  var isConnected = function (connector) {
+    return connector.getValue() == "1" || connector.getValue() == "line";
+  }
+
   var areaLink = [];
   var cellCount = 0;
   for (var y = 0; y < this.rows; y++) {
@@ -126,10 +130,10 @@ dominoType.prototype.recountConnectorAreas = function() {
   }
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
-      if (x < this.cols-1 && this.connectors[y][x]['h'].getValue() == "1") {
+      if (x < this.cols-1 && isConnected(this.connectors[y][x]['h'])) {
         join(areaLink[y][x], areaLink[y][x+1]);
       }
-      if (y < this.rows-1 && this.connectors[y][x]['v'].getValue() == "1") {
+      if (y < this.rows-1 && isConnected(this.connectors[y][x]['v'])) {
         join(areaLink[y][x], areaLink[y+1][x]);
       }
     }
@@ -164,6 +168,7 @@ dominoType.prototype.recountConnectorAreas = function() {
   }
 }
 
+// Prevent including blacken cells into areas for solution submission
 dominoType.prototype.canJoinAreas = function(pos1, pos2) {
   if (this.cells[pos1.y][pos1.x].data.color==this.colorSchema.gridColor) {
     return false;
@@ -308,7 +313,7 @@ squarePuzzleEdge.prototype.switchToData = function(data) {
 
 squarePuzzleEdge.prototype.getValue = function() {
   if (this.data.color == this.puzzle.colorSchema.greyColor) {
-    return '1';
+    return 'bold';
   }
   return squareGridElement.prototype.getValue.call(this);
 }
@@ -326,279 +331,125 @@ squarePuzzleEdge.prototype.setGray = function(needGray) {
 
 areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
-  var typeProperties = {}
 
-  typeProperties["abc_division"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      cell.chooserValues = [{}];
-      for (var i = 0; i < self.dimensionExtra.length; i++) {
-        cell.chooserValues.push({text: self.dimensionExtra[i], returnValue: self.dimensionExtra[i]});
-      }
-    },
-    collectAreas: !this.editMode,
-    recountConnector: !this.editMode,
-  }
+  if (typeCode =="abc_division") {
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addLetters(letters))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
 
-  typeProperties["domino_hunt"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      cell.chooserValues = [{}, {color: self.colorSchema.gridColor, returnValue: "black"}];
-      for (var i = 0; i < self.dimensionExtra.length; i++) {
-        cell.chooserValues.push({text: self.dimensionExtra[i], returnValue: self.dimensionExtra[i]});
-      }
-    },
-    collectAreas: !this.editMode,
-    recountConnector: !this.editMode,
-    decodeClue: value => {
-      if (value=="black") {
-        return {color: self.colorSchema.gridColor}
-      } else {
-        return {text: value}
-      }
-    },
-  }
+  } else if (typeCode == "domino_hunt"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.BLACK)
+        .addLetters(letters))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
 
-  typeProperties["foseruzu"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => setNumberChooser(cell, 0, 3),
-    collectAreas: !this.editMode,
-    recountConnector: !this.editMode,
-  }
+  } else if (typeCode == "foseruzu"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,3))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
 
-  typeProperties["neighbors"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      var chooserValues = [{},{text: '?', returnValue: '?'}];
-      for (var i=1; i<=10; i++) {
-        chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    collectAreas: !this.editMode,
-    recountConnector: !this.editMode,
-  }
+  } else if (typeCode == "neighbors"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addLetters('?')
+        .addNumbers(1,10))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
 
-  typeProperties["shikaku"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => setNumberChooser(cell, 1, 99),
-    collectAreas: !this.editMode,
-    recountConnector: !this.editMode,
-    usePlus10: this.editMode?10:0,
-  }
+  } else if (typeCode == "shikaku"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1,99))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
 
-  typeProperties["araf"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => setNumberChooser(cell, 1, 99),
-    collectAreas: !this.editMode,
-    recountConnector: !this.editMode,
-    usePlus10: this.editMode?10:0,
-  }
+  } else if (typeCode == "araf"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1,99))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
 
-  typeProperties["black_white"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
-    collectAreas: !this.editMode,
-    decodeClue: value => {return {image: value} },
-    recountConnector: !this.editMode,
-  }
+  } else if (typeCode == "black_white"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE)
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
 
-  typeProperties["two_apiece"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
-    collectAreas: !this.editMode,
-    decodeClue: value => {return {image: value} },
-    recountConnector: !this.editMode,
-  }
+  } else if (typeCode == "two_apiece"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE)
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
 
-  typeProperties["spiral_galaxies"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         if (edge.isClue && edge.data.image == "black_circle") {
-           edge.clickSwitch = [{image: "black_circle"},{image: "black_circle", color: self.colorSchema.gridColor, returnValue: "1"}];
-           edge.dragSwitch = [{image: "black_circle"},{image: "black_circle", color: self.colorSchema.gridColor, returnValue: "1"}];
-         } else {
-           edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-           edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         }
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "small_circle", returnValue: "small_circle"}];},
-    nodeEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "black_circle", returnValue: "black_circle"}];},
-    edgeEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "black_circle", returnValue: "black_circle"}];},
-    decodeClue: value => {return {image: value} },
-    collectAreas: !this.editMode,
-    recountConnector: !this.editMode,
-  }
+  } else if (typeCode == "l_shapes"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE)
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
 
-  typeProperties["l_shapes"] = {
-    needNodes: true,
-    needConnectors: true,
-    edgeController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.pencilClickSwitch = [{},{color: self.colorSchema.gridColor}];
-         edge.pencilDragSwitch = [{},{color: self.colorSchema.gridColor}];
-       }
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
-    collectAreas: !this.editMode,
-    decodeClue: value => {return {image: value} },
-    recountConnector: !this.editMode,
-  }
-
-  if (typeCode in typeProperties) {
-    this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
+  } else if (typeCode == "spiral_galaxies"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.SMALL_CIRCLE))
+      .add(controller().forAuthor().edge().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forAuthor().node().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
   }
 }
 

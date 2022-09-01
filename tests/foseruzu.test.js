@@ -38,9 +38,9 @@ test('Solver controllers',(suite) => {
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
   assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
   assert("Edge chooser").that(puzzle.edges[0][0][1].chooserValues).isNull();
-  assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
-  assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
-  assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}]);
+  assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
+  assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
+  assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.lineColor, returnValue: 'line'}]);
 }),
 
 test('Author contorllers',(suite) => {
@@ -70,8 +70,8 @@ test('Process click to edge',(suite) => {
   puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
-  assert("Edge value after click").that(puzzle.edges[0][0][2].getValue()).isEqualTo("1");
-  assert("Edge data after click").that(puzzle.edges[0][0][2].data).isEqualTo({color:puzzle.colorSchema.gridColor,returnValue:"1"});
+  assert("Edge value after click").that(puzzle.edges[0][0][2].getValue()).isEqualTo("bold");
+  assert("Edge data after click").that(puzzle.edges[0][0][2].data).isEqualTo({color:puzzle.colorSchema.gridColor,returnValue:"bold"});
 }),
 test('Process drag for edge',(suite) => {
   let puzzle = suite.showPuzzle(
@@ -94,8 +94,8 @@ test('Process drag for edge',(suite) => {
   puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
-  assert("Edge value after drag end").that(puzzle.edges[0][0][1].getValue()).isEqualTo("1");
-  assert("Edge data after drag end").that(puzzle.edges[0][0][1].data).isEqualTo({color:puzzle.colorSchema.gridColor,returnValue:"1"});
+  assert("Edge value after drag end").that(puzzle.edges[0][0][1].getValue()).isEqualTo("bold");
+  assert("Edge data after drag end").that(puzzle.edges[0][0][1].data).isEqualTo({color:puzzle.colorSchema.gridColor,returnValue:"bold"});
 }),
 test('Process drag for connector',(suite) => {
   let puzzle = suite.showPuzzle(
@@ -117,8 +117,8 @@ test('Process drag for connector',(suite) => {
   puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
-  assert("Connector value after drag end").that(puzzle.connectors[0][0]['h'].getValue()).isEqualTo("1");
-  assert("Connector data after drag end").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.greyColor, returnValue: '1'});
+  assert("Connector value after drag end").that(puzzle.connectors[0][0]['h'].getValue()).isEqualTo("line");
+  assert("Connector data after drag end").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue: 'line'});
 }),
 test('Automatic border between areas',(suite) => {
   let puzzle = suite.showPuzzle(
@@ -146,7 +146,7 @@ test('Automatic border between areas',(suite) => {
   puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
-  assert("Edge value after second connector").that(puzzle.edges[0][0][1].getValue()).isEqualTo("1");
+  assert("Edge value after second connector").that(puzzle.edges[0][0][1].getValue()).isEqualTo("bold");
   assert("Edge data after second connector").that(puzzle.edges[0][0][1].data).isEqualTo({color: puzzle.colorSchema.greyColor});
 }),
 

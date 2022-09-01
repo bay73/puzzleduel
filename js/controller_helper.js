@@ -571,6 +571,7 @@ BRIGHT: controllerItem({color: (puzzle, isPencil) => isPencil?puzzle.colorSchema
 LINE: controllerItem({color: (puzzle, isPencil) => puzzle.colorSchema.lineColor, returnValue: "line"}),
 WHITE_CIRCLE: controllerItem({image: "white_circle", returnValue: "white_circle"}),
 BLACK_CIRCLE: controllerItem({image: "black_circle", returnValue: "black_circle"}),
+SMALL_CIRCLE: controllerItem({image: "small_circle", returnValue: "small_circle"}),
 CROSS: controllerItem({image: "cross", returnValue: "cross"}),
 WHITE_CROSS: controllerItem({image: "white_cross", returnValue: "white_cross"}),
 STAR: controllerItem({image: "star", returnValue: "star"}),

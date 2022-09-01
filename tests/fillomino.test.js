@@ -137,8 +137,8 @@ test('Automatically set borders',(suite) => {
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
   assert("Cell data after two clicks").that(puzzle.cells[1][0].data).isEqualTo({text:"2"});
-  assert("Edge between a2 and a1 value after change cell").that(puzzle.edges[1][0][0].getValue()).isEqualTo("1");
-  assert("Edge between a2 and b2 value after change cell").that(puzzle.edges[1][0][1].getValue()).isEqualTo("1");
+  assert("Edge between a2 and a1 value after change cell").that(puzzle.edges[1][0][0].getValue()).isEqualTo("bold");
+  assert("Edge between a2 and b2 value after change cell").that(puzzle.edges[1][0][1].getValue()).isEqualTo("bold");
   assert("Edge between a2 and a3 value after change cell").that(puzzle.edges[1][0][2].getValue()).isEqualTo(null);
 }),
 // Data collector tests
