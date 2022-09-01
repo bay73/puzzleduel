@@ -401,6 +401,11 @@ router.get('/:puzzleid/log/:userid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
+    if (!puzzle || puzzle.needLogging) {
+      res.sendStatus(404);
+      return;
+    }
     const logs = await UserActionLog.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort('date');
     let result = [];
     for (let i=0;i<logs.length;i++) {
@@ -416,6 +421,55 @@ router.get('/:puzzleid/log/:userid', async (req, res, next) => {
         }
       }
     }
+    res.json(result);
+    profiler.log('readPuzzleLog', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Read solving logs for all users
+router.get('/:puzzleid/log', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    if (!req.user || !req.user.isReplayVisible) {
+      res.sendStatus(404);
+      return;
+    }
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
+    if (!puzzle || puzzle.needLogging) {
+      res.sendStatus(404);
+      return;
+    }
+    const logs = await UserActionLog.find({puzzleId: req.params.puzzleid}).sort('userId date');
+    let result = [];
+    let singleUserLog = {};
+    let currentUser = null;
+    for (let i=0;i<logs.length;i++) {
+      let logItem = logs[i];
+      if (!logItem.userId.equals(currentUser)) {
+        if (currentUser) {
+          result.push(singleUserLog);
+        }
+        currentUser = logItem.userId;
+        singleUserLog = {
+          _id: logItem._id,
+          userId: logItem.userId,
+          puzzleId: logItem.puzzleId,
+          log: []
+        };
+      }
+      if (typeof logItem.data!="undefined") {
+        let data = JSON.parse(logItem.data)
+        if (typeof data.log != "undefined") {
+          singleUserLog.log.push(...data.log);
+        }
+        if (logItem.action=="solved") {
+          singleUserLog.log.push({d: "solved"});
+        }
+      }
+    }
+    result.push(singleUserLog);
     res.json(result);
     profiler.log('readPuzzleLog', processStart);
   } catch (e) {
