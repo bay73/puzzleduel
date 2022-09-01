@@ -69,6 +69,42 @@ test('Author controllers',(suite) => {
   assert("Connector drag").that(puzzle.connectors[0][0]['v'].dragSwitch).isNull();
 }),
 
+test('Automatic edges for connector',(suite) => {
+  let puzzle = suite.showPuzzle(
+    "domino_hunt", "4x4-123",
+    {"a1": "1", "a2": "1", "a3": "1", "a4": "1", "b1": "2", "b2": "black", "b3": "black", "b4": "3", "c1": "2", "c2": "black", "c3": "black", "c4": "3", "d1": "2", "d2": "2", "d3": "3", "d4": "3"}
+  );
+  puzzle.start();
+
+  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
+  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+
+  assert("Connector value before click").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
+  assert("Connector data before click").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
+
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+
+  assert("Connector value after mousedown").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
+  assert("Connector data after mousedown").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
+  
+  x += puzzle.size.unitSize;
+  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  assert("Connector value after drag end").that(puzzle.connectors[0][0]['h'].getValue()).isEqualTo("1");
+  assert("Connector data after drag end").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.greyColor, returnValue: '1'});
+
+  assert("Edge a1/a2 value after connector").that(puzzle.edges[0][0][2].getValue()).isEqualTo("1");
+  assert("Edge a1/a2 data after connector").that(puzzle.edges[0][0][2].data).isEqualTo({color:puzzle.colorSchema.greyColor});
+
+  assert("Edge b1/b2 value after connector").that(puzzle.edges[0][1][2].getValue()).isEqualTo("1");
+  assert("Edge b1/b2 data after connector").that(puzzle.edges[0][1][2].data).isEqualTo({color:puzzle.colorSchema.greyColor});
+
+  assert("Edge b1/c1 value after connector").that(puzzle.edges[0][1][1].getValue()).isEqualTo("1");
+  assert("Edge b1/c1 data after connector").that(puzzle.edges[0][1][1].data).isEqualTo({color:puzzle.colorSchema.greyColor});
+
+  assert("Submission data").that(puzzle.collectData().areas).containsExactly([["a1","b1"],["c1","d1","a2","d2","a3","d3","a4","b4","c4","d4"],["b2"],["c2"],["b3"],["c3"]]);
+}),
 test('Submission data',(suite) => {
   let puzzle = suite.showPuzzle(
     "domino_hunt", "4x4-123",
