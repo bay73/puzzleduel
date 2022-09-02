@@ -125,11 +125,11 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
 
 
   //  typeDesc.needEdges = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.EDGE).length > 0;
-  typeDesc.needNodes = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.NODE && controller.editMode==puzzle.editMode).length > 0;
+  typeDesc.needNodes = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.NODE).length > 0;
   if (needDrag(ControllerBuilder.EDGE)) {
     typeDesc.needNodes = true;
   }
-  typeDesc.needConnectors = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.CONNECTOR && controller.editMode==puzzle.editMode).length > 0;
+  typeDesc.needConnectors = this.controllers.filter(controller=>controller.elementType == ControllerBuilder.CONNECTOR).length > 0;
   typeDesc.recountConnector = this.controllers.filter(controller=>controller.useAsAreaConnector && controller.editMode==puzzle.editMode).length > 0;
   var clueValues = {};
   this.controllers.forEach(controller => {
