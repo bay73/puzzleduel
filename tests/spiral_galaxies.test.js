@@ -59,7 +59,7 @@ test('Author controllers',(suite) => {
 // Mouse processing tests
 test('Process click to edge',(suite) => {
   let puzzle = suite.showPuzzle(
-    "spiral_galaxies", "4x4", {"a1": "small_circle", "d4": "small_circle", "edges": {"a2-2": "black_circle", "d1-2": "black_circle"}, "nodes": {"b1-2": "black_circle", "b3-2": "black_circle"} });
+    "spiral_galaxies", "4x4", {"a1": "small_circle", "d4": "small_circle", "edges": {"d1-2": "black_circle"}, "nodes": {"b1-2": "black_circle", "b3-2": "black_circle"} });
   puzzle.start();
 
   let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
@@ -77,7 +77,7 @@ test('Process click to edge',(suite) => {
 }),
 test('Process drag for edge',(suite) => {
   let puzzle = suite.showPuzzle(
-    "spiral_galaxies", "4x4", {"a1": "small_circle", "d4": "small_circle", "edges": {"a2-2": "black_circle", "d1-2": "black_circle"}, "nodes": {"b1-2": "black_circle", "b3-2": "black_circle"} });
+    "spiral_galaxies", "4x4", {"a1": "small_circle", "d4": "small_circle", "edges": {"d1-2": "black_circle"}, "nodes": {"b3-2": "black_circle"} });
   puzzle.start();
 
   let x = puzzle.size.leftGap + puzzle.size.unitSize;
@@ -124,7 +124,7 @@ test('Process drag for connector',(suite) => {
 }),
 test('Automatic border between areas',(suite) => {
   let puzzle = suite.showPuzzle(
-    "spiral_galaxies", "4x4", {"a1": "small_circle", "d4": "small_circle", "edges": {"a2-2": "black_circle", "d1-2": "black_circle"}, "nodes": {"b1-2": "black_circle", "b3-2": "black_circle"} });
+    "spiral_galaxies", "4x4", {"a1": "small_circle", "d4": "small_circle", "edges": {"a2-2": "black_circle", "d1-2": "black_circle"}, "nodes": {"b3-2": "black_circle"} });
   puzzle.start();
 
   let x = puzzle.size.leftGap + puzzle.size.unitSize/2;

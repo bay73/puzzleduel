@@ -24,148 +24,197 @@ fillominoPuzzleType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(fillominoPuzzleType.prototype, areaPuzzleType.prototype);
 
+AreaJoiner = function() {
+  this.areaCount = 0;
+  // area data for each cell - {parent: , volume: , children: }.
+  this.areaData = [];
+}
+
+// "root" cell for the area - returns the same value for all cells in one area.
+AreaJoiner.prototype.root = function(areaIndex) {
+  if (this.areaData[areaIndex].parent == areaIndex) return areaIndex;
+  return this.root(this.areaData[areaIndex].parent);
+}
+
+  // join areas to which belongs two cells.
+AreaJoiner.prototype.join = function(area1, area2) {
+  var root1 = this.root(area1);
+  var root2 = this.root(area2);
+  // If both areas have the same root - nothing to do
+  if (root1 == root2) return;
+  // Include smaller area into bigger one
+  if (this.areaData[root1].volume > this.areaData[root2].volume) {
+    this.areaData[root2].parent = root1;
+    this.areaData[root1].volume += this.areaData[root2].volume;
+    this.areaData[root1].children.push(...this.areaData[root2].children)
+  } else {
+    this.areaData[root1].parent = root2;
+    this.areaData[root2].volume += this.areaData[root1].volume;
+    this.areaData[root2].children.push(...this.areaData[root1].children)
+  }
+}
+
+AreaJoiner.prototype.addArea = function(areaName) {
+  let areaNum = this.areaCount;
+  this.areaData[areaNum] = {name: areaName, parent: areaNum, volume: 1, children: [areaName]};
+  this.areaCount++;
+  return areaNum;
+}
+
+AreaJoiner.prototype.getAreaCoordinates = function(areaIndex) {
+  return this.areaData[this.root(areaIndex)].children;
+}
+
+areaPuzzleType.prototype.processClueData = function(data) {
+  squarePuzzle.prototype.processClueData.call(this, data);
+  this.recountConnectorAreas();
+}
+
 areaPuzzleType.prototype.recountConnectorAreas = function() {
   if (!this.typeProperties.recountConnector) {
     return;
   }
-  var areaData = []
-  var root = function(area) {
-    if (areaData[area].parent == area) return area;
-    return root(areaData[area].parent);
-  }
-  var join = function(area1, area2) {
-    var root1 = root(area1);
-    var root2 = root(area2);
-    if (root1 == root2) return;
-    if (areaData[root1].volume > areaData[root2].volume) {
-      areaData[root2].parent = root1;
-      areaData[root1].volume += areaData[root2].volume;
-    } else {
-      areaData[root1].parent = root2;
-      areaData[root2].volume += areaData[root1].volume;
-    }
-  }
   var isConnected = function (connector) {
     return connector.getValue() == "1" || connector.getValue() == "line";
   }
-
-  var areaLink = [];
+  var areaJoiner = new AreaJoiner();
+  var areaForCell = [];
   var cellCount = 0;
+  // Create area for each cells
   for (var y = 0; y < this.rows; y++) {
-    areaLink[y] = new Array(this.cols);
+    areaForCell[y] = new Array(this.cols);
     for (var x = 0; x < this.cols; x++) {
-      areaData[cellCount] = {name: this.cells[y][x].getCoordinates(), parent: cellCount, volume: 1};
-      areaLink[y][x] = cellCount;
-      cellCount++;
+      areaForCell[y][x] = areaJoiner.addArea(this.cells[y][x].getCoordinates());
     }
   }
+  this.prejoinAreas(areaJoiner, areaForCell);
+  // Join all areas by connectors
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
       if (x < this.cols-1 && isConnected(this.connectors[y][x]['h'])) {
-        join(areaLink[y][x], areaLink[y][x+1]);
+        areaJoiner.join(areaForCell[y][x], areaForCell[y][x+1]);
       }
       if (y < this.rows-1 && isConnected(this.connectors[y][x]['v'])) {
-        join(areaLink[y][x], areaLink[y+1][x]);
+        areaJoiner.join(areaForCell[y][x], areaForCell[y+1][x]);
       }
     }
   }
+  
+  // For each edge check areas for both cells
   for (var y = 0; y < this.rows; y++) {
     for (var x = 0; x < this.cols; x++) {
       for (var s = 1; s < 3; s++) {
         var edge = this.edges[y][x][s];
-        var cellAreas = [];
+        var edgeAreas = [];
         for (var c=0; c<edge.allCells.length; c++) {
-          var cellArea = root(areaLink[edge.allCells[c].row][edge.allCells[c].col]);
-          if (!cellAreas.includes(cellArea)) {
-            if (areaData[cellArea].volume > 1
-               || this.isAreaRoot(this.cells[edge.allCells[c].row][edge.allCells[c].col])) {
-              cellAreas.push(cellArea);
-            }
+          var cellArea = areaJoiner.root(areaForCell[edge.allCells[c].row][edge.allCells[c].col]);
+          if (!edgeAreas.includes(cellArea)) {
+            edgeAreas.push(cellArea);
           }
         }
-        if (cellAreas.length > 1) {
-          edge.setGray(true);
-        } else {
-          edge.setGray(false);
+        needEdge = false;
+        if (edgeAreas.length == 2) {
+          needEdge = this.needEdgeBetwenAreas(areaJoiner.getAreaCoordinates(edgeAreas[0]), areaJoiner.getAreaCoordinates(edgeAreas[1]));
+        }
+        edge.setGray(needEdge);
+      }
+    }
+  }
+}
+
+// join some cells into areas based on clues.
+areaPuzzleType.prototype.prejoinAreas = function(areaJoiner, areaForCell) {
+  return;
+}
+
+// Connect if both areas have more than one cell.
+areaPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
+  return area1Coordinates.length > 1 && area2Coordinates.length > 1;
+}
+
+// Any two cells is a full area
+dominoType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
+  return area1Coordinates.length > 1 || area2Coordinates.length > 1;
+}
+
+galaxiesType.prototype.prejoinAreas = function(areaJoiner, areaForCell) {
+  // For each edge with a clue join two cells
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      for (var s = 1; s < 3; s++) {
+        var edge = this.edges[y][x][s];
+        if (edge.isClue && edge.allCells.length == 2) {
+          var baseArea = areaForCell[edge.allCells[0].row][edge.allCells[0].col];
+          for (var c=1; c<edge.allCells.length; c++) {
+            var nextArea = areaForCell[edge.allCells[c].row][edge.allCells[c].col]
+            areaJoiner.join(baseArea, nextArea);
+          }
+        }
+      }
+    }
+  }
+  // For each internal node with a clue join two cells
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x < this.cols; x++) {
+      var node = this.nodes[y][x][2];
+      if (node.isClue && node.allCells.length > 1) {
+        var baseArea = areaForCell[node.allCells[0].row][node.allCells[0].col];
+        for (var c=1; c<node.allCells.length; c++) {
+          var nextArea = areaForCell[node.allCells[c].row][node.allCells[c].col]
+          areaJoiner.join(baseArea, nextArea);
         }
       }
     }
   }
 }
 
-dominoType.prototype.recountConnectorAreas = function() {
-  if (!this.typeProperties.recountConnector) {
-    return;
-  }
-  var areaData = []
-  var root = function(area) {
-    if (areaData[area].parent == area) return area;
-    return root(areaData[area].parent);
-  }
-  var join = function(area1, area2) {
-    var root1 = root(area1);
-    var root2 = root(area2);
-    if (root1 == root2) return;
-    if (areaData[root1].volume > areaData[root2].volume) {
-      areaData[root2].parent = root1;
-      areaData[root1].volume += areaData[root2].volume;
-    } else {
-      areaData[root1].parent = root2;
-      areaData[root2].volume += areaData[root1].volume;
+// If a single cell contains clue, then it's considered as a full area
+galaxiesType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
+  var self = this;
+  function isFullArea(areaCoordinates) {
+    if (areaCoordinates.length > 1) {
+      return true;
     }
+    let coord = self.decodeCoordinate(areaCoordinates[0]);
+    if (self.cells[coord.y] && self.cells[coord.y][coord.x]) {
+      return self.cells[coord.y][coord.x].isClue;
+    }
+    return false;
   }
-  var isConnected = function (connector) {
-    return connector.getValue() == "1" || connector.getValue() == "line";
-  }
+  return isFullArea(area1Coordinates) && isFullArea(area2Coordinates);
+}
 
-  var areaLink = [];
-  var cellCount = 0;
-  for (var y = 0; y < this.rows; y++) {
-    areaLink[y] = new Array(this.cols);
-    for (var x = 0; x < this.cols; x++) {
-      areaData[cellCount] = {name: this.cells[y][x].getCoordinates(), parent: cellCount, volume: 1};
-      areaLink[y][x] = cellCount;
-      cellCount++;
-    }
+// If areas of any size contains different digits, then put edge
+fillominoPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
+  if (area1Coordinates.length > 1 && area2Coordinates.length > 1) {
+    return true;
   }
-  for (var y = 0; y < this.rows; y++) {
-    for (var x = 0; x < this.cols; x++) {
-      if (x < this.cols-1 && isConnected(this.connectors[y][x]['h'])) {
-        join(areaLink[y][x], areaLink[y][x+1]);
-      }
-      if (y < this.rows-1 && isConnected(this.connectors[y][x]['v'])) {
-        join(areaLink[y][x], areaLink[y+1][x]);
-      }
-    }
-  }
-  for (var y = 0; y < this.rows; y++) {
-    for (var x = 0; x < this.cols; x++) {
-      for (var s = 1; s < 3; s++) {
-        var edge = this.edges[y][x][s];
-        var cellBigAreas = [];
-        var cellAreas = [];
-        for (var c=0; c<edge.allCells.length; c++) {
-          var cellArea = root(areaLink[edge.allCells[c].row][edge.allCells[c].col]);
-          if (areaData[cellArea].volume > 1 || this.isAreaRoot(this.cells[edge.allCells[c].row][edge.allCells[c].col])) {
-            if (!cellBigAreas.includes(cellArea)) {
-              cellBigAreas.push(cellArea)
-            }
-          } else {
-            if (!cellAreas.includes(cellArea)) {
-              cellAreas.push(cellArea)
-            }
-          }
-        }
-        if (cellBigAreas.length > 1) {
-          edge.setGray(true);
-        } else if (cellBigAreas.length==1 && cellAreas.length > 0){
-          edge.setGray(true);
-        } else {
-          edge.setGray(false);
+  var self = this;
+  function getDigits(areaCoordinates) {
+    var digits = [];
+    for (let i=0; i < areaCoordinates.length; i++) {
+      let coord = self.decodeCoordinate(areaCoordinates[i]);
+      if (self.cells[coord.y] && self.cells[coord.y][coord.x]) {
+        let value = self.cells[coord.y][coord.x].data.text;
+        if (value && !digits.includes(value)) {
+          digits.push(value)
         }
       }
     }
+    return digits;
   }
+  function hasDifferent(setOne, setTwo) {
+    if (setOne.length == 0 || setTwo.length == 0) {
+      return false;
+    }
+    for (let i=0; i<setOne.length; i++) {
+      if (!setTwo.includes(setOne[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return hasDifferent(getDigits(area1Coordinates), getDigits(area2Coordinates));
 }
 
 // Prevent including blacken cells into areas for solution submission
@@ -179,14 +228,6 @@ dominoType.prototype.canJoinAreas = function(pos1, pos2) {
   return areaPuzzleType.prototype.canJoinAreas.call(this, pos1, pos2);
 }
 
-
-areaPuzzleType.prototype.isAreaRoot = function(cell) {
-  return false;
-}
-
-galaxiesType.prototype.isAreaRoot = function(cell) {
-  return cell.isClue;
-}
 
 areaPuzzleType.prototype.addConnector = function(connector) {
   return;
@@ -237,38 +278,12 @@ squarePuzzleConnector.prototype.switchToData = function(data) {
   this.puzzle.recountConnectorAreas();
 }
 
-fillominoPuzzleType.prototype.processClueData = function(data) {
-  squarePuzzle.prototype.processClueData.call(this, data);
-  this.recountCellBorders();
-}
-
-fillominoPuzzleType.prototype.recountCellBorders = function() {
-  if (this.editMode) {
-    return;
-  }
-  function differentText(oneData, otherData) {
-    return oneData.text && otherData.text && oneData.text != otherData.text;
-  }
-  for (let row=0; row < this.rows - 1; row++) {
-    for (let col=0; col < this.cols; col++) {
-      var edge = this.edges[row][col][2];
-      edge.setGray(differentText(this.cells[row][col].data, this.cells[row+1][col].data));
-    }
-  }
-  for (let row=0; row < this.rows; row++) {
-    for (let col=0; col < this.cols-1; col++) {
-      var edge = this.edges[row][col][1];
-      edge.setGray(differentText(this.cells[row][col].data, this.cells[row][col+1].data));
-    }
-  }
-}
-
 squarePuzzleCell.prototype.revertTo = function(oldData) {
   squareGridElement.prototype.revertTo.call(this, oldData);
   if (!(this.puzzle instanceof fillominoPuzzleType)) {
     return;
   }
-  this.puzzle.recountCellBorders();
+  this.puzzle.recountConnectorAreas();
 }
 
 squarePuzzleCell.prototype.switchToData = function(data) {
@@ -276,7 +291,7 @@ squarePuzzleCell.prototype.switchToData = function(data) {
   if (!(this.puzzle instanceof fillominoPuzzleType)) {
     return;
   }
-  this.puzzle.recountCellBorders();
+  this.puzzle.recountConnectorAreas();
 }
 
 squarePuzzleEdge.prototype.revertTo = function(oldData) {
