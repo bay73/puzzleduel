@@ -62,11 +62,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="nanro") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
-        .addNumbers(1,6))
+        .addNumbers(1,9))
       .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
         .addItem(StdItem.BLACK.asAreaBorder()))
       .add(controller().forSolver().cell().noClue().chooser()
-        .addNumbers(1,6)
+        .addNumbers(1,9)
         .addItem(StdItem.CROSS.doNotSubmit()))
      .build(this);
 
