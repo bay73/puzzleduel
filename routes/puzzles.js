@@ -454,6 +454,7 @@ router.get('/:puzzleid/log', async (req, res, next) => {
     let result = [];
     let singleUserLog = {};
     let currentUser = null;
+    let solved = false;
     for (let i=0;i<logs.length;i++) {
       let logItem = logs[i];
       if (!logItem.userId.equals(currentUser)) {
@@ -461,6 +462,7 @@ router.get('/:puzzleid/log', async (req, res, next) => {
           result.push(singleUserLog);
         }
         currentUser = logItem.userId;
+        solved = false;
         singleUserLog = {
           _id: logItem._id.toString(),
           userId: logItem.userId.toString(),
@@ -471,11 +473,14 @@ router.get('/:puzzleid/log', async (req, res, next) => {
       }
       if (typeof logItem.data!="undefined") {
         let data = JSON.parse(logItem.data)
-        if (typeof data.log != "undefined") {
+        if (typeof data.log != "undefined" && !solved) {
           singleUserLog.log.push(...data.log);
         }
         if (logItem.action=="solved") {
-          singleUserLog.log.push({d: "solved"});
+          if (!solved) {
+            singleUserLog.log.push({d: "solved"});
+          }
+          solved = true;
         }
       }
     }
