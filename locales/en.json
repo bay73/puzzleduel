@@ -372,5 +372,11 @@
 	"All Puzzles": "All Puzzles",
 	"Puzzle XL 2022": "Puzzle XL 2022",
 	"dOubLESHOW 6": "dOubLESHOW 6",
-	"Solve replay for": "Solve replay for"
+	"Solve replay for": "Solve replay for",
+	"All numbers in the area should be equal to the number of cells in the area containing a number": "All numbers in the area should be equal to the number of cells in the area containing a number",
+	"Each area should contain at least one number": "Each area should contain at least one number",
+	"Two cells sharing a bold edge shouldn't contain the same numbers": "Two cells sharing a bold edge shouldn't contain the same numbers",
+	"Area occupied by the digits should be connected": "Area occupied by the digits should be connected",
+	"Areas of the same size shouldn't share an edge": "Areas of the same size shouldn't share an edge",
+	"The size of an area should be equal to numbers in area": "The size of an area should be equal to numbers in area"
 }

@@ -375,5 +375,11 @@
 	"All Puzzles": "Все задачи",
 	"Puzzle XL 2022": "Puzzle XL 2022",
 	"dOubLESHOW 6": "dOubLESHOW 6",
-	"Solve replay for": "Ход решения"
+	"Solve replay for": "Ход решения",
+	"All numbers in the area should be equal to the number of cells in the area containing a number": "Все числа должны быть равны количеству чисел в этой области.",
+	"Each area should contain at least one number": "Каждая обведённая область должна содержать хотя бы одно число",
+	"Two cells sharing a bold edge shouldn't contain the same numbers": "Две клетки разделенные жирной границей не должны содержать равных чисел",
+	"Area occupied by the digits should be connected": "Группа клеток с числами должна быть связна",
+	"Areas of the same size shouldn't share an edge": "Области одного размера не должны касаться стороной",
+	"The size of an area should be equal to numbers in area": "Размер области должен быть равен задающим числам в области"
 }
