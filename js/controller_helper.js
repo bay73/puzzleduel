@@ -18,6 +18,8 @@ PuzzleTypeBuilder = function() {
   this.outerCellType = undefined;
   this.outerColor = {};
   this.upgradeClue = undefined;
+  this.outerEdges = true;
+  this.thickEdges = false;
 }
 
 // Adds new controller to the puzzle type descriptor.
@@ -50,6 +52,13 @@ PuzzleTypeBuilder.prototype.useOuterCells = function(outerCellType) {
 // Defines color schema for outer cells
 PuzzleTypeBuilder.prototype.useOuterColors = function(sides, color) {
   this.outerColor[sides] = color;
+  return this;
+}
+
+// Fence style grid - no outer edges and thick edges while drawing
+PuzzleTypeBuilder.prototype.edgeStyle = function(useOuter, thickEdges) {
+  this.outerEdges = useOuter;
+  this.thickEdges = thickEdges;
   return this;
 }
 
@@ -189,6 +198,10 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
   if (typeof this.upgradeClue != "undefined") {
     typeDesc.upgradeClue = this.upgradeClue;
   }
+
+  typeDesc.outerEdges = this.outerEdges;
+  typeDesc.thickEdges = this.thickEdges;
+
   return typeDesc;
 }
 
@@ -358,20 +371,20 @@ ControllerBuilder.prototype.connector = function(){
 }
 
 // For edge controllers - convert edges to areas while submitting.
-ControllerBuilder.prototype.toAreas = function(needAreas){
+ControllerBuilder.prototype.toAreas = function(){
   if (this.elementType!=ControllerBuilder.EDGE) {
     throw "toAreas() can be used only for edge conroller"
   }
-  this.collectAreas = needAreas || true;
+  this.collectAreas = true;
   return this;
 }
 
 // Duplicates clickSwitch controller to drag-n-drop.
-ControllerBuilder.prototype.withDrag = function(withDarg){
+ControllerBuilder.prototype.withDrag = function(){
   if (this.type!=ControllerBuilder.CLICK_SWITCH || this.elementType!=ControllerBuilder.EDGE) {
     throw "withDrag() can be used only for click switch edge conroller"
   }
-  this.addDrag = withDarg || true;
+  this.addDrag = true;
   return this;
 }
 
@@ -464,7 +477,7 @@ ControllerBuilder.prototype.build = function(){
       gridElement.dragProcessor = (start) => {
         if (gridElement != start) {
           if (typeof self.pasteFn == 'function') {
-            gridElement.switchToData(self.pasteFn(start.data));
+            gridElement.switchToData(self.pasteFn(start.data, gridElement.data));
           } else {
             gridElement.switchToData(start.data);
           }
@@ -576,6 +589,7 @@ CROSS: controllerItem({image: "cross", returnValue: "cross"}),
 WHITE_CROSS: controllerItem({image: "white_cross", returnValue: "white_cross"}),
 STAR: controllerItem({image: "star", returnValue: "star"}),
 BULB: controllerItem({image: "bulb", returnValue: "bulb"}),
+MINE: controllerItem({image: "mine", returnValue: "mine"}),
 BATTENBERG: controllerItem({image: "battenberg_small", returnValue: "battenberg"}),
 ARROW_U: controllerItem({image: "arrow_u", returnValue: "arrow_u"}),
 ARROW_UR: controllerItem({image: "arrow_ur", returnValue: "arrow_ur"}),

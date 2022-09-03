@@ -1,4 +1,4 @@
-define(["hexa"], function() {
+define(["hexa","controller_helper"], function() {
 
 hexaPuzzleType = function(puzzleData, controls, settings) {
   hexaPuzzle.call(this, puzzleData, controls, settings);
@@ -6,90 +6,56 @@ hexaPuzzleType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(hexaPuzzleType.prototype, hexaPuzzle.prototype);
 
-function setClickSwitch(element, withClues, clickSwitch, pencilClickSwitch) {
-  if (element.isClue && !withClues) {
-    return;
-  }
-  element.clickSwitch = clickSwitch.map(val => Object.assign({}, element.data, val))
-  if (typeof pencilClickSwitch != "undefined") {
-    element.pencilClickSwitch = pencilClickSwitch;
-  } else {
-    element.pencilClickSwitch = clickSwitch.map(val => {var clone = Object.assign({}, val); delete clone.returnValue; return clone});
-  }
-}
-
-function setDragSwitch(element, withClues, dragSwitch, pencilDragSwitch) {
-  if (element.isClue && !withClues) {
-    return;
-  }
-  element.dragSwitch = dragSwitch.map(val => Object.assign({}, element.data, val))
-  if (typeof pencilDragSwitch != "undefined") {
-    element.pencilDragSwitch = pencilDragSwitch;
-  } else {
-    element.pencilDragSwitch = dragSwitch.map(val => {var clone = Object.assign({}, val); delete clone.returnValue; return clone});
-  }
-}
-
-function setNumberClues(cell, start, end) {
-  cell.isClue = true;
-  var clickSwitch = [{}];
-  for (var i=start; i<=end; i++) {
-    clickSwitch.push({text: i.toString(), returnValue: i.toString()});
-  }
-  cell.clickSwitch = clickSwitch;
-}
-
-function setNumberChooser(cell, start, end) {
-  cell.isClue = true;
-  var chooserValues = [{}];
-  for (var i=start; i<=end; i++) {
-    chooserValues.push({text: i.toString(), returnValue: i.toString()});
-  }
-  cell.chooserValues = chooserValues;
-}
-
 hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
   var self = this;
-  var typeProperties = {}
 
-  typeProperties["hexa_fence"] = {
-    thickEdges: true,
-    outerEdges: false,
-    needNodes: true,
-    cellController: cell => setClickSwitch(cell, true, [{},{image: "cross"},{image: "white_circle"}]),
-    edgeController: edge => {
-      setClickSwitch(edge, false, [{},{color: self.colorSchema.lineColor, returnValue: 1},{image: "cross"}]);
-      setDragSwitch(edge, false, [{},{color: self.colorSchema.lineColor}]);
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellEditController: cell => setNumberChooser(cell, 0, 6),
-  }
+  if (typeCode =="hexa_minesweeper") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,6))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.MINE.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().copyPaste())
+      .build(this);
 
-  typeProperties["hexa_islands"] = {
-    cellController: cell => setClickSwitch(cell, false, [{},{color: self.colorSchema.textColor, returnValue: "1"},{image: "cross"}], [{},{color: "grey"},{image: "cross"}]),
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{color: self.colorSchema.clueColor, returnValue: "1"}];},
-    decodeClue: value => {
-      if (value=='1') {
-        return {color: self.colorSchema.clueColor};
-      }
-      if (value=='0') {
-        return {image: "cross"};
-      }
-    },
-  }
+  } else if (typeCode =="hexa_paint") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,7))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.BRIGHT.submitAs("1"))
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().copyPaste((fromData, toData) => {return {text: toData.text, color: fromData.color, textColor: fromData.textColor, image: fromData.image}}))
+      .build(this);
 
-  typeProperties["hexa_paint"] = {
-    cellController: cell => setClickSwitch(cell, true, [{},{color: "grey", returnValue: 1},{image: "white_circle"}], [{},{color: "lightgrey"},{image: "white_circle"}]),
-    cellEditController:  cell => setNumberChooser(cell, 0, 7),
-  }
+  } else if (typeCode =="hexa_islands") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.CLUE_COLOR.submitAs("1")))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.BLACK.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().noClue().copyPaste(data => data.color==self.colorSchema.clueColor?{color:self.colorSchema.gridColor}:data ))
+      .build(this);
 
-  typeProperties["hexa_minesweeper"] = {
-    cellController: cell => setClickSwitch(cell, false, [{},{image: "mine", returnValue: 1},{image: "cross"}]),
-    cellEditController:  cell => setNumberChooser(cell, 0, 6),
-  }
+  } else if (typeCode =="hexa_fence") {
+    this.typeProperties = decribePuzzleType().edgeStyle(false, true)
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,6))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.LINE.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().edge().drag()
+        .addItem(StdItem.LINE.submitAs("1")))
+      .build(this);
 
-  if (typeCode in typeProperties) {
-    this.typeProperties = Object.assign({}, this.typeProperties, typeProperties[typeCode]);
   }
 }
 })

@@ -372,6 +372,24 @@ hexaPuzzleCell.prototype.isPointInside = function(position) {
   return this.distanceSquare(position, center) < this.puzzle.size.unitSize*this.puzzle.size.unitSize;
 }
 
+hexaPuzzleCell.prototype.processDragEnd = function(startElement) {
+  if (this.dragProcessor == null) {
+    return false;
+  }
+  if (typeof this.dragProcessor=='function') {
+    return this.dragProcessor(startElement);
+  } else {
+    return false;
+  }
+}
+
+hexaPuzzleCell.prototype.processDragMove = function(startElement) {
+  if (!this.processDragEnd(startElement)) {
+    return false;
+  }
+  return {newMouseStartElement: this};
+}
+
 // edge of hexa grid ///////////////////////////////////////////
 var hexaPuzzleEdge = function(puzzle, col, row, side) {
   hexaGridElement.call(this, puzzle, col, row);
@@ -557,17 +575,13 @@ hexaPuzzleNode.prototype.processDragEnd = function(startElement) {
     return false;
   }
   commonEdge.switchOnDrag();
+  return true;
 }
 
 hexaPuzzleNode.prototype.processDragMove = function(startElement) {
-  if (startElement.constructor.name != this.constructor.name) {
+  if (!this.processDragEnd(startElement)) {
     return false;
   }
-  var commonEdge = this.commonEdge(startElement);
-  if (!commonEdge) {
-    return false;
-  }
-  commonEdge.switchOnDrag();
   return {newMouseStartElement: this};
 }
 

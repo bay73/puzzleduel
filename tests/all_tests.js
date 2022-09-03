@@ -52,6 +52,22 @@ requirejs(["tests/gaps.test.js"], ()=>{
   allTestSuites.push(gapsTestSuite);
 })
 
+requirejs(["tests/hexa_islands.test.js"], ()=>{
+  allTestSuites.push(hexaIslandsTestSuite);
+})
+
+requirejs(["tests/hexa_fence.test.js"], ()=>{
+  allTestSuites.push(hexaFenceTestSuite);
+})
+
+requirejs(["tests/hexa_minesweeper.test.js"], ()=>{
+  allTestSuites.push(hexaMinesweeperTestSuite);
+})
+
+requirejs(["tests/hexa_paint.test.js"], ()=>{
+  allTestSuites.push(hexaPaintTestSuite);
+})
+
 requirejs(["tests/heyawake.test.js"], ()=>{
   allTestSuites.push(heyawakeTestSuite);
 })
