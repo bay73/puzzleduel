@@ -188,6 +188,10 @@ requirejs(["tests/sudoku_x_sums.test.js"], ()=>{
   allTestSuites.push(sudokuXSumsTestSuite);
 })
 
+requirejs(["tests/suguru.test.js"], ()=>{
+  allTestSuites.push(suguruTestSuite);
+})
+
 requirejs(["tests/tapa_classic.test.js"], ()=>{
   allTestSuites.push(tapaClassicTestSuite);
 })

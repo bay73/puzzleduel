@@ -35,7 +35,7 @@ test('Solver controllers',(suite) => {
   puzzle.start();
 
   assert("Empty cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
-  assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {color: '#606060', returnValue: '1'}, {image: 'cross'}]);
+  assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.greyColor, returnValue: '1'}, {image: 'cross'}]);
   assert("Cross chooser").that(puzzle.cells[2][2].chooserValues).isNull();
   assert("Cross click").that(puzzle.cells[2][2].clickSwitch).isNull();
 }),
@@ -46,8 +46,8 @@ test('Author controllers',(suite) => {
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '8', returnValue: '8'}, {image: 'cross', returnValue: 'cross'}]);
   assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
   assert("Edge chooser").that(puzzle.edges[0][0][1].chooserValues).isNull();
-  assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
-  assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
+  assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
+  assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
 }),
 );
 

@@ -319,8 +319,12 @@ ControllerBuilder.prototype.outer = function(){
 }
 
 // Applies controller only to elements without clues.
-ControllerBuilder.prototype.noClue = function(){
-  this.conditions.push(gridElement => !gridElement.isClue);
+ControllerBuilder.prototype.noClue = function(...clueItems){
+  if (clueItems.length == 0) {
+    this.conditions.push(gridElement => !gridElement.isClue);
+  } else {
+    this.conditions.push(gridElement => !containClues(gridElement, clueItems));
+  }
   return this;
 }
 
@@ -590,6 +594,7 @@ WHITE_CROSS: controllerItem({image: "white_cross", returnValue: "white_cross"}),
 STAR: controllerItem({image: "star", returnValue: "star"}),
 BULB: controllerItem({image: "bulb", returnValue: "bulb"}),
 MINE: controllerItem({image: "mine", returnValue: "mine"}),
+QUEEN: controllerItem({image: "queen", returnValue: "queen"}),
 BATTENBERG: controllerItem({image: "battenberg_small", returnValue: "battenberg"}),
 ARROW_U: controllerItem({image: "arrow_u", returnValue: "arrow_u"}),
 ARROW_UR: controllerItem({image: "arrow_ur", returnValue: "arrow_ur"}),

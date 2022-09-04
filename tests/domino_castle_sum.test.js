@@ -33,7 +33,7 @@ test('Solver selectors',(suite) => {
     {
      "b2": "black", "c2": "black", "b3": "black", "c3": "black",
      "areas": [["b1","c1"],["a1","a2"],["b2","c2","b3","c3"],["d1","d2"],["a3","a4"],["b4","c4"],["d3","d4"]],
-     "bottom": ["6",null,null,"9"], "right": ["6",null,null,"12"]
+     "bottom": ["6",null,null,"9"], "right": ["10",null,null,"12"]
     }
   );
   puzzle.start();
@@ -43,9 +43,9 @@ test('Solver selectors',(suite) => {
   assert("Black cell chooser").that(puzzle.cells[1][1].chooserValues).isNull();
   assert("Black cell click").that(puzzle.cells[1][1].clickSwitch).isNull();
   assert("Bottom clue chooser").that(puzzle.bottom[0].chooserValues).isNull();
-  assert("Bottom clue click").that(puzzle.bottom[0].clickSwitch).isNull();
+  assert("Bottom clue click").that(puzzle.bottom[0].clickSwitch).containsExactly([{text:"6"},{text:"6",image:"white_circle"}]);
   assert("Right clue chooser").that(puzzle.right[0].chooserValues).isNull();
-  assert("Right clue click").that(puzzle.right[0].clickSwitch).isNull();
+  assert("Right clue click").that(puzzle.right[0].clickSwitch).containsExactly([{text:"10"},{text:"10",image:"white_circle"}]);
 }),
 
 test('Author selectors',(suite) => {
@@ -59,8 +59,8 @@ test('Author selectors',(suite) => {
   assert("Right clue chooser").that(puzzle.right[0].chooserValues).containsAtLeast([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '99', returnValue: '99'}]);
   assert("Right clue click").that(puzzle.right[0].clickSwitch).isNull();
   assert("Edge chooser").that(puzzle.edges[0][0][1].chooserValues).isNull();
-  assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
-  assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: '1'}]);
+  assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
+  assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
 }),
 );
 
