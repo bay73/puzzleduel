@@ -442,7 +442,7 @@ router.get('/:puzzleid/log', async (req, res, next) => {
       return;
     }
     const [times, logs] = await Promise.all([
-      cache.readSolvingTime(req.params.puzzleid),
+      UserSolvingTime.find({puzzleId: req.params.puzzleid}).lean(),
       UserActionLog.find({puzzleId: req.params.puzzleid}).sort('userId date')
     ]);
     var userSolvingTime = {};
