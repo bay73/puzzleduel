@@ -31,7 +31,7 @@
     "express-recaptcha": "^5.1.0",
     "express-session": "^1.17.3",
     "glob": "^8.0.3",
-    "i18n": "^0.15.0",
+    "i18n": "^0.15.1",
     "mongoose": "^6.5.3",
     "nodemailer": "^6.7.8",
     "passport": "^0.6.0",
