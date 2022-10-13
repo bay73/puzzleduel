@@ -49,6 +49,10 @@ const UserSchema = new mongoose.Schema({
   isReplayVisible: {
     type: Boolean,
     required: false
+  },
+  isAnalyseAvailable: {
+    type: Boolean,
+    required: false
   }
 });
 

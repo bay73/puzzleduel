@@ -11,6 +11,7 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 const PuzzleComment = require('../models/PuzzleComment');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
+const axios = require('axios');
 
 const type_cheker = {};
 
@@ -428,6 +429,54 @@ router.get('/:puzzleid/log/:userid', async (req, res, next) => {
   }
 });
 
+async function getSolversLog(puzzleId) {
+  const [times, logs] = await Promise.all([
+    UserSolvingTime.find({puzzleId: puzzleId}).lean(),
+    UserActionLog.find({puzzleId: puzzleId}).sort('userId date')
+  ]);
+  var userSolvingTime = {};
+  times.forEach(time => {
+    if (typeof time.solvingTime != 'undefined') {
+      userSolvingTime[time.userId.toString()] = time.solvingTime;
+    }
+  });
+  let result = [];
+  let singleUserLog = {};
+  let currentUser = null;
+  let solved = false;
+  for (let i=0;i<logs.length;i++) {
+    let logItem = logs[i];
+    if (!logItem.userId.equals(currentUser)) {
+      if (currentUser) {
+        result.push(singleUserLog);
+      }
+      currentUser = logItem.userId;
+      solved = false;
+      singleUserLog = {
+        _id: logItem._id.toString(),
+        userId: logItem.userId.toString(),
+        puzzleId: logItem.puzzleId,
+        solvingTime: userSolvingTime[logItem.userId.toString()],
+        log: []
+      };
+    }
+    if (typeof logItem.data!="undefined") {
+      let data = JSON.parse(logItem.data)
+      if (typeof data.log != "undefined" && !solved) {
+        singleUserLog.log.push(...data.log);
+      }
+      if (logItem.action=="solved") {
+        if (!solved) {
+          singleUserLog.log.push({d: "solved"});
+        }
+        solved = true;
+      }
+    }
+  }
+  result.push(singleUserLog);
+  return result;
+}
+
 // Read solving logs for all users
 router.get('/:puzzleid/log', async (req, res, next) => {
   try {
@@ -441,51 +490,30 @@ router.get('/:puzzleid/log', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    const [times, logs] = await Promise.all([
-      UserSolvingTime.find({puzzleId: req.params.puzzleid}).lean(),
-      UserActionLog.find({puzzleId: req.params.puzzleid}).sort('userId date')
-    ]);
-    var userSolvingTime = {};
-    times.forEach(time => {
-      if (typeof time.solvingTime != 'undefined') {
-        userSolvingTime[time.userId.toString()] = time.solvingTime;
-      }
-    });
-    let result = [];
-    let singleUserLog = {};
-    let currentUser = null;
-    let solved = false;
-    for (let i=0;i<logs.length;i++) {
-      let logItem = logs[i];
-      if (!logItem.userId.equals(currentUser)) {
-        if (currentUser) {
-          result.push(singleUserLog);
-        }
-        currentUser = logItem.userId;
-        solved = false;
-        singleUserLog = {
-          _id: logItem._id.toString(),
-          userId: logItem.userId.toString(),
-          puzzleId: logItem.puzzleId,
-          solvingTime: userSolvingTime[logItem.userId.toString()],
-          log: []
-        };
-      }
-      if (typeof logItem.data!="undefined") {
-        let data = JSON.parse(logItem.data)
-        if (typeof data.log != "undefined" && !solved) {
-          singleUserLog.log.push(...data.log);
-        }
-        if (logItem.action=="solved") {
-          if (!solved) {
-            singleUserLog.log.push({d: "solved"});
-          }
-          solved = true;
-        }
-      }
-    }
-    result.push(singleUserLog);
+    const result = await getSolversLog(req.params.puzzleid);
     res.json(result);
+    profiler.log('readPuzzleLog', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Analyse solving logs for all users
+router.get('/:puzzleid/analyse', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    if (!req.user || !req.user.isAnalyseAvailable) {
+      res.sendStatus(404);
+      return;
+    }
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
+    if (!puzzle || puzzle.needLogging) {
+      res.sendStatus(404);
+      return;
+    }
+    const logs = await getSolversLog(req.params.puzzleid);
+    const response = await axios.post('http://inconsistent-solving.herokuapp.com/detectOutliers?itp=10&pp=30', logs);
+    res.json(response.data);
     profiler.log('readPuzzleLog', processStart);
   } catch (e) {
     next(e);
