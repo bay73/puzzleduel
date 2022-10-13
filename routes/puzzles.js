@@ -512,7 +512,7 @@ router.get('/:puzzleid/analyse', async (req, res, next) => {
       return;
     }
     const logs = await getSolversLog(req.params.puzzleid);
-    const response = await axios.post('http://inconsistent-solving.herokuapp.com/detectOutliers?itp=10&pp=30', logs);
+    const response = await axios.post('http://inconsistent-solving.herokuapp.com/detectOutliers?itp=' + req.query.itp + '&pp=' + req.query.pp + '', logs);
     res.json(response.data);
     profiler.log('readPuzzleLog', processStart);
   } catch (e) {

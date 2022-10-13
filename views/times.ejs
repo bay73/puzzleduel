@@ -100,7 +100,29 @@
         </div>
         <% if (typeof user != 'undefined' && user.isAnalyseAvailable) { %>
         <div class="row card-body">
-          <a class="btn btn-primary" href="/puzzles/<%= puzzle.code %>/analyse" target="_blank">Analyse</a>
+          <div class="card card-body" id="newform">
+            <div class="form-inline">
+              <div class="form-group pr-4 pb-2">
+                <label class="col-form-label pr-1" for="itp">itp</label>
+                <input type="number" min="1" max="100" value="10" class="form-control" style="width:64px" id="itp">
+              </div>
+              <div class="form-group pr-4 pb-2">
+                <label class="col-form-label pr-1" for="pp">pp</label>
+                <input type="number" min="1" max="100" value="30" class="form-control" style="width:64px" id="pp">
+              </div>
+              <div class="form-group pr-4 pb-2">
+                <button type="submit" id="analyse" class="btn btn-primary">Analyse</button>
+              </div>
+            </div>
+          </div>
+          <script>
+            $("#analyse").click(function () {
+              var itp = $("#itp").val();
+              var pp = $("#pp").val();
+              var url = "/puzzles/<%= puzzle.code %>/analyse?itp=" + itp + "&pp=" + pp + "";
+              window.open(url);
+            })
+          </script>
         </div>
         <% } %>
       </div>
