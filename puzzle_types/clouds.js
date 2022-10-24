@@ -112,6 +112,9 @@ checkRectangles: function(cells) {
         if (x>0 && y>0 && rectangles[y-1][x-1] != 0 && rectangles[y-1][x-1] != rectangles[y][x]) {
           return {status: "Rectangles shouldn't touch", errors: [util.coord(x,y), util.coord(x-1,y-1)]};
         }
+        if (x>0 && y<cells.rows-1 && rectangles[y+1][x-1] != 0 && rectangles[y+1][x-1] != rectangles[y][x]) {
+          return {status: "Rectangles shouldn't touch", errors: [util.coord(x,y), util.coord(x-1,y+1)]};
+        }
       }
     }
   }
