@@ -214,7 +214,16 @@ fillominoPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, a
     }
     return false;
   }
-  return hasDifferent(getDigits(area1Coordinates), getDigits(area2Coordinates));
+  if (hasDifferent(getDigits(area1Coordinates), getDigits(area2Coordinates))) {
+    return true;
+  }
+  if (area1Coordinates.length > 1 && getDigits(area2Coordinates).includes('1')) {
+    return true;
+  }
+  if (area2Coordinates.length > 1 && getDigits(area1Coordinates).includes('1')) {
+    return true;
+  }
+  return false;
 }
 
 // Prevent including blacken cells into areas for solution submission
