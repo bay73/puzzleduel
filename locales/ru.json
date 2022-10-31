@@ -280,6 +280,7 @@
 	"Circle should be at the center of rotational symmetry the area": "Кружок должен быть центром вращательной симметрии для области",
 	"Clue should show the size of the area": "Число должно показывать размер область",
 	"Each area should have recatangular shape": "Каждая область должна иметь прямоугольную форму",
+	"Each area should have rectangular or square shape": "Каждая область должна иметь прямоугольную или квадратную форму",
 	"Each area should contain exactly one clue": "В каждой области должно быть ровно одно число",
 	"Each area should have the required size": "Размер области должен соответствовать указанному",
 	"The digits should be consecutive": "Цифры должны быть последовательными",
@@ -381,5 +382,6 @@
 	"Two cells sharing a bold edge shouldn't contain the same numbers": "Две клетки разделенные жирной границей не должны содержать равных чисел",
 	"Area occupied by the digits should be connected": "Группа клеток с числами должна быть связна",
 	"Areas of the same size shouldn't share an edge": "Области одного размера не должны касаться стороной",
-	"The size of an area should be equal to numbers in area": "Размер области должен быть равен задающим числам в области"
+	"The size of an area should be equal to numbers in area": "Размер области должен быть равен задающим числам в области",
+	"Nikoli month 1/2": "Nikoli month 1/2"
 }
