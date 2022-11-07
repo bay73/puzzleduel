@@ -33,7 +33,7 @@
     "express-session": "^1.17.3",
     "glob": "^8.0.3",
     "i18n": "^0.15.1",
-    "mongoose": "^6.6.5",
+    "mongoose": "^6.7.2",
     "nodemailer": "^6.8.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
