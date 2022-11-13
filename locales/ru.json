@@ -383,5 +383,8 @@
 	"Area occupied by the digits should be connected": "Группа клеток с числами должна быть связна",
 	"Areas of the same size shouldn't share an edge": "Области одного размера не должны касаться стороной",
 	"The size of an area should be equal to numbers in area": "Размер области должен быть равен задающим числам в области",
-	"Nikoli month 1/2": "Nikoli month 1/2"
+	"Nikoli month 1/2": "Nikoli month 1/2",
+	"Nikoli month 2/2": "Nikoli month 2/2",
+	"Puzzle XL": "Puzzle XL",
+	"Other contests": "Другие конкурсы"
 }
