@@ -502,10 +502,6 @@ router.get('/:puzzleid/log', async (req, res, next) => {
 router.get('/:puzzleid/analyse', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    if (!req.user || !req.user.isAnalyseAvailable) {
-      res.sendStatus(404);
-      return;
-    }
     const puzzle = await cache.readPuzzle(req.params.puzzleid);
     if (!puzzle || puzzle.needLogging) {
       res.sendStatus(404);
