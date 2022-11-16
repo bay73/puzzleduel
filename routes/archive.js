@@ -338,10 +338,6 @@ router.get('/scores', (req, res) => {
 router.get('/:puzzleid/replay/:userid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    if (!req.user || !req.user.isReplayVisible) {
-      res.sendStatus(404);
-      return;
-    }
     var puzzle = await cache.readPuzzle(req.params.puzzleid);
     if (!puzzle) {
       res.sendStatus(404);

@@ -77,7 +77,7 @@
               <tr>
                 <td><%= time.userName %></td>
                 <td>
-                  <% if (typeof user != 'undefined' && user.isReplayVisible && puzzle.canReplay) { %>
+                  <% if (puzzle.canReplay) { %>
                   <a href="/archive/<%= puzzle.code %>/replay/<%= time.userId %>"><%= time.time %></a>
                   <% } else { %>
                   <%= time.time %>
@@ -98,7 +98,7 @@
             </tbody>
           </table>
         </div>
-        <% if (puzzle.canReplay) { %>
+        <% if (typeof user != 'undefined' && user.isAnalyseAvailable && puzzle.canReplay) { %>
         <div class="row card-body">
           <div class="card card-body" id="newform">
             <div class="form-inline">
