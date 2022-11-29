@@ -387,5 +387,8 @@
 	"Nikoli month 1/2": "Nikoli month 1/2",
 	"Nikoli month 2/2": "Nikoli month 2/2",
 	"Puzzle XL": "Puzzle XL",
-	"Other contests": "Другие конкурсы"
+	"Other contests": "Другие конкурсы",
+	"Area with a white circle should not be a square": "Белый кружок должен быть в неквадратной области",
+	"Area with a black circle should be a square": "Черный кружок должен быть в квадратной области",
+	"Clues should be fully inside a single area": "Задающие должны быть полностью внутри одной области"
 }

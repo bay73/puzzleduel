@@ -73,11 +73,12 @@ test('Process click to empty cell',(suite) => {
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
   assert("Chooser after click").that(puzzle.controller.chooserBuilder.chooserElements).isNonEmptyArray();
-  assert("Chooser connected to the cell").that(puzzle.controller.chooserBuilder.element.col).isEqualTo(0);
-  assert("Chooser connected to the cell").that(puzzle.controller.chooserBuilder.element.row).isEqualTo(1);
+  assert("Chooser connected to the cell col").that(puzzle.controller.chooserBuilder.element.col).isEqualTo(0);
+  assert("Chooser connected to the cell row").that(puzzle.controller.chooserBuilder.element.row).isEqualTo(1);
   assert("Cell data after one click").that(puzzle.cells[1][0].data).isEqualTo({});
 
-  x += puzzle.size.unitSize;
+  x += puzzle.size.unitSize * 5/4;
+  y += puzzle.size.unitSize/4;
   puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 

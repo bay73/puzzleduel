@@ -38,7 +38,7 @@ check:function(dimension, clues, data){
 checkAreas: function(cells, areas) {
   for (var a=0; a<areas.length; a++) {
     if (!Checker.isRectangle(cells, areas[a])) {
-      return {status: "Each area should have recatangular shape", errors: areas[a]};
+      return {status: "Each area should have rectangular or square shape", errors: areas[a]};
     }
     var clues = Checker.getCluesInArea(cells, areas[a]);
     if (clues.length == 2 && clues.includes("white_circle") && clues.includes("black_circle")) {

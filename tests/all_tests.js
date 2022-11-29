@@ -156,6 +156,11 @@ requirejs(["tests/spiral_galaxies.test.js"], ()=>{
   allTestSuites.push(spiralGalaxiesTestSuite);
 })
 
+requirejs(["tests/squares_and_rectangles.test.js"], ()=>{
+  allTestSuites.push(squaresAndRectanglesTestSuite);
+})
+
+
 requirejs(["tests/sudoku_antidiagonal.test.js"], ()=>{
   allTestSuites.push(sudokuAntidiagonalTestSuite);
 })

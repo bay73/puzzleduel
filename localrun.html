@@ -130,24 +130,31 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "fillomino",
+      typeCode: "squares_and_rectangles",
       id: "puzzle.code",
-      dimension: "4x4"
+      dimension: "5x5"
     };
     var settings = {
       local: true,
       data: {
-    "a1": "3",
-    "b1": "2",
-    "a4": "3",
-    "d2": "2",
+    "b3": "black_circle",
+    "c3": "white_circle",
+    "e3": "white_circle",
+    "edges": {
+        "a1-1": "huge_black_circle",
+        "a4-2": "huge_white_circle",
+        "c4-2": "huge_white_circle"
+    },
+    "nodes": {
+        "d1-2": "huge_white_circle"
+    },
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
     requirejs(["areapuzzle"], function() {
-      puzzle = new fillominoPuzzleType(puzzleData, controls, settings);
+      puzzle = new areaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

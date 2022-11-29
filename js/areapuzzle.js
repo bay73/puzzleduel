@@ -436,6 +436,24 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.asAreaConnector()))
       .build(this);
 
+  } else if (typeCode == "squares_and_rectangles"){
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE)
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forAuthor().edge().clickSwitch()
+        .addItem(StdItem.HUGE_WHITE_CIRCLE)
+        .addItem(StdItem.HUGE_BLACK_CIRCLE))
+      .add(controller().forAuthor().node().clickSwitch()
+        .addItem(StdItem.HUGE_WHITE_CIRCLE)
+        .addItem(StdItem.HUGE_BLACK_CIRCLE))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
+
   } else if (typeCode == "two_apiece"){
     var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()

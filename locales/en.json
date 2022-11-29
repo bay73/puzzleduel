@@ -384,5 +384,9 @@
 	"Nikoli month 1/2": "Nikoli month 1/2",
 	"Nikoli month 2/2": "Nikoli month 2/2",
 	"Puzzle XL": "Puzzle XL",
-	"Other contests": "Other contests"
+	"Other contests": "Other contests",
+	"Area with a white circle should not be a square": "Area with a white circle should not be a square",
+	"Area with a black circle should be a square": "Area with a black circle should be a square",
+	"Each area should have rectangular or square shape": "Each area should have rectangular or square shape",
+	"Clues should be fully inside a single area": "Clues should be fully inside a single area"
 }
