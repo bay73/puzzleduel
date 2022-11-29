@@ -37,15 +37,16 @@
                 <li><a class="nav-link" href="/contest/40644y1kupynynq"><%= __('dOubLESHOW 2x2') %></a></li>
                 <li><a class="nav-link" href="/contest/ef0ey1kyqecvq1"><%= __('dOubLESHOW') %> <span class="flipV">2</span></a></li>
                 <li><a class="nav-link" href="/contest/yu6541kuy82cvs"><%= __('dOubLESHOW 6') %></a></li>
+                <% if (new Date() > new Date('2022-12-02T00:00:00.000+00:00')) { %>
+                <li><a class="nav-link" href="/contest/40645e1lawglwtl"><%= __('dOubLESHOW 7') %></a></li>
+                <% } %>
               </ul>
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('Other contests') %></a>
               <ul class="dropdown-menu bg-dark">
                 <li><a class="nav-link" href="/contest/4064541kwpd0ck0"><%= __('Twentyx 1/2-No numbers') %></a></li>
                 <li><a class="nav-link" href="/contest/40645j1l9dyfi6u"><%= __('Nikoli month 1/2') %></a></li>
-                <% if (new Date() > new Date('2022-11-15T00:00:00.000+00:00')) { %>
                 <li><a class="nav-link" href="/contest/4064601lad2he3n"><%= __('Nikoli month 2/2') %></a></li>
-                <% } %>
               </ul>
             </li>
           </ul>
@@ -72,6 +73,9 @@
                 <li><a class="nav-link" href="/contest/40644y1kupynynq/results"><%= __('dOubLESHOW 2x2') %></a></li>
                 <li><a class="nav-link" href="/contest/ef0ey1kyqecvq1/results"><%= __('dOubLESHOW') %> <span class="flipV">2</span></a></li>
                 <li><a class="nav-link" href="/contest/yu6541kuy82cvs/results"><%= __('dOubLESHOW 6') %></a></li>
+                <% if (new Date() > new Date('2022-12-02T00:00:00.000+00:00')) { %>
+                <li><a class="nav-link" href="/contest/40645e1lawglwtl/results"><%= __('dOubLESHOW 6') %></a></li>
+                <% } %>
               </ul>
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('Other contests') %></a>
@@ -80,9 +84,7 @@
                 <li><a class="nav-link" href="/duel/4064521kovcexz9"><%= __('6x6 duel') %></a></li>
                 <li><a class="nav-link" href="/contest/4064541kwpd0ck0/results"><%= __('Twentyx 1/2-No numbers') %></a></li>
                 <li><a class="nav-link" href="/contest/40645j1l9dyfi6u/results"><%= __('Nikoli month 1/2') %></a></li>
-                <% if (new Date() > new Date('2022-11-15T00:00:00.000+00:00')) { %>
                 <li><a class="nav-link" href="/contest/4064601lad2he3n/results"><%= __('Nikoli month 2/2') %></a></li>
-                <% } %>
               </ul>
             </li>
           </ul>
