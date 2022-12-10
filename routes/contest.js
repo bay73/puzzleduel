@@ -105,6 +105,124 @@ router.get('/:contestid', async (req, res, next) => {
   }
 });
 
+router.get('/:contestid/edit', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    const contest = await Contest.findOne({code: req.params.contestid});
+    if (!contest || !req.user || (req.user.role != "admin" && !req.user._id.equals(contest.author))) {
+      res.sendStatus(404);
+      return;
+    }
+    const [typeMap, puzzles] = await Promise.all([
+      cache.readPuzzleTypes(),
+      Puzzle.find({'contest.contestId': req.params.contestid})
+    ]);
+    var puzzleMap = {};
+    puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();puzzleMap[puzzle.code].needLogging = puzzle.needLogging});
+    var contestObj = {code: contest.code, name: contest.name, description: contest.description, logo: contest.logo, start: contest.start, finish: contest.finish};
+    var locale = req.getLocale();
+    var puzzleList = contest.puzzles
+      .map(puzzle => {
+        puzzleObj = puzzleMap[puzzle.puzzleId];
+        return {
+          num: puzzle.puzzleNum,
+          code: puzzle.puzzleId,
+          type: typeMap[puzzleObj.type].name,
+          dimension: puzzleObj.dimension,
+          puzzleDate: puzzleObj.contest.puzzleDate
+        };
+      });
+    res.render('contest_edit', {user: req.user, contest: contestObj, puzzles: puzzleList})
+    profiler.log('contestEdit', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post('/:contestid/edit', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    const contestId = req.params.contestid;
+    const contest = await Contest.findOne({code: contestId});
+    if (!contest || !req.user || (req.user.role != "admin" && !req.user._id.equals(contest.author))) {
+      res.sendStatus(404);
+      return;
+    }
+    if (contest.start < new Date()) {
+      res.sendStatus(403);
+      return;
+    }
+    if (req.body.operation == "editdate") {
+      let date = new Date(Date.parse(req.body.date))
+      date.setUTCHours(req.body.time.split(":")[0], req.body.time.split(":")[1]);
+      if (req.body.item == "start") {
+        contest.start = date;
+      }
+      if (req.body.item == "finish") {
+        contest.finish = date;
+      }
+      if (req.body.item.startsWith("puzzle-")) {
+        let puzzleToUpdate = null;
+        contest.puzzles.forEach(puzzle => {
+          if (puzzle.puzzleId == req.body.item.substring(7)) {
+            puzzle.revealDate = date;
+            puzzleToUpdate = puzzle.puzzleId;
+          }
+        })
+        const puzzle = await Puzzle.findOne({code: puzzleToUpdate})
+        if (puzzle.contest.contestId == contestId) {
+          puzzle.contest = {contestId: contestId, puzzleDate: date};
+          await puzzle.save();
+        }
+      }
+      await contest.save();
+    }
+    if (req.body.operation == "addpuzzle") {
+      const puzzleId = req.body.puzzle
+      const puzzle = await Puzzle.findOne({code: puzzleId})
+      if (typeof(puzzle.contest) == "undefined" || puzzle.contest.contestId == contestId) {
+        let puzzleNum = Math.max(contest.puzzles.map(puzzle => puzzle.puzzleNum));
+        if (puzzleNum >=0) {
+          puzzleNum++;
+        } else {
+          puzzleNum=0;
+        }
+        contest.puzzles.push({puzzleNum: puzzleNum, puzzleId: puzzleId, revealDate: contest.start});
+        puzzle.contest = {contestId: contestId, puzzleDate: contest.start};
+        if (!puzzle.daily) {
+          puzzle.tag = "contest";
+        }
+        await puzzle.save();
+        await contest.save();
+      }
+    }
+    if (req.body.operation == "removepuzzle") {
+      const puzzleId = req.body.puzzle
+      const puzzles = contest.puzzles;
+      for( var i = 0; i < puzzles.length; i++){
+        if ( puzzles[i].puzzleId == puzzleId) {
+          puzzles.splice(i, 1);
+          i--;
+        }
+      }
+      contest.puzzles = puzzles
+      const puzzle = await Puzzle.findOne({code: puzzleId})
+      if (typeof(puzzle.contest) != "undefined" && puzzle.contest.contestId == contestId) {
+        puzzle.contest = undefined;
+        if (puzzle.tag == "contest") {
+          puzzle.tag = "temporary";
+        }
+        await puzzle.save();
+      }
+      await contest.save();
+    }
+    res.redirect('/contest/' + contestId + '/edit');
+    profiler.log('contestEdit', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.get('/:contestid/recount', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();

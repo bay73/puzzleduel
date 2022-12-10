@@ -29,6 +29,10 @@ const ContestSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  author: {
+    type: ObjectId,
+    required: false
+  },
   scoring: {
     type: Mixed,
     required: true

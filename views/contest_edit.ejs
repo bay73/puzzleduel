@@ -1,0 +1,149 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <% if (typeof contest.logo != "undefined") { %>
+        <h1 class="card-header"><img src="<%= contest.logo %>" /></h1>
+        <h3 class="card-body"><%- contest.name %></h3>
+        <% } else { %>
+        <h1 class="card-header"><%- contest.name %></h1>
+        <% }%>
+        <div class="card-body">
+          <%- contest.description %>
+          <br><br>
+          <%= __('Start')%>
+          <%= contest.start.toISOString().split('T')[0] %>
+          <%= contest.start.toISOString().split('T')[1].split('.')[0] %>
+          <a href="#" name="editDateButton" value="<%= contest.start.toISOString()%>" item = "start">
+             <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+          <br>
+          <%= __('Finish')%>
+          <%= contest.finish.toISOString().split('T')[0] %>
+          <%= contest.finish.toISOString().split('T')[1].split('.')[0] %>
+          <a href="#" name="editDateButton" value="<%= contest.finish.toISOString()%>"  item="finish">
+             <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-condensed">
+            <tbody>
+              <tr>
+                <th><%= __('#') %></th>
+                <th><%= __('Start date/time') %></th>
+                <th><%= __('Puzzle') %></th>
+              </tr>
+              <% puzzles.sort((puzzle1, puzzle2) => puzzle1.num - puzzle2.num).forEach(function(puzzle) { %>
+              <tr>
+                <td>
+                  <%= puzzle.num %>
+                </td>
+                <td>
+                  <%= puzzle.puzzleDate.toISOString().split('T')[0] %>
+                  <%= puzzle.puzzleDate.toISOString().split('T')[1].split('.')[0] %>
+                  <a href="#" name="editDateButton" value="<%= puzzle.puzzleDate.toISOString()%>" item="puzzle-<%= puzzle.code %>">
+                     <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                </td>
+                <td>
+                  <a href="/single/<%= puzzle.code %>">
+                    <%= puzzle.type %>
+                    <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
+                  </a>
+                </td>
+                <td>
+                  <form action="/contest/<%= contest.code %>/edit" method="post">
+                    <input type="hidden" value="<%= puzzle.code%>" name="puzzle">
+                    <input type="hidden" name="operation" value="removepuzzle">
+                    <button type="submit" class="btn btn-link">
+                      <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+              <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                  <a href="#" id="addButton" class="btn btn-link">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="editDateModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><%= __('Edit date and time')%></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/contest/<%= contest.code %>/edit" method="post">
+            <div class="form-group pr-4 pb-2">
+              <label class="col-form-label pr-1" for="editdate"><%= __('Date/time')%></label>
+              <input class="form-control" id="editdate" value="" type="date" name="date">
+              <input class="form-control" id="edittime" value="" type="time" name="time">
+            </div>
+            <input type="hidden" name="operation" value="editdate">
+            <input type="hidden" id="editdatetime_item" name="item">
+            <div class="form-group pr-4 pb-2">
+              <button type="submit" id="editSet" class="btn btn-primary"><%= __('Save')%></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="addPuzzleModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><%= __('Add a puzzle')%></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/contest/<%= contest.code %>/edit" method="post">
+            <div class="form-group pr-4 pb-2">
+              <label class="col-form-label pr-1" for="addpuzzle"><%= __('Puzzle Id')%></label>
+              <input class="form-control" id="addpuzzle" value="" name="puzzle">
+            </div>
+            <input type="hidden" name="operation" value="addpuzzle">
+            <div class="form-group pr-4 pb-2">
+              <button type="submit" id="editSet" class="btn btn-primary"><%= __('Save')%></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("[name='editDateButton']").click((event) => {
+    $("#editdatetime_item").val($(event.currentTarget).attr("item"))
+    $("#editdate").val($(event.currentTarget).attr("value").split('T')[0])
+    $("#edittime").val($(event.currentTarget).attr("value").split('T')[1].split('.')[0])
+    $("#editDateModal").modal()
+  });
+  $("#addButton").click((event) => {
+    $("#addPuzzleModal").modal()
+  });
+</script>
+<%- include ('./partials/footer') %>
+
