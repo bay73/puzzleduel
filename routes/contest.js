@@ -216,6 +216,12 @@ router.post('/:contestid/edit', async (req, res, next) => {
       }
       await contest.save();
     }
+    if (req.body.operation == "edittitle") {
+      const puzzles = contest.puzzles;
+      contest.name = req.body.name
+      contest.description = req.body.description
+      await contest.save();
+    }
     res.redirect('/contest/' + contestId + '/edit');
     profiler.log('contestEdit', processStart);
   } catch (e) {

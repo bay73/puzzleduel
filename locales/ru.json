@@ -396,5 +396,8 @@
 	"Edit date and time": "Изменить дату и время",
 	"Date/time": "Дата/время",
 	"Add a puzzle": "Добавить задачу",
-	"Puzzle Id": "Id задачи"
+	"Puzzle Id": "Id задачи",
+	"Edit name": "Изменть название",
+	"Title": "Заголовок",
+	"Description": "Описание"
 }
