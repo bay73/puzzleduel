@@ -67,6 +67,10 @@ check:function(dimension, clues, data){
   if (res.status != "OK") {
     return res;
   }
+  var res = Checker.checkNeighbouringAreas(dim, areas);
+  if (res.status != "OK") {
+    return res;
+  }
   return {status: "OK"};
 },
 
@@ -85,6 +89,31 @@ checkAreas: function(cells, areas) {
     }
     if (clues[0].value == "white_circle" && rect.width == rect.height) {
       return {status: "Area with a white circle should not be a square", errors: areas[a]};
+    }
+  }
+  return {status: "OK"};
+},
+checkNeighbouringAreas: function(dim, areas) {
+  var map = util.create2DArray(dim.rows, dim.cols, false);
+  for (var a=0; a<areas.length; a++) {
+    var area = areas[a];
+    for (var i=0;i<area.length;i++) {
+      var pos = util.parseCoord(area[i]);
+      map[pos.y][pos.x] = a;
+    }
+  }
+  for (var y = 0; y < dim.rows; y++) {
+    for (var x = 0; x < dim.cols; x++) {
+      if (y+1 < dim.rows) {
+        if (map[y][x] != map[y+1][x] && areas[map[y][x]].length == areas[map[y+1][x]].length) {
+          return {status: "Areas of the same size shouldn't share an edge", errors: areas[map[y][x]].concat(areas[map[y+1][x]])};
+        }
+      }
+      if (x+1 < dim.cols) {
+        if (map[y][x] != map[y][x+1] && areas[map[y][x]].length == areas[map[y][x+1]].length) {
+          return {status: "Areas of the same size shouldn't share an edge", errors: areas[map[y][x]].concat(areas[map[y][x+1]])};
+        }
+      }
     }
   }
   return {status: "OK"};
