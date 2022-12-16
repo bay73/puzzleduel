@@ -23,7 +23,6 @@ check:function(dimension, clues, data){
     }
   }
   // Parse clues.
-  // Parse clues.
   for (var [key, value] of Object.entries(clues)) {
     if (key=="edges"){
       for (var [edgeKey, edgeValue] of Object.entries(value)) {
@@ -40,7 +39,7 @@ check:function(dimension, clues, data){
       }
     } if (key=="nodes"){
       for (var [nodeKey, nodeValue] of Object.entries(value)) {
-        if (nodeValue=="huge_black_circle" || edgeValue=="huge_white_circle") {
+        if (nodeValue=="huge_black_circle" || nodeValue=="huge_white_circle") {
           var part = nodeKey.split("-");
           var pos = util.parseCoord(part[0]);
           if (typeof part[1]=="undefined" || part[1]=="2") {
