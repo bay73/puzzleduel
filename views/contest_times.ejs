@@ -1,0 +1,98 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <% if (typeof contest.logo != "undefined") { %>
+        <h1 class="card-header"><img src="<%= contest.logo %>" /></h1>
+        <h3 class="card-body"><%- contest.name %></h3>
+        <% } else { %>
+        <h1 class="card-header"><%- contest.name %></h1>
+        <% }%>
+        <div class="row card-body">
+          <p class="col-10 d-flex flex-row flex-wrap"><%- contest.description %></p>
+          <% if (typeof user != 'undefined' && user.role=='admin') { %>
+          <div class="col-2 d-flex flex-row-reverse flex-wrap">
+            <a class="btn btn-primary" href="/contest/<%= contest.code %>/recount">Recount</a>
+          </div>
+          <% } %>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-condensed table-striped">
+            <tbody>
+              <tr>
+                <th></th>
+                <th><%= __('Total') %></th>
+                <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
+                <% if (puzzle.revealDate < new Date()) { %>
+                <th>
+                  <a href="/archive/<%= puzzle.puzzleId %>/scores">
+                    <%= puzzle.puzzleNum %>
+                  </a>
+                </th>
+                <% } %>
+                <% }) %>
+              </tr>
+              <% var orderNum = 0; %>
+              <% contest.results.sort((r1,r2) => r2.score - r1.score).forEach(function(result) { orderNum++; %>
+              <tr>
+                <td class="<%= orderNum <=3?'text-success':'' %>"><%= orderNum %>. <%= result.userName %></td>
+                <td>
+                  <%= result.solvedCount %> puzzles: <%= result.totalTimeStr %> <%= result.errCount > 0?"("+result.errCount+" errors)":"" %>
+                </td>
+                <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
+                <% if (puzzle.revealDate < new Date()) { %>
+                <% var userRes = puzzle.results.filter(res => res.userId.equals(result.userId)); %>
+                <% if (userRes==0) { %>
+                <td></td>
+                <% } else { %>
+                <td><%= userRes[0].timeStr %><%= userRes[0].errors > 0?(" (" + userRes[0].errors + "errors )"):"" %></td>
+                <% } %>
+                <% } %>
+                <% }) %>
+              </tr>
+              <% }) %>
+              <tr>
+                <th></th>
+                <th><%= __('Total') %></th>
+                <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
+                <% if (puzzle.revealDate < new Date()) { %>
+                <th>
+                  <a href="/archive/<%= puzzle.puzzleId %>/scores">
+                    <%= puzzle.puzzleNum %>
+                  </a>
+                </th>
+                <% } %>
+                <% }) %>
+                <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                <th>
+                </th>
+                <% } %>
+              </tr>
+              <% if (typeof user != 'undefined' && user.role=='admin') { %>
+              <tr>
+                <td></td>
+                <td></td>
+                <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
+                <% if (puzzle.revealDate < new Date() && typeof puzzle.details != 'undefined') { %>
+                <td>
+                  <%= Math.round(puzzle.details.bestTime/1000) %>(<%= Math.round(puzzle.details.bestScore*10)/10 %>)<br>
+                  <%= Math.round(puzzle.details.medianTime/1000) %>(<%= Math.round(puzzle.details.medianScore*10)/10 %>)<br>
+                  <%= Math.round(puzzle.details.complexity/10000) %>
+                </td>
+                <% } %>
+                <% }) %>
+                <td>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

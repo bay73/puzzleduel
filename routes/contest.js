@@ -47,6 +47,39 @@ router.get('/:contestid/results', async (req, res, next) => {
   }
 });
 
+router.get('/:contestid/times', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    const contest = await Contest.findOne({code: req.params.contestid});
+    if (!contest || contest.start > new Date()) {
+      res.sendStatus(404);
+      return;
+    }
+    var contestObj = contest.toObject();
+    var locale = req.getLocale();
+    if (locale != 'en' && contest.translations) {
+      if (contest.translations[locale] && contest.translations[locale].name) {
+        contestObj.name = contest.translations[locale].name;
+      }
+      if (contest.translations[locale] && contest.translations[locale].description) {
+        contestObj.description = contest.translations[locale].description;
+      }
+    }
+    contestObj.results.forEach(result => {
+      result.totalTimeStr = util.timeToString(result.totalTime);
+    })
+    contestObj.puzzles.forEach(puzzle => {
+      puzzle.results.forEach(res => {
+        res.timeStr = util.timeToString(res.time);
+      })
+    })
+    res.render('contest_times', {user: req.user, contest: contestObj})
+    profiler.log('contestResult', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.get('/:contestid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();

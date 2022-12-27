@@ -74,6 +74,10 @@ const ContestSchema = new mongoose.Schema({
       time: {
         type: Number,
         required: false
+      },
+      errors: {
+        type: Number,
+        required: false
       }
     }],
     details: {

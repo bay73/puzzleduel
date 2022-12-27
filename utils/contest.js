@@ -84,7 +84,7 @@ async function recountContest(contestId) {
     contest.puzzles[i].details = results.details;
     if (typeof results.results != 'undefined') {
       results.results.forEach(result => {
-        contest.puzzles[i].results.push({userId: result.userId, score: result.score});
+        contest.puzzles[i].results.push({userId: result.userId, score: result.score, time: result.time, errors: result.errCount});
         if (typeof userTotals[result.userId]=='undefined'){
           userTotals[result.userId] = {userName: result.userName, score: 0, solvedCount: 0, totalTime: 0, totalErr: 0 };
         }
