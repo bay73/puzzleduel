@@ -12,9 +12,11 @@
         <% }%>
         <div class="card-body">
           <%- contest.description %>
+          <% if(!contest.type || contest.type != 'championship') {%>
           <br><br>
           <%= __('Full results of the contest see at ') %>
           <a href="/contest/<%= contest.code %>/results"><%= __('the results page') %></a>
+          <% } %>
         </div>
         <div class="card-body">
           <table class="table table-hover table-condensed">
@@ -23,9 +25,13 @@
                 <th><%= __('#') %></th><th><%= __('Puzzle') %></th>
                 <% if(user) { %>
                 <th><%= __('Your time') %></th>
+                <% if(!contest.type || contest.type != 'championship') {%>
                 <th><%= __('Your score') %></th>
                 <% } %>
+                <% } %>
+                <% if(!contest.type || contest.type != 'championship') {%>
                 <th><%= __('Best time') %></th>
+                <% } %>
               </tr>
               <% puzzles.sort((puzzle1, puzzle2) => puzzle1.num - puzzle2.num).forEach(function(puzzle) { %>
               <tr>
@@ -41,13 +47,17 @@
                 </td>
                 <% if(user) { %>
                 <td><%= puzzle.userTime %><%= puzzle.userErrCount==0 ? "" : (" (" + puzzle.userErrCount + " " + __n("error", puzzle.userErrCount) + ")") %></td>
+                <% if(!contest.type || contest.type != 'championship') {%>
                 <td><%= puzzle.userScore ? puzzle.userScore:"" %></td>
                 <% } %>
+                <% } %>
+                <% if(!contest.type || contest.type != 'championship') {%>
                 <td>
                   <a href="/archive/<%= puzzle.code %>/scores">
                     <%= puzzle.bestTime %>
                   </a>
                 </td>
+                <% } %>
               </tr>
               <% }) %>
             </tbody>
