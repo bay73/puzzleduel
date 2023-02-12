@@ -20,7 +20,12 @@ beforeSuite((suite, cb)=> {
     puzzle.render(Snap(suite.GRID_SELECTOR));
     return puzzle;
   }
-  requirejs(["squarepuzzle"], cb);
+  module = {};
+  requirejs(['puzzle_types/util.js', 'squarepuzzle'], function() {
+    window.util=Util;
+    requirejs.undef('puzzle_types/point_a_star.js');
+    requirejs(['puzzle_types/point_a_star.js'], cb);
+  });
 }),
 
 after((suite)=> {
@@ -55,6 +60,15 @@ test('Author controllers',(suite) => {
   assert("Right clue chooser").that(puzzle.right[0].chooserValues).containsExactly([{},{text: '0', returnValue: '0'},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'}]);
   assert("Right clue click").that(puzzle.right[0].clickSwitch).isNull();
 }),
+
+// Checker tests
+test('Correct solution',(suite) => {
+  let clues = {"a1": "cross", "c2": "arrow_ur", "c3": "arrow_ul", "bottom": ["1",null,"1",null], "right": ["1",null,null,null]};
+  let data = {"d1": "star", "b2": "star", "a4": "star", "c4": "star"}
+
+  assert("Correct solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
+}),
+
 );
 
 

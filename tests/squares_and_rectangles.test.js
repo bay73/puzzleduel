@@ -157,11 +157,11 @@ test('Automatic border between areas',(suite) => {
   assert("Edge data after second connector").that(puzzle.edges[0][0][1].data).isEqualTo({color: puzzle.colorSchema.greyColor});
 }),
 // Checker tests
-test('Correct solution',(suite) => {
+test('Touching same size area',(suite) => {
   let clues = {"c1": "black_circle", "c4": "white_circle", "edges": {"a1-1": "huge_black_circle", "d2-2": "huge_white_circle"}, "nodes": {"a3-2": "huge_black_circle"} };
   let data = {"areas":[["a1","b1","a2","b2"],["c1"],["d1","d2","d3","d4"],["c2","c3","c4"],["a3","b3","a4","b4"]]};
 
-  assert("Correct solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
+  assert("Touching same size area").that(Checker.check("4x4", clues, data)).isEqualTo({status:"Areas of the same size shouldn't share an edge",errors:["a1","b1","a2","b2","a3","b3","a4","b4"]});
 }),
 
 test('Incorrect not a rectangle',(suite) => {

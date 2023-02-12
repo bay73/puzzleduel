@@ -2,7 +2,7 @@ if (typeof util=="undefined") {
   var util = require('./util');
 }
 
-const Checker = {
+var Checker = {
 check:function(dimension, clues, data){
   // Create array
   var dim = util.parseDimension(dimension);
@@ -114,7 +114,7 @@ checkRowClue: function(cells, clue, row) {
 checkArrows: function(clues, cells) {
   for (var y = 0; y < cells.rows; y++) {
     for (var x = 0; x < cells.cols; x++) {
-      if (clues[y][x] && clues[y][x]!="white"){
+      if (clues[y][x] && clues[y][x]!="cross"){
         if (!Checker.checkArrow(clues[y][x], {x:x, y:y}, cells)) {
           return {status: "The arrow should point to one star" , errors: [util.coord(x,y)]};
         }
