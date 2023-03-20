@@ -1,0 +1,37 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+          <h1 class=""><%= name %>
+          </h1>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-condensed table-striped">
+            <tbody>
+              <tr>
+              </tr>
+              <% results.sort((r1,r2) => {  %>
+              <%   return (r1.solvedCount == r2.solvedCount)?(r1.totalTime - r2.totalTime):(r2.solvedCount - r1.solvedCount);  %>
+              <% }).forEach(function(result) { %>
+              <tr>
+                <td><a href="/userstat/<%= result.userId %>"><%= result.userName %></a></td>
+                <td>
+                  <%= result.solvedCount %>
+                </td>
+                <td>
+                  <%= result.showTime %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

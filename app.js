@@ -48,6 +48,7 @@ app.use('/puzzleset', require('./routes/puzzleset.js'));
 app.use('/rating', require('./routes/rating.js'));
 app.use('/admin', require('./routes/admin.js'));
 app.use('/userstat', require('./routes/userstat.js'));
+app.use('/league', require('./routes/leagues.js'));
 
 // Static content
 app.use('/images', express.static(__dirname + '/images', { maxage: '3d' }));

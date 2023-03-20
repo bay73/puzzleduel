@@ -5,6 +5,7 @@ const Rating = require('../models/Rating');
 const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const PuzzleComment = require('../models/PuzzleComment');
+const League = require('../models/League');
 
 const CONTEST_CACHE_TTL = 10*1000; // 10 seconds
 const PUZZLETYPE_CACHE_TTL = 60*60*1000; // 1 hour
@@ -13,6 +14,7 @@ const RATING_CACHE_TTL = 60*60*1000; // 1 hour
 const USER_CACHE_TTL = 60*60*1000; // 1 hour
 const SOLVINGTIME_CACHE_TTL = 20*1000; // 20 seconds
 const COMMENTER_CACHE_TTL = 60*60*1000; // 1 hour
+const LEAGUE_CACHE_TTL = 60*60*1000; // 1 hour
 
 const contestCache = {}
 const puzzleTypeCache = {fresheness: undefined, puzzleTypes: {}}
@@ -22,6 +24,7 @@ const monthlyRatingChangeCache = {};
 const monthlyCommentersCache = {};
 const userCache = {}
 const solvingTimeCache = {}
+const leagueCache = {}
 
 module.exports.readContest = async function(contestId) {
   const currentTime = new Date().getTime();
@@ -116,14 +119,28 @@ module.exports.readRating = async function(ratingDate) {
   return ratingCache[ratingDate].ratingList;
 }
 
-module.exports.readUserName = async function(userId) {
+module.exports.readLeague = async function(leagueCode, leagueDate) {
   const currentTime = new Date().getTime();
+  const key = leagueCode + "[" + leagueDate + "]"
+  if (typeof leagueCache[key]=='undefined' || currentTime > leagueCache[key].fresheness) {
+    const league = await League.findOne({code: leagueCode, startDate: leagueDate}).lean();
+    leagueCache[key] = {league: league, fresheness: new Date().getTime() + LEAGUE_CACHE_TTL};
+  }
+  return leagueCache[key].league;
+}
+
+module.exports.readUserName = async function(userId) {
+  console.log(userId)
+  const currentTime = new Date().getTime();
+  console.log(userCache)
   if (typeof userCache[userId]=='undefined' || currentTime > userCache[userId].fresheness) {
     const user = await User.findById(userId, "name").lean();
+    console.log(user)
     if (user) {
       userCache[userId] = {userName: user.name, fresheness: new Date().getTime() + USER_CACHE_TTL};
     }
   }
+  console.log(userCache)
   return userCache[userId].userName;
 }
 
@@ -195,6 +212,7 @@ module.exports.clearCache = function() {
   Object.keys(monthlyCommentersCache).forEach(function(key) { delete solvingTimeCache[key]; });
   Object.keys(userCache).forEach(function(key) { delete userCache[key]; });
   Object.keys(solvingTimeCache).forEach(function(key) { delete solvingTimeCache[key]; });
+  Object.keys(leagueCache).forEach(function(key) { delete leagueCache[key]; });
   puzzleTypeCache.fresheness = undefined;
 }
 
@@ -213,8 +231,10 @@ module.exports.printCache = function() {
   console.log("commenters:");
   Object.keys(monthlyCommentersCache).forEach(function(key) { console.log(key, monthlyCommentersCache[key].fresheness); });
   console.log("users:");
-  Object.keys(userCache).forEach(function(key) { console.log(key, userCache[key].fresheness);; });
+  Object.keys(userCache).forEach(function(key) { console.log(key, userCache[key].fresheness); });
   console.log("solvingTimes:");
-  Object.keys(solvingTimeCache).forEach(function(key) { console.log(key, solvingTimeCache[key].fresheness);; });
+  Object.keys(solvingTimeCache).forEach(function(key) { console.log(key, solvingTimeCache[key].fresheness); });
+  console.log("leagues:");
+  Object.keys(leagueCache).forEach(function(key) { console.log(key, leagueCache[key].fresheness); });
 }
 
