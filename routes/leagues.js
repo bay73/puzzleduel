@@ -12,13 +12,14 @@ router.get('/:leagueid/:date', async (req, res, next) => {
     res.render('league_view', {
       user: req.user,
       name: league.name,
+      date: req.params.date,
       results: league.results.map(result => {
         return {
           userId: result.userId,
           userName: result.userName,
           solvedCount: result.solvedCount,
           totalTime: result.totalTime,
-          showTime: util.timeToString(result.totalTime)
+          showTime: util.timeToString(result.totalTime),
         }
       })
     })
