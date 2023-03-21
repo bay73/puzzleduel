@@ -2,14 +2,15 @@ const League = require('../models/League');
 const Rating = require('../models/Rating');
 const Puzzle = require('../models/Puzzle');
 const UserSolvingTime = require('../models/UserSolvingTime');
+const leagueSettings = require('../utils/league_settings');
 
 async function createFromRating(startDate) {
   await League.deleteMany({})
 
   let leagueSize = 20
   let leageSizeIncrement = 10
-  let names = ["Red League", "Orange League", "Yellow League", "Green League", "Blue League", "Indigo League", "Violet League"]
-  let ids = ["3bxc1wolfgm8dof", "3bxc1wolfgm8dpe", "3bxc1wolfgm8dqf", "3bxc1wolfgm8dr8", "3bxc1wolfgm8ds3", "3bxc1wolfgm8dt6", "3bxc1wolfgm8du0"]
+  let ids = []
+  Object.entries(leagueSettings).forEach(([key, value]) => ids[value.index-1] = key)
 
   var leagueStartDate = new Date(Date.parse(startDate));
   leagueStartDate.setUTCHours(0,0,0,0);
@@ -21,9 +22,6 @@ async function createFromRating(startDate) {
   ratingDate.setDate(ratingDate.getDate() - ratingDate.getUTCDay());
   ratingDate.setUTCHours(0,0,0,0);
 
-  console.log("LeagueDates = ",leagueStartDate,leagueEndDate);
-  console.log("ratingDates = ",ratingDate);
-
   const ratingsList = await Rating.find({date: ratingDate}).sort({value: -1})
   const ratings = ratingsList.filter(rating => rating.value > 0 && rating.missedWeek < 3);
 
@@ -32,10 +30,10 @@ async function createFromRating(startDate) {
   for (let i=0; i<ratings.length;i++) {
     users.push({userId: ratings[i].userId, userName: ratings[i].userName})
     if (users.length >= leagueSize) {
-      console.log(names[leagueOrder], users.length)
+      console.log(leagueSettings[ids[leagueOrder]].name, users.length)
       var league = new League({
         code: ids[leagueOrder],
-        name: names[leagueOrder],
+        name: leagueSettings[ids[leagueOrder]].name,
         start: leagueStartDate,
         finish: leagueEndDate,
         participants: users
@@ -48,10 +46,10 @@ async function createFromRating(startDate) {
     }
   }
 
-  console.log(names[leagueOrder], users.length)
+  console.log(leagueSettings[ids[leagueOrder]].name, users.length)
   var league = new League({
     code: ids[leagueOrder],
-    name: names[leagueOrder],
+    name: leagueSettings[ids[leagueOrder]].name,
     start: leagueStartDate,
     finish: leagueEndDate,
     participants: users

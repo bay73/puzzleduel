@@ -13,15 +13,7 @@
             <tbody>
               <tr>
               </tr>
-              <% let allSetting = {} %>
-              <% allSetting["Red League"] = {top: 3, bottom: 15, topStyle: 'color: DeepPink;', bottomStyle: 'color: OrangeRed;', mainStyle: 'color: Crimson;', code: '3bxc1wolfgm8dof', next: 'Orange League' } %>
-              <% allSetting["Orange League"] = {top: 5, bottom: 23, topStyle: 'color: OrangeRed;', bottomStyle: 'color: GoldenRod;', mainStyle: 'color: DarkOrange;', code: '3bxc1wolfgm8dpe', prev: 'Red League', next: 'Yellow League' } %>
-              <% allSetting["Yellow League"] = {top: 7, bottom: 30, topStyle: 'color: DarkOrange;', bottomStyle: 'color: DarkKhaki;', mainStyle: 'color: GoldenRod;', code: '3bxc1wolfgm8dqf', prev: 'Orange League', next: 'Green League' } %>
-              <% allSetting["Green League"] = {top: 10, bottom: 40, topStyle: 'color: DarkKhaki;', bottomStyle: 'color: DarkCyan;', mainStyle: 'color: Green;', code: '3bxc1wolfgm8dr8', prev: 'Yellow League', next: 'Blue League' } %>
-              <% allSetting["Blue League"] = {top: 10, bottom: 50, topStyle: 'color: DarkCyan;', bottomStyle: 'color: DodgerBlue;', mainStyle: 'color: DodgerBlue;', code: '3bxc1wolfgm8ds3', prev: 'Green League' } %>
-              <% allSetting["Indigo League"] = {top: 10, bottom: 60, topStyle: 'color: DodgerBlue;', bottomStyle: 'color: Violet;', mainStyle: 'color: Indigo;' } %>
-              <% allSetting["Violet League"] = {top: 10, bottom: 70, topStyle: 'color: Indigo;', bottomStyle: 'color: Grey;', mainStyle: 'color: Violet;' } %>
-              <% let setting = allSetting[name] %>
+              <% let setting = leagueSettings[code] %>
               <% let index = 0  %>
               <% results.sort((r1,r2) => {  %>
               <%   return (r1.solvedCount == r2.solvedCount)?(r1.totalTime - r2.totalTime):(r2.solvedCount - r1.solvedCount);  %>
@@ -44,14 +36,14 @@
           </table>
           <%= __('League ranking based on the number of daily puzzles of the month solved during the month without error submissions. The totol solving time is considered as an additional ranking parameter.') %>
           <br>
-          <% if (name != "Red League") {%>
-          <% let prev = allSetting[setting.prev] %>
-          <%= setting.top %><%= __(' top solvers after end of the month will be promoted to ') %><a href='/league/<%= prev.code %>/<%= date %>'><%= setting.prev %></a>
+          <% let prev = leagueSettings[setting.prev] %>
+          <% if (prev) {%>
+          <%= setting.top %><%= __(' top solvers after end of the month will be promoted to ') %><a href='/league/<%= setting.prev %>/<%= date %>'><%= prev.name %></a>
           <br>
           <% } %>
-          <% if (name != "Blue League") {%>
-          <% let next = allSetting[setting.next] %>
-          <%= results.length - setting.bottom %><%= __(' bottom solvers after end of the month will be downgraded to ') %><a href='/league/<%= next.code %>/<%= date %>'><%= setting.next %></a>
+          <% let next = leagueSettings[setting.next] %>
+          <% if (next) {%>
+          <%= results.length - setting.bottom %><%= __(' bottom solvers after end of the month will be downgraded to ') %><a href='/league/<%= setting.next %>/<%= date %>'><%= next.name %></a>
           <% } %>
         </div>
       </div>

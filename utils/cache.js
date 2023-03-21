@@ -119,28 +119,29 @@ module.exports.readRating = async function(ratingDate) {
   return ratingCache[ratingDate].ratingList;
 }
 
-module.exports.readLeague = async function(leagueCode, leagueDate) {
+module.exports.readLeagues = async function(leagueDate) {
+  var leagueStartDate = new Date(Date.parse(leagueDate));
+  leagueStartDate.setUTCHours(0,0,0,0);
+  leagueStartDate.setDate(1)
   const currentTime = new Date().getTime();
-  const key = leagueCode + "[" + leagueDate + "]"
+  const key = leagueStartDate
   if (typeof leagueCache[key]=='undefined' || currentTime > leagueCache[key].fresheness) {
-    const league = await League.findOne({code: leagueCode, startDate: leagueDate}).lean();
-    leagueCache[key] = {league: league, fresheness: new Date().getTime() + LEAGUE_CACHE_TTL};
+    const leagues = await League.find({startDate: leagueStartDate}).lean();
+    const leaguesMap = {}
+    leagues.forEach(league => leaguesMap[league.code] = league)
+    leagueCache[key] = {leagues: leaguesMap, fresheness: new Date().getTime() + LEAGUE_CACHE_TTL};
   }
-  return leagueCache[key].league;
+  return leagueCache[key].leagues;
 }
 
 module.exports.readUserName = async function(userId) {
-  console.log(userId)
   const currentTime = new Date().getTime();
-  console.log(userCache)
   if (typeof userCache[userId]=='undefined' || currentTime > userCache[userId].fresheness) {
     const user = await User.findById(userId, "name").lean();
-    console.log(user)
     if (user) {
       userCache[userId] = {userName: user.name, fresheness: new Date().getTime() + USER_CACHE_TTL};
     }
   }
-  console.log(userCache)
   return userCache[userId].userName;
 }
 

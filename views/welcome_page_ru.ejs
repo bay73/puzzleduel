@@ -24,6 +24,33 @@
               </tbody>
             </table class="table table-hover table-condensed table-striped">
           </div>
+          <% if(new Date() > new Date('2023-04-01T00:00:00.000+00:00')) { %>
+          <div class="col-md">
+            <table class="table table-hover table-condensed table-striped">
+              <tbody>
+                <tr>
+                  <th colspan=2>
+                    Лидеры в зачёте лиг
+                  </th>
+                </tr>
+                <% topLeagues.forEach(function(league){ %>
+                <tr style='<%= leagueSettings[league.code].mainStyle %>' >
+                  <td class="p-0">
+                    <a style='display: block; <%= leagueSettings[league.code].mainStyle %>' href="/league/<%= league.code %>/<%= league.date %>">
+                      <%= league.top.userName %>
+                    </a>
+                  </td>
+                  <td class="p-0 text-center">
+                    <a style='display: block; <%= leagueSettings[league.code].mainStyle %>' href="/league/<%= league.code %>/<%= league.date %>">
+                      <%= league.top.solvedCount %>
+                    </a>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table class="table table-hover table-condensed table-striped">
+          </div>
+          <%  } else { %>
           <div class="col-md">
             <table class="table table-hover table-condensed table-striped">
               <tbody>
@@ -43,6 +70,7 @@
               </tbody>
             </table class="table table-hover table-condensed table-striped">
           </div>
+          <%  } %>
         </div>
       </div>
       <% if (contestPuzzle){ %>
@@ -132,6 +160,15 @@
           <% } %>
           <% if(contestPuzzle){ %>
           showcontestPuzzle();
+          <% } %>
+          <% if (new Date() > new Date('2023-04-01T00:00:00.000+00:00')) { %>
+          showMessage("<br>1-oe апреля - годовщина создания сайта.<br><br>" +
+            "Мы отмечаем годовщину созданием нового зачёта в лигах. Каждый решатель участвует в одной из лиг. " +
+            "Первоначальное распределение по лигам основано на текущем рейтинге. Позже оно будет зависить от предыдущих результатов в лиге. <br>" +
+            "Каждое соревнование в лиге продолжается календарный месяц и места участников определяются количеством задач дня, решенных без ошибок.<br>" +
+            "<br><br>" +
+            "Успехов в решении!",
+            null,"2023-04-01");
           <% } %>
           });
       </script>

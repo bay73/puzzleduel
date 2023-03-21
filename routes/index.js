@@ -5,18 +5,21 @@ const Puzzle = require('../models/Puzzle');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
+const leagueSettings = require('../utils/league_settings');
 
 // Welcome Page
 router.get('/', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var date = new Date();
-    var twoDaysAgo = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
-    const [dailyPuzzle, contest, ratingChange, commenters] = await Promise.all([
+    const  date = new Date();
+    const  twoDaysAgo = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
+    const  oneDayAgo = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+    const [dailyPuzzle, contest, ratingChange, commenters, leagues] = await Promise.all([
       cache.readPuzzleByDate(new Date().toISOString().slice(0,10)),
       cache.readDailyShadowContest(),
       cache.readMonthlyRatingChange(twoDaysAgo),
-      cache.readMonthlyCommenters(twoDaysAgo)
+      cache.readMonthlyCommenters(twoDaysAgo),
+      cache.readLeagues(oneDayAgo)
     ]);
     if (dailyPuzzle) {
       var dailyPuzzleObj = await util.puzzleToPresent(dailyPuzzle, req.getLocale());
@@ -44,14 +47,23 @@ router.get('/', async (req, res, next) => {
         }
       }
     }
-    topRatingChange = ratingChange.sort((change1, change2)=>(change2.change - change1.change)).slice(0,5);
-    topCommenters = commenters.sort((commenter1, commenter2)=>(commenter2.commentCount - commenter1.commentCount)).slice(0,5);
+    const topRatingChange = ratingChange.sort((change1, change2)=>(change2.change - change1.change)).slice(0,5);
+    const topCommenters = commenters.sort((commenter1, commenter2)=>(commenter2.commentCount - commenter1.commentCount)).slice(0,5);
+    const topLeagues= Object.values(leagues).map(league => {
+      return {
+        code: league.code,
+        date: oneDayAgo.toISOString().slice(0,10),
+        top: league.results.sort((r1,r2)=>(r1.solvedCount == r2.solvedCount)?(r1.totalTime - r2.totalTime):(r2.solvedCount - r1.solvedCount))[0]
+      }
+    })
     res.render(res.__('welcome_page'), {
       user: req.user,
       dailyPuzzle: dailyPuzzleObj,
       contestPuzzle: contestPuzzleObj,
       topRatingChange: topRatingChange,
-      topCommenters: topCommenters
+      topCommenters: topCommenters,
+      topLeagues: topLeagues,
+      leagueSettings: leagueSettings
     });
     profiler.log('welcomePage', processStart);
   } catch (e) {
