@@ -27,7 +27,7 @@ leagueSettings["3bxc1wolfgm8dqf"] = {
   name: "Yellow League",
   top: 7,
   bottom: 30,
-  topStyle: 'color: #CCAA00;',
+  topStyle: 'color: #DD9900;',
   mainStyle: 'color: #BBBB00;',
   bottomStyle: 'color: #99CC00;',
   prev: '3bxc1wolfgm8dpe',
@@ -39,7 +39,7 @@ leagueSettings["3bxc1wolfgm8dr8"] = {
   top: 10,
   bottom: 40,
   topStyle: 'color: #AADD00;',
-  mainStyle: 'color: #55EE22;',
+  mainStyle: 'color: #44EE66;',
   bottomStyle: 'color: #33BB99;',
   prev: '3bxc1wolfgm8dqf',
   next: '3bxc1wolfgm8ds3'
