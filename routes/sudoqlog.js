@@ -5,7 +5,7 @@ const SudoqLog = require('../models/SudoqLog');
 // Save puzzle log
 router.post('/:userid/:date', async (req, res, next) => {
   try {
-    console.log('body',req.body)
+    console.log('body',req)
     console.log('body length',req.body.length)
     const logItems = []
     for (let i=0; i< req.body.length; i++) {
