@@ -3,13 +3,12 @@ const router = express.Router();
 const SudoqLog = require('../models/SudoqLog');
 
 // Save puzzle log
-router.post('/:userid/:date', async (req, res, next) => {
+router.get('/:userid/:date', async (req, res, next) => {
   try {
-    console.log('body',req)
-    console.log('body length',req.body.length)
+    const body = JSON.parse(req.query.data)
     const logItems = []
-    for (let i=0; i< req.body.length; i++) {
-      const bodyItem = req.body[i]
+    for (let i=0; i< body.length; i++) {
+      const bodyItem = body[i]
       logItems.push(
         new SudoqLog({
           userId: req.params.userid,
@@ -22,7 +21,7 @@ router.post('/:userid/:date', async (req, res, next) => {
       )
     }
     await SudoqLog.insertMany(logItems)
-    res.json(null);
+    res.json(null)
   } catch (e) {
     next(e);
   }
