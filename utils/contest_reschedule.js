@@ -10,7 +10,7 @@ require('dotenv').config();
 const db = require('../config/keys').mongoURI;
 
 recount = async function () {
-  await rescheduleDailyContest('40645e1lawglwtl');
+  await rescheduleDailyContest('4064531lfohn6q2');
 }
 
 // Connect to MongoDB
