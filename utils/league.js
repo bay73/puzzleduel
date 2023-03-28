@@ -65,7 +65,7 @@ async function recountLeague(leagueId, startDate) {
   const league = await League.findOne({code: leagueId, start: leagueStartDate})
 
   if (!league) {
-    console.log("League not found")
+    console.log("League " + leagueId + " not found")
     return;
   }
 
@@ -87,6 +87,7 @@ async function recountLeague(leagueId, startDate) {
     }
     results.push(result);
   }
+  console.log("League " + leagueId + ". Results for " + results.length + " user found!")
   league.results = results;
   await league.save()
 }

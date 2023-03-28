@@ -74,6 +74,7 @@ async function recountPuzzle(puzzle, scoring) {
 async function recountContest(contestId) {
   const contest = await Contest.findOne({code: contestId});
   if (!contest) {
+    console.log("Contest " + contestId + " is not found!")
     return false;
   }
   var userTotals = {};
@@ -95,6 +96,7 @@ async function recountContest(contestId) {
       });
     }
   }
+  console.log("Results for " + Object.keys(userTotals).length + " user found!")
   contest.results = [];
   for (let [userId, value] of Object.entries(userTotals)) {
     contest.results.push({userId: userId, userName: value.userName, score: Math.round(value.score*10)/10, solvedCount: value.solvedCount, totalTime: value.totalTime, errCount: value.totalErr});
