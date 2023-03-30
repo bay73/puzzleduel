@@ -16,7 +16,7 @@ router.get('/:leagueid/:date', async (req, res, next) => {
       code: league.code,
       name: league.name,
       date: req.params.date,
-      leagueSettings: leagueSettings,
+      leagueSettings: leagueSettings(res.locals.theme),
       results: league.results.map(result => {
         return {
           userId: result.userId,

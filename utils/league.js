@@ -2,7 +2,7 @@ const League = require('../models/League');
 const Rating = require('../models/Rating');
 const Puzzle = require('../models/Puzzle');
 const UserSolvingTime = require('../models/UserSolvingTime');
-const leagueSettings = require('../utils/league_settings');
+const leagueSettings = require('../utils/league_settings')();
 
 async function createFromRating(startDate) {
   await League.deleteMany({})
