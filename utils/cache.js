@@ -14,7 +14,7 @@ const RATING_CACHE_TTL = 60*60*1000; // 1 hour
 const USER_CACHE_TTL = 60*60*1000; // 1 hour
 const SOLVINGTIME_CACHE_TTL = 20*1000; // 20 seconds
 const COMMENTER_CACHE_TTL = 60*60*1000; // 1 hour
-const LEAGUE_CACHE_TTL = 60*60*1000; // 1 hour
+const LEAGUE_CACHE_TTL = 5*60*1000; // 5 minutes
 
 const contestCache = {}
 const puzzleTypeCache = {fresheness: undefined, puzzleTypes: {}}
