@@ -1,5 +1,6 @@
 const createFromRating = require('../utils/league').createFromRating;
 const recountAllLeagues = require('../utils/league').recountAllLeagues;
+const refillLeagues = require('../utils/league').refillLeagues;
 
 const mongoose = require('mongoose');
 
@@ -9,6 +10,7 @@ require('dotenv').config();
 const db = require('../config/keys').mongoURI;
 
 recount = async function () {
+  await refillLeagues(new Date());
   await recountAllLeagues(new Date());
 }
 

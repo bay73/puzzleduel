@@ -104,6 +104,29 @@ async function recountAllLeagues(startDate) {
   }
 }
 
+async function refillLeagues(date) {
+  var leagueStartDate = new Date(Date.parse(date));
+  leagueStartDate.setUTCHours(0,0,0,0);
+  leagueStartDate.setDate(1)
+  const allUsers = {}
+  const times = await UserSolvingTime.find({date: {$gte: leagueStartDate, $lt: date}, solvingTime: {$gt: 0}})
+  times.forEach(time => allUsers[time.userId] = time.userName)
+  const leagues= await League.find({start: leagueStartDate})
+  leagues.forEach(league => league.participants.forEach(participant => delete allUsers[participant.userId]))
+  if (Object.keys(allUsers).length > 0) {
+    console.log("Found new users: ")
+    console.log(allUsers)
+    let lastLeague = leagues[0];
+    leagues.forEach(league => {if (leagueSettings[league.code].index > leagueSettings[lastLeague.code].index) {lastLeague = league}})
+    console.log("Adding users to " + lastLeague.name)
+    Object.entries(allUsers).forEach(([key, value]) => lastLeague.participants.push({userId: key, userName: value}))
+    await lastLeague.save()
+  } else {
+    console.log("No new users found.")
+  }
+}
+
 module.exports.createFromRating = createFromRating;
 module.exports.recountLeague = recountLeague;
 module.exports.recountAllLeagues = recountAllLeagues;
+module.exports.refillLeagues = refillLeagues;
