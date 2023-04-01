@@ -9,7 +9,7 @@ require('dotenv').config();
 const db = require('../config/keys').mongoURI;
 
 recount = async function () {
-  await recountAllLeagues(new Date());
+  await createFromRating('2023/04/01');
 }
 
 // Connect to MongoDB
