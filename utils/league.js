@@ -1,8 +1,28 @@
 const League = require('../models/League');
 const Rating = require('../models/Rating');
 const Puzzle = require('../models/Puzzle');
+const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const leagueSettings = require('../utils/league_settings')();
+
+async function saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users) {
+  console.log(leagueSettings[ids[leagueOrder]].name, users.length)
+  var league = new League({
+    code: ids[leagueOrder],
+    name: leagueSettings[ids[leagueOrder]].name,
+    start: leagueStartDate,
+    finish: leagueEndDate,
+    participants: users
+  });
+  await league.save();
+  for (const item of users) {
+    const user = await User.findById(item.userId)
+    if (user) {
+      user.league = ids[leagueOrder]
+      await user.save()
+    }
+  }
+}
 
 async function createFromRating(startDate) {
   await League.deleteMany({})
@@ -30,31 +50,14 @@ async function createFromRating(startDate) {
   for (let i=0; i<ratings.length;i++) {
     users.push({userId: ratings[i].userId, userName: ratings[i].userName})
     if (users.length >= leagueSize) {
-      console.log(leagueSettings[ids[leagueOrder]].name, users.length)
-      var league = new League({
-        code: ids[leagueOrder],
-        name: leagueSettings[ids[leagueOrder]].name,
-        start: leagueStartDate,
-        finish: leagueEndDate,
-        participants: users
-      });
-      await league.save();
-
+      await saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users)
       leagueSize += leageSizeIncrement;
       leagueOrder++;
       users = [];
     }
   }
 
-  console.log(leagueSettings[ids[leagueOrder]].name, users.length)
-  var league = new League({
-    code: ids[leagueOrder],
-    name: leagueSettings[ids[leagueOrder]].name,
-    start: leagueStartDate,
-    finish: leagueEndDate,
-    participants: users
-  });
-  await league.save();
+  await saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users)
 }
 
 async function recountLeague(leagueId, startDate) {
@@ -121,6 +124,13 @@ async function refillLeagues(date) {
     console.log("Adding users to " + lastLeague.name)
     Object.entries(allUsers).forEach(([key, value]) => lastLeague.participants.push({userId: key, userName: value}))
     await lastLeague.save()
+    for (const key of Object.keys(allUsers)) {
+      const user = await User.findById(key)
+      if (user) {
+        user.league = lastLeague.code
+        await user.save()
+      }
+    }
   } else {
     console.log("No new users found.")
   }

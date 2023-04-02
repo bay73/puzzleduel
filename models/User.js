@@ -42,6 +42,10 @@ const UserSchema = new mongoose.Schema({
     type: Mixed,
     required: false
   },
+  league: {
+    type: String,
+    required: false
+  },
   isTester: {
     type: Boolean,
     required: false
