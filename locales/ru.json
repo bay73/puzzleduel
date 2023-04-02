@@ -402,5 +402,6 @@
 	"Description": "Описание",
 	" bottom solvers after end of the month will be downgraded to ": " худших решателей по итогам месяца будут переведены в ",
 	" top solvers after end of the month will be promoted to ": " лучших решателей по итогам месяца будут повышены в ",
-	"League ranking based on the number of daily puzzles of the month solved during the month without error submissions. The totol solving time is considered as an additional ranking parameter.": "В зачёт лиги учитывается количество задач дня решённых без ошибок в течение месяца. Общее время решения учитывается как дополнительный показатель."
+	"League ranking based on the number of daily puzzles of the month solved during the month without error submissions. The totol solving time is considered as an additional ranking parameter.": "В зачёт лиги учитывается количество задач дня решённых без ошибок в течение месяца. Общее время решения учитывается как дополнительный показатель.",
+	"dOubLESHOW 2x2x2": "dOubLESHOW 2x2x2"
 }

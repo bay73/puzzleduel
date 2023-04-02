@@ -25,7 +25,7 @@
             </table class="table table-hover table-condensed table-striped">
           </div>
           <% let undefinedLeague = topLeagues.findIndex(league => typeof league.top=='undefined') %>
-          <% if(new Date() > new Date('2023-04-01T00:00:00.000+00:00') && undefinedLeague < 0) { %>
+          <% if(undefinedLeague < 0) { %>
           <div class="col-md">
             <table class="table table-hover table-condensed table-striped">
               <tbody>
