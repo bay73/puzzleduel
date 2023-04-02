@@ -62,8 +62,7 @@ router.get('/', async (req, res, next) => {
       contestPuzzle: contestPuzzleObj,
       topRatingChange: topRatingChange,
       topCommenters: topCommenters,
-      topLeagues: topLeagues,
-      leagueSettings: leagueSettings(res.locals.theme)
+      topLeagues: topLeagues
     });
     profiler.log('welcomePage', processStart);
   } catch (e) {

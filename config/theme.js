@@ -1,3 +1,5 @@
+const leagueSettings = require('../utils/league_settings');
+
 module.exports = function(req, res, next) {
 
   var theme = "default";
@@ -9,6 +11,7 @@ module.exports = function(req, res, next) {
   }
 
   res.locals.theme = theme;
+  res.locals.leagueSettings = leagueSettings(res.locals.theme)
 
   next();
 };
