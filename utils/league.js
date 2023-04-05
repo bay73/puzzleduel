@@ -79,10 +79,11 @@ async function recountLeague(leagueId, startDate) {
   for (let i = 0; i < league.participants.length; i++) {
     const participant = league.participants[i];
     const times = await UserSolvingTime.find({userId: participant.userId, puzzleId: {$in: puzzleIds}, date: {$lt: endDate}})
-    const result = {userId: participant.userId, userName: participant.userName, solvedCount: 0, totalTime: 0};
+    const result = {userId: participant.userId, userName: participant.userName, solvedCount: 0, totalSolvedCount: 0, totalTime: 0};
     for (let p = 0; p < times.length; p++) {
       if (times[p].hidden != true && times[p].solvingTime > 0) {
         result.totalTime += times[p].solvingTime;
+        result.totalSolvedCount++;
         if (times[p].errCount == 0) {
           result.solvedCount++;
         }

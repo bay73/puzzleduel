@@ -33,6 +33,10 @@ const LeagueSchema = new mongoose.Schema({
       type: Number,
       required: false
     },
+    totalSolvedCount:  {
+      type: Number,
+      required: false
+    },
     totalTime:  {
       type: Number,
       required: false
