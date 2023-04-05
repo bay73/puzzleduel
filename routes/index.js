@@ -49,11 +49,16 @@ router.get('/', async (req, res, next) => {
     }
     const topRatingChange = ratingChange.sort((change1, change2)=>(change2.change - change1.change)).slice(0,5);
     const topCommenters = commenters.sort((commenter1, commenter2)=>(commenter2.commentCount - commenter1.commentCount)).slice(0,5);
+    const leagueSorting = function(r1, r2) {
+      if (r1.solvedCount != r2.solvedCount) return r2.solvedCount - r1.solvedCount;
+      if (r1.totalSolvedCount != r2.totalSolvedCount) return r2.totalSolvedCount - r1.totalSolvedCount;
+      return r1.totalTime - r2.totalTime;
+    }
     const topLeagues= Object.values(leagues).map(league => {
       return {
         code: league.code,
         date: oneDayAgo.toISOString().slice(0,10),
-        top: league.results.sort((r1,r2)=>(r1.solvedCount == r2.solvedCount)?(r1.totalTime - r2.totalTime):(r2.solvedCount - r1.solvedCount))[0]
+        top: league.results.sort(leagueSorting)[0]
       }
     })
     res.render(res.__('welcome_page'), {

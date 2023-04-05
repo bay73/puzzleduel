@@ -400,6 +400,8 @@
 	"Description": "Description",
 	" bottom solvers after end of the month will be downgraded to ": " bottom solvers after end of the month will be downgraded to ",
 	" top solvers after end of the month will be promoted to ": " top solvers after end of the month will be promoted to ",
-	"League ranking based on the number of daily puzzles of the month solved during the month without error submissions. The totol solving time is considered as an additional ranking parameter.": "League ranking based on the number of daily puzzles of the month solved during the month without error submissions. The totol solving time is considered as an additional ranking parameter.",
-	"dOubLESHOW 2x2x2": "dOubLESHOW 2x2x2"
+	"League ranking based on the number of daily puzzles of the month solved during the month without error submissions. The totol solving time is considered as an additional ranking parameter.": "League ranking based on the number of daily puzzles of the month solved during the month without error submissions. The total number of solved puzzles and solving time are considered as additional ranking parameters.",
+	"dOubLESHOW 2x2x2": "dOubLESHOW 2x2x2",
+	"Solved correctly": "Solved correctly",
+	"Total solved / time": "Total solved / time"
 }

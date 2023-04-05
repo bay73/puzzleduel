@@ -12,22 +12,33 @@
           <table class="table table-hover table-condensed table-striped">
             <tbody>
               <tr>
+                <td></td>
+                <td class="d-none d-sm-table-cell text-center align-baseline">
+                  <%= __('Solved correctly') %>
+                </td>
+                <td class="d-none d-sm-table-cell text-center align-baseline">
+                  <%= __('Total solved / time') %>
+                </td>
               </tr>
               <% let setting = leagueSettings[code] %>
               <% let index = 0  %>
-              <% results.sort((r1,r2) => {  %>
-              <%   return (r1.solvedCount == r2.solvedCount)?(r1.totalTime - r2.totalTime):(r2.solvedCount - r1.solvedCount);  %>
-              <% }).forEach(function(result) { %>
+              <% let sorting = function(r1, r2) {  %>
+              <%   if (r1.solvedCount != r2.solvedCount) return r2.solvedCount - r1.solvedCount; %>
+              <%   if (r1.totalSolvedCount != r2.totalSolvedCount) return r2.totalSolvedCount - r1.totalSolvedCount; %>
+              <%   return r1.totalTime - r2.totalTime; %>
+              <% }  %>
+              <% results.sort(sorting).forEach(function(result) { %>
               <% let style = setting.mainStyle %>
               <% if (index < setting.top ) style = setting.topStyle %>
               <% if (index >= setting.bottom ) style = setting.bottomStyle %>
               <tr style='<%= style %>' >
                 <td><%= result.userName %></td>
-                <td>
+                <td class="text-center">
                   <%= result.solvedCount %>
                 </td>
-                <td>
-                  <%= result.showTime %>
+                <td class="d-none d-sm-table-cell text-center">
+                  <%= result.totalSolvedCount %>
+                  <%= result.showTime==0?"":(" / " + result.showTime) %>
                 </td>
               </tr>
               <% index++ %>

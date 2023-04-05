@@ -21,6 +21,7 @@ router.get('/:leagueid/:date', async (req, res, next) => {
           userId: result.userId,
           userName: result.userName,
           solvedCount: result.solvedCount,
+          totalSolvedCount: result.totalSolvedCount,
           totalTime: result.totalTime,
           showTime: util.timeToString(result.totalTime),
         }
