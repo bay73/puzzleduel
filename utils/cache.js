@@ -125,8 +125,11 @@ module.exports.readLeagues = async function(leagueDate) {
   leagueStartDate.setDate(1)
   const currentTime = new Date().getTime();
   const key = leagueStartDate
+  console.log(key, leagueCache[key])
   if (typeof leagueCache[key]=='undefined' || currentTime > leagueCache[key].fresheness) {
-    const leagues = await League.find({startDate: leagueStartDate}).lean();
+    console.log("read", leagueStartDate)
+    const leagues = await League.find({start: leagueStartDate}).lean();
+    console.log(leagues)
     const leaguesMap = {}
     leagues.forEach(league => leaguesMap[league.code] = league)
     leagueCache[key] = {leagues: leaguesMap, fresheness: new Date().getTime() + LEAGUE_CACHE_TTL};
