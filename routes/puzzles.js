@@ -549,7 +549,7 @@ router.post('/:puzzleid/delete', async (req, res, next) => {
     }
     await UserSolvingTime.deleteMany({puzzleId: puzzle.code});
     await UserActionLog.deleteMany({puzzleId: puzzle.code});
-    await puzzle.delete();
+    await Puzzle.deleteOne({code: req.params.puzzleid});
     res.json({status: "OK"});
     profiler.log('puzzleDelete', processStart);
   } catch (e) {

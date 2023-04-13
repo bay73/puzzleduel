@@ -170,7 +170,7 @@ router.post('/:setid/delete', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    await set.delete();
+    await PuzzleSet.deleteOne({code: req.params.setid});
     res.json({status: "OK"});
     profiler.log('setDelete', processStart);
   } catch (e) {
