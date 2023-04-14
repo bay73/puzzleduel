@@ -16,7 +16,8 @@ router.get('/:userid/:date', async (req, res, next) => {
           size: bodyItem.size,
           answer: bodyItem.answer,
           solved: bodyItem.solved,
-          time: bodyItem.time
+          time: bodyItem.time,
+          cost: bodyItem.cost
         })
       )
     }
