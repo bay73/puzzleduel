@@ -1,4 +1,4 @@
-const createFromRating = require('../utils/league').createFromRating;
+const createNextMonth = require('../utils/league').createNextMonth;
 const recountAllLeagues = require('../utils/league').recountAllLeagues;
 const refillLeagues = require('../utils/league').refillLeagues;
 
@@ -12,6 +12,11 @@ const db = require('../config/keys').mongoURI;
 recount = async function () {
   await refillLeagues(new Date());
   await recountAllLeagues(new Date());
+  if (new Date().getDate() > 26) {
+    const date = new Date();
+    date.setMonth(date.getMonth() +1 )
+    await createNextMonth(date);
+  }
 }
 
 // Connect to MongoDB

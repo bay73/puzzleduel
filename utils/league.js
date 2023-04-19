@@ -137,7 +137,61 @@ async function refillLeagues(date) {
   }
 }
 
-module.exports.createFromRating = createFromRating;
+async function createNextMonth(startDate) {
+  let ids = []
+  Object.entries(leagueSettings).forEach(([key, value]) => ids[value.index-1] = key)
+
+  var leagueStartDate = new Date(Date.parse(startDate));
+  leagueStartDate.setUTCHours(0,0,0,0);
+  leagueStartDate.setDate(1)
+  leagueEndDate = new Date(leagueStartDate)
+  leagueEndDate.setMonth(leagueStartDate.getMonth() + 1)
+  previousLeagueStartDate = new Date(leagueStartDate)
+  previousLeagueStartDate.setMonth(leagueStartDate.getMonth() - 1)
+
+  if (leagueStartDate < new Date()) {
+    console.log("Leagues already started.")
+    return;
+  }
+
+  await League.deleteMany({start: leagueStartDate})
+
+  let sorting = function(r1, r2) {
+    if (r1.solvedCount != r2.solvedCount) return r2.solvedCount - r1.solvedCount;
+    if (r1.totalSolvedCount != r2.totalSolvedCount) return r2.totalSolvedCount - r1.totalSolvedCount;
+    return r1.totalTime - r2.totalTime;
+  }
+
+  let takeFrom = async function (leagueId, fromIndex, toIndex, exclude0) {
+    const league = await League.findOne({code: leagueId, start: previousLeagueStartDate})
+    if (!league) {
+      console.log("League " + ids[leagueOrder] + " not found")
+      return [];
+    }
+    const results = league.results.sort(sorting).slice(fromIndex, toIndex)
+    return results
+      .filter(result => {if (exclude0) {return result.totalSolvedCount > 0} else {return true}})
+      .map(result => {return {userId: result.userId, userName: result.userName}});
+  }
+
+  let leagueOrder = 0;
+  for (let leagueOrder = 0; leagueOrder < 5; leagueOrder++) {
+    let users = [];
+    if (leagueOrder > 0) {
+      users.push(...await takeFrom(ids[leagueOrder - 1], leagueSettings[ids[leagueOrder - 1]].bottom, undefined, leagueOrder === 4));
+      users.push(...await takeFrom(ids[leagueOrder], leagueSettings[ids[leagueOrder]].top, leagueSettings[ids[leagueOrder]].bottom, leagueOrder === 4) );
+    } else {
+      users.push(...await takeFrom(ids[leagueOrder], 0, leagueSettings[ids[leagueOrder]].bottom, false));
+    }
+
+    if (leagueOrder < 4) {
+      users.push(...await takeFrom(ids[leagueOrder + 1], 0, leagueSettings[ids[leagueOrder+1]].top, false));
+    }
+    await saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users)
+  }
+}
+
 module.exports.recountLeague = recountLeague;
 module.exports.recountAllLeagues = recountAllLeagues;
 module.exports.refillLeagues = refillLeagues;
+module.exports.createNextMonth = createNextMonth;
