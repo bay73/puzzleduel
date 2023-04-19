@@ -402,7 +402,7 @@ ControllerBuilder.prototype.addItem = function(item){
 }
 
 // Adds items with numbers from the given range (ends included).
-ControllerBuilder.prototype.addNumbers = function(start, end, color, doNotSubmit){
+ControllerBuilder.prototype.addNumbers = function(start, end, color, image, submitAs){
   this.isNumberController = true;
   this.Number10Item = null;
   for (var i=start; i<=end; i++) {
@@ -414,9 +414,14 @@ ControllerBuilder.prototype.addNumbers = function(start, end, color, doNotSubmit
       itemData.color = color.color;
       itemData.textColor = color.textColor;
     }
-    if (doNotSubmit) {
+    if (typeof submitAs === 'function') {
+      itemData.returnValue = submitAs(i);
+    } else if (submitAs === false) {
     } else {
       itemData.returnValue = i.toString();
+    }
+    if (typeof image != "undefined") {
+      itemData.image = image
     }
     this.addItem(controllerItem(itemData));
   }
@@ -576,6 +581,7 @@ BLACK: {color: (puzzle, isPencil) => puzzle.colorSchema.gridColor,
         textColor: "#fff"},
 OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueColor},
 DARK_OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueSecondColor},
+WHITE_TEXT: {textColor: "#fff"},
 }
 
 // Standard items

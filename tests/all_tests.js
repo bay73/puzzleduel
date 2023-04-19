@@ -185,12 +185,20 @@ requirejs(["tests/sudoku_odd_even_big_small.test.js"], ()=>{
   allTestSuites.push(sudokuOddEvenBigSmallTestSuite);
 })
 
+requirejs(["tests/sudoku_pair_sum.test.js"], ()=>{
+  allTestSuites.push(sudokuPairSumTestSuite);
+})
+
 requirejs(["tests/sudoku_skyscrapers.test.js"], ()=>{
   allTestSuites.push(sudokuSyscrapersTestSuite);
 })
 
-requirejs(["tests/sudoku_x_sums.test.js"], ()=>{
-  allTestSuites.push(sudokuXSumsTestSuite);
+requirejs(["tests/sudoku_skyscrapers.test.js"], ()=>{
+  allTestSuites.push(sudokuSyscrapersTestSuite);
+})
+
+requirejs(["tests/sudoku_square_number.test.js"], ()=>{
+  allTestSuites.push(sudokuSquareNumberTestSuite);
 })
 
 requirejs(["tests/suguru.test.js"], ()=>{

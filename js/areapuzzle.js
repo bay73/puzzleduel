@@ -502,7 +502,7 @@ fillominoPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forAuthor().cell().chooser()
         .addNumbers(1,15))
       .add(controller().forSolver().cell().noClue().chooser(true)
-        .addNumbers(1,10,"",true))
+        .addNumbers(1,10,undefined,undefined,false))
       .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
         .addItem(StdItem.BLACK.asAreaBorder()))
       .add(controller().forSolver().connector().drag()

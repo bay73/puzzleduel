@@ -71,6 +71,29 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addNumbers(1, maxValue))
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
+/*
+  } else if (typeCode=="sudoku_square_number") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().edge().clickSwitch()
+        .addItem(StdItem.SMALL_CIRCLE.submitAs("black_circle")))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .build(this);
+  } else if (typeCode=="sudoku_pair_sum") {
+    var maxValue = this.rows;
+    var maxSum = 2 * this.rows - 1
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().edge().chooser()
+        .addNumbers(3, maxSum, StdColor.WHITE_TEXT, "small_circle", i=>"+"+i))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .build(this);
+*/
   } else {
   var typeProperties = {}
 

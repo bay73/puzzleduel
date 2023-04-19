@@ -5,7 +5,7 @@ if (typeof sudoku_util=="undefined") {
   var sudoku_util = require('./sudoku_util');
 }
 
-const Checker = {
+var Checker = {
 check:function(dimension, clues, data){
   // Create array
   var dim = util.parseDimension(dimension);
