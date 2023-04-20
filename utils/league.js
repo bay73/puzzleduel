@@ -5,7 +5,7 @@ const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const leagueSettings = require('../utils/league_settings')();
 
-async function saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users) {
+async function saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users, updateUsers) {
   console.log(leagueSettings[ids[leagueOrder]].name, users.length)
   var league = new League({
     code: ids[leagueOrder],
@@ -15,11 +15,13 @@ async function saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, user
     participants: users
   });
   await league.save();
-  for (const item of users) {
-    const user = await User.findById(item.userId)
-    if (user) {
-      user.league = ids[leagueOrder]
-      await user.save()
+  if (updateUsers) {
+    for (const item of users) {
+      const user = await User.findById(item.userId)
+      if (user) {
+        user.league = ids[leagueOrder]
+        await user.save()
+      }
     }
   }
 }
@@ -50,14 +52,14 @@ async function createFromRating(startDate) {
   for (let i=0; i<ratings.length;i++) {
     users.push({userId: ratings[i].userId, userName: ratings[i].userName})
     if (users.length >= leagueSize) {
-      await saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users)
+      await saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users, true)
       leagueSize += leageSizeIncrement;
       leagueOrder++;
       users = [];
     }
   }
 
-  await saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users)
+  await saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users, true)
 }
 
 async function recountLeague(leagueId, startDate) {
@@ -187,7 +189,21 @@ async function createNextMonth(startDate) {
     if (leagueOrder < 4) {
       users.push(...await takeFrom(ids[leagueOrder + 1], 0, leagueSettings[ids[leagueOrder+1]].top, false));
     }
-    await saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users)
+    await saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users, false)
+  }
+}
+
+async function switchUserLeagues() {
+  const date = new Date()
+  const leagues= await League.find({start: {$lt: date}, finish: {$gt: date}})
+  for (const league of leagues) {
+    for (const item of league.participants) {
+      const user = await User.findById(item.userId)
+      if (user) {
+        user.league = league.code
+        await user.save()
+      }
+    }
   }
 }
 
@@ -195,3 +211,4 @@ module.exports.recountLeague = recountLeague;
 module.exports.recountAllLeagues = recountAllLeagues;
 module.exports.refillLeagues = refillLeagues;
 module.exports.createNextMonth = createNextMonth;
+module.exports.switchUserLeagues = switchUserLeagues;

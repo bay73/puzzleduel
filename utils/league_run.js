@@ -1,6 +1,7 @@
 const createNextMonth = require('../utils/league').createNextMonth;
 const recountAllLeagues = require('../utils/league').recountAllLeagues;
 const refillLeagues = require('../utils/league').refillLeagues;
+const switchUserLeagues = require('../utils/league').switchUserLeagues;
 
 const mongoose = require('mongoose');
 
