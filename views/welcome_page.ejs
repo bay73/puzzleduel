@@ -162,6 +162,13 @@
           <% if(contestPuzzle){ %>
           showcontestPuzzle();
           <% } %>
+          <% if (new Date() > new Date('2023-04-28T00:00:00.000+00:00') && new Date() < new Date('2023-05-01T00:00:00.000+00:00')) { %>
+          showMessage("<br>First league competition is finishing soon. Don't forget to solve all daily puzzles before the end of the competition.<br>" +
+            "At the midnight (GMT) April 30th the league scoring will be finalized and solvers will be distributed for the May's competition. <br>" +
+            "<br><br>" +
+            "Happy solving!",
+            null,"2023-04-25");
+          <% } %>
         });
       </script>
     </div>
