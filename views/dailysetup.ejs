@@ -5,8 +5,8 @@
     font-size: 70%;
     padding: 1px;
     display: inline-block;
-    width: 1.75em;
-    height: 1.75em;
+    width: 1.95em;
+    height: 1.95em;
     text-align: center;
   }
 </style>
@@ -23,7 +23,7 @@
             <tbody>
               <% puzzles.forEach(function(puzzle) { %>
               <tr>
-                <td>
+                <td class="p-1">
                   <% if (!puzzle.daily) { %>
                   <a href="/admin/daily/<%= puzzle.code %>/top">
                     <span class="glyphicon glyphicon-arrow-up"></span>
@@ -37,11 +37,11 @@
                   </a>
                   <% } %>
                 </td>
-                <td class="<%= puzzle.daily<new Date()?'text-warning':'' %>">
+                <td class="<%= puzzle.daily<new Date()?'text-warning':'' %> p-1">
                   <%= puzzle.tag %>
                   <%= puzzle.daily?("("+puzzle.daily.toISOString().split('T')[0]+")"):"" %>
                 </td>
-                <td>
+                <td class="p-1">
                   <% var visibleAge = Math.ceil(puzzle.publishAge/86400000); %>
                   <a href="/single/<%= puzzle.code %>">
                     <span class="age-marker" style="background-color: hsl(<%= visibleAge?200-visibleAge:"0" %>,100%,50%)"><%= visibleAge?visibleAge:"" %></span>
@@ -49,19 +49,19 @@
                     <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
                   </a>
                 </td>
-                <td>
+                <td class="p-1">
                   <a href="/archive/<%= puzzle.code %>/scores">
                     <%= puzzle.time %>
                   </a>
                 </td>
-                <td>
+                <td class="p-1">
                   <a href="javascript:void(0);" onclick="showPuzzleComments('<%= puzzle.code %>','<%= puzzle.type %><%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>')" >
                   <% if (puzzle.rating && puzzle.rating.rating>0) { %>
                   <%- include ('./partials/rating_span', {rating: puzzle.rating.rating, ratingCount: puzzle.rating.count}) %>
                   <% } %>
                   </a>
                 </td>
-                <td>
+                <td class="p-1">
                   <%= puzzle.author %>
                 </td>
               </tr>

@@ -9,24 +9,24 @@
           <table class="table table-hover table-condensed table-striped table-responsive">
             <tbody>
               <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>Avg</th>
+                <th class="p-1"></th>
+                <th class="p-1"></th>
+                <th class="p-1"></th>
+                <th class="p-1">Avg</th>
                 <% dates.forEach(function(d) { %>
-                <th>
+                <th class="p-1">
                   <%= d.toISOString().split('T')[0] %>
                 </th>
                 <% }) %>
               </tr>
               <% data.sort((r1,r2) => r2.avg - r1.avg).forEach(function(item) { %>
               <tr>
-                <td><%= item.userName %></td>
-                <td><%= item.userCountry %>(<%= item.ipCountries.join(", ") %>)</td>
-                <td><%= item.userAddress %></td>
-                <td><%= Math.round(item.avg) %></td>
+                <td class="p-1"><%= item.userName %></td>
+                <td class="p-1"><%= item.userCountry %>(<%= item.ipCountries.join(", ") %>)</td>
+                <td class="p-1"><%= item.userAddress %></td>
+                <td class="p-1"><%= Math.round(item.avg) %></td>
                 <% dates.forEach(function(d) { %>
-                <td><%= item[d]?Math.round(item[d]):"" %></td>
+                <td class="p-1"><%= item[d]?Math.round(item[d]):"" %></td>
                 <% }) %>
               </tr>
               <% }) %>

@@ -11,12 +11,12 @@
               <% var prevIp = ""; %>
               <% logData.sort((item1, item2) => (""+item1.country).localeCompare(item2.country)*1000 + (""+item1.region).localeCompare(item2.region)*100 + (""+item1.ip).localeCompare(item2.ip)).forEach(function(logItem) { %>
               <tr>
-                <td class="align-baseline"><input type="checkbox" class="form-check-input" data="<%= logItem.userId %>"></td>
-                <td><%= logItem.country %>(<%= logItem.region %>)</td>
-                <td class="text-center <%= prevIp==logItem.ip?'table-warning':'' %>"><%= logItem.ip %></td>
-                <td><%= logItem.userId %></td>
-                <td><%= logItem.userName %> (<%= logItem.userEmail %>)</td>
-                <td><%= logItem.count %></td>
+                <td class="align-baseline p-1"><input type="checkbox" class="form-check-input" data="<%= logItem.userId %>"></td>
+                <td class="p-1"><%= logItem.country %>(<%= logItem.region %>)</td>
+                <td class="text-center <%= prevIp==logItem.ip?'table-warning':'' %> p-1"><%= logItem.ip %></td>
+                <td class="p-1"><%= logItem.userId %></td>
+                <td class="p-1"><%= logItem.userName %> (<%= logItem.userEmail %>)</td>
+                <td class="p-1"><%= logItem.count %></td>
               </tr>
               <%   prevIp = logItem.ip; %>
               <% }) %>
