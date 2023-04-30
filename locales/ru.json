@@ -405,5 +405,10 @@
 	"League ranking based on the number of daily puzzles of the month solved during the month without error submissions. The totol solving time is considered as an additional ranking parameter.": "В зачёт лиги учитывается количество задач дня решённых без ошибок в течение месяца. Общее число решённых задач и время решения учитывается как дополнительные показатели.",
 	"dOubLESHOW 2x2x2": "dOubLESHOW 2x2x2",
 	"Solved correctly": "Решено без ошибок",
-	"Total solved / time": "Всего решено / время"
+	"Total solved / time": "Всего решено / время",
+	"League scores": "Зачёт в лигах",
+	"April 2023": "Апрель 2023",
+	"May 2023": "Май 2023",
+	"League winners": "Победители лиг",
+	"Full league results": "Полные результаты"
 }

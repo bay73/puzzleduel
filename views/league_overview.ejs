@@ -1,0 +1,64 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 m-auto">
+      <%- include ('./partials/messages') %>
+      <div class="card">
+        <% let month = date.getMonth() %>
+        <% let year = date.getFullYear() %>
+        <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+          <h1 class=""><%= __('League winners') %> <%= __('month' + month) %> <%= year %>
+          </h1>
+        </div>
+        <div class="card-body">
+          <% let leagueSorting = function(l1, l2) { %>
+          <%   return leagueSettings[l1.code].index - leagueSettings[l2.code].index %>
+          <% } %>
+          <% leagues.sort(leagueSorting).forEach(function(league) { %>
+          <div class="card">
+            <h2 style='display: block; <%= leagueSettings[league.code].mainStyle %>'><%= league.name %>
+            </h2>
+            <table class="table table-hover table-condensed table-striped mb-0">
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td class="d-none d-sm-table-cell text-center align-baseline">
+                    <%= __('Solved correctly') %>
+                  </td>
+                  <td class="d-none d-sm-table-cell text-center align-baseline">
+                    <%= __('Total solved / time') %>
+                  </td>
+                </tr>
+                <% let setting = leagueSettings[league.code] %>
+                <% let sorting = function(r1, r2) {  %>
+                <%   if (r1.solvedCount != r2.solvedCount) return r2.solvedCount - r1.solvedCount; %>
+                <%   if (r1.totalSolvedCount != r2.totalSolvedCount) return r2.totalSolvedCount - r1.totalSolvedCount; %>
+                <%   return r1.totalTime - r2.totalTime; %>
+                <% }  %>
+                <% league.results.sort(sorting).slice(0, setting.top).forEach(function(result) { %>
+                <% let style = setting.mainStyle %>
+                <tr style='<%= style %>' >
+                  <td class="p-0"><%= result.userName %></td>
+                  <td class="text-center p-0">
+                    <%= result.solvedCount %>
+                  </td>
+                  <td class="d-none d-sm-table-cell text-center p-0">
+                    <%= result.totalSolvedCount %>
+                    <%= result.showTime==0?"":(" / " + result.showTime) %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+            <div class="text-right">
+              <a href="/league/<%= league.code %>/<%= date %>" ><%= __('Full league results') %></a>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>
+

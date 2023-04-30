@@ -22,7 +22,7 @@
                 </tr>
                 <% }) %>
               </tbody>
-            </table class="table table-hover table-condensed table-striped">
+            </table>
           </div>
           <% let undefinedLeague = topLeagues.findIndex(league => typeof league.top=='undefined') %>
           <% if(undefinedLeague < 0) { %>
@@ -49,7 +49,7 @@
                 </tr>
                 <% }) %>
               </tbody>
-            </table class="table table-hover table-condensed table-striped">
+            </table>
           </div>
           <%  } else { %>
           <div class="col-md">
@@ -69,7 +69,7 @@
                 </tr>
                 <% }) %>
               </tbody>
-            </table class="table table-hover table-condensed table-striped">
+            </table>
           </div>
           <%  } %>
         </div>
@@ -168,6 +168,13 @@
             "<br><br>" +
             "Happy solving!",
             null,"2023-04-25");
+          <% } %>
+          <% if (new Date() > new Date('2023-05-01T00:00:00.000+00:00')) { %>
+          showMessage("<br>April league contest has finished. You can find the final results  <a href='/league/2023-04-01'>here</a>.<br>" +
+            "The league winners has been promoted to new leagues where they meet new challenges in May. <br>" +
+            "<br><br>" +
+            "This was the first try for the new contest format - your feedback and complains are highly appreciated. Please send your comments in  facebook or to email.",
+            null,"2023-05-01");
           <% } %>
         });
       </script>

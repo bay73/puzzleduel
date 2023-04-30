@@ -22,7 +22,7 @@
                 </tr>
                 <% }) %>
               </tbody>
-            </table class="table table-hover table-condensed table-striped">
+            </table>
           </div>
           <% let undefinedLeague = topLeagues.findIndex(league => typeof league.top=='undefined') %>
           <% if(undefinedLeague < 0) { %>
@@ -49,7 +49,7 @@
                 </tr>
                 <% }) %>
               </tbody>
-            </table class="table table-hover table-condensed table-striped">
+            </table>
           </div>
           <%  } else { %>
           <div class="col-md">
@@ -69,7 +69,7 @@
                 </tr>
                 <% }) %>
               </tbody>
-            </table class="table table-hover table-condensed table-striped">
+            </table>
           </div>
           <%  } %>
         </div>
@@ -168,6 +168,13 @@
             "<br><br>" +
             "Удачи в решении задач!",
             null,"2023-04-25");
+          <% } %>
+          <% if (new Date() > new Date('2023-05-01T00:00:00.000+00:00')) { %>
+          showMessage("<br>Завершился апрельский турнир в лигах. Финальные результаты во всех лигах можно найти <a href='/league/2023-04-01'>здесь</a>.<br>" +
+            "Победители лиг начнут новый месяц в новых лигах, где встретятся с более сильными соперниками. <br>" +
+            "<br><br>" +
+            "Это был опыт проведения такого турнира - ваши отзывы и замечания будут очень полезны. Пожалуйста пишите в facebook или на электронную почту.",
+            null,"2023-05-01");
           <% } %>
           });
       </script>
