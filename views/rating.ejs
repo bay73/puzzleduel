@@ -21,6 +21,17 @@
     font-family: verdana;
     font-size: small;
   }
+  .league-marker {
+    border-radius: 50%;
+    font-size: 70%;
+    padding: 1px;
+    margin-right: 5px;
+    display: inline-block;
+    width: 1.55em;
+    height: 1.55em;
+    text-align: center;
+    color: black;
+  }
 </style>
 <%- include ('./partials/navbar') %>
 <div class="container">
@@ -115,7 +126,15 @@
                    else {return (Math.round(r2.value)==Math.round(r1.value))?(rate(r2) - rate(r1)):(Math.round(r2.value) - Math.round(r1.value));}  %>
               <% }).forEach(function(rating) { %>
               <tr <%= rating.missedWeek>2?"class=text-muted":"" %> >
-                <td><a href="/userstat/<%= rating.userId %>"><%= rating.userName %></a></td>
+                <td>
+                  <% var league = leagueSettings[rating.userLeague] || {markerStyle: "", name: ""} %>
+                  <a href="/league/<%= rating.userLeague %>/<%= new Date().toISOString().substring(0,10) %>" >
+                    <span class="league-marker" style="<%= league.markerStyle %>">
+                      <%= league.name.charAt(0) %>
+                    </span>
+                  </a>
+                  <a href="/userstat/<%= rating.userId %>"><%= rating.userName %></a>
+                </td>
                 <td class="text-center" data-toggle="tooltip" title="<%= rating.totalSolved + "/" +  rating.totalStarted %>">
                   <%= rate(rating) %>%
                 </td>

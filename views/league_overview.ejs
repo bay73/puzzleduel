@@ -51,7 +51,7 @@
               </tbody>
             </table>
             <div class="text-right">
-              <a href="/league/<%= league.code %>/<%= date %>" ><%= __('Full league results') %></a>
+              <a href="/league/<%= league.code %>/<%= date.toISOString().substring(0,10) %>" ><%= __('Full league results') %></a>
             </div>
           </div>
           <% }) %>

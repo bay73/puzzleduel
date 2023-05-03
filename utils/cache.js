@@ -23,6 +23,7 @@ const ratingCache = {}
 const monthlyRatingChangeCache = {};
 const monthlyCommentersCache = {};
 const userCache = {}
+const userLeaguesCache = {fresheness: undefined, leagues: {}}
 const solvingTimeCache = {}
 const leagueCache = {}
 
@@ -145,6 +146,16 @@ module.exports.readUserName = async function(userId) {
   return userCache[userId].userName;
 }
 
+module.exports.readUserLeagues = async function() {
+  const currentTime = new Date().getTime();
+  if (typeof userLeaguesCache.fresheness=='undefined' || currentTime > userLeaguesCache.fresheness) {
+    const userLeagues = await User.find().lean();
+    userLeagues.forEach(user => userLeaguesCache.leagues[user._id] = user.league);
+    userLeaguesCache.fresheness = new Date().getTime() + USER_CACHE_TTL;
+  }
+  return userLeaguesCache.leagues;
+}
+
 module.exports.readSolvingTime = async function(puzzleId) {
   const currentTime = new Date().getTime();
   if (typeof solvingTimeCache[puzzleId]=='undefined' || currentTime > solvingTimeCache[puzzleId].fresheness) {
@@ -206,7 +217,6 @@ module.exports.readMonthlyCommenters = async function(date) {
 
 module.exports.clearCache = function() {
   Object.keys(contestCache).forEach(function(key) { delete contestCache[key]; });
-  Object.keys(puzzleTypeCache).forEach(function(key) { delete solvingTimeCache[key]; });
   Object.keys(puzzleCache).forEach(function(key) { delete puzzleCache[key]; });
   Object.keys(ratingCache).forEach(function(key) { delete ratingCache[key]; });
   Object.keys(monthlyRatingChangeCache).forEach(function(key) { delete solvingTimeCache[key]; });
@@ -215,6 +225,7 @@ module.exports.clearCache = function() {
   Object.keys(solvingTimeCache).forEach(function(key) { delete solvingTimeCache[key]; });
   Object.keys(leagueCache).forEach(function(key) { delete leagueCache[key]; });
   puzzleTypeCache.fresheness = undefined;
+  userLeaguesCache.fresheness = undefined;
 }
 
 module.exports.printCache = function() {
@@ -233,6 +244,8 @@ module.exports.printCache = function() {
   Object.keys(monthlyCommentersCache).forEach(function(key) { console.log(key, monthlyCommentersCache[key].fresheness); });
   console.log("users:");
   Object.keys(userCache).forEach(function(key) { console.log(key, userCache[key].fresheness); });
+  console.log("userLeagues:");
+  console.log(userLeaguesCache.fresheness);
   console.log("solvingTimes:");
   Object.keys(solvingTimeCache).forEach(function(key) { console.log(key, solvingTimeCache[key].fresheness); });
   console.log("leagues:");

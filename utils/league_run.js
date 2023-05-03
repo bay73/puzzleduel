@@ -18,6 +18,9 @@ recount = async function () {
     date.setMonth(date.getMonth() +1 )
     await createNextMonth(date);
   }
+  if (new Date().getDate() < 2) {
+    await switchUserLeagues();
+  }
 }
 
 // Connect to MongoDB

@@ -284,17 +284,18 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
       res.sendStatus(404);
       return;
     }
-    var puzzleType = puzzle.type;
-    const type = await cache.readPuzzleType(puzzle.type);
-    if (type) {
-      puzzleType = type.name;
-    }
 
-    const times = await cache.readSolvingTime(puzzle.code);
+    const [type, times, userLeagues] = await Promise.all([
+      cache.readPuzzleType(puzzle.type),
+      cache.readSolvingTime(puzzle.code),
+      cache.readUserLeagues()
+    ]);
+
+    const puzzleType = type ? type.name: puzzle.type;
     const notFinished = times.filter(time => typeof time.solvingTime=="undefined").map(time => time.userName);
     var today = new Date();
     today.setDate(today.getDate()-30);
-    var replayAvailable = puzzle.publishDate > today;
+    const replayAvailable = puzzle.publishDate > today;
 
     res.render('times', {
       user: req.user,
@@ -317,7 +318,8 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
             userId: time.userId,
             userName: time.userName,
             time: util.timeToString(time.solvingTime),
-            errors: time.errCount
+            errors: time.errCount,
+            userLeague: userLeagues[time.userId]
           };
         }),
       notFinished: notFinished

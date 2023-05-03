@@ -10,6 +10,19 @@
   rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
   integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous"
 />
+<style>
+  .league-marker {
+    border-radius: 50%;
+    font-size: 70%;
+    padding: 1px;
+    margin-right: 5px;
+    display: inline-block;
+    width: 1.55em;
+    height: 1.55em;
+    text-align: center;
+    color: black;
+  }
+</style>
 <%- include ('./partials/navbar') %>
 <div class="container">
   <div class="row">
@@ -75,7 +88,15 @@
             <tbody>
               <% times.forEach(function(time) { %>
               <tr>
-                <td><%= time.userName %></td>
+                <% var league = leagueSettings[time.userLeague] || {markerStyle: "", name: ""} %>
+                <td>
+                  <a href="/league/<%= time.userLeague %>/<%= new Date().toISOString().substring(0,10) %>" >
+                    <span class="league-marker" style="<%= league.markerStyle %>">
+                      <%= league.name.charAt(0) %>
+                    </span>
+                  </a>
+                  <%= time.userName %>
+                </td>
                 <td>
                   <% if (puzzle.canReplay) { %>
                   <a href="/archive/<%= puzzle.code %>/replay/<%= time.userId %>"><%= time.time %></a>

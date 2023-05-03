@@ -17,7 +17,10 @@ router.get('/:ratingdate', async (req, res, next) => {
     }
     var ld = new Date();
     ld.setDate(ld.getDate() - 4);
-    const ratingList = await cache.readRating(d);
+    const [ratingList, userLeagues] = await Promise.all([
+      cache.readRating(d),
+      cache.readUserLeagues()
+    ]);
     res.render('rating', {
       user: req.user,
       ratingDate: d,
@@ -30,6 +33,7 @@ router.get('/:ratingdate', async (req, res, next) => {
         return {
           userId: rating.userId,
           userName: rating.userName,
+          userLeague: userLeagues[rating.userId],
           value: rating.value,
           change: rating.change,
           totalStarted: rating.totalStarted,
