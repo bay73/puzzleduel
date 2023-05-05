@@ -90,10 +90,9 @@
               <tr>
                 <% var league = leagueSettings[time.userLeague] || {markerStyle: "", name: ""} %>
                 <td>
-                  <a href="/league/<%= time.userLeague %>/<%= new Date().toISOString().substring(0,10) %>" >
-                    <span class="league-marker" style="<%= league.markerStyle %>">
-                      <%= league.name.charAt(0) %>
-                    </span>
+                  <a class="league-marker" style="<%= league.markerStyle %>"
+                     href="/league/<%= time.userLeague %>/<%= new Date().toISOString().substring(0,10) %>" >
+                    <%= league.name.charAt(0) %>
                   </a>
                   <%= time.userName %>
                 </td>

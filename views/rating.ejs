@@ -128,10 +128,9 @@
               <tr <%= rating.missedWeek>2?"class=text-muted":"" %> >
                 <td>
                   <% var league = leagueSettings[rating.userLeague] || {markerStyle: "", name: ""} %>
-                  <a href="/league/<%= rating.userLeague %>/<%= new Date().toISOString().substring(0,10) %>" >
-                    <span class="league-marker" style="<%= league.markerStyle %>">
-                      <%= league.name.charAt(0) %>
-                    </span>
+                  <a class="league-marker" style="<%= league.markerStyle %>"
+                     href="/league/<%= rating.userLeague %>/<%= new Date().toISOString().substring(0,10) %>" >
+                    <%= league.name.charAt(0) %>
                   </a>
                   <a href="/userstat/<%= rating.userId %>"><%= rating.userName %></a>
                 </td>
