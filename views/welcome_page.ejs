@@ -34,7 +34,7 @@
                     Leagues leaders
                   </th>
                 </tr>
-                <% topLeagues.forEach(function(league){ %>
+                <% topLeagues.sort((l1, l2) => leagueSettings[l1.code].index - leagueSettings[l2.code].index).forEach(function(league){ %>
                 <tr style='<%= leagueSettings[league.code].mainStyle %>' >
                   <td class="p-0">
                     <a style='display: block; <%= leagueSettings[league.code].mainStyle %>' href="/league/<%= league.code %>/<%= league.date %>">
@@ -161,20 +161,6 @@
           <% } %>
           <% if(contestPuzzle){ %>
           showcontestPuzzle();
-          <% } %>
-          <% if (new Date() > new Date('2023-04-28T00:00:00.000+00:00') && new Date() < new Date('2023-05-01T00:00:00.000+00:00')) { %>
-          showMessage("<br>First league competition is finishing soon. Don't forget to solve all daily puzzles before the end of the competition.<br>" +
-            "At the midnight (GMT) April 30th the league scoring will be finalized and solvers will be distributed for the May's competition. <br>" +
-            "<br><br>" +
-            "Happy solving!",
-            null,"2023-04-25");
-          <% } %>
-          <% if (new Date() > new Date('2023-05-01T00:00:00.000+00:00')) { %>
-          showMessage("<br>April league contest has finished. You can find the final results  <a href='/league/2023-04-01'>here</a>.<br>" +
-            "The league winners has been promoted to new leagues where they meet new challenges in May. <br>" +
-            "<br><br>" +
-            "This was the first try for the new contest format - your feedback and complains are highly appreciated. Please send your comments in  facebook or to email.",
-            null,"2023-05-01");
           <% } %>
         });
       </script>

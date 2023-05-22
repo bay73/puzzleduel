@@ -34,7 +34,7 @@
                     Лидеры в зачёте лиг
                   </th>
                 </tr>
-                <% topLeagues.forEach(function(league){ %>
+                <% topLeagues.sort((l1, l2) => leagueSettings[l1.code].index - leagueSettings[l2.code].index).forEach(function(league){ %>
                 <tr style='<%= leagueSettings[league.code].mainStyle %>' >
                   <td class="p-0">
                     <a style='display: block; <%= leagueSettings[league.code].mainStyle %>' href="/league/<%= league.code %>/<%= league.date %>">
@@ -161,20 +161,6 @@
           <% } %>
           <% if(contestPuzzle){ %>
           showcontestPuzzle();
-          <% } %>
-          <% if (new Date() > new Date('2023-04-28T00:00:00.000+00:00') && new Date() < new Date('2023-05-01T00:00:00.000+00:00')) { %>
-          showMessage("<br>Первый турнир в лигах скоро завершится. Не забудьте решить все задачи дня до окончания турнира.<br>" +
-            "В полночь 30-го апреля (по гринвичскому времени) турнирная таблица будет зафиксирована и решатели будут распределены по лигам для майского турнира. <br>" +
-            "<br><br>" +
-            "Удачи в решении задач!",
-            null,"2023-04-25");
-          <% } %>
-          <% if (new Date() > new Date('2023-05-01T00:00:00.000+00:00')) { %>
-          showMessage("<br>Завершился апрельский турнир в лигах. Финальные результаты во всех лигах можно найти <a href='/league/2023-04-01'>здесь</a>.<br>" +
-            "Победители лиг начнут новый месяц в новых лигах, где встретятся с более сильными соперниками. <br>" +
-            "<br><br>" +
-            "Это был опыт проведения такого турнира - ваши отзывы и замечания будут очень полезны. Пожалуйста пишите в facebook или на электронную почту.",
-            null,"2023-05-01");
           <% } %>
           });
       </script>
