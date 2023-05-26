@@ -177,6 +177,19 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().copyPaste())
       .build(this);
 
+  } else if (typeCode=="lighthouses") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.CROSS)
+        .addNumbers(0,10))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.BOAT)
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .build(this);
+
   } else if (typeCode=="queens") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
@@ -246,6 +259,68 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addNumbers(0,maxValue))
       .add(controller().forSolver().cell().inner().noClue().clickSwitch()
         .addItem(StdItem.BLACK)
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="battleships") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.WAVE))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0,maxValue))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs('1'))
+        .addItem(StdItem.WAVE.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="battleships_minesweeper") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.WAVE)
+        .addNumbers(0,8))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs('1'))
+        .addItem(StdItem.WAVE.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .build(this);
+
+  } else if (typeCode=="battleships_knight") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.WAVE)
+        .addNumbers(0,8))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs('1'))
+        .addItem(StdItem.WAVE.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .build(this);
+
+  } else if (typeCode=="pentomino") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0,maxValue))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().outer().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
@@ -583,21 +658,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     nodeController: node => node.dragProcessor = true,
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 4);},
-  }
-
-  typeProperties["lighthouses"] = {
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{image: "boat", returnValue: "boat"},{image: "cross"}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      var chooserValues = [{},{image: "cross", returnValue: "cross"}];
-      for (var i=0; i<=10; i++) {
-       chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
   typeProperties["railroad"] = {
@@ -971,64 +1031,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
-  typeProperties["battleships_minesweeper"] = {
-    needNodes: false,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "wave"}], [{},{color: "#a0a0a0"},{image: "wave"}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      var chooserValues = [{},{image: "wave", returnValue: "wave"}];
-      for (var i=0; i<=8; i++) {
-       chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
-  }
-
-  typeProperties["battleships"] = {
-    needNodes: false,
-    needBottom: true,
-    needRight: true,
-    cellController: cell => {
-      if (cell.outerCell) {
-        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
-      } else {
-        setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "wave"}], [{},{color: "#a0a0a0"},{image: "wave"}]);
-      }
-    },
-    cellEditController: cell => {
-      if (cell.outerCell) {
-        cell.isClue = true;
-        var chooserValues = [{}];
-        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
-         chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      } else {
-        cell.clickSwitch = [{},{image: "wave", returnValue: "wave"}];
-      }
-    },
-    decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
-  }
-
-  typeProperties["battleships_knight"] = {
-    needNodes: false,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "wave"}], [{},{color: "#a0a0a0"},{image: "wave"}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      var chooserValues = [{},{image: "wave", returnValue: "wave"}];
-      for (var i=0; i<=8; i++) {
-       chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {return value=="wave"?{image: "wave"}:{text: value};},
-  }
-
   typeProperties["tents_classic"] = {
     needNodes: !this.editMode,
     needBottom: true,
@@ -1074,32 +1076,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         return {text: value};
       }
     },
-  }
-
-  typeProperties["pentomino"] = {
-    needNodes: false,
-    needBottom: true,
-    needRight: true,
-    cellController: cell => {
-      if (cell.outerCell) {
-        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
-      } else {
-        setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      }
-    },
-    cellEditController: cell => {
-      if (cell.outerCell) {
-        cell.isClue = true;
-        var chooserValues = [{}];
-        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
-         chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      } else {
-        cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
-      }
-    },
-    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
   }
 
   typeProperties["arrow_web"] = {
