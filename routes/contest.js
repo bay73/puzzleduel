@@ -88,7 +88,7 @@ router.get('/:contestid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    if (contest.start > new Date() && !(req.user && req.user.role == "admin")) {
+    if (contest.start > new Date() && !(req.user && (req.user.role == "admin" || req.user.isTester))) {
       res.sendStatus(404);
       return;
     }
@@ -115,7 +115,7 @@ router.get('/:contestid', async (req, res, next) => {
       }
     }
     var puzzleList = contest.puzzles
-      .filter(puzzle => puzzle.revealDate < new Date() || (req.user && req.user.role == "admin"))
+      .filter(puzzle => puzzle.revealDate < new Date() || (req.user && (req.user.role == "admin" || req.user.isTester)))
       .map(puzzle => {
         puzzleObj = puzzleMap[puzzle.puzzleId];
         return {

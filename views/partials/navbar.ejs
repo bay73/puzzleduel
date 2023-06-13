@@ -27,6 +27,9 @@
                 <li><a class="nav-link" href="/contest/40645r1kb6ih7hk"><%= __('Puzzle XL 2020') %></a></li>
                 <li><a class="nav-link" href="/contest/40644y1kpokjatr"><%= __('Puzzle XL 2021') %></a></li>
                 <li><a class="nav-link" href="/contest/bjhute1kiujaiue"><%= __('Puzzle XL 2022') %></a></li>
+                <% if (new Date() > new Date('2023-06-21T00:00:00.000+00:00')) { %>
+                <li><a class="nav-link" href="/contest/ythutoiuiujaqwe"><%= __('Puzzle XL 2023') %></a></li>
+                <% } %>
               </ul>
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('dOubLESHOW') %></a>
@@ -62,6 +65,9 @@
                 <li><a class="nav-link" href="/contest/40645r1kb6ih7hk/results"><%= __('Puzzle XL 2020') %></a></li>
                 <li><a class="nav-link" href="/contest/40644y1kpokjatr/results"><%= __('Puzzle XL 2021') %></a></li>
                 <li><a class="nav-link" href="/contest/bjhute1kiujaiue/results"><%= __('Puzzle XL 2022') %></a></li>
+                <% if (new Date() > new Date('2023-06-21T00:00:00.000+00:00')) { %>
+                <li><a class="nav-link" href="/contest/ythutoiuiujaqwe/results"><%= __('Puzzle XL 2023') %></a></li>
+                <% } %>
               </ul>
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('dOubLESHOW') %></a>
@@ -85,7 +91,6 @@
                 <li><a class="nav-link" href="/contest/4064601lad2he3n/results"><%= __('Nikoli month 2/2') %></a></li>
               </ul>
             </li>
-            <% if (new Date() > new Date('2023-05-01T00:00:00.000+00:00')) { %>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('League scores') %></a>
               <ul class="dropdown-menu bg-dark">
                 <li><a class="nav-link" href="/league/2023-04-01"><%= __('April 2023') %></a></li>
@@ -93,7 +98,6 @@
                 <li><a class="nav-link" href="/league/2023-06-01"><%= __('June 2023') %></a></li>
               </ul>
             </li>
-            <% } %>
           </ul>
         </li>
         <% if (user && user.role == 'author') { %>
