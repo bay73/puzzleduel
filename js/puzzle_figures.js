@@ -138,8 +138,12 @@ drawDomino: function(snap,coord,size,letter1, letter2) {
   group.attr({"isMarked": false});
 },
 
+getRealWidth: function(obj) {
+    return $('.puzzle-figures').width()
+},
+
 createDominoSet: function(snap, values, includeDoubles) {
-  let width = $(snap.node).parent().width();
+  let width = puzzleFigures.getRealWidth($(snap.node));
   const viewportWidth = Math.max(
     document.documentElement.clientWidth,
     window.innerWidth || 0
@@ -187,7 +191,7 @@ createDominoSet: function(snap, values, includeDoubles) {
 },
 
 createTetro7: function(snap, withLetters) {
-  let width = $(snap.node).parent().width();
+  let width = puzzleFigures.getRealWidth($(snap.node));
   const viewportWidth = Math.max(
     document.documentElement.clientWidth,
     window.innerWidth || 0
@@ -223,7 +227,7 @@ createTetro7: function(snap, withLetters) {
 },
 
 createTetro4: function(snap, withLetters) {
-  let width = $(snap.node).parent().width();
+  let width = puzzleFigures.getRealWidth($(snap.node));
   const viewportWidth = Math.max(
     document.documentElement.clientWidth,
     window.innerWidth || 0
@@ -239,7 +243,7 @@ createTetro4: function(snap, withLetters) {
 },
 
 createPento12: function(snap, withLetters) {
-  let width = $(snap.node).parent().width();
+  let width = puzzleFigures.getRealWidth($(snap.node));
   const viewportWidth = Math.max(
     document.documentElement.clientWidth,
     window.innerWidth || 0
@@ -301,7 +305,7 @@ figureLeft: function(figure){
 },
 
 createPento: function(snap, pentominos, withLetters) {
-  let width = $(snap.node).parent().width();
+  let width = puzzleFigures.getRealWidth($(snap.node));
   const viewportWidth = Math.max(
     document.documentElement.clientWidth,
     window.innerWidth || 0
@@ -380,7 +384,7 @@ createPento: function(snap, pentominos, withLetters) {
   }
 },
 createBattleship: function(snap, counts) {
-  let width = $(snap.node).parent().width();
+  let width = puzzleFigures.getRealWidth($(snap.node));
   const viewportWidth = Math.max(
     document.documentElement.clientWidth,
     window.innerWidth || 0
@@ -472,6 +476,7 @@ init: function(element) {
     puzzleFigures.markedColor = "#ddd";
   }
   puzzleFigures.snapId++;
+  element.empty();
   element.append('<svg id="figures_svg_' + puzzleFigures.snapId+'"></svg><br>');
 
   let figures = element.attr('figures');
