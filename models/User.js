@@ -46,6 +46,16 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  titles: [{
+    title: {
+      type: String,
+      required: true
+    },
+    contestLink: {
+      type: String,
+      required: false
+    },
+  }],
   isTester: {
     type: Boolean,
     required: false

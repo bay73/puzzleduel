@@ -25,9 +25,9 @@ router.get('/:userid',
       to = from;
     }
 
-    const [typeData, userName, rating] = await Promise.all([
+    const [typeData, userData, rating] = await Promise.all([
       cache.readPuzzleTypes(),
-      cache.readUserName(req.params.userid),
+      User.findById(req.params.userid),
       Rating.find({
         userId: req.params.userid,
         $and : [
@@ -55,7 +55,8 @@ router.get('/:userid',
     res.render('userstat', {
       user: req.user,
       userId: req.params.userid,
-      userName: userName,
+      userName: userData.name,
+      userTitles: userData.titles,
       from: from,
       to: to,
       statdata: rating.map(ratingEntry => {

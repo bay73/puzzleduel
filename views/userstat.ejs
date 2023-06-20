@@ -5,6 +5,15 @@
       <%- include ('./partials/messages') %>
       <div class="card">
         <h1 class="card-header"><%= userName %></h1>
+        <% if (userTitles && userTitles.length > 0) { %>
+        <div class="card-body">
+          <% userTitles.forEach(title => { %>
+          <div>
+            <a href="<%= title.contestLink %>"><%- title.title %></a>
+          </div>
+          <% }) %>
+        </div>
+        <% } %>
       </div>
       <div class="card">
         <h2 class="card-header"><%= __('Rating history') %></h2>
