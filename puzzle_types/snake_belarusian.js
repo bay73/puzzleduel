@@ -27,11 +27,11 @@ check:function(dimension, clues, data){
       }
     }
   }
-  var res = Checker.checkSnake(cells, clue, areas);
+  res = Checker.checkAreas(cells, areas);
   if (res.status != "OK") {
     return res;
   }
-  res = Checker.checkAreas(cells, areas);
+  var res = Checker.checkSnake(cells, clue, areas);
   if (res.status != "OK") {
     return res;
   }

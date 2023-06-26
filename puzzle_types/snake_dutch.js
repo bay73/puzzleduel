@@ -25,11 +25,11 @@ check:function(dimension, clues, data){
       clue[pos.y][pos.x] = value;
     }
   }
-  var res = Checker.checkSnake(cells, snakeLength);
+  res = Checker.checkClues(cells, clue);
   if (res.status != "OK") {
     return res;
   }
-  res = Checker.checkClues(cells, clue);
+  var res = Checker.checkSnake(cells, snakeLength);
   if (res.status != "OK") {
     return res;
   }

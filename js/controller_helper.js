@@ -192,7 +192,7 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
   typeDesc.cellMultiPencil =
     this.controllers
       .filter(controller=>controller.editMode)
-      .filter(controller=>controller.isNumberController && controller.items.length>4)
+      .filter(controller=>controller.isMultiController && controller.items.length>2)
       .length > 0;
 
   if (typeof this.upgradeClue != "undefined") {
@@ -217,6 +217,7 @@ ControllerBuilder = function() {
   this.addDrag = false;
   this.items = [StdItem.EMPTY];
   this.isNumberController = false;
+  this.isMultiController = false;
   this.useAsAreaConnector = false;
 }
 
@@ -404,6 +405,7 @@ ControllerBuilder.prototype.addItem = function(item){
 // Adds items with numbers from the given range (ends included).
 ControllerBuilder.prototype.addNumbers = function(start, end, color, image, submitAs){
   this.isNumberController = true;
+  this.isMultiController = true;
   this.Number10Item = null;
   for (var i=start; i<=end; i++) {
     if (i==10) {
@@ -430,6 +432,7 @@ ControllerBuilder.prototype.addNumbers = function(start, end, color, image, subm
 
 // Adds items with letters from the given list.
 ControllerBuilder.prototype.addLetters = function(letters, color){
+  this.isMultiController = true;
   for (var i=0; i<letters.length; i++) {
     if (typeof color != "undefined") {
       this.addItem(controllerItem({text: letters[i], color: color.color, textColor: color.textColor, returnValue: letters[i]}));

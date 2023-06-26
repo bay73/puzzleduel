@@ -42,11 +42,11 @@ check:function(dimension, clues, data){
       }
     }
   }
-  var res = Checker.checkSnake(cells);
+  res = Checker.checkClues(cells, clue);
   if (res.status != "OK") {
     return res;
   }
-  res = Checker.checkClues(cells, clue);
+  var res = Checker.checkSnake(cells);
   if (res.status != "OK") {
     return res;
   }

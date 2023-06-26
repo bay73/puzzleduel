@@ -39,15 +39,15 @@ check:function(dimension, clues, data){
       }
     }
   }
-  var res = Checker.checkSnake(cells, head, tail);
-  if (res.status != "OK") {
-    return res;
-  }
   var res = Checker.checkColumnClues(cells, bottom);
   if (res.status != "OK") {
     return res;
   }
   var res = Checker.checkRowClues(cells, right);
+  if (res.status != "OK") {
+    return res;
+  }
+  var res = Checker.checkSnake(cells, head, tail);
   if (res.status != "OK") {
     return res;
   }
