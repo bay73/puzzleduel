@@ -67,11 +67,12 @@ basePuzzle.prototype.render = function(snap) {
     },
     connector: {
       "strokeWidth": this.typeProperties.thinConnectors ? 1 : (this.size.unitSize < 36 ? 6 : Math.round(this.size.unitSize/6)),
-      "stroke-opacity": 0.8,
+      "stroke-opacity": 0.5,
       "stroke-linecap": "round"
     },
     pencilConnector: {
       "strokeWidth": this.typeProperties.thinConnectors ? 1 : (this.size.unitSize < 36 ? 4 : Math.round(this.size.unitSize/9)),
+      "stroke-opacity": 0.4,
       "stroke-linecap": "round",
       "stroke-dasharray": "0 " + (this.size.unitSize < 35 ? 5: Math.round(this.size.unitSize/7))
     },
