@@ -2,7 +2,6 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
-      <%- include ('./partials/messages') %>
       <div class="card">
         <h1 class="card-header"><%= __("Our contributors") %></h1>
           <% contributors.filter(a => a.puzzleCount > 0).sort((a1,a2) => a2.puzzleCount - a1.puzzleCount).forEach(function(contributor) { %>
