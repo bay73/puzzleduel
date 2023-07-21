@@ -27,11 +27,11 @@ async function recountPuzzle(puzzle, scoring) {
   }
   if (scoring.method == "log") {
     var complexityFn = function(medianTime) {
-//      return medianTime * Math.log(medianTime / scoring.complexityRate) / Math.log(scoring.complexityPower);
-      return medianTime * Math.pow(medianTime / scoring.complexityRate, scoring.complexityPower);
+      return Math.log(medianTime / scoring.complexityRate) / Math.log(scoring.complexityPower);
     }
     var scoreFn = function(time, complexity) {
-      return Math.log(1 + complexity / time) / Math.log(scoring.scoringPower);
+      let median = Math.pow(Math.E, complexity * Math.log(scoring.complexityPower)) * scoring.complexityRate;
+      return (0.1 + Math.log(1 + median / time)) * Math.log(median / scoring.complexityRate);
     }
   } else {
     var complexityFn = function(medianTime) {
