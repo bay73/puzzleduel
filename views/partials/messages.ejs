@@ -57,11 +57,15 @@
   function showMessage(message, timeout, messageId){
     if (messageId) {
       var numberOfTimes = parseInt(localStorage.getItem("message"+messageId));
+      var lastShow = parseInt(localStorage.getItem("showmessage"+messageId));
+      console.log(numberOfTimes, lastShow)
       if (!numberOfTimes) numberOfTimes = 0;
-      if (numberOfTimes>3) {
+      if (!lastShow) lastShow = 0;
+      if (numberOfTimes>3 || Date.now() - lastShow < 43200000) {
         return null;
       }
       localStorage.setItem("message"+messageId,numberOfTimes + 1);
+      localStorage.setItem("showmessage"+messageId,Date.now());
     }
     $("#alerts").append(
       "<div id='successMessage' class='message-overlap alert alert-success alert-dismissible fade show' role='alert'>" +
