@@ -49,6 +49,7 @@
                 <li><a class="nav-link" href="/contest/4064541kwpd0ck0"><%= __('Twentyx 1/2-No numbers') %></a></li>
                 <li><a class="nav-link" href="/contest/40645j1l9dyfi6u"><%= __('Nikoli month 1/2') %></a></li>
                 <li><a class="nav-link" href="/contest/4064601lad2he3n"><%= __('Nikoli month 2/2') %></a></li>
+                <li><a class="nav-link" href="/contest/ttautpiaiuianto"><%= __('Tap into Tapa') %></a></li>
               </ul>
             </li>
           </ul>
@@ -89,6 +90,7 @@
                 <li><a class="nav-link" href="/contest/4064541kwpd0ck0/results"><%= __('Twentyx 1/2-No numbers') %></a></li>
                 <li><a class="nav-link" href="/contest/40645j1l9dyfi6u/results"><%= __('Nikoli month 1/2') %></a></li>
                 <li><a class="nav-link" href="/contest/4064601lad2he3n/results"><%= __('Nikoli month 2/2') %></a></li>
+                <li><a class="nav-link" href="/contest/ttautpiaiuianto/results"><%= __('Tap into Tapa') %></a></li>
               </ul>
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('League scores') %></a>
@@ -97,6 +99,7 @@
                 <li><a class="nav-link" href="/league/2023-05-01"><%= __('May 2023') %></a></li>
                 <li><a class="nav-link" href="/league/2023-06-01"><%= __('June 2023') %></a></li>
                 <li><a class="nav-link" href="/league/2023-07-01"><%= __('July 2023') %></a></li>
+                <li><a class="nav-link" href="/league/2023-08-01"><%= __('August 2023') %></a></li>
               </ul>
             </li>
           </ul>
@@ -163,15 +166,7 @@
 <%- include ('./messages') %>
 <script>
   $(document).ready(function () {
-    <% if (new Date() > new Date('2023-07-25T00:00:00.000+00:00') && new Date() < new Date('2023-08-01T00:00:00.000+00:00')) { %>
-    showMessage("<br>In August 2023 Anuraag Sahay presented Tap into Tapa contest. <br><br>" +
-       "The contest runs from the 1st of August to the 4th of September. Every day one contest puzzle will be published. " +
-       "The winner at the end of the contest earns the title of `Tapa Wizard`, while the title of `Tapa Scrambler` will " +
-       "be conferred on the solver who finishes the most puzzles in less than a minute each. <br><br>" +
-       "Happy solving!",
-       null,"2023-07-24");
-    <% } %>
-    <% if (new Date() > new Date('2023-08-01T00:00:00.000+00:00') && new Date() < new Date('2023-09-04T00:00:00.000+00:00')) { %>
+    <% if (new Date() < new Date('2023-09-04T00:00:00.000+00:00')) { %>
     showMessage("<br>Anuraag Sahay presented <a href='/contest/ttautpiaiuianto'>Tap into Tapa contest</a>. <br><br>" +
        "The contest runs from the 1st of August to the 4th of September. Every day one contest puzzle is published. " +
        "The winner at the end of the contest earns the title of `Tapa Wizard`, while the title of `Tapa Scrambler` will " +
