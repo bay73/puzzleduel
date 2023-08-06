@@ -38,7 +38,7 @@ check:function(dimension, clues, data){
 checkAreas: function(cells, areas, requiredLetters) {
   for (var a=0; a<areas.length; a++) {
     var letters = Checker.getLetersInArea(cells, areas[a]);
-    if (letters != requiredLetters) {
+    if (letters != requiredLetters.split("").sort().join("")) {
       return {status: "Each area should contain all letters exactly once", errors: areas[a]};
     }
   }
