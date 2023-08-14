@@ -146,7 +146,7 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
       User.find(),
       cache.readPuzzleTypes(),
       util.bestSolvingTimeMap(true),
-      Puzzle.find(filter, "code type dimension tag daily author rating").sort({daily: -1}),
+      Puzzle.find(filter, "code type dimension tag daily author rating").sort({daily: -1, type: 1}),
       Puzzle.find(oldDailyFilter, "type daily").sort({daily: -1})
     ])
 
