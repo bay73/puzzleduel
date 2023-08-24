@@ -9,6 +9,7 @@ const db = require('../config/keys').mongoURI;
 
 recount = async function () {
   await recountContest('ttautpiaiuianto');
+  await recountContest('yeurw8yqash');
 }
 
 // Connect to MongoDB
