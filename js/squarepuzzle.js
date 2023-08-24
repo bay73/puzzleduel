@@ -188,7 +188,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().clue().copy())
       .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
-      .add(controller().forSolver().cell().clue().clickSwitch()
+      .add(controller().forSolver().cell().clue().noClue(StdItem.CROSS).clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
@@ -216,7 +216,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().clue().copy())
       .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
-      .add(controller().forSolver().cell().clue().clickSwitch()
+      .add(controller().forSolver().cell().clue().noClue(StdItem.CROSS).clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
@@ -478,7 +478,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="fuzuli") {
     var maxValue = Math.max(this.rows, this.cols) - 2;
     this.typeProperties = decribePuzzleType()
-      .add(controller().forAuthor().cell().inner().clickSwitch()
+      .add(controller().forAuthor().cell().inner().chooser()
         .addNumbers(1, maxValue)
         .addItem(StdItem.CROSS))
       .add(controller().forSolver().cell().inner().noClue().chooser()

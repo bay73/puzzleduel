@@ -28,6 +28,10 @@ requirejs(["tests/domino_hunt.test.js"], ()=>{
   allTestSuites.push(dominoHuntTestSuite);
 })
 
+requirejs(["tests/doubleblock.test.js"], ()=>{
+  allTestSuites.push(doubleblockTestSuite);
+})
+
 requirejs(["tests/easy_as_coral.test.js"], ()=>{
   allTestSuites.push(easyAsCoralTestSuite);
 })
@@ -46,6 +50,10 @@ requirejs(["tests/fillomino.test.js"], ()=>{
 
 requirejs(["tests/foseruzu.test.js"], ()=>{
   allTestSuites.push(foseruzuTestSuite);
+})
+
+requirejs(["tests/fuzuli.test.js"], ()=>{
+  allTestSuites.push(fuzuliTestSuite);
 })
 
 requirejs(["tests/gaps.test.js"], ()=>{
@@ -92,12 +100,16 @@ requirejs(["tests/minesweeper_classic.test.js"], ()=>{
   allTestSuites.push(minesweeperClassicTestSuite);
 })
 
+requirejs(["tests/nanro.test.js"], ()=>{
+  allTestSuites.push(nanroTestSuite);
+})
+
 requirejs(["tests/neighbors.test.js"], ()=>{
   allTestSuites.push(neighborsTestSuite);
 })
 
-requirejs(["tests/nanro.test.js"], ()=>{
-  allTestSuites.push(nanroTestSuite);
+requirejs(["tests/norinori.test.js"], ()=>{
+  allTestSuites.push(norinoriTestSuite);
 })
 
 requirejs(["tests/paint_by_max.test.js"], ()=>{

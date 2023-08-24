@@ -37,9 +37,9 @@ test('Solver selectors',(suite) => {
   assert("Empty cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
   assert("Empty cell click").that(puzzle.cells[0][0].clickSwitch).containsExactly([{}, {image: 'mine', returnValue: 'mine'}, {image: 'cross'}]);
   assert("Cross chooser").that(puzzle.cells[1][0].chooserValues).isNull();
-  assert("Corss click").that(puzzle.cells[1][0].clickSwitch).isNull();
+  assert("Cross click").that(puzzle.cells[1][0].clickSwitch).isNull();
   assert("Number cell chooser").that(puzzle.cells[2][0].chooserValues).isNull();
-  assert("Number cell click").that(puzzle.cells[2][0].clickSwitch).isNull();
+  assert("Number cell click").that(puzzle.cells[2][0].clickSwitch).containsExactly([{text: '5'}, {text: '5', image: 'white_circle'}]);
 }),
 
 test('Author selectors',(suite) => {

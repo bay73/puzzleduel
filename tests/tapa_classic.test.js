@@ -53,8 +53,8 @@ test('Solver controllers',(suite) => {
   assert("Empty circle drag processor").that(puzzle.cells[1][1].dragProcessor).isNotNull();
   assert("Clue circle chooser").that(puzzle.cells[0][0].chooserValues).isNull();
   assert("Clue circle click").that(puzzle.cells[0][0].clickSwitch).isNull();
-  assert("Clue circle drag handler").that(puzzle.cells[0][0].drawDragHandler).isNull();
-  assert("Clue circle drag processor").that(puzzle.cells[0][0].dragProcessor).isNull();
+  assert("Clue circle drag handler").that(puzzle.cells[0][0].drawDragHandler).isNotNull();
+  assert("Clue circle drag processor").that(puzzle.cells[0][0].dragProcessor).isNotNull();
 }),
 
 test('Author controllers',(suite) => {

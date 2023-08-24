@@ -43,7 +43,7 @@ test('Solver controllers',(suite) => {
   );
   puzzle.start();
 
-  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"A",returnValue:"A"}, {text:"B",returnValue:"B"}, {text:"C",returnValue:"C"}, {image: 'cross'}]);
+  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"A",returnValue:"A"}, {text:"B",returnValue:"B"}, {text:"C",returnValue:"C"}, {image: 'white_circle'}, {image: 'cross'}]);
   assert("Empty cell click").that(puzzle.cells[2][2].clickSwitch).isNull();
   assert("Cross cell chooser").that(puzzle.cells[3][0].chooserValues).isNull();
   assert("Cross cell click").that(puzzle.cells[3][0].clickSwitch).isNull();;
@@ -66,7 +66,7 @@ test('Solver controllers with other letters',(suite) => {
   );
   puzzle.start();
 
-  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"K",returnValue:"K"}, {text:"L",returnValue:"L"}, {image: 'cross'}]);
+  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"K",returnValue:"K"}, {text:"L",returnValue:"L"}, {image: 'white_circle'}, {image: 'cross'}]);
   assert("Empty cell click").that(puzzle.cells[2][2].clickSwitch).isNull();
 }),
 
@@ -109,6 +109,7 @@ test('Process click to empty cell',(suite) => {
   assert("Cell data after one click").that(puzzle.cells[0][0].data).isEqualTo({});
 
   x += puzzle.size.unitSize/2;
+  y -= puzzle.size.unitSize/2;
   puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
@@ -139,6 +140,7 @@ test('Choose value in one click',(suite) => {
   assert("Cell data after mouse down").that(puzzle.cells[0][0].data).isEqualTo({});
 
   x += puzzle.size.unitSize/2;
+  y -= puzzle.size.unitSize/2;
   puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
