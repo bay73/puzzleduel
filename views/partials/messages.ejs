@@ -58,7 +58,6 @@
     if (messageId) {
       var numberOfTimes = parseInt(localStorage.getItem("message"+messageId));
       var lastShow = parseInt(localStorage.getItem("showmessage"+messageId));
-      console.log(numberOfTimes, lastShow)
       if (!numberOfTimes) numberOfTimes = 0;
       if (!lastShow) lastShow = 0;
       if (numberOfTimes>3 || Date.now() - lastShow < 43200000) {

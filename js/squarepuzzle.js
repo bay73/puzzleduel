@@ -134,6 +134,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.BLACK.asAreaBorder()))
       .add(controller().forSolver().cell().noClue().chooser()
         .addNumbers(1,9)
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit())
         .addItem(StdItem.CROSS.doNotSubmit()))
      .build(this);
 
@@ -141,6 +142,17 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
         .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().noClue().copyPaste())
+     .build(this);
+
+  } else if (typeCode=="norinori") {
+    this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
         .addItem(StdItem.BLACK.asAreaBorder()))
       .add(controller().forSolver().cell().noClue().clickSwitch()
@@ -174,7 +186,10 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().clickSwitch()
         .addItem(StdItem.MINE)
         .addItem(StdItem.CROSS.doNotSubmit()))
-      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="lighthouses") {
@@ -185,7 +200,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().clickSwitch()
         .addItem(StdItem.BOAT)
         .addItem(StdItem.CROSS.doNotSubmit()))
-      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
       .add(controller().forSolver().cell().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
@@ -198,7 +214,10 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().clickSwitch()
         .addItem(StdItem.QUEEN)
         .addItem(StdItem.CROSS.doNotSubmit()))
-      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="point_a_star") {
@@ -225,7 +244,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().outer().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .addUpgradeClue(clue=>clue=="white"?null:clue)
-      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => (data.image&&data.image!="star")?{image: "cross"}:data))
       .build(this);
 
   } else if (typeCode=="gaps") {
@@ -293,7 +313,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().clickSwitch()
         .addItem(StdItem.GREY.submitAs('1'))
         .addItem(StdItem.WAVE.doNotSubmit()))
-      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "wave"}:data))
       .add(controller().forSolver().cell().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
@@ -306,7 +327,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().clickSwitch()
         .addItem(StdItem.GREY.submitAs('1'))
         .addItem(StdItem.WAVE.doNotSubmit()))
-      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "wave"}:data))
       .add(controller().forSolver().cell().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
@@ -414,7 +436,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().clickSwitch()
         .addItem(StdItem.BLACK)
         .addItem(StdItem.CROSS.doNotSubmit()))
-      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.image?{image: "cross"}:data))
+      .add(controller().forSolver().cell().inner().clue().copy())
       .build(this);
 
   } else if (typeCode=="paint_by_max") {
@@ -445,6 +468,38 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addLetters(letters))
       .add(controller().forSolver().cell().inner().noClue().chooser()
         .addLetters(letters)
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="fuzuli") {
+    var maxValue = Math.max(this.rows, this.cols) - 2;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.CROSS))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="doubleblock") {
+    var maxValue = Math.max(this.rows, this.cols) - 2;
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0, maxValue*(maxValue+1)/2))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit())
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().outer().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
@@ -537,98 +592,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
-  typeProperties["norinori"] = {
-    needNodes: true,
-    cellController: cell => {
-      if (!cell.isClue || cell.data.image != "cross") {
-        setClickSwitch(cell, true, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      }
-    },
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    collectAreas: this.editMode
-  }
-
   typeProperties["chaos"] = {
     needNodes: false,
     cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 4);}},
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 4);},
     cellMultiPencil: true,
-  }
-
-  typeProperties["fuzuli"] = {
-    needNodes: false,
-    cellController: cell => {
-      if (!cell.isClue) {
-        var chooserValues = [{}];
-        for (var i=1; i<=self.rows-2; i++) {
-         chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        chooserValues.push({image: "cross"});
-        chooserValues.push({image: "white_circle"});
-        cell.chooserValues = chooserValues;
-      }
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      var chooserValues = [{}];
-      for (var i=1; i<=self.rows-2; i++) {
-       chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      chooserValues.push({image: "cross", returnValue: "cross"});
-      cell.chooserValues = chooserValues;
-    },
-    cellMultiPencil: true,
-    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
-  }
-
-  typeProperties["doubleblock"] = {
-    needNodes: false,
-    needBottom: true,
-    needRight: true,
-    cellController: cell => {
-      if (!cell.isClue && !cell.outerCell) {
-        var chooserValues = [{}];
-        for (var i=1; i<=self.rows-2; i++) {
-         chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        chooserValues.push({image: "cross"});
-        chooserValues.push({image: "white_circle"});
-        cell.chooserValues = chooserValues;
-      } else if (cell.outerCell) {
-        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
-      }
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      if (cell.outerCell) {
-        setNumberChooser(cell, 0, (self.rows-2)*(self.rows-1)/2);
-      } else {
-        var chooserValues = [{}];
-        for (var i=1; i<=self.rows-2; i++) {
-         chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        chooserValues.push({image: "cross", returnValue: "cross"});
-        cell.chooserValues = chooserValues;
-      }
-    },
-    usePlus10: this.editMode?12:0,
-    cellMultiPencil: true,
-    decodeClue: value => {
-      if (value=="cross") {
-        return {image: "cross"};
-      } else if (value=="white") {
-        return {};
-      } else {
-        return {text: value};
-      }
-    },
   }
 
   typeProperties["ripple_effect"] = {
