@@ -88,7 +88,7 @@ router.get('/:contestid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    if (contest.start > new Date() && !(req.user && (req.user.role == "admin" || req.user.isTester))) {
+    if (contest.start > new Date() && !(req.user && (req.user.role == "admin" || req.user.isTester || req.user._id.equals(contest.author)}))) {
       res.sendStatus(404);
       return;
     }
