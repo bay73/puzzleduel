@@ -488,6 +488,15 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="chaos") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addNumbers(1, 4))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, 4))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else if (typeCode=="doubleblock") {
     var maxValue = Math.max(this.rows, this.cols) - 2;
     this.typeProperties = decribePuzzleType()
@@ -538,14 +547,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else {
 
   var typeProperties = {}
-
-
-  typeProperties["chaos"] = {
-    needNodes: false,
-    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 4);}},
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 4);},
-    cellMultiPencil: true,
-  }
 
   typeProperties["ripple_effect"] = {
     needNodes: true,

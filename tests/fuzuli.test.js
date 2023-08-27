@@ -61,7 +61,7 @@ test('Author controllers',(suite) => {
 // Mouse processing tests
 test('Process click to empty cell',(suite) => {
   let puzzle = suite.showPuzzle(
-    "fuzuli", "4x4-ABC",
+    "fuzuli", "4x4",
     {"a4": "1"}
   );
   puzzle.start();
@@ -93,7 +93,7 @@ test('Process click to empty cell',(suite) => {
 
 test('Choose value in one click',(suite) => {
   let puzzle = suite.showPuzzle(
-    "fuzuli", "4x4-ABC",
+    "fuzuli", "4x4",
     {"a4": "1"}
   );
   puzzle.start();

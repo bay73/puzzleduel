@@ -16,6 +16,10 @@ requirejs(["tests/black_white.test.js"], ()=>{
   allTestSuites.push(blackWhiteTestSuite);
 })
 
+requirejs(["tests/chaos.test.js"], ()=>{
+  allTestSuites.push(chaosTestSuite);
+})
+
 requirejs(["tests/clouds.test.js"], ()=>{
   allTestSuites.push(cloudsTestSuite);
 })
