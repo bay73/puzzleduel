@@ -140,6 +140,10 @@ requirejs(["tests/railroad.test.js"], ()=>{
   allTestSuites.push(railroadTestSuite);
 })
 
+requirejs(["tests/ripple_effect.test.js"], ()=>{
+  allTestSuites.push(rippleEffectTestSuite);
+})
+
 requirejs(["tests/shikaku.test.js"], ()=>{
   allTestSuites.push(shikakuTestSuite);
 })

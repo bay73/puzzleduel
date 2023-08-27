@@ -126,6 +126,16 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addNumbers(1,6))
      .build(this);
 
+  } else if (typeCode=="ripple_effect") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1,6))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().noClue().chooser()
+        .addNumbers(1,6))
+     .build(this);
+
   } else if (typeCode=="nanro") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
@@ -547,22 +557,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else {
 
   var typeProperties = {}
-
-  typeProperties["ripple_effect"] = {
-    needNodes: true,
-    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, 6);}},
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 6);},
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    collectAreas: this.editMode,
-    cellMultiPencil: true,
-  }
 
   typeProperties["fence"] = {
     thickEdges: true,
