@@ -582,6 +582,7 @@ ControllerItemBuilder.prototype.asAreaConnector = function(){
 StdColor = {
 BLACK: {color: (puzzle, isPencil) => puzzle.colorSchema.gridColor,
         textColor: "#fff"},
+GREY:  {color: (puzzle, isPencil) => puzzle.colorSchema.greyColor},
 OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueColor},
 DARK_OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueSecondColor},
 WHITE_TEXT: {textColor: "#fff"},

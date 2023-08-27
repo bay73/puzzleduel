@@ -35,6 +35,14 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().clue(StdItem.WHITE_CIRCLE, StdItem.BLACK_CIRCLE).clickSwitch()
         .addItem(StdItem.GREY.submitAs("1")))
+      .add(controller().forSolver().cell().noClue().copyPaste((data, elementData) => {
+         if (data.image=="cross") return data;
+         else return Object.assign({}, data, {image: null} )
+      }))
+      .add(controller().forSolver().cell().clue().copyPaste((data, elementData) => {
+         if (elementData.image=="cross") return elementData;
+         else return Object.assign({}, elementData, {color: data.color} );
+      }))
       .build(this);
 
   } else if (typeCode=="snake_simple") {
@@ -73,6 +81,23 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.color==self.colorSchema.clueColor?{color:self.colorSchema.greyColor}:data ))
       .add(controller().forSolver().cell().inner().clue().copy())
       .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="passage") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.BLACK)
+        .addItem(StdItem.CROSS)
+        .addNumbers(3,maxValue,StdColor.GREY))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().copyPaste((data, elementData) => {
+         if (data.image=="cross") return data;
+         else return Object.assign({}, {color: data.color==self.colorSchema.gridColor?self.colorSchema.greyColor:data.color} )
+      }))
+      .add(controller().forSolver().cell().clue().copy())
       .build(this);
 
   // With areas
@@ -637,25 +662,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"}];},
     decodeClue: value => {return {image: value} },
-  }
-
-  typeProperties["passage"] = {
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      var chooserValues = [{},{color: self.colorSchema.clueColor, returnValue: "black"},{image: "cross", returnValue: "cross"}];
-      for (var i=0; i<=10; i++) {
-       chooserValues.push({color: self.colorSchema.greyColor, text: i.toString(), returnValue: i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value=="cross") return {image: "cross"};
-      else if (value=="black") return {color: self.colorSchema.clueColor, returnValue: "1"}
-      else return {color: self.colorSchema.greyColor, text: value};
-    },
   }
 
   typeProperties["simple_loop"] = {
