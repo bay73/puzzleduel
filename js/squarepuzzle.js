@@ -554,22 +554,23 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
+  } else if (typeCode=="fence") {
+    this.typeProperties = decribePuzzleType().edgeStyle(false, true)
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,4))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.LINE.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().edge().drag()
+        .addItem(StdItem.LINE.submitAs("1")))
+      .build(this);
+
   } else {
 
   var typeProperties = {}
-
-  typeProperties["fence"] = {
-    thickEdges: true,
-    outerEdges: false,
-    needNodes: true,
-    cellController: cell => setClickSwitch(cell, true, [{},{image: "cross"},{image: "white_circle"}]),
-    edgeController: edge => {
-      setClickSwitch(edge, false, [{},{color: self.colorSchema.lineColor, returnValue: 1},{image: "cross"}]);
-      setDragSwitch(edge, false, [{},{color: self.colorSchema.lineColor}]);
-    },
-    nodeController: node => node.dragProcessor = true,
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 4);},
-  }
 
   typeProperties["railroad"] = {
     needConnectors: true,

@@ -55,8 +55,8 @@ test('Process click on edge',(suite) => {
   puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
-  assert("Edge value after one click").that(puzzle.edges[0][0][0].getValue()).isEqualTo(1);
-  assert("Edge data after one click").that(puzzle.edges[0][0][0].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue:1});
+  assert("Edge value after one click").that(puzzle.edges[0][0][0].getValue()).isEqualTo("1");
+  assert("Edge data after one click").that(puzzle.edges[0][0][0].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue: "1"});
 
   puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
@@ -85,8 +85,8 @@ test('Process drag on edge',(suite) => {
   x += puzzle.size.unitSize;
   puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
 
-  assert("Edge value after drag").that(puzzle.edges[0][0][0].getValue()).isEqualTo(1);
-  assert("Edge data after drag").that(puzzle.edges[0][0][0].data).isEqualTo({color: puzzle.colorSchema.lineColor});
+  assert("Edge value after drag").that(puzzle.edges[0][0][0].getValue()).isEqualTo("1");
+  assert("Edge data after drag").that(puzzle.edges[0][0][0].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue: "1"});
 
   x -= puzzle.size.unitSize;
   puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
@@ -107,7 +107,7 @@ test('Data collector',(suite) => {
   suite.edgeClick(puzzle, "b2-2");
   suite.edgeClick(puzzle, "d2-2");
 
-  assert("Submission data after few clicks").that(puzzle.collectData()).isEqualTo({"edges":{"a1-0":1,"a1-1":1,"a1-3":1,"b1-2":1,"b2-1":1,"b2-2":1,"d2-2":1}});
+  assert("Submission data after few clicks").that(puzzle.collectData()).isEqualTo({"edges":{"a1-0":"1","a1-1":"1","a1-3":"1","b1-2":"1","b2-1":"1","b2-2":"1","d2-2":"1"}});
 }),
 );
 
