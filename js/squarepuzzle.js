@@ -100,6 +100,19 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().clue().copy())
       .build(this);
 
+  } else if (typeCode=="snake_scope") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().node().chooser()
+        .addNumbers(0,3,StdColor.BLACK))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().copy())
+      .build(this);
+
   // With areas
   } else if (typeCode=="heyawake") {
     this.typeProperties = decribePuzzleType()
@@ -764,32 +777,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 99);},
     usePlus10: this.editMode?10:0,
-  }
-
-  typeProperties["snake_scope"] = {
-    needNodes: true,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      if (cell.isClue && cell.data.image != "cross") {
-        setClueClickSwitch(cell, [{},{color: self.colorSchema.greyColor, returnValue: "1"}], [{},{color: "#a0a0a0"}]);
-      }
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
-    nodeEditController: node => {
-      node.isClue = true;
-      var chooserValues = [{}];
-      for (var i=0; i<=3; i++) {
-        chooserValues.push({color: self.colorSchema.gridColor, text: i.toString(), textColor: "#fff", returnValue: i.toString()});
-      }
-      node.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value=="cross") {
-        return {image: "cross"};
-      } else {
-        return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
-      }
-    },
   }
 
   typeProperties["product_latin_square"] = {

@@ -168,6 +168,10 @@ requirejs(["tests/snake_simple.test.js"], ()=>{
   allTestSuites.push(snakeSimpleTestSuite);
 })
 
+requirejs(["tests/snake_scope.test.js"], ()=>{
+  allTestSuites.push(snakeScopeTestSuite);
+})
+
 requirejs(["tests/starbattle.test.js"], ()=>{
   allTestSuites.push(starbattleTestSuite);
 })
