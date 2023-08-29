@@ -13,10 +13,10 @@ mouseController.prototype.attachEvents = function(snap) {
   self.mouseDown = function(event){self.onMouseDown(event)};
   self.mouseUp = function(event){self.onMouseUp(event)};
   this.snap.node.addEventListener("mousedown", self.mouseDown, { passive: true });
-  this.snap.node.addEventListener("touchstart", self.mouseDown, { passive: true });
+  this.snap.node.addEventListener("touchstart", self.mouseDown, { passive: false });
   this.snap.node.addEventListener("mouseup", self.mouseUp, { passive: true });
-  this.snap.node.addEventListener("touchend", self.mouseUp, { passive: true });
-  this.snap.node.addEventListener("touchcancel", self.mouseUp, { passive: true });
+  this.snap.node.addEventListener("touchend", self.mouseUp, { passive: false });
+  this.snap.node.addEventListener("touchcancel", self.mouseUp, { passive: false });
   this.chooserBuilder = new chooserBuilder(this);
 }
 
