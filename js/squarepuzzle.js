@@ -381,6 +381,20 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
+  } else if (typeCode=="kuromasu") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.CROSS)
+        .addNumbers(1,29))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs('1'))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
+      .build(this);
+
   } else if (typeCode=="nurikabe") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
@@ -1100,15 +1114,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       }
     },
     cellMultiPencil: true,
-  }
-
-  typeProperties["kuromasu"] = {
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      setClueClickSwitch(cell, [{},{image: "cross"}], [{},{image: "cross"}]);
-    },
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 29);},
-    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["product_kuromasu"] = {
