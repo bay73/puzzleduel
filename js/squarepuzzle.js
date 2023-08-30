@@ -551,6 +551,52 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="product_kuromasu") {
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(1, 81))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, 9)
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="no_touch_sums") {
+    var maxValue = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(1, 99))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="top_heavy") {
+    var maxValue = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.CROSS))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else if (typeCode=="fuzuli") {
     var maxValue = Math.max(this.rows, this.cols) - 2;
     this.typeProperties = decribePuzzleType()
@@ -1113,80 +1159,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         return {text: value}
       }
     },
-    cellMultiPencil: true,
-  }
-
-  typeProperties["product_kuromasu"] = {
-    needNodes: false,
-    needBottom: true,
-    needRight: true,
-    cellController: cell => {
-      if (cell.outerCell) {
-        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
-      } else {
-        if (!cell.isClue) {
-          var chooserValues = [{}];
-          for (var i=0; i<=9; i++) {
-            chooserValues.push({text: i.toString(), returnValue: i.toString()});
-          }
-          chooserValues.push({image: "white_circle"}, {image: "cross"});
-          cell.chooserValues = chooserValues;
-        }
-      }
-    },
-    cellEditController: cell => {
-      if (cell.outerCell) {
-        cell.isClue = true; setNumberChooser(cell, 1, 81);
-      } else {
-        cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
-      }
-    },
-    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
-    usePlus10: this.editMode?10:0,
-    cellMultiPencil: true,
-  }
-
-  typeProperties["no_touch_sums"] = {
-    needNodes: false,
-    needBottom: true,
-    needRight: true,
-    cellController: cell => {
-      if (cell.outerCell) {
-        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
-      } else {
-        if (!cell.isClue) {
-          var chooserValues = [{}];
-          for (var i=1; i<=parseInt(self.dimensionExtra); i++) {
-            chooserValues.push({text: i.toString(), returnValue: i.toString()});
-          }
-          chooserValues.push({image: "white_circle"}, {image: "cross"});
-          cell.chooserValues = chooserValues;
-        }
-      }
-    },
-    cellEditController: cell => {
-      if (cell.outerCell) {
-        cell.isClue = true; setNumberChooser(cell, 1, 81);
-      } else {
-        cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
-      }
-    },
-    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
-    usePlus10: this.editMode?10:0,
-    cellMultiPencil: true,
-  }
-
-  typeProperties["top_heavy"] = {
-    needNodes: false,
-    cellController: cell => {if (!cell.isClue) {
-      var chooserValues = [{}];
-      for (var i=1; i<=parseInt(self.dimensionExtra); i++) {
-        chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      chooserValues.push({image: "white_circle"}, {image: "cross"});
-      cell.chooserValues = chooserValues;
-    }},
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, parseInt(self.dimensionExtra));},
     cellMultiPencil: true,
   }
 
