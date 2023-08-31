@@ -395,6 +395,21 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
       .build(this);
 
+  } else if (typeCode=="cave_classic") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.CLUE_COLOR.submitAs('black'))
+        .addNumbers(1,29))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs('black'))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
+      .build(this);
+
   } else if (typeCode=="nurikabe") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
@@ -445,6 +460,19 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS))
       .add(controller().forAuthor().node().inner().clickSwitch()
         .addItem(StdItem.BATTENBERG.submitAs("1")))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .build(this);
+
+  } else if (typeCode=="tetro_scope") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().node().inner().clickSwitch()
+        .addNumbers(0, 4, StdColor.BLACK))
       .add(controller().forSolver().cell().inner().noClue().clickSwitch()
         .addItem(StdItem.GREY.submitAs("1"))
         .addItem(StdItem.CROSS.doNotSubmit()))
@@ -529,6 +557,26 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.BRIGHT.submitAs('grey')))
       .add(controller().forSolver().cell().outer().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="paint_battenberg") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0,maxValue))
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().node().clickSwitch()
+        .addItem(StdItem.BATTENBERG))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("black"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().clue().copy())
       .add(controller().forSolver().cell().inner().noClue().copyPaste())
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
@@ -871,42 +919,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
-  typeProperties["paint_battenberg"] = {
-    needNodes: true,
-    needBottom: true,
-    needRight: true,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "black"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-    },
-    cellEditController: cell => {
-      if (cell.outerCell) {
-        cell.isClue = true;
-        var chooserValues = [{}];
-        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
-         chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      } else {
-        cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
-      }
-    },
-    nodeEditController: node => {
-      node.isClue = true;
-      node.clickSwitch = [{}, {image: "battenberg_small", returnValue: "battenberg"}];
-    },
-    decodeClue: value => {
-      if (value=="cross") {
-        return {image: "cross"};
-      } else if (value=="white") {
-        return {};
-      } else if (value=="battenberg") {
-        return {image: "battenberg_small"};
-      } else {
-        return {text: value};
-      }
-    },
-  }
-
   typeProperties["aquarium"] = {
     needNodes: true,
     needBottom: true,
@@ -940,57 +952,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
     collectAreas: this.editMode,
-  }
-
-  typeProperties["tetro_scope"] = {
-    needNodes: true,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      if (cell.isClue && cell.data.image != "cross") {
-        setClueClickSwitch(cell, [{},{color: self.colorSchema.greyColor, returnValue: "1"}], [{},{color: "#a0a0a0"}]);
-      }
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];},
-    nodeEditController: node => {
-      node.isClue = true;
-      var chooserValues = [{}];
-      for (var i=0; i<=4; i++) {
-        chooserValues.push({color: self.colorSchema.gridColor, text: i.toString(), textColor: "#fff", returnValue: i.toString()});
-      }
-      node.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value=="cross") {
-        return {image: "cross"};
-      } else {
-        return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
-      }
-    },
-  }
-
-  typeProperties["cave_classic"] = {
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "black"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      setClueClickSwitch(cell, [{},{image: "cross"}], [{},{image: "cross"}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      var chooserValues = [{},{image: "cross", returnValue: "cross"},{color: self.colorSchema.clueColor, returnValue: "black"}];
-      for (var i=1; i<=99; i++) {
-       chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    usePlus10: this.editMode?12:0,
-    decodeClue: value => {
-      if (value=="cross") {
-        return {image: "cross"};
-      } else if (value=="black"){
-        return {color: self.colorSchema.clueColor};
-      } else {
-        return {text: value};
-      }
-    },
   }
 
   typeProperties["tents_classic"] = {
