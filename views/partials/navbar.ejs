@@ -106,6 +106,7 @@
                 <li><a class="nav-link" href="/league/2023-06-01"><%= __('June 2023') %></a></li>
                 <li><a class="nav-link" href="/league/2023-07-01"><%= __('July 2023') %></a></li>
                 <li><a class="nav-link" href="/league/2023-08-01"><%= __('August 2023') %></a></li>
+                <li><a class="nav-link" href="/league/2023-09-01"><%= __('September 2023') %></a></li>
               </ul>
             </li>
           </ul>
@@ -172,14 +173,12 @@
 <%- include ('./messages') %>
 <script>
   $(document).ready(function () {
-    <% if (new Date() < new Date('2023-09-04T00:00:00.000+00:00')) { %>
-    showMessage("<br>Anuraag Sahay presented <a href='/contest/ttautpiaiuianto'>Tap into Tapa contest</a>. <br><br>" +
-       "The contest runs from the 1st of August to the 4th of September. Every day one contest puzzle is published. " +
-       "The winner at the end of the contest earns the title of `Tapa Wizard`, while the title of `Tapa Scrambler` will " +
-       "be conferred on the solver who finishes the most puzzles in less than a minute each. <br>" +
-       "See details and puzzles at the <a href='/contest/ttautpiaiuianto'>contest page</a>. <br><br>" +
+    <% if (new Date() < new Date('2023-09-09T00:00:00.000+00:00')) { %>
+    showMessage("<br>Alexey Oleshov started a <a href='/contest/yeurw8yqash'>new round of dOubLESHOW contest</a>. <br><br>" +
+       "Daily puzzles of all even dates from 2nd September 2023 till 22nd September 2023 are included to the contest scores. <br>"  +
+       "Puzzles of the contest devoted to number 2. <br><br>" +
        "Happy solving!",
-       null,"2023-08-01");
+       null,"2023-09-03");
     <% } %>
   });
 </script>
