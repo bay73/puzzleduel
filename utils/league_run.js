@@ -11,15 +11,16 @@ require('dotenv').config();
 const db = require('../config/keys').mongoURI;
 
 recount = async function () {
+  if (new Date().getDate() < 2) {
+    await createNextMonth(new Date());
+    await switchUserLeagues();
+  }
   await refillLeagues(new Date());
   await recountAllLeagues(new Date());
   if (new Date().getDate() > 26) {
     const date = new Date();
-    date.setMonth(date.getMonth() +1 )
+    date.setMonth(date.getMonth() + 1)
     await createNextMonth(date);
-  }
-  if (new Date().getDate() < 2) {
-    await switchUserLeagues();
   }
 }
 

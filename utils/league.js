@@ -150,8 +150,10 @@ async function createNextMonth(startDate) {
   leagueEndDate.setMonth(leagueStartDate.getMonth() + 1)
   previousLeagueStartDate = new Date(leagueStartDate)
   previousLeagueStartDate.setMonth(leagueStartDate.getMonth() - 1)
+  leagueRecreateDeadline = new Date(leagueStartDate)
+  leagueRecreateDeadline.setDate(leagueStartDate.getDate() + 1)
 
-  if (leagueStartDate < new Date()) {
+  if (leagueRecreateDeadline < new Date()) {
     console.log("Leagues already started.")
     return;
   }
