@@ -1,4 +1,20 @@
 <%- include ('./partials/navbar') %>
+<style>
+  #contest-results td,th {
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    font-size: 0.75em;
+    vertical-align: middle;
+    text-align: center;
+  }
+  #contest-results td.total,th.total {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    font-size: 1em;
+    vertical-align: middle;
+    text-align: left;
+  }
+</style>
 <div class="container">
   <div class="row">
     <div class="col-12 m-auto">
@@ -17,12 +33,21 @@
           </div>
           <% } %>
         </div>
+        <% const puzzleCount = contest.puzzles.filter(p => p.revealDate < new Date()).length; %>
+        <% let rowCount = 1; %>
+        <% if (puzzleCount > 13) { rowCount = Math.ceil(puzzleCount / 12)}; %>
+        <% let puzzlesPerRow = Math.ceil(puzzleCount/rowCount); %>
         <div class="card-body">
-          <table class="table table-hover table-condensed table-striped">
+          <table class="table table-hover table-condensed table-striped" id="contest-results">
             <tbody>
               <tr>
-                <th></th>
-                <th><%= __('Total') %></th>
+                <th class="total" <%= rowCount>1?"rowspan="+rowCount:"" %>></th>
+                <th class="total" <%= rowCount>1?"rowspan="+rowCount:"" %>><%= __('Total') %></th>
+                <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                <th <%= rowCount>1?"rowspan="+rowCount:"" %>>
+                </th>
+                <% } %>
+                <% let puzzlesInRow = 0; %>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>
                 <th>
@@ -30,34 +55,50 @@
                     <%= puzzle.puzzleNum %>
                   </a>
                 </th>
+                <% puzzlesInRow++; %>
+                <% if (puzzlesInRow >= puzzlesPerRow && rowCount > 1) { %>
+                </tr>
+                <tr>
+                <% puzzlesInRow = 0 %>
+                <% } %>
                 <% } %>
                 <% }) %>
-                <% if (typeof user != 'undefined' && user.role=='admin') { %>
-                <th>
-                </th>
-                <% } %>
               </tr>
               <% var orderNum = 0; %>
               <% contest.results.sort((r1,r2) => r2.score - r1.score).forEach(function(result) { orderNum++; %>
               <tr>
-                <td class="<%= orderNum <=3?'text-success':'' %>"><%= orderNum %>. <%= result.userName %></td>
-                <td><%= result.score %></td>
+                <td class="total <%= orderNum <=3?'text-success':'' %>" <%= rowCount>1?"rowspan="+rowCount:"" %>>
+                  <%= orderNum %>. <%= result.userName %>
+                </td>
+                <td class="total" <%= rowCount>1?"rowspan="+rowCount:"" %>><%= result.score %></td>
+                <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                <td <%= rowCount>1?"rowspan="+rowCount:"" %>>
+                  <%= result.solvedCount %> puzzles: <%= result.totalTimeStr %> <%= result.errCount > 0?"("+result.errCount+" errors)":"" %>
+                </td>
+                <% } %>
+                <% puzzlesInRow = 0; %>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>
                 <% var userRes = puzzle.results.filter(res => res.userId.equals(result.userId)); %>
                 <td><%= userRes==0 ? "":userRes[0].score %></td>
+                <% puzzlesInRow++; %>
+                <% if (puzzlesInRow >= puzzlesPerRow && rowCount > 1) { %>
+                </tr>
+                <tr>
+                <% puzzlesInRow = 0 %>
+                <% } %>
                 <% } %>
                 <% }) %>
-                <% if (typeof user != 'undefined' && user.role=='admin') { %>
-                <td>
-                  <%= result.solvedCount %> puzzles: <%= result.totalTimeStr %> <%= result.errCount > 0?"("+result.errCount+" errors)":"" %>
-                </td>
-                <% } %>
               </tr>
               <% }) %>
               <tr>
-                <th></th>
-                <th><%= __('Total') %></th>
+                <th class="total" <%= rowCount>1?"rowspan="+rowCount:"" %>></th>
+                <th class="total" <%= rowCount>1?"rowspan="+rowCount:"" %>><%= __('Total') %></th>
+                <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                <th <%= rowCount>1?"rowspan="+rowCount:"" %>>
+                </th>
+                <% } %>
+                <% puzzlesInRow = 0; %>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date()) { %>
                 <th>
@@ -65,17 +106,19 @@
                     <%= puzzle.puzzleNum %>
                   </a>
                 </th>
+                <% puzzlesInRow++; %>
+                <% if (puzzlesInRow >= puzzlesPerRow && rowCount > 1) { %>
+                </tr>
+                <tr>
+                <% puzzlesInRow = 0 %>
+                <% } %>
                 <% } %>
                 <% }) %>
-                <% if (typeof user != 'undefined' && user.role=='admin') { %>
-                <th>
-                </th>
-                <% } %>
               </tr>
               <% if (typeof user != 'undefined' && user.role=='admin') { %>
               <tr>
-                <td></td>
-                <td></td>
+                <td rowspan=<%= rowCount %>></td>
+                <td rowspan=<%= rowCount %>></td>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date() && typeof puzzle.details != 'undefined') { %>
                 <td>
@@ -85,7 +128,7 @@
                 </td>
                 <% } %>
                 <% }) %>
-                <td>
+                <td rowspan=<%= rowCount %>>
                 </td>
               </tr>
               <% } %>
