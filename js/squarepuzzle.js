@@ -210,6 +210,25 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().copyPaste())
      .build(this);
 
+  } else if (typeCode=="aquarium") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0, maxValue))
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+     .build(this);
+
   // Objects
   } else if (typeCode=="akari") {
     this.typeProperties = decribePuzzleType()
@@ -917,41 +936,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     usePlus10: this.editMode?10:0,
     cellMultiPencil: true,
-  }
-
-  typeProperties["aquarium"] = {
-    needNodes: true,
-    needBottom: true,
-    needRight: true,
-    cellController: cell => {
-      if (cell.outerCell) {
-        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
-      } else {
-        setClickSwitch(cell, false, [{},{color: self.colorSchema.greyColor, returnValue: "1"},{image: "cross"}], [{},{color: "#a0a0a0"},{image: "cross"}]);
-      }
-    },
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    cellEditController: cell => {
-      if (cell.outerCell) {
-        cell.isClue = true;
-        var chooserValues = [{}];
-        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
-         chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      } else {
-        cell.clickSwitch = [{},{image: "cross", returnValue: "cross"}];
-      }
-    },
-    decodeClue: value => {return value=="cross"?{image: "cross"}:{text: value};},
-    collectAreas: this.editMode,
   }
 
   typeProperties["tents_classic"] = {
