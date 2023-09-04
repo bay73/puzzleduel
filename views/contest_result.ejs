@@ -119,6 +119,9 @@
               <tr>
                 <td rowspan=<%= rowCount %>></td>
                 <td rowspan=<%= rowCount %>></td>
+                <td rowspan=<%= rowCount %>>
+                </td>
+                <% puzzlesInRow = 0; %>
                 <% contest.puzzles.sort((p1, p2) => p1.puzzleNum - p2.puzzleNum).forEach(function(puzzle) { %>
                 <% if (puzzle.revealDate < new Date() && typeof puzzle.details != 'undefined') { %>
                 <td>
@@ -126,10 +129,14 @@
                   <%= Math.round(puzzle.details.medianTime/1000) %>(<%= Math.round(puzzle.details.medianScore*10)/10 %>)<br>
                   <%= Math.round(puzzle.details.complexity/10000) %>
                 </td>
+                <% puzzlesInRow++; %>
+                <% if (puzzlesInRow >= puzzlesPerRow && rowCount > 1) { %>
+                </tr>
+                <tr>
+                <% puzzlesInRow = 0 %>
+                <% } %>
                 <% } %>
                 <% }) %>
-                <td rowspan=<%= rowCount %>>
-                </td>
               </tr>
               <% } %>
             </tbody>
