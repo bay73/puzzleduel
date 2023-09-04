@@ -600,6 +600,23 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="arrow_web") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.WHITE_ARROW_U)
+        .addItem(StdItem.WHITE_ARROW_UR)
+        .addItem(StdItem.WHITE_ARROW_R)
+        .addItem(StdItem.WHITE_ARROW_DR)
+        .addItem(StdItem.WHITE_ARROW_D)
+        .addItem(StdItem.WHITE_ARROW_DL)
+        .addItem(StdItem.WHITE_ARROW_L)
+        .addItem(StdItem.WHITE_ARROW_UL))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.BLACK.submitAs("1"))
+        .addItem(StdItem.LIGHT_GREY.doNotSubmit()))
+      .add(controller().forSolver().cell().copyPaste((data, elementData) => Object.assign({}, elementData, {color: data.color})))
+      .build(this);
+
   // Letters and numbers
   } else if (typeCode=="easy_as_abc") {
     var letters = self.dimensionExtra;
@@ -983,17 +1000,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         return {text: value};
       }
     },
-  }
-
-  typeProperties["arrow_web"] = {
-    needNodes: false,
-    cellController: cell => {
-      setClickSwitch(cell, true, [{},{color: self.colorSchema.gridColor, returnValue: "1"},{color: "#a0a0b0"}], [{},{color: self.colorSchema.greyColor},{color: "#d0d0d0"}]);
-    },
-    cellEditController: cell => {
-      cell.chooserValues = [{},{image: "white_arrow_u", returnValue: "arrow_u"},{image: "white_arrow_ur", returnValue: "arrow_ur"},{image: "white_arrow_r", returnValue: "arrow_r"},{image: "white_arrow_dr", returnValue: "arrow_dr"},{image: "white_arrow_d", returnValue: "arrow_d"},{image: "white_arrow_dl", returnValue: "arrow_dl"},{image: "white_arrow_l", returnValue: "arrow_l"},{image: "white_arrow_ul", returnValue: "arrow_ul"}];
-    },
-    decodeClue: value => {return {image: "white_" + value}; },
   }
 
   typeProperties["xo"] = {
