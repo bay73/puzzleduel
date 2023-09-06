@@ -1,0 +1,25 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <div class="card">
+        <h1 class="card-header"><%= __('Announcements') %></h1>
+          <% announcements.forEach(function(announcement) { %>
+          <div class="card mb-5">
+            
+            <h3 class="card-header">
+              <%= announcement.start.toISOString().split('T')[0] %>
+            </h3>
+            <div class="card-body container">
+              <p class="text-justify">
+                <%- announcement.message %>
+              </p>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>

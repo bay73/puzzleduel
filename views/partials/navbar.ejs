@@ -136,6 +136,7 @@
             <li><a class="nav-link" href="/archive/examples"><%= __('Example puzzles') %></a></li>
             <li><a class="nav-link" href="/help/videos"><%= __('Explainer videos') %></a></li>
             <li><a class="nav-link" href="/help/authors"><%= __('Our contributors') %></a></li>
+            <li><a class="nav-link" href="/announcements"><%= __('Announcements') %></a></li>
           </ul>
         </li>
       </ul>
@@ -173,12 +174,8 @@
 <%- include ('./messages') %>
 <script>
   $(document).ready(function () {
-    <% if (new Date() < new Date('2023-09-09T00:00:00.000+00:00')) { %>
-    showMessage("<br>Alexey Oleshov started a <a href='/contest/yeurw8yqash'>new round of dOubLESHOW contest</a>. <br><br>" +
-       "Daily puzzles of all even dates from 2nd September 2023 till 22nd September 2023 are included to the contest scores. <br>"  +
-       "Puzzles of the contest devoted to number 2. <br><br>" +
-       "Happy solving!",
-       null,"2023-09-03");
+    <% if (announcement.message){ %>
+    showMessage("<%- announcement.message %>",null,"<%= announcement.start.toISOString().split('T')[0] %>");
     <% } %>
   });
 </script>

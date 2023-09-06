@@ -6,6 +6,7 @@ const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const PuzzleComment = require('../models/PuzzleComment');
 const League = require('../models/League');
+const Announcement = require('../models/Announcement');
 
 const CONTEST_CACHE_TTL = 10*1000; // 10 seconds
 const PUZZLETYPE_CACHE_TTL = 60*60*1000; // 1 hour
@@ -15,6 +16,7 @@ const USER_CACHE_TTL = 60*60*1000; // 1 hour
 const SOLVINGTIME_CACHE_TTL = 20*1000; // 20 seconds
 const COMMENTER_CACHE_TTL = 60*60*1000; // 1 hour
 const LEAGUE_CACHE_TTL = 5*60*1000; // 5 minutes
+const ANNOUNCEMENTS_CACHE_TTL = 60*60*1000; // 1 hour
 
 const contestCache = {}
 const puzzleTypeCache = {fresheness: undefined, puzzleTypes: {}}
@@ -26,6 +28,7 @@ const userCache = {}
 const userLeaguesCache = {fresheness: undefined, leagues: {}}
 const solvingTimeCache = {}
 const leagueCache = {}
+const announcementsCache = {fresheness: undefined, puzzleTypes: {}}
 
 module.exports.readContest = async function(contestId) {
   const currentTime = new Date().getTime();
@@ -215,6 +218,16 @@ module.exports.readMonthlyCommenters = async function(date) {
   return monthlyCommentersCache[monthBegin].commenters;
 }
 
+module.exports.readAnnouncements = async function() {
+  const currentTime = new Date().getTime();
+  if (typeof announcementsCache.fresheness=='undefined' || currentTime > announcementsCache.fresheness) {
+    const announcements = await Announcement.find({}).sort({start: -1}).lean();
+    announcementsCache.announcements = announcements;
+    announcementsCache.fresheness = new Date().getTime() + ANNOUNCEMENTS_CACHE_TTL;
+  }
+  return announcementsCache.announcements;
+}
+
 module.exports.clearCache = function() {
   Object.keys(contestCache).forEach(function(key) { delete contestCache[key]; });
   Object.keys(puzzleCache).forEach(function(key) { delete puzzleCache[key]; });
@@ -225,6 +238,7 @@ module.exports.clearCache = function() {
   Object.keys(solvingTimeCache).forEach(function(key) { delete solvingTimeCache[key]; });
   Object.keys(leagueCache).forEach(function(key) { delete leagueCache[key]; });
   puzzleTypeCache.fresheness = undefined;
+  announcementsCache.fresheness = undefined;
   userLeaguesCache.fresheness = undefined;
 }
 

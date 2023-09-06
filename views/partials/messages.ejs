@@ -60,7 +60,7 @@
       var lastShow = parseInt(localStorage.getItem("showmessage"+messageId));
       if (!numberOfTimes) numberOfTimes = 0;
       if (!lastShow) lastShow = 0;
-      if (numberOfTimes>3 || Date.now() - lastShow < 43200000) {
+      if (numberOfTimes > 2 || Date.now() - lastShow < 43200000) {
         return null;
       }
       localStorage.setItem("message"+messageId,numberOfTimes + 1);

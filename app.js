@@ -34,6 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./config/flash'));
 app.use(require('./config/theme'));
+app.use(require('./routes/announcement.js'));
 
 
 // Routes
@@ -49,6 +50,7 @@ app.use('/rating', require('./routes/rating.js'));
 app.use('/admin', require('./routes/admin.js'));
 app.use('/userstat', require('./routes/userstat.js'));
 app.use('/league', require('./routes/leagues.js'));
+app.use('/announcements', require('./routes/announcements.js'));
 app.use('/sudoqlog', require('./routes/sudoqlog.js'));
 
 // Static content
