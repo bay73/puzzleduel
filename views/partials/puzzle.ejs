@@ -113,5 +113,13 @@
     });
 
   }
+  var doubleTouchStartTimestamp = 0;
+  document.addEventListener("touchstart", function(event){
+      var now = +(new Date());
+      if (doubleTouchStartTimestamp + 50 > now){
+          event.preventDefault();
+      };
+      doubleTouchStartTimestamp = now;
+  }, {passive: false});
 </script>
 <% } %>
