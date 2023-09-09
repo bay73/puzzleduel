@@ -34,6 +34,11 @@ check:function(dimension, clues, data){
       top = value;
     } else if (key=="left") {
       left = value;
+    } else {
+      var pos = util.parseCoord(key);
+      if (cells[pos.y]){
+        cells[pos.y][pos.x] = value;
+      }
     }
   }
   var res = Checker.checkColumnMagic(cells, letters);
