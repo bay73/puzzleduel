@@ -22,6 +22,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().clickSwitch()
         .addItem(StdItem.BLACK.submitAs("1"))
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copyPaste((data, elementData) => {
+         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+      }))
       .build(this);
   // Snakes
   } else if (typeCode=="snake_dutch") {
