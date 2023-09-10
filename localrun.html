@@ -130,31 +130,48 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "squares_and_rectangles",
+      typeCode: "skyscrapers_gaps",
       id: "puzzle.code",
-      dimension: "5x5"
+      dimension: "5x5-3"
     };
     var settings = {
       local: true,
       data: {
-    "b3": "black_circle",
-    "c3": "white_circle",
-    "e3": "white_circle",
-    "edges": {
-        "a1-1": "huge_black_circle",
-        "a4-2": "huge_white_circle",
-        "c4-2": "huge_white_circle"
-    },
-    "nodes": {
-        "d1-2": "huge_white_circle"
-    },
+    "bottom": [
+        null,
+        "3",
+        "1",
+        null,
+        "2"
+    ],
+    "right": [
+        null,
+        null,
+        "1",
+        "2",
+        null
+    ],
+    "top": [
+        "2",
+        null,
+        "2",
+        "2",
+        null
+    ],
+    "left": [
+        "2",
+        "2",
+        "2",
+        null,
+        null
+    ],
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

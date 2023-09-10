@@ -156,6 +156,18 @@ requirejs(["tests/skyscrapers.test.js"], ()=>{
   allTestSuites.push(skyscrapersTestSuite);
 })
 
+requirejs(["tests/skyscrapers_gaps.test.js"], ()=>{
+  allTestSuites.push(skyscrapersGapsTestSuite);
+})
+
+requirejs(["tests/skyscrapers_products.test.js"], ()=>{
+  allTestSuites.push(skyscrapersProductsTestSuite);
+})
+
+requirejs(["tests/skyscrapers_sums.test.js"], ()=>{
+  allTestSuites.push(skyscrapersSumsTestSuite);
+})
+
 requirejs(["tests/snake_dutch.test.js"], ()=>{
   allTestSuites.push(snakeDutchTestSuite);
 })
@@ -221,12 +233,12 @@ requirejs(["tests/sudoku_skyscrapers.test.js"], ()=>{
   allTestSuites.push(sudokuSyscrapersTestSuite);
 })
 
-requirejs(["tests/sudoku_skyscrapers.test.js"], ()=>{
-  allTestSuites.push(sudokuSyscrapersTestSuite);
-})
-
 requirejs(["tests/sudoku_square_number.test.js"], ()=>{
   allTestSuites.push(sudokuSquareNumberTestSuite);
+})
+
+requirejs(["tests/sudoku_x_sums.test.js"], ()=>{
+  allTestSuites.push(sudokuXSumsTestSuite);
 })
 
 requirejs(["tests/suguru.test.js"], ()=>{

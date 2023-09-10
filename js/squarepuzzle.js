@@ -737,6 +737,55 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="skyscrapers_sums") {
+    var maxValue = Math.max(this.rows, this.cols);
+    var maxSum = maxValue * (maxValue + 1) / 2;
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(1, maxSum))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="skyscrapers_products") {
+    var maxValue = Math.max(this.rows, this.cols);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(1, 99))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="skyscrapers_gaps") {
+    var maxValue = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else if (typeCode=="domino_castle_sum") {
     var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
