@@ -43,25 +43,35 @@
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              class="form-control"
-              placeholder="Create Password"
-              value="<%= typeof password != 'undefined' ? password : '' %>"
-            />
+            <div class="input-group" id="show_hide_password">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                placeholder="Create Password"
+                value="<%= typeof password != 'undefined' ? password : '' %>"
+              />
+              <div class="input-group-addon">
+                <a href="" class="align-middle"><i class="pl-2 fa fa-eye-slash align-middle" aria-hidden="true"></i></a>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="password2">Confirm Password</label>
-            <input
-              type="password"
-              id="password2"
-              name="password2"
-              class="form-control"
-              placeholder="Confirm Password"
-              value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
-            />
+            <div class="input-group" id="show_hide_password2">
+              <input
+                type="password"
+                id="password2"
+                name="password2"
+                class="form-control"
+                placeholder="Confirm Password"
+                value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+              />
+              <div class="input-group-addon">
+                <a href="" class="align-middle"><i class="pl-2 fa fa-eye-slash align-middle" aria-hidden="true"></i></a>
+              </div>
+            </div>
           </div>
           <style>
            .g-recaptcha{
@@ -97,5 +107,29 @@
     <% if (typeof country != 'undefined') { %>
       $("#country").countrySelect("selectCountry", "<%= country %>")
     <% } %>
-  })
+    $("#show_hide_password a").on('click', function(event) {
+      event.preventDefault();
+      if($('#show_hide_password input').attr("type") == "text"){
+        $('#show_hide_password input').attr('type', 'password');
+        $('#show_hide_password i').addClass( "fa-eye-slash" );
+        $('#show_hide_password i').removeClass( "fa-eye" );
+      }else if($('#show_hide_password input').attr("type") == "password"){
+        $('#show_hide_password input').attr('type', 'text');
+        $('#show_hide_password i').removeClass( "fa-eye-slash" );
+        $('#show_hide_password i').addClass( "fa-eye" );
+      }
+    });
+    $("#show_hide_password2 a").on('click', function(event) {
+      event.preventDefault();
+      if($('#show_hide_password2 input').attr("type") == "text"){
+        $('#show_hide_password2 input').attr('type', 'password');
+        $('#show_hide_password2 i').addClass( "fa-eye-slash" );
+        $('#show_hide_password2 i').removeClass( "fa-eye" );
+      }else if($('#show_hide_password2 input').attr("type") == "password"){
+        $('#show_hide_password2 input').attr('type', 'text');
+        $('#show_hide_password2 i').removeClass( "fa-eye-slash" );
+        $('#show_hide_password2 i').addClass( "fa-eye" );
+      }
+    });
+  });
 </script>
