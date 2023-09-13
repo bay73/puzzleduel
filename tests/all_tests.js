@@ -160,6 +160,10 @@ requirejs(["tests/skyscrapers_gaps.test.js"], ()=>{
   allTestSuites.push(skyscrapersGapsTestSuite);
 })
 
+requirejs(["tests/skyscrapers_exclusive.test.js"], ()=>{
+  allTestSuites.push(skyscrapersExclusiveTestSuite);
+})
+
 requirejs(["tests/skyscrapers_products.test.js"], ()=>{
   allTestSuites.push(skyscrapersProductsTestSuite);
 })

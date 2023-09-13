@@ -130,7 +130,7 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "skyscrapers_gaps",
+      typeCode: "skyscrapers_exclusive",
       id: "puzzle.code",
       dimension: "5x5-3"
     };
@@ -139,31 +139,31 @@
       data: {
     "bottom": [
         null,
+        null,
+        "0",
+        null,
+        "3"
+    ],
+    "right": [
+        "2",
+        null,
+        null,
+        null,
+        "1"
+    ],
+    "top": [
+        null,
         "3",
         "1",
         null,
-        "2"
-    ],
-    "right": [
-        null,
-        null,
-        "1",
-        "2",
-        null
-    ],
-    "top": [
-        "2",
-        null,
-        "2",
-        "2",
         null
     ],
     "left": [
-        "2",
-        "2",
+        null,
         "2",
         null,
-        null
+        null,
+        "2"
     ],
     "tag": ""
 }
