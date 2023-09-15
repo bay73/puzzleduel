@@ -66,7 +66,9 @@ gridElement.prototype.switchToData = function(data) {
   this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData));
   this.data = Object.assign({text: null, image: null, color: null, textColor: null}, data);
   this.puzzle.logStep(coord, this.dataToLog(data))
-  this.pencilData = null;
+  if (!data.keepPencil) {
+    this.pencilData = null;
+  }
   this.redraw();
 }
 

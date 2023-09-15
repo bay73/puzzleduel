@@ -529,7 +529,10 @@ processControllerData = function(data, element, puzzle, isPencil, ignoreReturnVa
     to.color = executeOrGet(to.color, from.color, puzzle, isPencil);
     to.textColor = executeOrGet(to.textColor, from.textColor, puzzle, isPencil);
     if (!isPencil && !ignoreReturnValue) {
-      to.returnValue = executeOrGet(to.returnValue, from.returnValue, puzzle, isPencil);
+      to.returnValue = executeOrGet(to.returnValue, from.returnValue, puzzle, false);
+    }
+    if (!isPencil) {
+      to.keepPencil = executeOrGet(to.keepPencil, from.keepPencil, puzzle, false);
     }
     return to;
   }
@@ -577,6 +580,12 @@ ControllerItemBuilder.prototype.asAreaBorder = function(){
 // Defines the element which is used as an area connector.
 ControllerItemBuilder.prototype.asAreaConnector = function(){
   return new ControllerItemBuilder(this.data, true);
+}
+
+ControllerItemBuilder.prototype.keepPencil = function(){
+  var newData = Object.assign({}, this.data);
+  newData.keepPencil = true;
+  return new ControllerItemBuilder(newData, this.useAsAreaConnector);
 }
 
 StdColor = {
