@@ -838,7 +838,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="slalom") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().node().chooser()
-        .addNumbers(0,4,StdColor.BLACK)))
+        .addNumbers(0,4,StdColor.BLACK))
       .add(controller().forSolver().cell().clickSwitch()
         .addItem(StdItem.SLASH)
         .addItem(StdItem.BACKSLASH))
