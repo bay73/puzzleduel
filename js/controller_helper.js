@@ -125,7 +125,7 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
   typeDesc.edgeEditController = extractControllers(ControllerBuilder.EDGE, true);
 
   typeDesc.nodeController = extractControllers(ControllerBuilder.NODE, false);
-  typeDesc.nodeController = addDragProcessingIfNeeded(typeDesc.nodeEditController, false, ControllerBuilder.EDGE)
+  typeDesc.nodeController = addDragProcessingIfNeeded(typeDesc.nodeController, false, ControllerBuilder.EDGE)
   typeDesc.nodeEditController = extractControllers(ControllerBuilder.NODE, true);
   typeDesc.nodeEditController = addDragProcessingIfNeeded(typeDesc.nodeEditController, true, ControllerBuilder.EDGE)
 
@@ -226,6 +226,7 @@ ControllerBuilder.CLICK_SWITCH = 2;
 ControllerBuilder.DRAG_SWITCH = 3;
 ControllerBuilder.DRAG_COPY = 4;
 ControllerBuilder.DRAG_COPY_PATSE = 5;
+ControllerBuilder.DRAG_START = 6;
 
 ControllerBuilder.CELL = 1;
 ControllerBuilder.EDGE = 2;
@@ -278,6 +279,12 @@ ControllerBuilder.prototype.drag = function(){
     throw "drag conroller can be used only for edges and connectors"
   }
   this.type = ControllerBuilder.DRAG_SWITCH;
+  return this;
+}
+
+// Enable dragging for element
+ControllerBuilder.prototype.dragEnabled = function(){
+  this.type = ControllerBuilder.DRAG_START;
   return this;
 }
 
@@ -499,7 +506,11 @@ ControllerBuilder.prototype.build = function(){
         }
       };
       gridElement.drawDragHandler = (end) => gridElement.puzzle.controller.drawCopyHandler(gridElement, end);
-  }
+    }
+  } else if (this.type==ControllerBuilder.DRAG_START) {
+    return function(gridElement) {
+      gridElement.dragProcessor = () => false;
+    }
   } else {
     throw 'controller type is not defined!';
   }

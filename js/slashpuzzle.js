@@ -13,10 +13,72 @@ slashPuzzleType.prototype.setTypeProperties = function(typeCode) {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().node().chooser()
         .addNumbers(0,4,StdColor.BLACK))
+      .add(controller().forSolver().node().dragEnabled())
       .add(controller().forSolver().cell().clickSwitch()
         .addItem(StdItem.SLASH)
         .addItem(StdItem.BACKSLASH))
       .build(this);
   }
 }
+
+squarePuzzleCell.prototype.switchToSlash = function(slashType) {
+  for (var i=0; i<this.clickSwitch.length; i++){
+    if (this.clickSwitch[i].returnValue == slashType) {
+      this.switchToData(this.clickSwitch[i]);
+      return true;
+    }
+  }
+  return false;
+}
+
+squarePuzzleNode.prototype.processDragEnd = function(startElement) {
+  if (startElement.constructor.name != this.constructor.name) {
+    return false;
+  }
+  var commonSlashCell = this.commonSlashCell(startElement);
+  if (commonSlashCell) {
+    return commonSlashCell.switchToSlash("/");
+  }
+  var commonBackslashCell = this.commonBackslashCell(startElement);
+  if (commonBackslashCell) {
+    return commonBackslashCell.switchToSlash("\\");
+  }
+  return false;
+}
+
+squarePuzzleNode.prototype.processDragMove = function(startElement) {
+  if (!this.processDragEnd(startElement)) {
+    return false;
+  }
+  return {newMouseStartElement: this};
+}
+
+squarePuzzleNode.prototype.commonSlashCell = function(otherNode) {
+  if (this == otherNode) {
+    return null;
+  }
+  var thisPosition = this.position();
+  var otherPosition = otherNode.position();
+  if (thisPosition.col == otherPosition.col - 1 && thisPosition.row == otherPosition.row + 1 ) {
+    return this.puzzle.cells[thisPosition.row][otherPosition.col]
+  }
+  if (thisPosition.col == otherPosition.col + 1 && thisPosition.row == otherPosition.row - 1 ) {
+    return this.puzzle.cells[otherPosition.row][thisPosition.col]
+  }
+}
+
+squarePuzzleNode.prototype.commonBackslashCell = function(otherNode) {
+  if (this == otherNode) {
+    return null;
+  }
+  var thisPosition = this.position();
+  var otherPosition = otherNode.position();
+  if (thisPosition.col == otherPosition.col - 1 && thisPosition.row == otherPosition.row - 1 ) {
+    return this.puzzle.cells[otherPosition.row][otherPosition.col]
+  }
+  if (thisPosition.col == otherPosition.col + 1 && thisPosition.row == otherPosition.row + 1 ) {
+    return this.puzzle.cells[thisPosition.row][thisPosition.col]
+  }
+}
+
 })
