@@ -43,7 +43,7 @@ test('Solver controllers',(suite) => {
   );
   puzzle.start();
 
-  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"A",returnValue:"A"}, {text:"B",returnValue:"B"}, {text:"C",returnValue:"C"}, {image: 'white_circle'}, {image: 'cross'}]);
+  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"A",returnValue:"A"}, {text:"B",returnValue:"B"}, {text:"C",returnValue:"C"}, {image: 'white_circle', keepPencil: true}, {image: 'cross'}]);
   assert("Empty cell click").that(puzzle.cells[2][2].clickSwitch).isNull();
   assert("Cross cell chooser").that(puzzle.cells[3][0].chooserValues).isNull();
   assert("Cross cell click").that(puzzle.cells[3][0].clickSwitch).isNull();;
@@ -66,7 +66,7 @@ test('Solver controllers with other letters',(suite) => {
   );
   puzzle.start();
 
-  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"K",returnValue:"K"}, {text:"L",returnValue:"L"}, {image: 'white_circle'}, {image: 'cross'}]);
+  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"K",returnValue:"K"}, {text:"L",returnValue:"L"}, {image: 'white_circle', keepPencil: true}, {image: 'cross'}]);
   assert("Empty cell click").that(puzzle.cells[2][2].clickSwitch).isNull();
 }),
 

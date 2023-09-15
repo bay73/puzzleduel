@@ -43,7 +43,7 @@ test('Solver controllers',(suite) => {
   );
   puzzle.start();
 
-  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"1",returnValue:"1"}, {text:"2",returnValue:"2"}, {text:"3",returnValue:"3"}, {image: 'white_circle'}, {image: 'cross'}]);
+  assert("Empty cell chooser").that(puzzle.cells[2][2].chooserValues).containsExactly([{}, {text:"1",returnValue:"1"}, {text:"2",returnValue:"2"}, {text:"3",returnValue:"3"}, {image: 'white_circle', keepPencil: true}, {image: 'cross'}]);
   assert("Empty cell click").that(puzzle.cells[2][2].clickSwitch).isNull();
   assert("Cross cell chooser").that(puzzle.cells[0][0].chooserValues).isNull();
   assert("Cross cell click").that(puzzle.cells[0][0].clickSwitch).isNull();;
