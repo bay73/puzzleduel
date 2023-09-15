@@ -255,8 +255,8 @@ dominoType.prototype.addConnector = function(connector) {
   return;
 }
 
-squarePuzzleConnector.prototype.revertTo = function(oldData) {
-  squareGridElement.prototype.revertTo.call(this, oldData);
+squarePuzzleConnector.prototype.revertTo = function(oldData, oldPencilData) {
+  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData);
   if (!(this.puzzle instanceof areaPuzzleType)) {
     return;
   }
@@ -287,8 +287,8 @@ squarePuzzleConnector.prototype.switchToData = function(data) {
   this.puzzle.recountConnectorAreas();
 }
 
-squarePuzzleCell.prototype.revertTo = function(oldData) {
-  squareGridElement.prototype.revertTo.call(this, oldData);
+squarePuzzleCell.prototype.revertTo = function(oldData, oldPencilData) {
+  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData);
   if (!(this.puzzle instanceof fillominoPuzzleType)) {
     return;
   }
@@ -303,8 +303,8 @@ squarePuzzleCell.prototype.switchToData = function(data) {
   this.puzzle.recountConnectorAreas();
 }
 
-squarePuzzleEdge.prototype.revertTo = function(oldData) {
-  squareGridElement.prototype.revertTo.call(this, oldData);
+squarePuzzleEdge.prototype.revertTo = function(oldData, oldPencilData) {
+  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData);
   if (!(this.puzzle instanceof areaPuzzleType)) {
     return;
   }
