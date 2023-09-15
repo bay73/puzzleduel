@@ -19,3 +19,4 @@ slashPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
   }
 }
+})
