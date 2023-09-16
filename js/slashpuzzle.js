@@ -22,10 +22,15 @@ slashPuzzleType.prototype.setTypeProperties = function(typeCode) {
 }
 
 squarePuzzleCell.prototype.switchToSlash = function(slashType) {
-  for (var i=0; i<this.clickSwitch.length; i++){
-    if (this.clickSwitch[i].returnValue == slashType) {
-      this.switchToData(this.clickSwitch[i]);
-      return true;
+  if (this.getValue() == slashType) {
+    this.switchToData(this.clickSwitch[0]);
+    return true;
+  } else {
+    for (var i=0; i<this.clickSwitch.length; i++){
+      if (this.clickSwitch[i].returnValue == slashType) {
+        this.switchToData(this.clickSwitch[i]);
+        return true;
+      }
     }
   }
   return false;
