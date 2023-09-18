@@ -61,7 +61,7 @@
                   <h2><%= __(puzzle.category.substr(3)) %></h2>
                 </button>
               </div>
-              <div id="<%= puzzle.category.substr(3) %>Collapse" class="card-body collapse <%= prevCategory==null?"show":"" %>" aria-labelledby="<%= puzzle.category.substr(3) %>Heading" data-parent="#mainAccordion">
+              <div id="<%= puzzle.category.substr(3) %>Collapse" class="card-body categorycard collapse <%= prevCategory==null?"show":"" %>" aria-labelledby="<%= puzzle.category.substr(3) %>Heading" data-parent="#mainAccordion">
             <% } %>
             <% prevCategory = puzzle.category; %>
               <% if (puzzle.type != prevType) { %>
@@ -111,6 +111,10 @@
     $('#mainAccordion').on('shown.bs.collapse', function (e) {
       saveActiveAccordionPanel('archiveByType-activeCategory', e);
     })
+    $('.collapse').on('shown.bs.collapse', function(e) {
+      var $card = $(this).closest('.card');
+      $('html,body').animate({scrollTop: $card.offset().top},500);
+    });
   });
   restoreAccordionPanel('archiveByType-activeCategory', '#mainAccordion');
 </script>
