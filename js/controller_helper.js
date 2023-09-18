@@ -496,9 +496,17 @@ ControllerBuilder.prototype.build = function(){
       gridElement.dragProcessor = (start) => {
         if (gridElement != start) {
           if (typeof self.pasteFn == 'function') {
-            gridElement.switchToData(self.pasteFn(start.data, gridElement.data));
+            if (gridElement.puzzle.pencilMarkMode) {
+              gridElement.setPencilData(start.pencilData);
+            } else {
+              gridElement.switchToData(self.pasteFn(start.data, gridElement.data));
+            }
           } else {
-            gridElement.switchToData(start.data);
+            if (gridElement.puzzle.pencilMarkMode) {
+              gridElement.setPencilData(start.pencilData);
+            } else {
+              gridElement.switchToData(start.data);
+            }
           }
           return gridElement;
         } else {
