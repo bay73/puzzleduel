@@ -821,6 +821,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
+  // Edge drawing
   } else if (typeCode=="fence") {
     this.typeProperties = decribePuzzleType().edgeStyle(false, true)
       .add(controller().forAuthor().cell().chooser()
@@ -833,6 +834,20 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
+      .build(this);
+
+  // Connector drawing
+  } else if (typeCode=="country_road") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1,99))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
       .build(this);
 
   } else {
@@ -929,29 +944,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     needNodes: true,
     needConnectors: true,
     cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 99);},
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    collectAreas: this.editMode,
-    usePlus10: this.editMode?10:0,
-  }
-
-  typeProperties["country_road"] = {
-    needNodes: true,
-    needConnectors: true,
-    cellController: cell => {
-      setClickSwitch(cell, true, [{},{image: "cross"}]);
       cell.dragProcessor = true;
     },
     connectorController: connector => {
