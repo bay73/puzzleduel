@@ -91,6 +91,11 @@ async function recountLeague(leagueId, startDate) {
         }
       }
     }
+    puzzles.filter(puzzle => puzzle.author.equals(participant.userId)).forEach(puzzle => {
+      result.totalTime += puzzle.difficulty;
+      result.totalSolvedCount++;
+      result.solvedCount++;
+    })
     results.push(result);
   }
   console.log("League " + leagueId + ". Results for " + results.length + " user found!")
