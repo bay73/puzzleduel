@@ -18,18 +18,31 @@ slashPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.SLASH)
         .addItem(StdItem.BACKSLASH))
       .build(this);
+
+  } else if (typeCode=="slash_pack") {
+    var letters = self.dimensionExtra;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addLetters(letters))
+      .add(controller().forSolver().node().dragEnabled())
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.SLASH)
+        .addItem(StdItem.BACKSLASH))
+      .build(this);
   }
 }
 
 squarePuzzleCell.prototype.switchToSlash = function(slashType) {
-  if (this.getValue() == slashType) {
-    this.switchToData(this.clickSwitch[0]);
-    return true;
-  } else {
-    for (var i=0; i<this.clickSwitch.length; i++){
-      if (this.clickSwitch[i].returnValue == slashType) {
-        this.switchToData(this.clickSwitch[i]);
-        return true;
+  if (this.clickSwitch) {
+    if (this.getValue() == slashType) {
+      this.switchToData(this.clickSwitch[0]);
+      return true;
+    } else {
+      for (var i=0; i<this.clickSwitch.length; i++){
+        if (this.clickSwitch[i].returnValue == slashType) {
+          this.switchToData(this.clickSwitch[i]);
+          return true;
+        }
       }
     }
   }

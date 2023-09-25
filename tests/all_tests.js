@@ -172,6 +172,10 @@ requirejs(["tests/skyscrapers_sums.test.js"], ()=>{
   allTestSuites.push(skyscrapersSumsTestSuite);
 })
 
+requirejs(["tests/slash_pack.test.js"], ()=>{
+  allTestSuites.push(slashPackTestSuite);
+})
+
 requirejs(["tests/snake_dutch.test.js"], ()=>{
   allTestSuites.push(snakeDutchTestSuite);
 })

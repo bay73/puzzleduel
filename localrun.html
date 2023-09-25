@@ -130,48 +130,32 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "skyscrapers_exclusive",
+      typeCode: "slash_pack",
       id: "puzzle.code",
-      dimension: "5x5-3"
+      dimension: "7x7-ABCD"
     };
     var settings = {
       local: true,
       data: {
-    "bottom": [
-        null,
-        null,
-        "0",
-        null,
-        "3"
-    ],
-    "right": [
-        "2",
-        null,
-        null,
-        null,
-        "1"
-    ],
-    "top": [
-        null,
-        "3",
-        "1",
-        null,
-        null
-    ],
-    "left": [
-        null,
-        "2",
-        null,
-        null,
-        "2"
-    ],
+    "c1": "A",
+    "b2": "A",
+    "e2": "B",
+    "d3": "B",
+    "g3": "D",
+    "a4": "D",
+    "e4": "C",
+    "c5": "D",
+    "a6": "B",
+    "e6": "A",
+    "c7": "C",
+    "g7": "C",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    requirejs(["slashpuzzle"], function() {
+      puzzle = new slashPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
