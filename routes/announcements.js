@@ -9,13 +9,14 @@ router.get('/', async (req, res, next) => {
     var locale = req.getLocale();
     res.render('announcements', {
       user: req.user,
-      announcements: announcements.map(announcement => {
+      announcements: announcements.filter(announcement => announcement.start < new Date()).map(announcement => {
+        let newAnnouncement = Object.assign({}, announcement)
         if (locale != 'en' && announcement.translations) {
           if (announcement.translations[locale] && announcement.translations[locale].message) {
-            announcement.message = announcement.translations[locale].message;
+            newAnnouncement.message = announcement.translations[locale].message;
           }
         }
-        return announcement;
+        return newAnnouncement;
       })
     });
     profiler.log('announcements', processStart);
