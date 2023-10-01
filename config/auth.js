@@ -17,11 +17,14 @@ module.exports = {
   },
   sessionConfig: {
     secret: process.env.COOCKIE_SECRET,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
       maxAge: 900000000 // 10*24*60*60*1000 + delta
     },
-    store: MongoStore.create({ mongoUrl: require('./keys').mongoURI })
+    store: MongoStore.create({
+      mongoUrl: require('./keys').mongoURI,
+      touchAfter: 24 * 3600
+    })
   },
 };
