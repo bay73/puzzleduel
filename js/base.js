@@ -409,6 +409,9 @@ basePuzzle.prototype.processClueData = function(data) {
   this.pencilMarkMode = false;
   this.steps = [];
   this.convertControls();
+  if (this.figures) {
+    puzzleFigures.init($(this.figures));
+  }
   this.startTimer();
   this.logStep('', 'start');
 }
