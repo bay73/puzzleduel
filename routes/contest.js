@@ -202,6 +202,7 @@ router.post('/:contestid/edit', async (req, res, next) => {
             puzzleToUpdate = puzzle.puzzleId;
           }
         })
+        contest.markModified('puzzles');
         const puzzle = await Puzzle.findOne({code: puzzleToUpdate})
         if (puzzle.contest.contestId == contestId) {
           puzzle.contest = {contestId: contestId, puzzleDate: date};
@@ -221,6 +222,7 @@ router.post('/:contestid/edit', async (req, res, next) => {
           puzzleNum=0;
         }
         contest.puzzles.push({puzzleNum: puzzleNum, puzzleId: puzzleId, revealDate: contest.start});
+        contest.markModified('puzzles');
         puzzle.contest = {contestId: contestId, puzzleDate: contest.start};
         if (!puzzle.daily) {
           puzzle.tag = "contest";
