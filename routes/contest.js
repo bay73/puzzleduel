@@ -215,11 +215,11 @@ router.post('/:contestid/edit', async (req, res, next) => {
       const puzzleId = req.body.puzzle
       const puzzle = await Puzzle.findOne({code: puzzleId})
       if (typeof(puzzle.contest) == "undefined" || puzzle.contest.contestId == contestId) {
-        let puzzleNum = Math.max(contest.puzzles.map(puzzle => puzzle.puzzleNum));
-        if (puzzleNum >=0) {
+        let puzzleNum = Math.max(...contest.puzzles.map(puzzle => puzzle.puzzleNum));
+        if (puzzleNum >0) {
           puzzleNum++;
         } else {
-          puzzleNum=0;
+          puzzleNum=1;
         }
         contest.puzzles.push({puzzleNum: puzzleNum, puzzleId: puzzleId, revealDate: contest.start});
         contest.markModified('puzzles');
