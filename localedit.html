@@ -53,17 +53,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "slash_pack",
+      typeCode: "sudoku_selfjoint",
       id: "puzzle.code",
-      dimension: "7x7-ABCD"
+      dimension: "9x9"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["slashpuzzle"], function() {
-      puzzle = new slashPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

@@ -130,32 +130,46 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "slash_pack",
+      typeCode: "sudoku_selfjoint",
       id: "puzzle.code",
-      dimension: "7x7-ABCD"
+      dimension: "9x9"
     };
     var settings = {
       local: true,
       data: {
-    "c1": "A",
-    "b2": "A",
-    "e2": "B",
-    "d3": "B",
-    "g3": "D",
-    "a4": "D",
-    "e4": "C",
-    "c5": "D",
-    "a6": "B",
-    "e6": "A",
-    "c7": "C",
-    "g7": "C",
+    "b1": "-",
+    "g1": "5",
+    "a2": "-",
+    "c2": "-",
+    "f2": "8",
+    "h2": "3",
+    "b3": "-",
+    "e3": "2",
+    "i3": "4",
+    "d4": "-",
+    "f4": "-",
+    "h4": "4",
+    "c5": "3",
+    "g5": "9",
+    "b6": "4",
+    "d6": "-",
+    "f6": "-",
+    "a7": "6",
+    "e7": "1",
+    "h7": "8",
+    "b8": "1",
+    "d8": "9",
+    "g8": "3",
+    "i8": "5",
+    "c9": "7",
+    "h9": "2",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["slashpuzzle"], function() {
-      puzzle = new slashPuzzleType(puzzleData, controls, settings);
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

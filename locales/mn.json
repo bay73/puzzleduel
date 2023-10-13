@@ -418,5 +418,7 @@
 	"Announcements": "Announcements",
 	"Wrong product of visible buldings in the row": "Wrong product of visible buldings in the row",
 	"Wrong sum of visible buldings in the row": "Wrong sum of visible buldings in the row",
-	"October 2023": "October 2023"
+	"October 2023": "October 2023",
+	"White cell should not contain digit equal to its position": "White cell should not contain digit equal to its position",
+	"Shaded cell should contain digit equal to its position": "Shaded cell should contain digit equal to its position"
 }
