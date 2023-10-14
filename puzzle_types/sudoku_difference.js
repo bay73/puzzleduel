@@ -28,12 +28,12 @@ check:function(dimension, clues, data){
         var pos = util.parseCoord(part[0]);
         if (part[1]=="b" || part[1]=="2") {
           if (bottomEdges[pos.y]){
-            bottomEdges[pos.y][pos.x] = edgeValue.replace(/^\++/, '');
+            bottomEdges[pos.y][pos.x] = edgeValue.replace(/^\-+/, '');
           }
         }
-        if (part[1]=="r" || part[1]=="1") {
+        if (part[1]=="r" || part[1]=="l") {
           if (rightEdges[pos.y]){
-            rightEdges[pos.y][pos.x] = edgeValue.replace(/^\++/, '');
+            rightEdges[pos.y][pos.x] = edgeValue.replace(/^\-+/, '');
           }
         }
       }
@@ -74,8 +74,8 @@ checkRightClues: function(cells, clues){
   for (var y = 0; y < cells.rows; y++) {
     for (var x = 0; x < cells.cols - 1; x++) {
       if (clues[y][x] && clues[y][x] != "") {
-        let sum = parseInt(cells[y][x]) + parseInt(cells[y][x+1]);
-        if (sum.toString() != clues[y][x]) {
+        let diff = Math.abs(parseInt(cells[y][x]) - parseInt(cells[y][x+1]));
+        if (diff.toString() != clues[y][x]) {
           return {status: "The clue is not correct", errors: [util.coord(x,y), util.coord(x+1,y)]};
         }
       }
@@ -87,8 +87,8 @@ checkBottomClues: function(cells, clues){
   for (var y = 0; y < cells.rows - 1; y++) {
     for (var x = 0; x < cells.cols; x++) {
       if (clues[y][x] && clues[y][x] != "") {
-        let sum = parseInt(cells[y][x]) + parseInt(cells[y+1][x]);
-        if (sum.toString() != clues[y][x]) {
+        let diff = Math.abs(parseInt(cells[y][x]) - parseInt(cells[y+1][x]));
+        if (diff.toString() != clues[y][x]) {
           return {status: "The clue is not correct", errors: [util.coord(x,y), util.coord(x,y+1)]};
         }
       }
