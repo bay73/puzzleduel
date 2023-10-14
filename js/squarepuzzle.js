@@ -131,6 +131,20 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().copyPaste((data) => {return {image: data.image, color: data.color};}))
      .build(this);
 
+  } else if (typeCode=="aqre") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.CROSS)
+        .addNumbers(0,20))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().noClue(StdItem.CROSS).clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell()
+        .copyPaste((data, elementData) => Object.assign(elementData, {image: data.image, color: data.color} )))
+     .build(this);
+
   } else if (typeCode=="starbattle") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()

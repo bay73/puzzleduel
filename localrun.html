@@ -130,59 +130,112 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "sudoku_difference",
+      typeCode: "aqre",
       id: "puzzle.code",
-      dimension: "9x9"
+      dimension: "8x8"
     };
     var settings = {
       local: true,
       data: {
-    "a4": "9",
-    "i4": "3",
-    "b5": "8",
-    "h5": "5",
-    "c6": "2",
-    "g6": "6",
-    "d7": "3",
-    "f7": "1",
-    "e8": "2",
-    "edges": {
-        "c1-2": "-1",
-        "e1-2": "-4",
-        "g1-2": "-6",
-        "b2-2": "-5",
-        "d2-2": "-1",
-        "f2-2": "-4",
-        "h2-2": "-3",
-        "a3-2": "-6",
-        "c3-2": "-3",
-        "e3-2": "-5",
-        "g3-2": "-1",
-        "i3-2": "-2",
-        "b4-2": "-3",
-        "d4-2": "-2",
-        "f4-2": "-5",
-        "h4-2": "-3",
-        "c5-2": "-5",
-        "e5-2": "-5",
-        "g5-2": "-2",
-        "d6-2": "-6",
-        "f6-2": "-4",
-        "a7-1": "-4",
-        "e7-2": "-2",
-        "h7-1": "-1",
-        "b8-1": "-5",
-        "g8-1": "-2",
-        "c9-1": "-2",
-        "f9-1": "-5"
-    },
+    "a1": "4",
+    "d1": "4",
+    "g1": "5",
+    "a3": "2",
+    "g5": "2",
+    "a6": "4",
+    "d6": "6",
+    "f7": "4",
+    "areas": [
+        [
+            "a1",
+            "b1",
+            "c1",
+            "a2",
+            "b2",
+            "c2"
+        ],
+        [
+            "d1",
+            "e1",
+            "d2",
+            "e2",
+            "d3",
+            "e3"
+        ],
+        [
+            "g1",
+            "h1",
+            "g2",
+            "h2",
+            "g3",
+            "h3"
+        ],
+        [
+            "a3",
+            "b3",
+            "a4",
+            "b4",
+            "a5"
+        ],
+        [
+            "f1",
+            "f2",
+            "c3",
+            "f3",
+            "c4",
+            "d4",
+            "e4",
+            "f4",
+            "g4",
+            "b5",
+            "c5",
+            "d5",
+            "e5",
+            "f5",
+            "c6",
+            "f6",
+            "c7",
+            "c8"
+        ],
+        [
+            "h4",
+            "g5",
+            "h5",
+            "g6",
+            "h6"
+        ],
+        [
+            "a6",
+            "b6",
+            "a7",
+            "b7",
+            "a8",
+            "b8"
+        ],
+        [
+            "d6",
+            "e6",
+            "d7",
+            "e7",
+            "d8",
+            "e8"
+        ],
+        [
+            "f7",
+            "g7",
+            "h7",
+            "f8",
+            "g8",
+            "h8"
+        ]
+    ],
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
