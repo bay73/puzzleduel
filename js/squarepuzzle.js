@@ -864,6 +864,17 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.submitAs('1')))
       .build(this);
 
+  } else if (typeCode=="inturnal") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,4))
+      .add(controller().forSolver().node().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
   } else {
 
   var typeProperties = {}

@@ -15,7 +15,7 @@
       html {font-size: 100%;}
       svg text {cursor: default;}
     </style>
-    <title>Puzzle duel</title>
+    <title>Local solve puzzle</title>
   </head>
   <body>
     <script src="localcache/jquery-3.4.1.min.js"></script>
@@ -130,32 +130,36 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "pentomino_division",
+      typeCode: "inturnal",
       id: "puzzle.code",
-      dimension: "10x10-pento12"
+      dimension: "7x7"
     };
     var settings = {
       local: true,
       data: {
-    "a1": "T",
-    "h1": "N",
-    "j1": "V",
-    "e3": "W",
-    "f5": "L",
-    "j5": "N",
-    "a6": "V",
-    "e6": "Y",
-    "f8": "W",
-    "a10": "T",
-    "c10": "T",
-    "j10": "L",
+    "b2": "0",
+    "c2": "1",
+    "d2": "2",
+    "e2": "3",
+    "f2": "4",
+    "b3": "1",
+    "d3": "3",
+    "b4": "2",
+    "c4": "1",
+    "e4": "0",
+    "b5": "3",
+    "d5": "2",
+    "b6": "4",
+    "g6": "2",
+    "d7": "2",
+    "f7": "1",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new fillominoPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

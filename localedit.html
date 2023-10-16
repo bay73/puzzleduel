@@ -15,7 +15,7 @@
       html {font-size: 100%;}
       svg text {cursor: default;}
     </style>
-    <title>Puzzle duel</title>
+    <title>Local edit puzzle</title>
   </head>
   <body>
     <script src="localcache/jquery-3.4.1.min.js"></script>
@@ -53,17 +53,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "pentomino_division",
+      typeCode: "inturnal",
       id: "puzzle.code",
-      dimension: "10x10"
+      dimension: "7x7"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["areapuzzle"], function() {
-      puzzle = new fillominoPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });
