@@ -278,7 +278,9 @@ gridElement.prototype.snapImage = function(center, size, image) {
 
 gridElement.prototype.snapText = function(center, size, text) {
   var width = size;
-  if (text!=null && text.length==1) {
+  if (text=="I") {
+    width = 0.25*size;
+  } else if (text!=null && text.length==1) {
     width = 0.55*size;
   }
   var textElement = this.puzzle.snap.text(

@@ -136,7 +136,9 @@ chooserToggler.prototype.draw = function(value) {
   }
   if (showValue.text) {
     var width = this.size*1.2;
-    if (showValue.text!=null && showValue.text.length==1) {
+    if (showValue.text=='I') {
+      width = 0.3*this.size;
+    } else if (showValue.text!=null && showValue.text.length==1) {
       width = 0.6*this.size;
     }
     var togglerText = this.snap.text(

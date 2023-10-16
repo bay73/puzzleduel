@@ -130,112 +130,32 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "aqre",
+      typeCode: "pentomino_division",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "10x10-pento12"
     };
     var settings = {
       local: true,
       data: {
-    "a1": "4",
-    "d1": "4",
-    "g1": "5",
-    "a3": "2",
-    "g5": "2",
-    "a6": "4",
-    "d6": "6",
-    "f7": "4",
-    "areas": [
-        [
-            "a1",
-            "b1",
-            "c1",
-            "a2",
-            "b2",
-            "c2"
-        ],
-        [
-            "d1",
-            "e1",
-            "d2",
-            "e2",
-            "d3",
-            "e3"
-        ],
-        [
-            "g1",
-            "h1",
-            "g2",
-            "h2",
-            "g3",
-            "h3"
-        ],
-        [
-            "a3",
-            "b3",
-            "a4",
-            "b4",
-            "a5"
-        ],
-        [
-            "f1",
-            "f2",
-            "c3",
-            "f3",
-            "c4",
-            "d4",
-            "e4",
-            "f4",
-            "g4",
-            "b5",
-            "c5",
-            "d5",
-            "e5",
-            "f5",
-            "c6",
-            "f6",
-            "c7",
-            "c8"
-        ],
-        [
-            "h4",
-            "g5",
-            "h5",
-            "g6",
-            "h6"
-        ],
-        [
-            "a6",
-            "b6",
-            "a7",
-            "b7",
-            "a8",
-            "b8"
-        ],
-        [
-            "d6",
-            "e6",
-            "d7",
-            "e7",
-            "d8",
-            "e8"
-        ],
-        [
-            "f7",
-            "g7",
-            "h7",
-            "f8",
-            "g8",
-            "h8"
-        ]
-    ],
+    "a1": "T",
+    "h1": "N",
+    "j1": "V",
+    "e3": "W",
+    "f5": "L",
+    "j5": "N",
+    "a6": "V",
+    "e6": "Y",
+    "f8": "W",
+    "a10": "T",
+    "c10": "T",
+    "j10": "L",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new fillominoPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

@@ -508,6 +508,19 @@ fillominoPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.asAreaConnector()))
       .build(this);
+  } else if (typeCode =="pentomino_division") {
+    var letters = "FILNPTUVWXYZ"
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addLetters(letters))
+      .add(controller().forSolver().cell().noClue().chooser(true)
+        .addLetters(letters))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
+
   }
 }
 })

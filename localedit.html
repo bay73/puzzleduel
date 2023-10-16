@@ -53,17 +53,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "aqre",
+      typeCode: "pentomino_division",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "10x10"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new fillominoPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

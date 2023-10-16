@@ -424,5 +424,6 @@
 	"White cell should not contain digit equal to its position": "Число в белой ячейке не должно совпадать с позицией ячейки",
 	"Shaded cell should contain digit equal to its position": "Число в серой ячейке должно совпадать с позицией ячейки",
 	"Four cells of the same color shouldn't form a continious line": "Четыре клетки одного цвета не должны образовывать непрерывный ряд",
-	"Shaded area should be connected": "Закрашенные клетки должны образовывать связную область"
+	"Shaded area should be connected": "Закрашенные клетки должны образовывать связную область",
+	"The shape is not correct": "Форма не правильная"
 }
