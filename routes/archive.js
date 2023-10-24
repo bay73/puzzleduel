@@ -307,7 +307,8 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
         needLogging: puzzle.needLogging,
         canReplay: replayAvailable && !puzzle.needLogging,
         rating: puzzle.needLogging?null:puzzle.rating,
-        difficulty: puzzle.needLogging?null:puzzle.difficulty
+        difficulty: puzzle.needLogging?null:puzzle.difficulty,
+        medianTime: util.timeToString(puzzle.difficulty)
       },
       times: times
         .filter(time => typeof time.solvingTime!="undefined")
