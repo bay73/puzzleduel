@@ -41,6 +41,8 @@
                 <th><%= __('#') %></th>
                 <th><%= __('Start date/time') %></th>
                 <th><%= __('Puzzle') %></th>
+                <th><%= __('Best score') %></th>
+                <th><%= __('Rating') %></th>
               </tr>
               <% puzzles.sort((puzzle1, puzzle2) => puzzle1.num - puzzle2.num).forEach(function(puzzle) { %>
               <tr>
@@ -60,6 +62,18 @@
                     <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
                   </a>
                 </td>
+                <td class="p-1">
+                  <a href="/archive/<%= puzzle.code %>/scores">
+                    <%= puzzle.time %>
+                  </a>
+                </td>
+                <td class="p-1">
+                  <a href="javascript:void(0);" onclick="showPuzzleComments('<%= puzzle.code %>','<%= puzzle.type %><%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>')" >
+                  <% if (puzzle.rating && puzzle.rating.rating>0) { %>
+                  <%- include ('./partials/rating_span', {rating: puzzle.rating.rating, ratingCount: puzzle.rating.count}) %>
+                  <% } %>
+                  </a>
+                </td>
                 <td>
                   <form action="/contest/<%= contest.code %>/edit" method="post">
                     <input type="hidden" value="<%= puzzle.code%>" name="puzzle">
@@ -72,6 +86,10 @@
               </tr>
               <% }) %>
               <tr>
+                <td>
+                </td>
+                <td>
+                </td>
                 <td>
                 </td>
                 <td>
@@ -169,6 +187,24 @@
     </div>
   </div>
 </div>
+<div class="modal" id="puzzleComments" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="puzzleCommentsName"</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center container-fluid">
+        <p id="puzzleCommentsList"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
   $("[name='editDateButton']").click((event) => {
     $("#editdatetime_item").val($(event.currentTarget).attr("item"))
@@ -182,6 +218,12 @@
   $("#editNameButton").click((event) => {
     $("#editNameModal").modal()
   });
+  function showPuzzleComments(puzzleCode, puzzleDesc) {
+    console.log('showPuzzleComments', puzzleCode, puzzleDesc)
+    $("#puzzleCommentsName").html(puzzleDesc);
+    $("#puzzleCommentsList").load("/puzzles/"+puzzleCode+"/comments");
+    $("#puzzleComments").modal();
+  }
 </script>
 <%- include ('./partials/footer') %>
 

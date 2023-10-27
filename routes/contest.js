@@ -146,9 +146,10 @@ router.get('/:contestid/edit', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    const [typeMap, puzzles] = await Promise.all([
+    const [typeMap, puzzles, timesMap] = await Promise.all([
       cache.readPuzzleTypes(),
-      Puzzle.find({'contest.contestId': req.params.contestid})
+      Puzzle.find({'contest.contestId': req.params.contestid}),
+      util.bestSolvingTimeMap(true)
     ]);
     var puzzleMap = {};
     puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();puzzleMap[puzzle.code].needLogging = puzzle.needLogging});
@@ -162,7 +163,9 @@ router.get('/:contestid/edit', async (req, res, next) => {
           code: puzzle.puzzleId,
           type: typeMap[puzzleObj.type].name,
           dimension: puzzleObj.dimension,
-          puzzleDate: puzzleObj.contest.puzzleDate
+          puzzleDate: puzzleObj.contest.puzzleDate,
+          time: util.timeToString(timesMap[puzzle.puzzleId]),
+          rating: puzzleObj.rating
         };
       });
     res.render('contest_edit', {user: req.user, contest: contestObj, puzzles: puzzleList})
