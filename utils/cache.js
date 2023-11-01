@@ -126,7 +126,7 @@ module.exports.readRating = async function(ratingDate) {
 module.exports.readLeagues = async function(leagueDate) {
   var leagueStartDate = new Date(Date.parse(leagueDate));
   leagueStartDate.setUTCHours(0,0,0,0);
-  leagueStartDate.setDate(1)
+  leagueStartDate.setUTCDate(1)
   const currentTime = new Date().getTime();
   const key = leagueStartDate
   if (typeof leagueCache[key]=='undefined' || currentTime > leagueCache[key].fresheness) {
