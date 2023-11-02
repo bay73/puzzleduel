@@ -424,5 +424,6 @@
 	"Four cells of the same color shouldn't form a continious line": "Four cells of the same color shouldn't form a continious line",
 	"Shaded area should be connected": "Shaded area should be connected",
 	"The shape is not correct": "The shape is not correct",
-	"Median solving time": "Median solving time"
+	"Median solving time": "Median solving time",
+	"Skyline Magic": "Skyline Magic"
 }
