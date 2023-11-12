@@ -17,7 +17,7 @@ module.exports = function(req, res, next) {
   if (req.query.lang) {
     res.cookie('lang', req.query.lang, { maxAge: 100*24*60*60*1000});
   }
-  
+
   res.locals.ipInfo = req.ipInfo
 
   return i18n.init(req, res, next);
