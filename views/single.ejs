@@ -29,6 +29,11 @@
           <div class="card-body">
             <%= __('Sinlge example text') %>
           </div>
+          <% } else if(puzzle.tag.includes("contest")) { %>
+          <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+            <h1><a href="/contest/<%= puzzle.contest.contestId %>"><%= __(puzzle.contest.name) %></a> (<%= puzzle.contest.puzzleDate?puzzle.contest.puzzleDate.toISOString().split('T')[0]:"" %>)</h1>
+            <a class="p-2 align-bottom text-right" style="position: relative;" href="/archive/<%= puzzle.code %>/scores"><%= __('Scores') %></a>
+          </div>
           <% } %>
           <% } %>
           <%- include ('./partials/puzzle') %>
