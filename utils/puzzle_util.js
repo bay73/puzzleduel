@@ -160,8 +160,7 @@ module.exports.puzzleToPresent = async function(puzzle, locale) {
     puzzleObj.author = await cache.readUserName(puzzleObj.author);
   }
   if (puzzleObj.contest) {
-    let contest = await cache.readContest(puzzleObj.contest.contestId);
-    puzzleObj.contest.name = contest.name;
+    puzzleObj.contest.name = await cache.readContestName(puzzleObj.contest.contestId);
   }
   return puzzleObj;
 }

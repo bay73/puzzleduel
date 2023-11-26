@@ -8,6 +8,7 @@ const PuzzleComment = require('../models/PuzzleComment');
 const League = require('../models/League');
 const Announcement = require('../models/Announcement');
 
+const CONTEST_NAME_CACHE_TTL = 60*60*1000; // 1 hour
 const CONTEST_CACHE_TTL = 10*1000; // 10 seconds
 const PUZZLETYPE_CACHE_TTL = 60*60*1000; // 1 hour
 const PUZZLE_CACHE_TTL = 60*60*1000; // 1 hour
@@ -19,6 +20,7 @@ const LEAGUE_CACHE_TTL = 5*60*1000; // 5 minutes
 const ANNOUNCEMENTS_CACHE_TTL = 60*60*1000; // 1 hour
 
 const contestCache = {}
+const contestNameCache = {fresheness: undefined, contestNames: {}}
 const puzzleTypeCache = {fresheness: undefined, puzzleTypes: {}}
 const puzzleCache = {}
 const ratingCache = {}
@@ -37,6 +39,21 @@ module.exports.readContest = async function(contestId) {
     contestCache[contestId] = {contest: contest, fresheness: new Date().getTime() + CONTEST_CACHE_TTL};
   }
   return contestCache[contestId].contest;
+}
+
+module.exports.readContestNames = async function() {
+  const currentTime = new Date().getTime();
+  if (typeof contestNameCache.fresheness=='undefined' || currentTime > contestNameCache.fresheness) {
+    const contests = await Contest.find().lean();
+    contests.forEach(contest => contestNameCache.contestNames[contest.code] = contest.name);
+    contestNameCache.fresheness = new Date().getTime() + CONTEST_NAME_CACHE_TTL;
+  }
+  return contestNameCache.contestNames;
+}
+
+module.exports.readContestName = async function(contestId) {
+  const names = await module.exports.readContestNames();
+  return names[contestId];
 }
 
 module.exports.refreshContest = async function(contestId) {
@@ -238,6 +255,7 @@ module.exports.clearCache = function() {
   Object.keys(solvingTimeCache).forEach(function(key) { delete solvingTimeCache[key]; });
   Object.keys(leagueCache).forEach(function(key) { delete leagueCache[key]; });
   puzzleTypeCache.fresheness = undefined;
+  contestNameCache.fresheness = undefined;
   announcementsCache.fresheness = undefined;
   userLeaguesCache.fresheness = undefined;
 }
@@ -246,6 +264,8 @@ module.exports.printCache = function() {
   console.log(new Date().getTime());
   console.log("contests:");
   Object.keys(contestCache).forEach(function(key) { console.log(key, contestCache[key].fresheness);});
+  console.log("contestNames:");
+  console.log(contestNameCache.fresheness);
   console.log("puzzlesTypes:");
   console.log(puzzleTypeCache.fresheness);
   console.log("puzzles:");
