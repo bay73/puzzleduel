@@ -9,7 +9,7 @@ const League = require('../models/League');
 const Announcement = require('../models/Announcement');
 
 const CONTEST_NAME_CACHE_TTL = 60*60*1000; // 1 hour
-const CONTEST_CACHE_TTL = 10*1000; // 10 seconds
+const CONTEST_CACHE_TTL = 60*1000; // 60 seconds
 const PUZZLETYPE_CACHE_TTL = 60*60*1000; // 1 hour
 const PUZZLE_CACHE_TTL = 60*60*1000; // 1 hour
 const RATING_CACHE_TTL = 60*60*1000; // 1 hour
@@ -44,7 +44,7 @@ module.exports.readContest = async function(contestId) {
 module.exports.readContestNames = async function() {
   const currentTime = new Date().getTime();
   if (typeof contestNameCache.fresheness=='undefined' || currentTime > contestNameCache.fresheness) {
-    const contests = await Contest.find().lean();
+    const contests = await Contest.find({}, "code name").lean();
     contests.forEach(contest => contestNameCache.contestNames[contest.code] = contest.name);
     contestNameCache.fresheness = new Date().getTime() + CONTEST_NAME_CACHE_TTL;
   }
@@ -196,7 +196,7 @@ module.exports.readMonthlyRatingChange = async function(date) {
   const currentTime = new Date().getTime();
   if (typeof monthlyRatingChangeCache[monthBegin]=='undefined' || currentTime > monthlyRatingChangeCache[monthBegin].fresheness) {
     const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 2);
-    const ratingList = await Rating.find({date: {$gt: monthBegin, $lte: monthEnd}, ratingWeek: {$gte: 4}}).lean();
+    const ratingList = await Rating.find({date: {$gt: monthBegin, $lte: monthEnd}, ratingWeek: {$gte: 4}}, "userId userName change").lean();
     const ratingChanges = {};
     ratingList.forEach(function(rating) {
       if (typeof ratingChanges[rating.userId]=="undefined") {

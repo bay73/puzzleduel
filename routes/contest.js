@@ -22,12 +22,12 @@ function getUserScore(puzzleDesc, userId) {
 router.get('/:contestid/results', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const contest = await Contest.findOne({code: req.params.contestid});
+    const contest = await cache.readContest(req.params.contestid);
     if (!contest || contest.start > new Date()) {
       res.sendStatus(404);
       return;
     }
-    var contestObj = contest.toObject();
+    var contestObj = Object.assign({}, contest);
     var locale = req.getLocale();
     if (locale != 'en' && contest.translations) {
       if (contest.translations[locale] && contest.translations[locale].name) {
@@ -50,12 +50,12 @@ router.get('/:contestid/results', async (req, res, next) => {
 router.get('/:contestid/times', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const contest = await Contest.findOne({code: req.params.contestid});
+    const contest = await cache.readContest(req.params.contestid);
     if (!contest || contest.start > new Date()) {
       res.sendStatus(404);
       return;
     }
-    var contestObj = contest.toObject();
+    var contestObj = Object.assign({}, contest);
     var locale = req.getLocale();
     if (locale != 'en' && contest.translations) {
       if (contest.translations[locale] && contest.translations[locale].name) {
@@ -83,7 +83,7 @@ router.get('/:contestid/times', async (req, res, next) => {
 router.get('/:contestid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const contest = await Contest.findOne({code: req.params.contestid});
+    const contest = await cache.readContest(req.params.contestid);
     if (!contest) {
       res.sendStatus(404);
       return;

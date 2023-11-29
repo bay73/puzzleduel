@@ -34,8 +34,15 @@ const PuzzleSchema = new mongoose.Schema({
     required: false,
   },
   contest: {
-    type: Mixed,
-    required: false,
+    contestId: {
+      type: String,
+      required: false,
+      index: true,
+    },
+    puzzleDate: {
+      type: Date,
+      required: false,
+    },
   },
   author: {
     type: ObjectId,
