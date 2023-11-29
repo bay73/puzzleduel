@@ -23,6 +23,7 @@ const contestCache = {}
 const contestNameCache = {fresheness: undefined, contestNames: {}}
 const puzzleTypeCache = {fresheness: undefined, puzzleTypes: {}}
 const puzzleCache = {}
+const puzzlesCache = {fresheness: undefined, puzzles: {}}
 const ratingCache = {}
 const monthlyRatingChangeCache = {};
 const monthlyCommentersCache = {};
@@ -124,6 +125,16 @@ module.exports.readPuzzleTypes = async function() {
     puzzleTypeCache.fresheness = new Date().getTime() + PUZZLETYPE_CACHE_TTL;
   }
   return puzzleTypeCache.puzzleTypes;
+}
+
+module.exports.readAllPuzzles = async function() {
+  const currentTime = new Date().getTime();
+  if (typeof puzzlesCache.fresheness=='undefined' || currentTime > puzzlesCache.fresheness) {
+    const puzzles = await Puzzle.find({}, "-data").lean();
+    puzzlesCache.puzzles = puzzles
+    puzzlesCache.fresheness = new Date().getTime() + PUZZLE_CACHE_TTL;
+  }
+  return puzzlesCache.puzzles;
 }
 
 module.exports.readPuzzleType = async function(puzzleTypeId) {
@@ -258,6 +269,7 @@ module.exports.clearCache = function() {
   contestNameCache.fresheness = undefined;
   announcementsCache.fresheness = undefined;
   userLeaguesCache.fresheness = undefined;
+  puzzlesCache.fresheness = undefined;
 }
 
 module.exports.printCache = function() {
@@ -269,6 +281,7 @@ module.exports.printCache = function() {
   console.log("puzzlesTypes:");
   console.log(puzzleTypeCache.fresheness);
   console.log("puzzles:");
+  console.log(puzzlesCache.fresheness);
   Object.keys(puzzleCache).forEach(function(key) { console.log(key, puzzleCache[key].fresheness); });
   console.log("ratings:");
   Object.keys(ratingCache).forEach(function(key) { console.log(key, ratingCache[key].fresheness); });

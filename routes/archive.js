@@ -15,22 +15,40 @@ router.get(['/','/daily'],
   async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    var filter = {daily: {$lte: new Date()} };
-    if (req.user && req.user.role == "test") {
-      filter = {};
-    }
     if (req.user) {
       var userTimesPromise = util.userSolvingTimeMap(req.user._id, false);
     } else {
       var userTimesPromise = Promise.resolve({});
     }
 
-    const [userTimesMap, timesMap, typeMap, puzzles] = await Promise.all([
+    const [userTimesMap, timesMap, typeMap, allPuzzles] = await Promise.all([
       userTimesPromise,
       util.bestSolvingTimeMap(false),
       cache.readPuzzleTypes(),
-      Puzzle.find(filter, "-data").sort({daily: -1})
+      cache.readAllPuzzles()
     ]);
+
+    var filter = puzzle => puzzle.daily && puzzle.daily <= new Date();
+    if (req.user && req.user.role == "test") {
+      filter = puzzle => true;
+    }
+    let puzzles = allPuzzles.filter( filter ).sort((p1, p2) => {
+      if (p1.daily) {
+        if (p2.daily) {
+          if (p1.daily < p2.daily) return 1;
+          else if (p1.daily > p2.daily) return -1;
+          else return 0;
+        } else {
+          return -1;
+        }
+      } else {
+        if (p2.daily) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
 
     res.render('archive', {
       user: req.user,
@@ -102,7 +120,7 @@ router.get('/types', async (req, res, next) => {
     const processStart = new Date().getTime();
     const [typeMap, puzzles] = await Promise.all([
       cache.readPuzzleTypes(),
-      Puzzle.find({}, "-data")
+      cache.readAllPuzzles()
     ]);
     res.render('by_type', {
       user: req.user,
@@ -126,13 +144,29 @@ router.get('/types', async (req, res, next) => {
 });
 
 
+var ratingSortFn = (p1, p2) => {
+  if (p1.rating) {
+    if (p2.rating) {
+      return p2.rating.rating==p1.rating.rating?p2.rating.count - p1.rating.count:p2.rating.rating - p1.rating.rating;
+    } else {
+      return -1;
+    }
+  } else {
+    if (p2.rating) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+}
+
 // List of the best puzzles
 router.get(['/best','/best/:category'], async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
     const [typeMap, puzzles, userMap] = await Promise.all([
       cache.readPuzzleTypes(),
-      Puzzle.find({}, "-data"),
+      cache.readAllPuzzles(),
       util.userNameMap()
     ]);
     const categories = [];
@@ -143,12 +177,12 @@ router.get(['/best','/best/:category'], async (req, res, next) => {
       category: req.params.category,
       categories: categories,
       puzzles: puzzles
-        .filter(puzzle => typeof puzzle.rating!="undefined" && puzzle.rating.rating > 0)
+        .filter(puzzle => typeof puzzle.rating != "undefined" && puzzle.rating.rating > 0)
         .filter(puzzle => !puzzle.needLogging)
         .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
         .filter(puzzle => typeof req.params.category=="undefined" || typeMap[puzzle.type].category.substr(3)==req.params.category)
         .filter(puzzle => puzzle.rating.count > 10)
-        .sort((p1, p2) => (p2.rating.rating==p1.rating.rating?p2.rating.count - p1.rating.count:p2.rating.rating - p1.rating.rating))
+        .sort(ratingSortFn)
         .slice(0,50)
         .map(puzzle => {
         return {
@@ -174,7 +208,7 @@ router.get(['/nonrated','/nonrated/:category'], async (req, res, next) => {
     const processStart = new Date().getTime();
     const [typeMap, puzzles, userMap] = await Promise.all([
       cache.readPuzzleTypes(),
-      Puzzle.find({}, "-data"),
+      cache.readAllPuzzles(),
       util.userNameMap()
     ]);
     const categories = [];
@@ -185,11 +219,11 @@ router.get(['/nonrated','/nonrated/:category'], async (req, res, next) => {
       category: req.params.category,
       categories: categories,
       puzzles: puzzles
-        .filter(puzzle => typeof puzzle.rating.rating == "undefined" || puzzle.rating.rating <= 0 || puzzle.rating.count <= 10)
+        .filter(puzzle => typeof puzzle.rating == "undefined" || typeof puzzle.rating.rating == "undefined" || puzzle.rating.rating <= 0 || puzzle.rating.count <= 10)
         .filter(puzzle => !puzzle.needLogging)
         .filter(puzzle => !util.isHiddenType(typeMap[puzzle.type]))
         .filter(puzzle => typeof req.params.category=="undefined" || typeMap[puzzle.type].category.substr(3)==req.params.category)
-        .sort((p1, p2) => (p2.rating.rating==p1.rating.rating?p2.rating.count - p1.rating.count:p2.rating.rating - p1.rating.rating))
+        .sort(ratingSortFn)
         .slice(0,50)
         .map(puzzle => {
         return {
