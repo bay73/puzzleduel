@@ -130,7 +130,7 @@ module.exports.readPuzzleTypes = async function() {
 module.exports.readAllPuzzles = async function() {
   const currentTime = new Date().getTime();
   if (typeof puzzlesCache.fresheness=='undefined' || currentTime > puzzlesCache.fresheness) {
-    const puzzles = await Puzzle.find({}, "-data").lean();
+    const puzzles = await Puzzle.find({}, "-data");
     puzzlesCache.puzzles = puzzles
     puzzlesCache.fresheness = new Date().getTime() + PUZZLE_CACHE_TTL;
   }
