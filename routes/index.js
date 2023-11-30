@@ -131,7 +131,10 @@ router.get('/help/videos', async (req, res, next) => {
 router.get('/help/authors', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    const allPuzzles = await Puzzle.find({tag: {$ne: "example"}}, "-data");
+    const [allPuzzles, authors] = await Promise.all([
+      cache.readAllPuzzles(),
+      User.find({role: "author"}, "_id name about")
+    ])
     var byAuthorCountMap = {};
     allPuzzles.filter(puzzle => !puzzle.needLogging).forEach(puzzle => {
       if (typeof byAuthorCountMap[puzzle.author] == 'undefined') {
@@ -139,7 +142,6 @@ router.get('/help/authors', async (req, res, next) => {
       }
       byAuthorCountMap[puzzle.author]++;
     })
-    const authors = await User.find({role: "author"}, "_id name about");
     const locale = req.getLocale();
     res.render('contributors', {
       user: req.user,
