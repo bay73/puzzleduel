@@ -8,16 +8,16 @@ const PuzzleComment = require('../models/PuzzleComment');
 const League = require('../models/League');
 const Announcement = require('../models/Announcement');
 
-const CONTEST_NAME_CACHE_TTL = 60*60*1000; // 1 hour
-const CONTEST_CACHE_TTL = 60*1000; // 60 seconds
-const PUZZLETYPE_CACHE_TTL = 60*60*1000; // 1 hour
+const CONTEST_NAME_CACHE_TTL = 10*60*60*1000; // 10 hours
+const CONTEST_CACHE_TTL = 10*60*1000; // 10 minutes
+const PUZZLETYPE_CACHE_TTL = 10*60*60*1000; // 10 hours
 const PUZZLE_CACHE_TTL = 60*60*1000; // 1 hour
 const RATING_CACHE_TTL = 60*60*1000; // 1 hour
 const USER_CACHE_TTL = 60*60*1000; // 1 hour
 const SOLVINGTIME_CACHE_TTL = 20*1000; // 20 seconds
 const COMMENTER_CACHE_TTL = 60*60*1000; // 1 hour
-const LEAGUE_CACHE_TTL = 5*60*1000; // 5 minutes
-const ANNOUNCEMENTS_CACHE_TTL = 60*60*1000; // 1 hour
+const LEAGUE_CACHE_TTL = 10*60*1000; // 10 minutes
+const ANNOUNCEMENTS_CACHE_TTL = 10*60*60*1000; // 10 hours
 
 const contestCache = {}
 const contestNameCache = {fresheness: undefined, contestNames: {}}
