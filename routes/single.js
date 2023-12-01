@@ -39,6 +39,10 @@ router.get('/:puzzleid', async (req, res, next) => {
       return;
     }
     var puzzleObj = await util.puzzleToPresent(puzzle, req.getLocale());
+    if (puzzleObj.needLogging) {
+      puzzleObj.rating = null;
+      puzzleObj.difficulty = null;
+    }
     res.render('single', {
       user: req.user,
       puzzle: puzzleObj
