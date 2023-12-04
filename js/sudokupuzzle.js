@@ -184,7 +184,7 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       if (!cell.data.text) {
         var chooserValues = [{color: cell.data.color}];
         for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, returnValue: i.toString()});
+          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor , returnValue: i.toString()});
         }
         cell.chooserValues = chooserValues;
       }
@@ -224,7 +224,7 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       if (!cell.data.text) {
         var chooserValues = [{color: cell.data.color}];
         for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, returnValue: i.toString()});
+          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
         }
         cell.chooserValues = chooserValues;
       }
@@ -264,7 +264,7 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       if (!cell.data.text) {
         var chooserValues = [{color: cell.data.color}];
         for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, returnValue: i.toString()});
+          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
         }
         cell.chooserValues = chooserValues;
       }
@@ -304,7 +304,7 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       if (!cell.data.text) {
         var chooserValues = [{color: cell.data.color}];
         for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, returnValue: i.toString()});
+          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
         }
         cell.chooserValues = chooserValues;
       }
@@ -345,7 +345,7 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       if (!cell.data.text) {
         var chooserValues = [{color: cell.data.color}];
         for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, returnValue: i.toString()});
+          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
         }
         cell.chooserValues = chooserValues;
       }

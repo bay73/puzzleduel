@@ -90,7 +90,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
     return {
       textColor: "#10153d",
       lineColor: "#18254d",
-      clueColor: "#203063",
+      clueColor: "#074083",
       greyColor: "#4060b6",
       lightGreyColor: "#90b0e2",
       traceColor: "#007bff",
@@ -106,7 +106,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
     return {
       textColor: "#101010",
       lineColor: "#008959",
-      clueColor: "#404040",
+      clueColor: "#075a8f",
       greyColor: "#707070",
       lightGreyColor: "#b0b0b0",
       traceColor: "#66efbf",
@@ -122,7 +122,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
     return {
       textColor: "#00121d",
       lineColor: "#002436",
-      clueColor: "#042632",
+      clueColor: "#075466",
       greyColor: "#38585c",
       lightGreyColor: "#a0c0c5",
       traceColor: "#777777",
