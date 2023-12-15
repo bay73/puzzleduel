@@ -74,7 +74,7 @@ router.get('/data', ensureAuthenticated, async (req, res, next) => {
       res.sendStatus(403);
       return;
     }
-    
+
     var ratingDate = new Date();
     ratingDate.setDate(ratingDate.getDate() - ratingDate.getUTCDay());
     ratingDate.setUTCHours(0);
@@ -84,7 +84,7 @@ router.get('/data', ensureAuthenticated, async (req, res, next) => {
     const ratingList = await cache.readRating(ratingDate);
     let userRating = null
     ratingList.forEach(rating => {if (rating.userId.equals(req.user._id)) { userRating = rating.value }});
-    
+
     res.render('read_user_frame', {
       layout: 'empty_layout',
       user: req.user,
