@@ -1,0 +1,40 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <ul class="nav nav-tabs" id="tabs">
+        <li class="nav-item">
+          <a class="nav-link pl-2 pr-2 active overview-tab" data-toggle="tab" href="#data">
+            <h1 class="card-body pb-0 pt-0" style="font-size:4vmin;"><%= __("User data") %></h1>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link pl-2 pr-2 overview-tab" data-toggle="tab" href="#rating">
+            <h1 class="card-body pb-0 pt-0" style="font-size:4vmin;"><%= __("Rating details") %></h1>
+          </a>
+        </li>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade" id="rating">
+        </div>
+        <div class="tab-pane fade active show" id="data">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  
+  $('.overview-tab').click(function(e) {
+    let paneId = $(e.target).closest('.overview-tab').attr('href');
+    if (paneId=="#rating") {
+      $('#rating').load("/userstat/<%= user._id %>?noHeader=true");
+    } else if (paneId=="#data") {
+      $('#data').load("/users/data");
+    }
+  });
+  $(document).ready(function () {
+    $('#data').load("/users/data");
+  })
+</script>
+<%- include ('./partials/footer') %>

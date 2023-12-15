@@ -1,9 +1,13 @@
+<% if (needHeader) { %>
 <%- include ('./partials/navbar') %>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-10 m-auto">
+<% } %>
       <div class="card">
+<% if (needHeader) { %>
         <h1 class="card-header"><%= userName %></h1>
+<% } %>
         <% if (userTitles && userTitles.length > 0) { %>
         <div class="card-body">
           <% userTitles.forEach(title => { %>
@@ -62,9 +66,12 @@
           <% }) %>
         </div>
       </div>
+<% if (needHeader) { %>
     </div>
   </div>
 </div>
+<%- include ('./partials/footer') %>
+<% } %>
 <script>
   var month = new Array();
   month[0] = "<%= __('month0') %>";
@@ -144,5 +151,4 @@
     });
   })
 </script>
-<%- include ('./partials/footer') %>
 

@@ -6,6 +6,7 @@ const uniqid = require('uniqid');
 const nodemailer = require('nodemailer');
 const Recaptcha = require('express-recaptcha').RecaptchaV2;
 const profiler = require('../utils/profiler');
+const cache = require('../utils/cache');
 
 // Config recaptcha
 const recaptchaKeys = require('./../config/keys').recaptcha;
@@ -63,6 +64,39 @@ router.get('/edit', ensureAuthenticated, (req, res) => {
     country: req.user.country
   });
   profiler.log('userEditPage', processStart);
+});
+
+// User data Page
+router.get('/data', ensureAuthenticated, async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    if (!req.user) {
+      res.sendStatus(403);
+      return;
+    }
+    
+    var ratingDate = new Date();
+    ratingDate.setDate(ratingDate.getDate() - ratingDate.getUTCDay());
+    ratingDate.setUTCHours(0);
+    ratingDate.setUTCMinutes(0);
+    ratingDate.setUTCSeconds(0);
+    ratingDate.setUTCMilliseconds(0);
+    const ratingList = await cache.readRating(ratingDate);
+    let userRating = null
+    ratingList.forEach(rating => {if (rating.userId.equals(req.user._id)) { userRating = rating.value }});
+    
+    res.render('read_user_frame', {
+      layout: 'empty_layout',
+      user: req.user,
+      name: req.user.name,
+      email: req.user.email,
+      country: req.user.country,
+      rating: userRating
+    });
+    profiler.log('userDataPage', processStart);
+  } catch (e) {
+    next(e)
+  }
 });
 
 // Register
@@ -366,5 +400,17 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
   });
 });
+
+// Dashboard
+router.get('/overview', ensureAuthenticated, (req, res) => {
+  const processStart = new Date().getTime();
+  if (!req.user) {
+    res.sendStatus(403);
+    return;
+  }
+  res.render('user_overview', {user: req.user});
+  profiler.log('userOverview', processStart);
+});
+
 
 module.exports = router;

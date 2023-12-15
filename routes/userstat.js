@@ -9,6 +9,7 @@ const cache = require('../utils/cache');
 router.get('/:userid',
   async (req, res, next) => {
   try {
+    let needHeader = (req.query.noHeader == undefined)
     const processStart = new Date().getTime();
     var from = new Date(req.query.from);
     var to = new Date(req.query.to);
@@ -53,6 +54,8 @@ router.get('/:userid',
     })
 
     res.render('userstat', {
+      layout: needHeader?'layout':'empty_layout',
+      needHeader: needHeader,
       user: req.user,
       userId: req.params.userid,
       userName: userData.name,

@@ -14,6 +14,7 @@
               name="name"
               class="form-control"
               placeholder="Enter New Name"
+              autocomplete="nickname"
               value="<%= typeof name != 'undefined' ? name : '' %>"
             />
           </div>
@@ -25,6 +26,7 @@
               name="email"
               class="form-control"
               placeholder="Enter New Email"
+              autocomplete="email"
               value="<%= typeof email != 'undefined' ? email : '' %>"
             />
           </div>
@@ -34,6 +36,7 @@
               type="text"
               id="country"
               class="form-control"
+              autocomplete="country"
               placeholder="Choose the country"
             />
             <input
@@ -51,6 +54,7 @@
                 name="password"
                 class="form-control"
                 placeholder="Enter New Password"
+                autocomplete="new-password"
                 value="<%= typeof password != 'undefined' ? password : '' %>"
               />
               <div class="input-group-addon">
@@ -67,6 +71,7 @@
                 name="password2"
                 class="form-control"
                 placeholder="Confirm New Password"
+                autocomplete="new-password"
                 value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
               />
               <div class="input-group-addon">
@@ -83,6 +88,7 @@
                 name="oldpassword"
                 class="form-control"
                 placeholder="Enter Current Password"
+                autocomplete="current-password"
                 value="<%= typeof oldpassword != 'undefined' ? oldpassword : '' %>"
               />
               <div class="input-group-addon">

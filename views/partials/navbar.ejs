@@ -166,7 +166,7 @@
           </li>
           <% if(user) { %>
           <% const userStyle = (user.league && leagueSettings && leagueSettings[user.league] && leagueSettings[user.league].mainStyle) ? leagueSettings[user.league].mainStyle : "" %>
-          <li class="nav-item"><a class="nav-link" style='<%= userStyle %>' href="/users/edit"><span class="glyphicon glyphicon-user"></span> <%= user.name %></a></li>
+          <li class="nav-item"><a class="nav-link" style='<%= userStyle %>' href="/users/overview"><span class="glyphicon glyphicon-user"></span> <%= user.name %></a></li>
           <li class="nav-item"><a class="nav-link" href="/users/logout"><span class="glyphicon glyphicon-log-out"></span> <%= __('Logout') %></a></li>
           <% } else { %>
           <li class="nav-item"><a class="nav-link" href="/users/login"><span class="glyphicon glyphicon-log-in"></span> <%= __('Login') %></a></li>
