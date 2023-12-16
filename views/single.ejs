@@ -16,10 +16,10 @@
             <h1><a href="/contest/<%= puzzle.contest.contestId %>"><%= puzzle.contest.name %></a> (<%= puzzle.contest.puzzleDate?puzzle.contest.puzzleDate.toISOString().split('T')[0]:"" %>)</h1>
             <%   } %>
             <% } %>
-            <div class="p-2 align-bottom text-right" style="position: relative;">
+            <div class="align-bottom text-right" style="position: relative;">
               <% if(typeof puzzle.tag != 'undefined') { %>
               <%   if(puzzle.tag.includes("daily") || puzzle.tag.includes("contest")) { %>
-              <a class="p-2 align-bottom text-right" style="position: relative;" href="/archive/<%= puzzle.code %>/scores"><%= __('Scores') %></a>
+              <a class="align-bottom text-right" style="position: relative;" href="/archive/<%= puzzle.code %>/scores"><%= __('Scores') %></a>
               <%   } else if (puzzle.tag.includes("example")) { %>
               <a data-toggle="collapse" href="#answer" aria-expanded="false" aria-controls="Collapse">
                 <span><%= __('Show answer') %></span>
@@ -39,11 +39,11 @@
               <% var stars=puzzle.difficulty>0?(1+Math.round(10*Math.log(puzzle.difficulty/30000))/10):0; %>
               <span>
                 <%= __('Difficulty:') %>
-                <span class="stars mr-5" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>"></span>
+                <span class="stars mr-4" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>"></span>
               </span>
               <% } %>
               <% if (puzzle.rating && puzzle.rating.rating>0) { %>
-              <span class="mr-5">
+              <span class="mr-4">
               <%= __('Rating:') %>
               <%- include ('./partials/rating_span', {rating: puzzle.rating.rating, ratingCount: puzzle.rating.count}) %>
               </span>
