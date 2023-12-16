@@ -328,23 +328,32 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
     const processStart = new Date().getTime();
     let rating = parseInt(req.body.rating);
     let commentText = req.body.comment;
-    if (rating > 0 || commentText.length > 0) {
-      const puzzle = await cache.readPuzzle(req.params.puzzleid);
-      if (!req.user) {
-        res.status(403).send(res.__('You should log in to rate the puzzle!'));
-        profiler.log('puzzleCommentFailed', processStart);
-        return;
-      }
-      if (!puzzle) {
-        res.sendStatus(404);
-        profiler.log('puzzleCommentFailed', processStart);
-        return;
-      }
-      if (puzzle.author.equals(req.user._id)) {
-        res.status(403).send(res.__('Author can not rate own puzzles!'));;
-        profiler.log('puzzleEditFailed', processStart);
-        return;
-      }
+    let replyTo = req.body.replyTo;
+    if (replyTo != undefined && replyTo != null) {
+      rating = 0;
+    }
+    if (rating == 0 && commentText.length == 0) {
+      res.json(null);
+      profiler.log('puzzleCommentEmpty', processStart);
+      return;
+    }
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
+    if (!req.user) {
+      res.status(403).send(res.__('You should log in to rate the puzzle!'));
+      profiler.log('puzzleCommentFailed', processStart);
+      return;
+    }
+    if (!puzzle) {
+      res.sendStatus(404);
+      profiler.log('puzzleCommentFailed', processStart);
+      return;
+    }
+    if (rating > 0 && puzzle.author.equals(req.user._id)) {
+      res.status(403).send(res.__('Author can not rate own puzzles!'));
+      profiler.log('puzzleEditFailed', processStart);
+      return;
+    }
+    if (rating > 0) {
       const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid});
       if (comment != null) {
         var newComment = comment;
@@ -359,7 +368,17 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
       newComment.rating = rating;
       newComment.comment = commentText;
       newComment.save();
+    } else {
+      var newComment = new PuzzleComment({
+        userId: req.user._id,
+        userName: req.user.name,
+        puzzleId: req.params.puzzleid,
+        comment: commentText,
+        replyTo: replyTo
+      });
+      newComment.save();
     }
+
     res.json(null);
     profiler.log('puzzleComment', processStart);
   } catch (e) {
@@ -372,9 +391,19 @@ router.get('/:puzzleid/comments', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
     const comments = await PuzzleComment.find({puzzleId: req.params.puzzleid});
-    let showAll = req.user && req.user.role == "admin";
+    const showAll = req.user && req.user.role == "admin";
+    const commentsMap = {}
+    comments.forEach( comment => commentsMap[comment.id] = comment )
+    const rootDate = function(comment) {
+      if (typeof comment == 'undefined' ) return null
+      if (comment.replyTo && commentsMap[comment.replyTo]) {
+        return rootDate(commentsMap[comment.replyTo])
+      }
+      return comment.date
+    }
     res.render('puzzle_comments', {
       layout: "empty_layout",
+      puzzleId: req.params.puzzleid,
       showAll: showAll,
       comments: comments
         .filter(comment => {
@@ -382,9 +411,13 @@ router.get('/:puzzleid/comments', async (req, res, next) => {
         })
         .map(comment => {
           return {
+            id: comment._id,
             userName: showAll?comment.userName:"",
             rating: showAll?comment.rating:null,
-            comment: comment.comment
+            comment: comment.comment,
+            date: comment.date,
+            replyTo: comment.replyTo,
+            rootDate: rootDate(comment)
           }
       })
     })

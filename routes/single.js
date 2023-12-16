@@ -38,11 +38,20 @@ router.get('/:puzzleid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    var puzzleObj = await util.puzzleToPresent(puzzle, req.getLocale());
+    let userId = null;
+    if (req.user) {
+      userId = req.user._id;
+    }
+    var [puzzleObj, times] = await Promise.all([
+      util.puzzleToPresent(puzzle, req.getLocale()),
+      cache.readSolvingTime(puzzle.code)
+    ]);
+    const solvedByCurrent = times.filter(time => typeof time.solvingTime!="undefined" && time.userId.equals(userId)).length > 0;
     if (puzzleObj.needLogging) {
       puzzleObj.rating = null;
       puzzleObj.difficulty = null;
     }
+    puzzleObj.showComments = solvedByCurrent || puzzle.author.equals(userId) || !puzzleObj.needLogging;
     res.render('single', {
       user: req.user,
       puzzle: puzzleObj

@@ -437,5 +437,8 @@
 	"Change user data": "Change user data",
 	"Not defined": "Not defined",
 	"League": "League",
-	"Not in league": "Not in league"
+	"Not in league": "Not in league",
+	"Comments": "Comments",
+	"Reply": "Reply",
+	"Send": "Send"
 }

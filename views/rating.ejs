@@ -1,18 +1,8 @@
 <script>
-  requirejs.config({
-    paths: {
-      "jquery" : "//code.jquery.com/jquery-3.4.1.min",
-      "bootstrap-datepicker" : "//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min"
-    }
-  });
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip({placement: "auto"});
   });
 </script>
-<link
-  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
-  integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous"
-/>
 <style>
   .tooltip-inner {
     white-space:pre-wrap;
@@ -57,14 +47,12 @@
             </div>
             <script>
               $(document).ready(function () {
-                requirejs(["bootstrap-datepicker"], function(){
-                  $('#datepicker').datepicker({
-                    format: "yyyy-mm-dd",
-                    startDate: "2020-04-01",
-                    endDate: "+7d",
-                    language: '<%= getLocale() %>',
-                    maxViewMode: "month"
-                  });
+                $('#datepicker').datepicker({
+                  format: "yyyy-mm-dd",
+                  startDate: "2020-04-01",
+                  endDate: "+7d",
+                  language: '<%= getLocale() %>',
+                  maxViewMode: "month"
                 });
               });
               $("#setDate").click(function () {

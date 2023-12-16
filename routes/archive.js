@@ -325,11 +325,17 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
       cache.readUserLeagues()
     ]);
 
+    let userId = null;
+    if (req.user) {
+      userId = req.user._id;
+    }
+
     const puzzleType = type ? type.name: puzzle.type;
     const notFinished = times.filter(time => typeof time.solvingTime=="undefined").map(time => time.userName);
     var today = new Date();
     today.setDate(today.getDate()-30);
     const replayAvailable = puzzle.publishDate > today;
+    const solvedByCurrent = times.filter(time => typeof time.solvingTime!="undefined" && time.userId.equals(userId)).length > 0;
 
     res.render('times', {
       user: req.user,
@@ -340,9 +346,10 @@ router.get(['/:puzzleid/scores','/:puzzleid/times'],
         daily: puzzle.daily,
         needLogging: puzzle.needLogging,
         canReplay: replayAvailable && !puzzle.needLogging,
-        rating: puzzle.needLogging?null:puzzle.rating,
-        difficulty: puzzle.needLogging?null:puzzle.difficulty,
-        medianTime: util.timeToString(puzzle.difficulty)
+        rating: puzzle.needLogging ?null : puzzle.rating,
+        difficulty: puzzle.needLogging ? null : puzzle.difficulty,
+        medianTime: util.timeToString(puzzle.difficulty),
+        showComments: solvedByCurrent || puzzle.author.equals(userId) || !puzzle.needLogging
       },
       times: times
         .filter(time => typeof time.solvingTime!="undefined")

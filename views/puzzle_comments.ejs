@@ -2,18 +2,46 @@
 <strong><%= __('Solvers comments:') %></strong>
 <table class="table table-condensed text-left">
   <tbody>
-    <% comments.forEach(comment => { %>
+    <% const compare = function(c1, c2) { %>
+    <%   if (c1.rootDate == c2.rootDate) {  %>
+    <%     if (c1.replyTo && !c2.replyTo) {  %>
+    <%       return 1; %>
+    <%     } else if (!c1.replyTo && c2.replyTo) {  %>
+    <%       return -1; %>
+    <%     } else { %>
+    <%       if (c1.date < c2.date) { %>
+    <%         return -1; %>
+    <%       } else if (c1.date > c2.date) { %>
+    <%         return 1; %>
+    <%       } else { %>
+    <%         return 0; %>
+    <%       } %>
+    <%     } %>
+    <%   } else if (c1.rootDate < c2.rootDate) { %>
+    <%     return -1; %>
+    <%   } else { %>
+    <%     return 1; %>
+    <%   } %>
+    <% } %>
+    <% comments.sort(compare).forEach(comment => { %>
     <tr>
       <% if(showAll){ %>
-      <td>
+      <td class="p-0">
         <%= comment.userName %>
       </td>
-      <td>
+      <td class="p-0">
         <%= comment.rating>0?comment.rating:"" %>
       </td>
       <% } %>
-      <td>
-        <%= comment.comment %>
+      <td class="p-0 border-0">
+        <div class="<%= comment.replyTo ? 'ml-3 pt-2 pl-3 border-left' : 'pt-2 pl-1' %>" >
+          <%= comment.comment %>
+        </div>
+        <% if (!comment.replyTo && comment.comment != "") { %>
+        <div replyTo="<%= comment.id %>" class="reply">
+        <button type="button" class="replyBtn badge bg-info"><%= __('Reply') %></button>
+        </div>
+        <% } %>
       </td>
     </tr>
     <% }) %>
@@ -22,4 +50,29 @@
 <% } else { %>
 <strong><%= __('Nobody left comments for this puzzle') %></strong>
 <% } %>
-
+<script>
+  $(document).ready(function () {
+    $('.replyBtn').click(function(event) {
+      let target = $(event.target).closest('.reply')
+      if (target.children('.reply-form').length > 0 ) {
+        target.children('.reply-form').remove();
+      } else {
+        let replyTo = target.attr('replyTo');
+        let textArea = '<textarea id="replyText'+replyTo+'" style="min-width: 100%"></textarea>';
+        let button = '<button id="replyTo'+replyTo+'" class="badge bg-primary" disabled><%= __("Send") %></button>';
+        target.append('<div class="reply-form text-right">'+textArea+button+'</div>');
+        $('#replyText'+replyTo).on('input', function() {
+          $('#replyTo'+replyTo).prop('disabled', $('#replyText'+replyTo).val().length == 0)
+        })
+        $('#replyTo'+replyTo).click(function(){
+          var commentData = {
+            replyTo: replyTo,
+            comment: $('#replyText'+replyTo).val()
+          }
+          $.post("/puzzles/<%= puzzleId %>/comment", commentData);
+          $("#puzzleComments").modal('hide');
+        })
+      }
+    })
+  });
+</script>
