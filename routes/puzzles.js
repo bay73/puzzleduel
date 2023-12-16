@@ -258,7 +258,7 @@ router.post('/:puzzleid/check', async (req, res, next) => {
     }
     result.status = res.__(result.status);
     if (req.user) {
-      const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid});
+      const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid, rating: {$exists: true}});
       if (comment != null) {
         result.rating = comment.rating;
         result.comment = comment.comment;
@@ -354,7 +354,7 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
       return;
     }
     if (rating > 0) {
-      const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid});
+      const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid, rating: {$exists: true}});
       if (comment != null) {
         var newComment = comment;
       } else {
