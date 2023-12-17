@@ -10,6 +10,8 @@ const cache = require('../utils/cache');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
+router.use(require('./common.js'));
+
 router.get('/actionlog', ensureAuthenticated, async (req, res, next) => {
   try {
     const processStart = new Date().getTime();

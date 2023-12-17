@@ -12,7 +12,8 @@ const PuzzleCommentSchema = new mongoose.Schema({
   },
   puzzleId: {
     type: String,
-    required: true
+    required: true,
+    index: true
   },
   rating: {
     type: Number,
@@ -30,6 +31,11 @@ const PuzzleCommentSchema = new mongoose.Schema({
   replyTo:  {
     type: ObjectId,
     required: false
+  },
+  receiver:  {
+    type: ObjectId,
+    required: false,
+    index: true
   }
 });
 

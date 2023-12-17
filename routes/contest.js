@@ -9,6 +9,8 @@ const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
 
+router.use(require('./common.js'));
+
 function getUserScore(puzzleDesc, userId) {
   var userScore = null;
   puzzleDesc.results.forEach(result => {

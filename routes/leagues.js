@@ -4,6 +4,8 @@ const cache = require('../utils/cache');
 const util = require('../utils/puzzle_util');
 const leagueSettings = require('../utils/league_settings');
 
+router.use(require('./common.js'));
+
 let convertResults = function(results) {
   return results.map(result => {
     return {

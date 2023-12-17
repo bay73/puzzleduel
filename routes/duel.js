@@ -6,6 +6,8 @@ const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
 
+router.use(require('./common.js'));
+
 router.get('/:contestid', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();

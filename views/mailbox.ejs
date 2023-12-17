@@ -1,0 +1,38 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <div class="card">
+        <h1 class="card-header"><%= __('Recent comments') %></h1>
+          <table class="card-body table table-hover table-condensed">
+            <tbody>
+              <% comments.forEach(function(comment) { %>
+              <tr>
+                <td colspan=2 class="pb-0">
+                  <a href="/single/<%= comment.puzzleId %>" class="mr-3">
+                    <%= comment.puzzleType %>
+                    <%= comment.puzzleDimension?" ("+comment.puzzleDimension.split('-')[0]+")":"" %>
+                  </a>
+                  <span class='text-muted'>
+                    <%= comment.commentDate.toISOString().split('T')[0] %>:
+                  </span>  
+                </td>
+              </tr>
+              <tr>
+                <td class="border-top-0 pb-0" width="6%">
+                </td>
+                <td class="border-top-0 pt-0">
+                  <p class="text-justify">
+                    <%- comment.commentText %>
+                  </p>
+                </td> 
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ('./partials/footer') %>

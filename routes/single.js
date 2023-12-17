@@ -17,6 +17,8 @@ const cache = require('../utils/cache');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
+router.use(require('./common.js'));
+
 function timeToString(millis) {
   if (!millis) return "";
   var secs = Math.round(millis/1000);

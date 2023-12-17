@@ -7,6 +7,8 @@ const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
 const leagueSettings = require('../utils/league_settings');
 
+router.use(require('./common.js'));
+
 // Welcome Page
 router.get('/', async (req, res, next) => {
   try {

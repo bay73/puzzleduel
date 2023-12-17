@@ -6,6 +6,8 @@ const User = require('../models/User');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
 
+router.use(require('./common.js'));
+
 router.get('/:userid',
   async (req, res, next) => {
   try {

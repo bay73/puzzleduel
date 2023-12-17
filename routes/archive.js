@@ -10,6 +10,8 @@ const cache = require('../utils/cache');
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
+router.use(require('./common.js'));
+
 // List of daily puzzles
 router.get(['/','/daily'],
   async (req, res, next) => {

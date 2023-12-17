@@ -6,6 +6,8 @@ const computeRating = require('../utils/rating');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
 
+router.use(require('./common.js'));
+
 router.get('/:ratingdate', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();

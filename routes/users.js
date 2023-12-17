@@ -14,6 +14,7 @@ var recaptcha = new Recaptcha(recaptchaKeys.siteKey, recaptchaKeys.secret);
 // Config email transporter
 const transporter = nodemailer.createTransport(require('./../config/keys').email);
 
+router.use(require('./common.js'));
 
 // Load User model
 const User = require('../models/User');

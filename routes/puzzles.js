@@ -337,12 +337,12 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
       profiler.log('puzzleCommentEmpty', processStart);
       return;
     }
-    const puzzle = await cache.readPuzzle(req.params.puzzleid);
     if (!req.user) {
       res.status(403).send(res.__('You should log in to rate the puzzle!'));
       profiler.log('puzzleCommentFailed', processStart);
       return;
     }
+    const puzzle = await cache.readPuzzle(req.params.puzzleid);
     if (!puzzle) {
       res.sendStatus(404);
       profiler.log('puzzleCommentFailed', processStart);
@@ -353,6 +353,18 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
       profiler.log('puzzleEditFailed', processStart);
       return;
     }
+    let receiver = puzzle.author;
+    if (replyTo != undefined && replyTo != null) {
+      const root = await PuzzleComment.findOne({puzzleId: req.params.puzzleid, _id: replyTo})
+      if (root) {
+        if (root.replyTo) {
+          replyTo = root.replyTo;
+          receiver = root.receiver;
+        } else {
+          receiver = root.userId;
+        }
+      }
+    }
     if (rating > 0) {
       const comment = await PuzzleComment.findOne({userId: req.user._id, puzzleId: req.params.puzzleid, rating: {$exists: true}});
       if (comment != null) {
@@ -361,7 +373,8 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
         var newComment = new PuzzleComment({
         userId: req.user._id,
         userName: req.user.name,
-        puzzleId: req.params.puzzleid
+        puzzleId: req.params.puzzleid,
+        receiver: receiver
         });
       }
       newComment.userName = req.user.name;
@@ -374,6 +387,7 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
         userName: req.user.name,
         puzzleId: req.params.puzzleid,
         comment: commentText,
+        receiver: receiver,
         replyTo: replyTo
       });
       newComment.save();

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const cache = require('../utils/cache');
 
+router.use(require('./common.js'));
+
 router.get('/', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
