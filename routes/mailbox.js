@@ -21,10 +21,10 @@ router.get('/', async (req, res, next) => {
       cache.readPuzzleTypes(),
       cache.readAllPuzzles()
     ]);
-    
+
     const puzzleMap = {}
     allPuzzles.forEach(puzzle => puzzleMap[puzzle.code]=puzzle)
-    
+
     res.render('mailbox', {
       user: req.user,
       comments: comments.map(comment => {

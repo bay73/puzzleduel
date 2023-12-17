@@ -353,15 +353,18 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
       profiler.log('puzzleEditFailed', processStart);
       return;
     }
-    let receiver = puzzle.author;
-    if (replyTo != undefined && replyTo != null) {
-      const root = await PuzzleComment.findOne({puzzleId: req.params.puzzleid, _id: replyTo})
-      if (root) {
-        if (root.replyTo) {
-          replyTo = root.replyTo;
-          receiver = root.receiver;
-        } else {
-          receiver = root.userId;
+    let receiver = null;
+    if (commentText.length != 0) {
+      receiver = puzzle.author;
+      if (replyTo != undefined && replyTo != null) {
+        const root = await PuzzleComment.findOne({puzzleId: req.params.puzzleid, _id: replyTo})
+        if (root) {
+          if (root.replyTo) {
+            replyTo = root.replyTo;
+            receiver = root.receiver;
+          } else {
+            receiver = root.userId;
+          }
         }
       }
     }
