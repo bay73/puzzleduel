@@ -140,6 +140,10 @@ requirejs(["tests/point_a_star.test.js"], ()=>{
   allTestSuites.push(pointAStarTestSuite);
 })
 
+requirejs(["tests/polygraph.test.js"], ()=>{
+  allTestSuites.push(polygraphTestSuite);
+})
+
 requirejs(["tests/queens.test.js"], ()=>{
   allTestSuites.push(queensTestSuite);
 })
