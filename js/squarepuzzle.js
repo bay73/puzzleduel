@@ -850,6 +850,20 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.submitAs("1")))
       .build(this);
 
+  } else if (typeCode=="fence_even_odd") {
+    this.typeProperties = decribePuzzleType().edgeStyle(false, true)
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.LIGHT_GREY))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.LINE.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().edge().drag()
+        .addItem(StdItem.LINE.submitAs("1")))
+      .build(this);
+
   // Connector drawing
   } else if (typeCode=="country_road") {
     this.typeProperties = decribePuzzleType()

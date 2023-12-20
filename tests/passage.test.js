@@ -48,7 +48,7 @@ test('Author controllers',(suite) => {
   let puzzle = suite.showPuzzle("passage", "5x5");
   puzzle.edit();
 
-  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'black'}, {image: 'cross', returnValue: 'cross'}, {text: '3', color: puzzle.colorSchema.greyColor, returnValue: '3'}, {text: '4', color: puzzle.colorSchema.greyColor, returnValue: '4'}, {text: '5', color: puzzle.colorSchema.greyColor, returnValue: '5'}]);
+  assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'black'}, {image: 'cross', returnValue: 'cross'}, {text: '3', color: puzzle.colorSchema.greyColor, textColor: puzzle.colorSchema.textColor, returnValue: '3'}, {text: '4', color: puzzle.colorSchema.greyColor, textColor: puzzle.colorSchema.textColor, returnValue: '4'}, {text: '5', color: puzzle.colorSchema.greyColor, textColor: puzzle.colorSchema.textColor, returnValue: '5'}]);
   assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
 }),
 );
