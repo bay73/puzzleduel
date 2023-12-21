@@ -850,6 +850,20 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.submitAs("1")))
       .build(this);
 
+  } else if (typeCode=="fence_pentomino") {
+    this.typeProperties = decribePuzzleType().edgeStyle(false, true)
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,4))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.LINE.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().edge().drag()
+        .addItem(StdItem.LINE.submitAs("1")))
+      .build(this);
+
   } else if (typeCode=="polygraph") {
     this.typeProperties = decribePuzzleType().edgeStyle(false, true)
       .add(controller().forAuthor().cell().chooser()

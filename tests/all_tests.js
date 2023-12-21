@@ -52,6 +52,10 @@ requirejs(["tests/fence_even_odd.test.js"], ()=>{
   allTestSuites.push(fenceEvenOddTestSuite);
 })
 
+requirejs(["tests/fence_pentomino.test.js"], ()=>{
+  allTestSuites.push(fencePentominoTestSuite);
+})
+
 requirejs(["tests/fillomino.test.js"], ()=>{
   allTestSuites.push(fillominoTestSuite);
 })

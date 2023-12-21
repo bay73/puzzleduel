@@ -443,5 +443,6 @@
 	"Comments": "Комментарии",
 	"Reply": "Ответить",
 	"Send": "Отправить",
-	"Recent comments": "Последние комментарии"
+	"Recent comments": "Последние комментарии",
+	"There should be few loops without bifurcations": "Должено быть несколько циклов без разветвлений"
 }
