@@ -383,6 +383,7 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
       newComment.userName = req.user.name;
       newComment.rating = rating;
       newComment.comment = commentText;
+      newComment.receiver = receiver;
       newComment.save();
     } else {
       var newComment = new PuzzleComment({
