@@ -56,6 +56,10 @@ requirejs(["tests/fence_pentomino.test.js"], ()=>{
   allTestSuites.push(fencePentominoTestSuite);
 })
 
+requirejs(["tests/fence_turning.test.js"], ()=>{
+  allTestSuites.push(fenceTurningTestSuite);
+})
+
 requirejs(["tests/fillomino.test.js"], ()=>{
   allTestSuites.push(fillominoTestSuite);
 })
