@@ -272,7 +272,7 @@ squarePuzzle.prototype.findSize = function() {
     width = $(this.snap.node).parent().parent().parent().width();
   }
   var hSizeLimit = width*0.90;
-  var vSizeLimit = window.innerHeight*0.57;
+  var vSizeLimit = window.innerHeight*0.67;
   var cols = this.cols;
   var rows = this.rows;
   if (this.typeProperties.needBottom) rows++;
