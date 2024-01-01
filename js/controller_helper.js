@@ -345,6 +345,14 @@ ControllerBuilder.prototype.clue = function(...clueItems){
   }
   return this;
 }
+// Applies controller only to elements with other clues.
+ControllerBuilder.prototype.clueNot = function(...clueItems){
+  this.conditions.push(gridElement => gridElement.isClue);
+  if (clueItems.length != 0) {
+    this.conditions.push(gridElement => !containClues(gridElement, clueItems));
+  }
+  return this;
+}
 
 // Defines controller for cells.
 ControllerBuilder.prototype.cell = function(){

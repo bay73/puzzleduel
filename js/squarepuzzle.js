@@ -399,7 +399,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WAVE.doNotSubmit()))
       .add(controller().forSolver().cell().clue().copy())
       .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "wave"}:data))
-      .add(controller().forSolver().cell().clue().clickSwitch()
+      .add(controller().forSolver().cell().clueNot(StdItem.WAVE).clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
@@ -413,7 +413,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WAVE.doNotSubmit()))
       .add(controller().forSolver().cell().clue().copy())
       .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "wave"}:data))
-      .add(controller().forSolver().cell().clue().clickSwitch()
+      .add(controller().forSolver().cell().clueNot(StdItem.WAVE).clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
