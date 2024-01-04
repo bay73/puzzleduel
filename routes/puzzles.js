@@ -12,6 +12,7 @@ const PuzzleComment = require('../models/PuzzleComment');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
 const axios = require('axios');
+const util = require('../utils/puzzle_util');
 
 const type_cheker = {};
 
@@ -408,6 +409,23 @@ router.post('/:puzzleid/comment', async (req, res, next) => {
 router.get('/:puzzleid/comments', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
+    var puzzle = await cache.readPuzzle(req.params.puzzleid);
+    if (!puzzle) {
+      res.sendStatus(404);
+      return;
+    }
+    var [puzzleObj, times] = await Promise.all([
+      util.puzzleToPresent(puzzle, req.getLocale()),
+      cache.readSolvingTime(puzzle.code)
+    ]);
+    let userId = req.user ? req.user._id : null;
+    let isAdmin = req.user && req.user.role == "admin"
+    const solvedByCurrent = times.filter(time => typeof time.solvingTime!="undefined" && time.userId.equals(userId)).length > 0;
+    let showComments = solvedByCurrent || puzzle.author.equals(userId) || !puzzleObj.needLogging || isAdmin;
+    if (!showComments) {
+      res.sendStatus(403);
+      return;
+    }
     const comments = await PuzzleComment.find({puzzleId: req.params.puzzleid});
     const showAll = req.user && req.user.role == "admin";
     const commentsMap = {}
