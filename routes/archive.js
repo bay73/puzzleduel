@@ -499,7 +499,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
             dimension: puzzle.dimension,
             tag: puzzle.tag,
             daily: puzzle.daily,
-            puzzleDate: puzzle.daily?puzzle.daily:(typeof puzzle.contest=="undefined"?"":puzzle.contest.puzzleDate),
+            puzzleDate: puzzle.daily?puzzle.daily:(typeof(puzzle.contest)=="undefined"?"":puzzle.contest.puzzleDate),
             time: util.timeToString(timesMap[puzzle.code]),
             published: puzzle.published,
             rating: puzzle.rating

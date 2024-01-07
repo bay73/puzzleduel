@@ -186,7 +186,13 @@
         <div class="card-body">
           <table class="table table-hover table-condensed">
             <tbody>
-              <% puzzles.sort((p1,p2) => (p2.puzzleDate - p1.puzzleDate)).forEach(function(puzzle) { %>
+              <% let sortFn = (p1,p2) => {
+                 if (typeof(p1.puzzleDate)=='undefined' && typeof(p2.puzzleDate)=='undefined') return 0;
+                 if (typeof(p1.puzzleDate)=='undefined') return 1;
+                 if (typeof(p2.puzzleDate)=='undefined') return -1;
+                 return p2.puzzleDate - p1.puzzleDate;
+                 } %>
+              <% puzzles.sort(sortFn).forEach(function(puzzle) { %>
               <tr>
                 <td>
                   <%= puzzle.tag %>
