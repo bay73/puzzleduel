@@ -219,7 +219,7 @@ router.post('/:contestid/edit', async (req, res, next) => {
     if (req.body.operation == "addpuzzle") {
       const puzzleId = req.body.puzzle
       const puzzle = await Puzzle.findOne({code: puzzleId})
-      if (typeof(puzzle.contest) == "undefined" || puzzle.contest.contestId == contestId) {
+      if (typeof(puzzle.contest) == "undefined" || typeof(puzzle.contest.contestId) == "undefined" || puzzle.contest.contestId == contestId) {
         let puzzleNum = Math.max(...contest.puzzles.map(puzzle => puzzle.puzzleNum));
         if (puzzleNum >0) {
           puzzleNum++;
