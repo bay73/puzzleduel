@@ -446,5 +446,9 @@
 	"Reply": "Reply",
 	"Send": "Send",
 	"Recent comments": "Recent comments",
-	"There should be few loops without bifurcations": "There should be few loops without bifurcations"
+	"There should be few loops without bifurcations": "There should be few loops without bifurcations",
+	"Set Savepoint": "Set Savepoint",
+	"Remove Savepoint": "Remove Savepoint",
+	"Reset Savepoint": "Reset Savepoint",
+	"Do you want to revert solving progress to the savepoint?": "Do you want to revert solving progress to the savepoint?"
 }

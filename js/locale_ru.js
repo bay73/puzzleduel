@@ -5,4 +5,6 @@ var __ = {
 "Congratulations! The puzzle has been solved correctly!": "Поздравляем! Задача решена верно!",
 "Sorry, there is a mistake. ": "К сожалению, в решении ошибка. ",
 "Try again.": "Попытайтесь ещё раз.",
+"To Savepoint": "Вернуться",
+"Set Savepoint": "Сохранить",
 }

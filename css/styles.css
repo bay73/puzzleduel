@@ -15,10 +15,10 @@
     left: 100%;
 }
 @media (max-width: 992px) {
-    .dropdown-menu{
+    .dropdown .dropdown-menu{
         width: 50%;
     }
-    .dropdown-menu .dropdown-submenu{
+    .dropdown .dropdown-menu .dropdown-submenu{
         width: auto;
     }
 }

@@ -16,13 +16,13 @@
           <div class="card">
             <div class="card-header" id="siteStructureHeading">
               <button class="btn btn-link" type="button"
-                data-toggle="collapse" data-target="#siteStructureCollapse"
-                aria-expanded="true" aria-controls="siteStructureCollapse"
+                data-toggle="collapse" data-target="#siteStructure"
+                aria-expanded="true" aria-controls="siteStructure"
               >
                 <h2>Site structure</h2>
               </button>
             </div>
-            <div id="siteStructureCollapse" class="collapse show" aria-labelledby="siteStructureHeading" data-parent="#mainAccordion">
+            <div id="siteStructure" class="collapse show" aria-labelledby="siteStructureHeading" data-parent="#mainAccordion">
               <p class="card-body">
               Every day new competitive puzzle is published at our site.
               Solving time for this puzzle is recorded and included to the <a href="/archive/scores">scores table</a>.
@@ -53,13 +53,13 @@
           <div class="card">
             <div class="card-header" id="gameControlHeading">
               <button class="btn btn-link" type="button"
-                data-toggle="collapse" data-target="#gameControlCollapse"
-                aria-expanded="true" aria-controls="gameControlCollapse"
+                data-toggle="collapse" data-target="#gameControl"
+                aria-expanded="true" aria-controls="gameControl"
               >
                 <h2>Game control</h2>
               </button>
             </div>
-            <div id="gameControlCollapse" class="collapse" aria-labelledby="gameControlHeading" data-parent="#mainAccordion">
+            <div id="gameControl" class="collapse" aria-labelledby="gameControlHeading" data-parent="#mainAccordion">
               <p class="card-body">
               When you open a puzzle window the grid size and the puzzle rules are available before you start solving.
               Read rules carefully to be aware of all the important puzzle conditions.
@@ -94,15 +94,48 @@
             </div>
           </div>
           <div class="card">
+            <div class="card-header" id="savepointsHeading">
+              <button class="btn btn-link collapsed" type="button"
+                data-toggle="collapse" data-target="#savepoints"
+                aria-expanded="false" aria-controls="savepoints"
+              >
+                <h2>Savepoints</h2>
+              </button>
+            </div>
+            <div id="savepoints" class="collapse" aria-labelledby="savepointsHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+              While solving a puzzle you have the possibility to establish a savepoint at any moment.
+              This feature allows you to promptly revert your progress to this point in the solving process.
+              <br>
+              <br>
+              To create a savepoint, simply press the "Set Savepoint" button. Once set, you can utilize
+              the "To Savepoint" button to restore the grid's state to the saved moment.
+              <br>
+              <br>
+              Adjacent to the "To Savepoint" button, there is a downward arrow providing access to
+              additional commands:
+              <br>
+              "Reset Savepoint" - records the current solving position as a new savepoint,
+              superseding the previously established one.
+              <br>
+              "Remove Savepoint" - deletes the saved point without executing a rollback to that specific moment.
+              <br>
+              <br>
+              Please note that savepoints are effective only within a single solving session and cannot
+              restore you to a partially solved puzzle if you restart your browser.
+              </p>
+            </div>
+          </div>
+          <div class="card">
             <div class="card-header" id="gridControlHeading">
               <button class="btn btn-link collapsed" type="button"
-                data-toggle="collapse" data-target="#gridControlCollapse"
-                aria-expanded="false" aria-controls="gridControlCollapse"
+                data-toggle="collapse" data-target="#gridControl"
+                aria-expanded="false" aria-controls="gridControl"
               >
                 <h2>Grid control</h2>
               </button>
             </div>
-            <div id="gridControlCollapse" class="collapse" aria-labelledby="gridControlHeading" data-parent="#mainAccordion">
+            <div id="gridControl" class="collapse" aria-labelledby="gridControlHeading" data-parent="#mainAccordion">
               <p class="card-body">
               You can change the state of the grid cells by using mouse or touch screen. Keyboard control is not supported.
               <br>
@@ -130,14 +163,14 @@
             <div class="card-header" id="pencilMarksHeading">
               <h2 class="mb-0">
                 <button class="btn btn-link collapsed" type="button"
-                  data-toggle="collapse" data-target="#pencilMarksCollapse"
-                  aria-expanded="false" aria-controls="pencilMarksCollapse"
+                  data-toggle="collapse" data-target="#pencilMarks"
+                  aria-expanded="false" aria-controls="pencilMarks"
                 >
                   <h2>Pencil marks</h2>
                 </button>
               </h2>
             </div>
-            <div id="pencilMarksCollapse" class="collapse" aria-labelledby="pencilMarksHeading" data-parent="#mainAccordion">
+            <div id="pencilMarks" class="collapse" aria-labelledby="pencilMarksHeading" data-parent="#mainAccordion">
               <p class="card-body">
               You can switch the grid from "Normal" to "Pencil mark" mode.
               In this mode the same mouse operations do not change state of the cells,
@@ -158,13 +191,13 @@
           <div class="card">
             <div class="card-header" id="ratingHeading">
               <button class="btn btn-link" type="button"
-                data-toggle="collapse" data-target="#ratingCollapse"
-                aria-expanded="true" aria-controls="ratingCollapse"
+                data-toggle="collapse" data-target="#rating"
+                aria-expanded="true" aria-controls="rating"
               >
                 <h2>Rating calculation</h2>
               </button>
             </div>
-            <div id="ratingCollapse" class="collapse" aria-labelledby="ratingHeading" data-parent="#mainAccordion">
+            <div id="rating" class="collapse" aria-labelledby="ratingHeading" data-parent="#mainAccordion">
               <p class="card-body">
               Weekly rating for date X is based on all daily puzzles published between dates X-7 and X-1.
               Performance of a solver for each puzzle is first converted to rating points using the next formula:
@@ -194,6 +227,11 @@
       var $card = $(this).closest('.card');
       $('html,body').animate({scrollTop: $card.offset().top},500);
     });
+  });
+  $(document).ready(function () {
+    if (window.location.hash.length > 0) {
+      $(window.location.hash).collapse('show')
+    }
   });
 </script>
 <%- include ('./partials/footer') %>

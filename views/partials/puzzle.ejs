@@ -11,13 +11,26 @@
   <%= __('Sorry, but your browser is not supported. Try to setup the new version.') %>
 </svg>
 <div class="row card-body pb-0">
-  <div class="col-8">
+  <div class="col-9">
     <div class="d-flex flex-row flex-wrap">
       <div class="modal" name="restartModal">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-body">
               <p><%= __('Do you want to restart the puzzle? All progress will be lost!') %></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" name="confirmYes"><%= __('Yes') %></button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" name="confirmNo"><%= __('No') %></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal" name="rollbackModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <p><%= __('Do you want to revert solving progress to the savepoint?') %></p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" name="confirmYes"><%= __('Yes') %></button>
@@ -55,6 +68,16 @@
       </div>
       <button name="startBtn" type="button" class="btn btn-primary mb-3 mr-3"><%= __('Start') %></button>
       <button name="revertBtn" type="button" class="btn btn-primary mb-3 mr-3" style="display: none;"><%= __('Undo') %></button>
+      <div name="savepointGrp" class="btn-group mr-3" role="group" aria-label="Savepoint" style="display: none;">
+        <button name="savepointBtn" type="button" class="btn btn-primary mb-3"><%= __('Set Savepoint') %></button>
+        <div name="savepointMenu" class="btn-group" role="group" style="display: none;">
+          <button id="btnGroupSavepoint" type="button" class="btn btn-primary dropdown-toggle mb-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupSavepoint" style="">
+            <a name="resetSavepointBtn" class="dropdown-item"><%= __('Reset Savepoint') %></a>
+            <a name="removeSavepointBtn" class="dropdown-item"><%= __('Remove Savepoint') %></a>
+          </div>
+        </div>
+      </div>
       <div class="mt-1 mr-3" name="pencilMarkCtrl" style="display: none;">
         <div class="custom-control custom-switch">
           <input type="checkbox" class="custom-control-input" name="pencilMarkCb"
@@ -67,7 +90,7 @@
       </div>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-3">
     <div class="d-flex flex-row-reverse flex-wrap">
       <button name="checkBtn" type="button" class="btn btn-primary mb-3 ml-3"><%= __('Check') %></button>
       <span name="timer" class="align-top" style="font-family: Lucida Console; font-size: 130%; display: none;"></span>

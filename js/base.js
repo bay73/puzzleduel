@@ -199,6 +199,14 @@ basePuzzle.prototype.initControls = function (controls) {
   this.controls.voteRating = this.controls.voteModal + " [name=voteRating]";
   this.controls.voteComment = this.controls.voteModal + " [name=voteComment]";
   this.controls.revertBtn = controls + " [name=revertBtn]";
+  this.controls.savepointGrp = controls + " [name=savepointGrp]";
+  this.controls.savepointBtn = controls + " [name=savepointBtn]";
+  this.controls.savepointMenu = controls + " [name=savepointMenu]";
+  this.controls.resetSavepointBtn = controls + " [name=resetSavepointBtn]";
+  this.controls.removeSavepointBtn = controls + " [name=removeSavepointBtn]";
+  this.controls.rollbackModal = controls + " [name=rollbackModal]";
+  this.controls.rollbackYes = this.controls.rollbackModal + " [name=confirmYes]";
+  this.controls.rollbackNo = this.controls.rollbackModal + " [name=confirmNo]";
   this.controls.saveBtn = controls + " [name=saveBtn]";
   this.controls.checkBtn = controls + " [name=checkBtn]";
   this.controls.pencilMarkCtrl = controls + " [name=pencilMarkCtrl]";
@@ -216,6 +224,10 @@ basePuzzle.prototype.initControls = function (controls) {
     $(this.controls.restartModal).modal('hide');
     self.start();
   });
+  $(this.controls.rollbackYes).click(() => {
+    $(this.controls.rollbackModal).modal('hide');
+    self.rollbackToSavepoint();
+  });
   $(this.controls.voteSave).click(() => {
     $(this.controls.voteModal).modal('hide');
     var commentData = {
@@ -231,6 +243,9 @@ basePuzzle.prototype.initControls = function (controls) {
   $(this.controls.difficulty).change(() => {self.changeDifficulty = true; $(self.controls.saveBtn).prop('disabled', false);});
   $(this.controls.pencilMarkCtrl).hide();
   $(this.controls.pencilMarkCb).click(() => self.togglePencilMarkMode());
+  $(this.controls.savepointBtn).click(() => self.toggleSavepoint());
+  $(this.controls.resetSavepointBtn).click(() => self.setSavepoint());
+  $(this.controls.removeSavepointBtn).click(() => self.removeSavepoint());
 }
 
 basePuzzle.prototype.convertControls = function () {
@@ -238,6 +253,7 @@ basePuzzle.prototype.convertControls = function () {
   $(this.controls.startBtn).unbind('click');
   $(this.controls.startBtn).click(() => {$(this.controls.restartModal).modal();});
   $(this.controls.revertBtn).show();
+  $(this.controls.savepointGrp).show();
   $(this.controls.checkBtn).show();
   $(this.controls.pencilMarkCtrl).show();
   $(this.controls.pencilMarkCb).prop( "checked", false );
@@ -460,8 +476,50 @@ basePuzzle.prototype.revertStep = function() {
   if(typeof lastStep == 'function') {
     lastStep();
   }
+  this.savepointButtonState();
   if (this.steps.length == 0) {
     this.setButtonEnabled(false);
+  }
+}
+
+basePuzzle.prototype.toggleSavepoint = function() {
+  if (this.savepoint != null) {
+    if (this.steps.length > this.savepoint) {
+      $(this.controls.rollbackModal).modal();
+    }
+  } else {
+    this.setSavepoint();
+  }
+}
+
+basePuzzle.prototype.removeSavepoint = function() {
+  this.savepoint = null;
+  this.savepointButtonState();
+}
+
+basePuzzle.prototype.rollbackToSavepoint = function() {
+  if (this.savepoint != null) {
+    while (this.steps.length > this.savepoint) {
+      this.revertStep();
+    }
+  }
+  this.savepoint = null;
+  this.savepointButtonState();
+}
+
+basePuzzle.prototype.setSavepoint = function() {
+  this.savepoint = this.steps.length;
+  this.savepointButtonState();
+}
+
+basePuzzle.prototype.savepointButtonState = function() {
+  if (this.savepoint != null && this.steps.length >= this.savepoint) {
+    $(this.controls.savepointBtn).html(__['To Savepoint']);
+    $(this.controls.savepointMenu).show();
+  } else {
+    this.savepoint = null;
+    $(this.controls.savepointBtn).html(__['Set Savepoint']);
+    $(this.controls.savepointMenu).hide();
   }
 }
 
@@ -622,7 +680,6 @@ basePuzzle.prototype.replayStep = function (autoContinue) {
       this.revertStep();
     }
   }
-  console.log(step)
   if (typeof step.c != 'undefined') {
     if (!mergeWithNext()) {
       let element = this.getElementByCoordinate(step.c);

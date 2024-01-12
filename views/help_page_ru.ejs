@@ -16,13 +16,13 @@
           <div class="card">
             <div class="card-header" id="siteStructureHeading">
               <button class="btn btn-link" type="button"
-                data-toggle="collapse" data-target="#siteStructureCollapse"
-                aria-expanded="true" aria-controls="siteStructureCollapse"
+                data-toggle="collapse" data-target="#siteStructure"
+                aria-expanded="true" aria-controls="siteStructure"
               >
                 <h2>Структура сайта</h2>
               </button>
             </div>
-            <div id="siteStructureCollapse" class="collapse show" aria-labelledby="siteStructureHeading" data-parent="#mainAccordion">
+            <div id="siteStructure" class="collapse show" aria-labelledby="siteStructureHeading" data-parent="#mainAccordion">
               <p class="card-body">
               Основной язык сайта - английский. Часть содержимого может быть не переведена на русский язык.
               Каждый день на главной странице публикуется одна новая соревновательная головоломка.
@@ -53,13 +53,13 @@
           <div class="card">
             <div class="card-header" id="gameControlHeading">
               <button class="btn btn-link" type="button"
-                data-toggle="collapse" data-target="#gameControlCollapse"
-                aria-expanded="true" aria-controls="gameControlCollapse"
+                data-toggle="collapse" data-target="#gameControl"
+                aria-expanded="true" aria-controls="gameControl"
               >
                 <h2>Как решать задачи</h2>
               </button>
             </div>
-            <div id="gameControlCollapse" class="collapse" aria-labelledby="gameControlHeading" data-parent="#mainAccordion">
+            <div id="gameControl" class="collapse" aria-labelledby="gameControlHeading" data-parent="#mainAccordion">
               <p class="card-body">
               На странице с задачей сетка соответствующего размера и условия задачи доступны до начала решения.
               Прочитайте условие внимательно, чтобы понять все ключевые требования.
@@ -91,15 +91,49 @@
             </div>
           </div>
           <div class="card">
+            <div class="card-header" id="savepointsHeading">
+              <button class="btn btn-link collapsed" type="button"
+                data-toggle="collapse" data-target="#savepoints"
+                aria-expanded="false" aria-controls="savepoints"
+              >
+                <h2>Сохранение</h2>
+              </button>
+            </div>
+            <div id="savepoints" class="collapse" aria-labelledby="savepointsHeading" data-parent="#mainAccordion">
+              <p class="card-body">
+              В процессе решения головоломки у вас есть возможность установить точку сохранения в любой момент.
+              Эта функция позволяет вам быстро вернуть свой прогресс к сохраненной точке в процессе решения.
+              <br>
+              <br>
+              Чтобы создать точку сохранения, просто нажмите кнопку "Сохранить". После этого вы можете
+              использовать кнопку "Вернуться" для восстановления состояния сетки до сохраненного момента.
+              <br>
+              <br>
+              Рядом с кнопкой "Вернуться" находится стрелка вниз, предоставляющая доступ к дополнительным
+              командам:
+              <br>
+              "Сохранить снова" - записывает текущее положение в решении как новую точку сохранения,
+              заменяя ранее установленную.
+              <br>
+              "Отменить сохранение" - удаляет сохраненную точку без выполнения отката к этому конкретному
+              моменту.
+              <br>
+              <br>
+              Обратите внимание, что точки сохранения действительны только в рамках одной сессии решения
+              и не могут вернуть вас к частично решенной головоломке после перезапуска вашего браузера.
+              </p>
+            </div>
+          </div>
+          <div class="card">
             <div class="card-header" id="gridControlHeading">
               <button class="btn btn-link collapsed" type="button"
-                data-toggle="collapse" data-target="#gridControlCollapse"
-                aria-expanded="false" aria-controls="gridControlCollapse"
+                data-toggle="collapse" data-target="#gridControl"
+                aria-expanded="false" aria-controls="gridControl"
               >
                 <h2>Управление</h2>
               </button>
             </div>
-            <div id="gridControlCollapse" class="collapse" aria-labelledby="gridControlHeading" data-parent="#mainAccordion">
+            <div id="gridControl" class="collapse" aria-labelledby="gridControlHeading" data-parent="#mainAccordion">
               <p class="card-body">
               Состояние ячеек сетки может быть изменено с помощью мыши или сенсорного экрана. Управление с клавиатуры не поддерживается.
               <br>
@@ -127,14 +161,14 @@
             <div class="card-header" id="pencilMarksHeading">
               <h2 class="mb-0">
                 <button class="btn btn-link collapsed" type="button"
-                  data-toggle="collapse" data-target="#pencilMarksCollapse"
-                  aria-expanded="false" aria-controls="pencilMarksCollapse"
+                  data-toggle="collapse" data-target="#pencilMarks"
+                  aria-expanded="false" aria-controls="pencilMarks"
                 >
                   <h2>Пометки</h2>
                 </button>
               </h2>
             </div>
-            <div id="pencilMarksCollapse" class="collapse" aria-labelledby="pencilMarksHeading" data-parent="#mainAccordion">
+            <div id="pencilMarks" class="collapse" aria-labelledby="pencilMarksHeading" data-parent="#mainAccordion">
               <p class="card-body">
               Управление сеткой можно переключить из обычного режима в режим "Пометок".
               В этом режиме те же операции с мышью не меняют состояние ячеек, а устанавливают маленькие пометки в них.
@@ -154,13 +188,13 @@
           <div class="card">
             <div class="card-header" id="ratingHeading">
               <button class="btn btn-link" type="button"
-                data-toggle="collapse" data-target="#ratingCollapse"
-                aria-expanded="true" aria-controls="ratingCollapse"
+                data-toggle="collapse" data-target="#rating"
+                aria-expanded="true" aria-controls="rating"
               >
                 <h2>Расчёт рейтинга</h2>
               </button>
             </div>
-            <div id="ratingCollapse" class="collapse" aria-labelledby="ratingHeading" data-parent="#mainAccordion">
+            <div id="rating" class="collapse" aria-labelledby="ratingHeading" data-parent="#mainAccordion">
               <p class="card-body">
               Недельный рейтинг на дату X включает результаты по всем задачам за дни от X-7 до X-1.
               Время решателя по каждой задаче преобразуется в рейтинговые очки по формуле:
@@ -190,6 +224,11 @@
       var $card = $(this).closest('.card');
       $('html,body').animate({scrollTop: $card.offset().top},500);
     });
+  });
+  $(document).ready(function () {
+    if (window.location.hash.length > 0) {
+      $(window.location.hash).collapse('show')
+    }
   });
 </script>
 <%- include ('./partials/footer') %>
