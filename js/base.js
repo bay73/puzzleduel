@@ -503,7 +503,6 @@ basePuzzle.prototype.rollbackToSavepoint = function() {
       this.revertStep();
     }
   }
-  this.savepoint = null;
   this.savepointButtonState();
 }
 
