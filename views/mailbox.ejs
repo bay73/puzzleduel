@@ -23,7 +23,11 @@
                 </td>
                 <td class="border-top-0 pt-0">
                   <p class="text-justify">
-                    <%= comment.commentText %>
+                    <% let text = comment.commentText %>
+                    <% if (text.length > 300) text=text.substr(0,296) + '...' %>
+                    <% text.split('\n').forEach(part => { %>
+                    <%= part %><br />
+                    <% }) %>
                   </p>
                 </td> 
               </tr>
