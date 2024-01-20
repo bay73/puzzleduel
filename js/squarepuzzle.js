@@ -142,7 +142,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.GREY.submitAs("1"))
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell()
-        .copyPaste((data, elementData) => Object.assign(elementData, {image: data.image, color: data.color} )))
+        .copyPaste((data, elementData) => Object.assign({}, elementData, {image: data.image, color: data.color} )))
      .build(this);
 
   } else if (typeCode=="starbattle") {
