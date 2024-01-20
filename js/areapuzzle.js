@@ -1,6 +1,7 @@
 define(["square","controller_helper"], function() {
 
 areaPuzzleType = function(puzzleData, controls, settings) {
+  this.maxAreaSize = 10;
   squarePuzzle.call(this, puzzleData, controls, settings);
 }
 
@@ -23,6 +24,13 @@ fillominoPuzzleType = function(puzzleData, controls, settings) {
 }
 
 Object.setPrototypeOf(fillominoPuzzleType.prototype, areaPuzzleType.prototype);
+
+arafPuzzleType = function(puzzleData, controls, settings) {
+  this.maxAreaSize = 100;
+  areaPuzzleType.call(this, puzzleData, controls, settings);
+}
+
+Object.setPrototypeOf(arafPuzzleType.prototype, areaPuzzleType.prototype);
 
 AreaJoiner = function() {
   this.areaCount = 0;
@@ -129,7 +137,7 @@ areaPuzzleType.prototype.prejoinAreas = function(areaJoiner, areaForCell) {
 
 // Connect if both areas have more than one cell.
 areaPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
-  return area1Coordinates.length > 1 && area2Coordinates.length > 1;
+  return area1Coordinates.length > 1 && area2Coordinates.length > 1 && area1Coordinates.length + area2Coordinates.length > this.maxAreaSize;
 }
 
 // Any two cells is a full area
@@ -186,7 +194,7 @@ galaxiesType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coo
 
 // If areas of any size contains different digits, then put edge
 fillominoPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
-  if (area1Coordinates.length > 1 && area2Coordinates.length > 1) {
+  if (area1Coordinates.length > 1 && area2Coordinates.length > 1 && area1Coordinates.length + area2Coordinates.length > this.maxAreaSize) {
     return true;
   }
   var self = this;
@@ -221,6 +229,28 @@ fillominoPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, a
     return true;
   }
   if (area2Coordinates.length > 1 && getDigits(area1Coordinates).includes('1')) {
+    return true;
+  }
+  return false;
+}
+
+// If areas of any size contains more than two digits, then put edge
+arafPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
+  var self = this;
+  function getDigitsCount(areaCoordinates) {
+    var digitsCount = 0;
+    for (let i=0; i < areaCoordinates.length; i++) {
+      let coord = self.decodeCoordinate(areaCoordinates[i]);
+      if (self.cells[coord.y] && self.cells[coord.y][coord.x]) {
+        let value = self.cells[coord.y][coord.x].data.text;
+        if (value) {
+          digitsCount++;
+        }
+      }
+    }
+    return digitsCount;
+  }
+  if (getDigitsCount(area1Coordinates) + getDigitsCount(area2Coordinates) > 2) {
     return true;
   }
   return false;
@@ -358,6 +388,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   if (typeCode =="abc_division") {
     var letters = self.dimensionExtra;
+    this.maxAreaSize = letters.length;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addLetters(letters))
@@ -369,6 +400,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   } else if (typeCode == "domino_hunt"){
     var letters = self.dimensionExtra;
+    this.maxAreaSize = 2;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addItem(StdItem.BLACK)
@@ -380,7 +412,7 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode == "foseruzu"){
-    var letters = self.dimensionExtra;
+    this.maxAreaSize = Number(self.dimensionExtra);
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addNumbers(0,3))
@@ -391,7 +423,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode == "neighbors"){
-    var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addLetters('?')
@@ -403,7 +434,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode == "shikaku"){
-    var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addNumbers(1,99))
@@ -414,7 +444,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode == "araf"){
-    var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addNumbers(1,99))
@@ -425,7 +454,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode == "black_white"){
-    var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE)
@@ -437,7 +465,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode == "squares_and_rectangles"){
-    var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE)
@@ -455,7 +482,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode == "two_apiece"){
-    var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE)
@@ -467,7 +493,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode == "l_shapes"){
-    var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE)
@@ -479,7 +504,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode == "spiral_galaxies"){
-    var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
         .addItem(StdItem.SMALL_CIRCLE))
@@ -510,6 +534,7 @@ fillominoPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
   } else if (typeCode =="pentomino_division") {
     var letters = "FILNPTUVWXYZ"
+    this.maxAreaSize = 5;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addLetters(letters))

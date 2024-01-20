@@ -669,7 +669,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode=="no_touch_sums") {
-    var maxValue = self.dimensionExtra;
+    var maxValue = Number(self.dimensionExtra);
     this.typeProperties = decribePuzzleType()
       .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
       .add(controller().forAuthor().cell().inner().clickSwitch()
@@ -686,7 +686,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode=="top_heavy") {
-    var maxValue = self.dimensionExtra;
+    var maxValue = Number(self.dimensionExtra);
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().inner().chooser()
         .addNumbers(1, maxValue)
@@ -783,7 +783,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode=="skyscrapers_gaps") {
-    var maxValue = self.dimensionExtra;
+    var maxValue = Number(self.dimensionExtra);
     this.typeProperties = decribePuzzleType()
       .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
       .add(controller().forAuthor().cell().inner().chooser()
