@@ -1,7 +1,7 @@
 define(["square","controller_helper"], function() {
 
 areaPuzzleType = function(puzzleData, controls, settings) {
-  this.maxAreaSize = 10;
+  this.maxAreaSize = 2;
   squarePuzzle.call(this, puzzleData, controls, settings);
 }
 
