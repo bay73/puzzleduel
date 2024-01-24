@@ -179,7 +179,7 @@ hexaPuzzle.prototype.findSize = function() {
   var leftGap = (width - unitSize * (3*cols-1)) /2;
   var topGap = 1;
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  var height = ((cols+rows-1)*Math.sqrt(3))*unitSize + topGap + unitSize / (isSafari ? 1.5 : 4);
+  var height = ((cols+rows-1)*Math.sqrt(3))*unitSize + topGap + unitSize / (isSafari ? 1.5 : 2);
   this.chooserSize = Math.min(25 + leftGap + unitSize*0.9, unitSize * (isSafari ? 2.1 : 2.3));
 
   return {height: height, width: width, unitSize: unitSize, leftGap: leftGap, topGap: topGap};

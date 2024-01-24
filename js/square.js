@@ -284,7 +284,7 @@ squarePuzzle.prototype.findSize = function() {
   var leftGap = (width - unitSize * cols) /2;
   var topGap = unitSize/4;
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  var height = rows*unitSize + topGap + unitSize / (isSafari ? 1.5 : 4);
+  var height = rows*unitSize + topGap + unitSize / (isSafari ? 1.5 : 2);
   this.chooserSize = Math.min(25 + leftGap + unitSize / 2, unitSize * (isSafari ? 1.4 : 1.6));
 
   if (this.typeProperties.needLeft) leftGap += unitSize;

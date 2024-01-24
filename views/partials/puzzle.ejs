@@ -6,7 +6,7 @@
     <small><%= __('Author:') %> <a href="/help/authors#<%= puzzle.authorId %>"><%= puzzle.author %></a></small>
   </p>
 </div>
-<svg id="<%= (typeof prefix != undefined)?prefix+'Grid':'mainGrid' %>"
+<svg  class="pb-2" id="<%= (typeof prefix != undefined)?prefix+'Grid':'mainGrid' %>"
      class="col-xs-12 text-center" style="overflow: visible; z-index: 90;">
   <%= __('Sorry, but your browser is not supported. Try to setup the new version.') %>
 </svg>
