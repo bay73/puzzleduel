@@ -276,6 +276,13 @@ basePuzzle.prototype.setButtonEnabled = function (enabled) {
   $(this.controls.checkBtn).prop('disabled', !enabled);
   $(this.controls.saveBtn).prop('disabled', !enabled);
   $(this.controls.revertBtn).prop('disabled', !enabled);
+  if (enabled && this.timer) {
+    window.onbeforeunload =  function () {
+      return "Refreshing or leaving this page will cause you to lose data!"
+    };
+  } else {
+    window.onbeforeunload = null;
+  }
 }
 
 basePuzzle.prototype.startTimer = function() {
@@ -299,6 +306,7 @@ basePuzzle.prototype.stopTimer = function() {
   if (this.timer) {
     clearInterval(this.timer);
     this.timer = null;
+    window.onbeforeunload = null;
   }
 }
 
