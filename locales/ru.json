@@ -451,5 +451,6 @@
 	"Set Savepoint": "Сохранить",
 	"Remove Savepoint": "Отменить сохранение",
 	"Reset Savepoint": "Сохранить снова",
-	"Do you want to revert solving progress to the savepoint?": "Вы действительно хотите отменить весь прогресс после точки сохранения?"
+	"Do you want to revert solving progress to the savepoint?": "Вы действительно хотите отменить весь прогресс после точки сохранения?",
+	"Slitherlink Expedition": "Slitherlink Expedition"
 }

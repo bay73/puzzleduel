@@ -450,5 +450,6 @@
 	"Set Savepoint": "Set Savepoint",
 	"Remove Savepoint": "Remove Savepoint",
 	"Reset Savepoint": "Reset Savepoint",
-	"Do you want to revert solving progress to the savepoint?": "Do you want to revert solving progress to the savepoint?"
+	"Do you want to revert solving progress to the savepoint?": "Do you want to revert solving progress to the savepoint?",
+	"Slitherlink Expedition": "Slitherlink Expedition"
 }
