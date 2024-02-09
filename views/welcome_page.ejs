@@ -133,12 +133,12 @@
       <ul class="nav nav-tabs">
         <% if(dailyPuzzle){ %>
         <li class="nav-item">
-          <a class="nav-link pl-2 pr-2 active" data-toggle="tab" href="#daily"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;">Daily puzzle</h1></a>
+          <a class="nav-link pl-2 pr-2 active puzzle-tab" data-toggle="tab" href="#daily"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;">Daily puzzle</h1></a>
         </li>
         <% } %>
         <% if(contestPuzzle){ %>
         <li class="nav-item">
-          <a class="nav-link pl-2 pr-2" data-toggle="tab" href="#contest"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;">Contest puzzle</h1></a>
+          <a class="nav-link pl-2 pr-2 puzzle-tab" data-toggle="tab" href="#contest"><h1 class="card-body pb-0 pt-0" style="font-size:4vmin;">Contest puzzle</h1></a>
         </li>
         <% } %>
       </ul>
@@ -171,6 +171,12 @@
           showcontestPuzzle();
           <% } %>
         });
+        $('.puzzle-tab').on('shown.bs.tab', function (e) {
+          let figures = $('#myTabContent').find('.active').find('.puzzle-figures')
+          if (figures.length > 0) {
+            puzzleFigures.init(figures);
+          }
+        })
       </script>
     </div>
   </div>

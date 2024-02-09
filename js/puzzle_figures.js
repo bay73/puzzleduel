@@ -139,7 +139,7 @@ drawDomino: function(snap,coord,size,letter1, letter2) {
 },
 
 getRealWidth: function(obj) {
-    return $('.puzzle-figures').width()
+  return $(obj).parent().width()
 },
 
 createDominoSet: function(snap, values, includeDoubles) {
