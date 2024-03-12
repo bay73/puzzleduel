@@ -99,7 +99,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       brightColor: "#38e",
       errorColor: "#efa4a7",
       outerClueColor: "#06d",
-      outerClueSecondColor: "#026",
+      outerClueSecondColor: "#014",
       outerClueFilter: "<feColorMatrix type='matrix' values='0 0 0 0 0 0 0.5 0 0 0.1 0 0 1 0 0.5 0 0 0 1 0'/>",
     }
   } else if (this.settings.theme=="contrast") {
@@ -114,8 +114,8 @@ basePuzzle.prototype.chooseColorSchema = function() {
       bgColor: "#fff",
       brightColor: "#5577bb",
       errorColor: "#f52b14",
-      outerClueColor: "#ffe",
-      outerClueSecondColor: "#9ac",
+      outerClueColor: "#bcf",
+      outerClueSecondColor: "#002",
       outerClueFilter: "<feColorMatrix type='matrix' values='1 0 0 0 1 0 1 0 0 1 0 0 1 0 1 0 0 0 1 0'/>"
     }
   } else {
@@ -166,10 +166,10 @@ basePuzzle.prototype.decodeColor = function(color) {
     case "#f52b14": return this.colorSchema.errorColor;
     case "#e72381": return this.colorSchema.errorColor;
     case "#06d": return this.colorSchema.outerClueColor;
-    case "#ffe": return this.colorSchema.outerClueColor;
+    case "#bcf": return this.colorSchema.outerClueColor;
     case "#8db": return this.colorSchema.outerClueColor;
-    case "#026": return this.colorSchema.outerClueSecondColor;
-    case "#9ac": return this.colorSchema.outerClueSecondColor;
+    case "#014": return this.colorSchema.outerClueSecondColor;
+    case "#002": return this.colorSchema.outerClueSecondColor;
     case "#001": return this.colorSchema.outerClueSecondColor;
     default: return color;
   }
