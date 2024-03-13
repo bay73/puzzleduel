@@ -115,7 +115,7 @@ basePuzzle.prototype.chooseColorSchema = function() {
       brightColor: "#5577bb",
       errorColor: "#f52b14",
       outerClueColor: "#bcf",
-      outerClueSecondColor: "#002",
+      outerClueSecondColor: "#003",
       outerClueFilter: "<feColorMatrix type='matrix' values='1 0 0 0 1 0 1 0 0 1 0 0 1 0 1 0 0 0 1 0'/>"
     }
   } else {
@@ -169,7 +169,7 @@ basePuzzle.prototype.decodeColor = function(color) {
     case "#bcf": return this.colorSchema.outerClueColor;
     case "#8db": return this.colorSchema.outerClueColor;
     case "#014": return this.colorSchema.outerClueSecondColor;
-    case "#002": return this.colorSchema.outerClueSecondColor;
+    case "#003": return this.colorSchema.outerClueSecondColor;
     case "#001": return this.colorSchema.outerClueSecondColor;
     default: return color;
   }
