@@ -235,11 +235,28 @@ createTetro4: function(snap, withLetters) {
   snap.node.setAttribute("width", width);
   var cellSize = width/10;
   snap.node.setAttribute("height", cellSize * 4 + puzzleFigures.gapTop*2);
-  puzzleFigures.gapLeft = (width - cellSize*9)/2
+  puzzleFigures.gapLeft = (width - cellSize*9.5)/2
   puzzleFigures.drawFigure(snap,{x:0,y:1}, puzzleFigures.tetro_L, cellSize, withLetters);
   puzzleFigures.drawFigure(snap,{x:2.5,y:0}, puzzleFigures.tetro_I_vert, cellSize, withLetters);
   puzzleFigures.drawFigure(snap,{x:4,y:2}, puzzleFigures.tetro_T, cellSize, withLetters);
   puzzleFigures.drawFigure(snap,{x:7.5,y:1}, puzzleFigures.tetro_S, cellSize, withLetters);
+},
+
+createTetro5: function(snap, withLetters) {
+  let width = puzzleFigures.getRealWidth($(snap.node));
+  const viewportWidth = Math.max(
+    document.documentElement.clientWidth,
+    window.innerWidth || 0
+  )
+  snap.node.setAttribute("width", width);
+  var cellSize = width/12.5;
+  snap.node.setAttribute("height", cellSize * 4 + puzzleFigures.gapTop*2);
+  puzzleFigures.gapLeft = (width - cellSize*12)/2
+  puzzleFigures.drawFigure(snap,{x:0,y:1}, puzzleFigures.tetro_L, cellSize, withLetters);
+  puzzleFigures.drawFigure(snap,{x:2.5,y:0}, puzzleFigures.tetro_I_vert, cellSize, withLetters);
+  puzzleFigures.drawFigure(snap,{x:4,y:2}, puzzleFigures.tetro_T, cellSize, withLetters);
+  puzzleFigures.drawFigure(snap,{x:7.5,y:1}, puzzleFigures.tetro_S, cellSize, withLetters);
+  puzzleFigures.drawFigure(snap,{x:10,y:2}, puzzleFigures.tetro_O, cellSize, withLetters);
 },
 
 createPento12: function(snap, withLetters) {
@@ -486,6 +503,9 @@ init: function(element) {
   }
   if (figures=="LITS") {
     puzzleFigures.createTetro4(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
+  }
+  if (figures=="LITSO") {
+    puzzleFigures.createTetro5(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
   if (figures=="pento12") {
     puzzleFigures.createPento12(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);

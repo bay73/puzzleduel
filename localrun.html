@@ -130,22 +130,67 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "fence_turning",
+      typeCode: "lits_plus",
       id: "puzzle.code",
-      dimension: "5x5"
+      dimension: "6x6"
     };
     var settings = {
       local: true,
       data: {
-    "b1": "4",
-    "d1": "1",
-    "a2": "3",
-    "e2": "4",
-    "c3": "3",
-    "a4": "0",
-    "e4": "1",
-    "b5": "2",
-    "d5": "3",
+    "areas": [
+        [
+            "a1",
+            "b1",
+            "c1",
+            "a2"
+        ],
+        [
+            "d1",
+            "e1",
+            "f1",
+            "f2"
+        ],
+        [
+            "b2",
+            "c2",
+            "d2",
+            "e2",
+            "b3",
+            "d3",
+            "e3"
+        ],
+        [
+            "a3",
+            "c3",
+            "a4",
+            "b4",
+            "c4"
+        ],
+        [
+            "d4",
+            "e4",
+            "e5",
+            "f5",
+            "e6",
+            "f6"
+        ],
+        [
+            "f3",
+            "f4"
+        ],
+        [
+            "a5",
+            "b5",
+            "c5",
+            "a6",
+            "b6",
+            "c6"
+        ],
+        [
+            "d5",
+            "d6"
+        ]
+    ],
     "tag": ""
 }
     };
