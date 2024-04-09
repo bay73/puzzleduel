@@ -453,5 +453,8 @@
 	"Do you want to revert solving progress to the savepoint?": "Do you want to revert solving progress to the savepoint?",
 	"Slitherlink Expedition": "Slitherlink Expedition",
 	"No 2x2 white squares are allowed": "No 2x2 white squares are allowed",
-	"White cells in each area should form valid tetromino": "White cells in each area should form valid tetromino"
+	"White cells in each area should form valid tetromino": "White cells in each area should form valid tetromino",
+	"Three shaded cells cannot have common point": "Three shaded cells cannot have common point",
+	"Black cells in each area should form valid tetrahex": "Black cells in each area should form valid tetrahex",
+	"Tetrahexes of the same type shoudln't share an edge": "Tetrahexes of the same type shoudln't share an edge"
 }

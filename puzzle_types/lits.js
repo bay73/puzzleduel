@@ -40,7 +40,7 @@ check:function(dimension, clues, data){
   // Parse clues.
   for (var [key, value] of Object.entries(clues)) {
     if (key=="areas") {
-      areas = value;
+      var areas = value;
     } else {
       var pos = util.parseCoord(key);
       if (cells[pos.y]){

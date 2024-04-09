@@ -56,6 +56,19 @@ hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
         .addItem(StdItem.LINE.submitAs("1")))
       .build(this);
 
+  } else if (typeCode =="slicy") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().noClue().copyPaste())
+     .build(this);
+
   }
 }
 })

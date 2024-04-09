@@ -454,5 +454,8 @@
 	"Do you want to revert solving progress to the savepoint?": "Вы действительно хотите отменить весь прогресс после точки сохранения?",
 	"Slitherlink Expedition": "Slitherlink Expedition",
 	"No 2x2 white squares are allowed": "Белые квадраты 2x2 не разрешены",
-	"White cells in each area should form valid tetromino": "Белые клетки в каждой области должны образовать тетромино"
+	"White cells in each area should form valid tetromino": "Белые клетки в каждой области должны образовать тетромино",
+	"Three shaded cells cannot have common point": "Три закрашенных ячейки не должны иметь общей вершины",
+	"Black cells in each area should form valid tetrahex": "Закрашенные ячейки в каждой области должны образовывать тетрагекс",
+	"Tetrahexes of the same type shoudln't share an edge": "Тетрагексы одного типа не должны касаться стороной"
 }

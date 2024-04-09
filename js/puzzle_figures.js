@@ -31,6 +31,12 @@ penta_X: {letter: "X", letterPos: {x:0,y:1}, cells: [{x:0,y:0},{x:-1,y:1},{x:0,y
 penta_Y: {letter: "Y", letterPos: {x:0,y:1}, cells: [{x:0,y:0},{x:0,y:1},{x:1,y:1},{x:0,y:2},{x:0,y:3}]},
 penta_Z: {letter: "Z", letterPos: {x:1,y:1}, cells: [{x:0,y:0},{x:1,y:0},{x:1,y:1},{x:1,y:2},{x:2,y:2}]},
 
+hexa_S: {letter: "S", letterPos: {x:-1.55,y:2.5}, cells: [{x:0,y:0},{x:-1,y:2},{x:-1,y:4},{x:-2,y:6}]},
+hexa_L: {letter: "L", letterPos: {x:-0.55,y:2.5}, cells: [{x:0,y:0},{x:0,y:2},{x:0,y:4},{x:1,y:4}]},
+hexa_I: {letter: "I", letterPos: {x:-0.55,y:2.5}, cells: [{x:0,y:0},{x:0,y:2},{x:0,y:4},{x:0,y:6}]},
+hexa_C: {letter: "C", letterPos: {x:-1.55,y:2.5}, cells: [{x:0,y:0},{x:-1,y:2},{x:-1,y:4},{x:0,y:4}]},
+hexa_Y: {letter: "Y", letterPos: {x:0.45,y:0.5}, cells: [{x:0,y:0},{x:1,y:0},{x:1,y:2},{x:2,y:-2}]},
+
 allPenta: {},
 
 ship: function(length) {
@@ -111,6 +117,57 @@ drawFigure: function(snap,coord,figure,size,withLetter) {
   });
   if (withLetter) {
     let item = puzzleFigures.drawLetter(snap, coord.x+figure.letterPos.x, coord.y+figure.letterPos.y, size, figure.letter);
+    item.click(toggle);
+  }
+  group.attr({"isMarked": false})
+},
+
+drawHexaFigure: function(snap,coord,figure,size,withLetter) {
+  let baseCorner = function(coord, size) {
+    let s = size;
+    let h = s * Math.sqrt(3)/2.;
+    return {
+      x: puzzleFigures.gapLeft + s/2 + coord.x * s*3/2,
+      y: puzzleFigures.gapTop + (coord.x - 1) * h + coord.y * h * 2 - coord.y * h
+    };
+  };
+  let cellCorners = function(coord, size) {
+    let s = size*0.9;
+    let h = s * Math.sqrt(3)/2.;
+    let base = baseCorner(coord, size);
+    return [
+      base,
+      {x: base.x + s,       y: base.y},
+      {x: base.x + s + s/2, y: base.y + h},
+      {x: base.x + s,       y: base.y + 2*h},
+      {x: base.x,           y: base.y + 2*h},
+      {x: base.x - s/2,     y: base.y + h}
+    ];
+  }
+  let drawHexa = function(snap, coord, size) {
+    let path = snap.polygon([].concat.apply([], cellCorners(coord, size).map(corner => [corner.x, corner.y])));
+    path.attr({fill: puzzleFigures.color});
+    return path;
+  }
+
+  let toggle = function() {
+    let isMarked = (group.attr("isMarked")!="true");
+    group.attr({"isMarked": isMarked});
+    group.children().forEach(function(item) {
+      item.attr({fill: isMarked?puzzleFigures.markedColor:puzzleFigures.color})
+    });
+  }
+  let group = snap.g();
+
+  figure.cells.forEach(function(cell) {
+    let item = drawHexa(snap,{x: coord.x+cell.x,y: coord.y+cell.y},size);
+    group.add(item);
+    item.click(toggle);
+  });
+  if (withLetter) {
+    let base = baseCorner({x: coord.x + figure.letterPos.x, y: coord.y + figure.letterPos.y}, size)
+    let letterSize = size * 1.5
+    let item = puzzleFigures.drawLetter(snap, base.x/letterSize, base.y/letterSize, letterSize, figure.letter);
     item.click(toggle);
   }
   group.attr({"isMarked": false})
@@ -257,6 +314,24 @@ createTetro5: function(snap, withLetters) {
   puzzleFigures.drawFigure(snap,{x:4,y:2}, puzzleFigures.tetro_T, cellSize, withLetters);
   puzzleFigures.drawFigure(snap,{x:7.5,y:1}, puzzleFigures.tetro_S, cellSize, withLetters);
   puzzleFigures.drawFigure(snap,{x:10,y:2}, puzzleFigures.tetro_O, cellSize, withLetters);
+},
+
+createSlicy: function(snap, withLetters) {
+  let width = puzzleFigures.getRealWidth($(snap.node));
+  const viewportWidth = Math.max(
+    document.documentElement.clientWidth,
+    window.innerWidth || 0
+  )
+  snap.node.setAttribute("width", width);
+  var cellSize = width/24;
+  snap.node.setAttribute("height", cellSize * 7 + puzzleFigures.gapTop*2);
+  puzzleFigures.gapLeft = (width - cellSize*23)/2
+
+  puzzleFigures.drawHexaFigure(snap, {x:2, y:-1}, puzzleFigures.hexa_S, cellSize, withLetters)
+  puzzleFigures.drawHexaFigure(snap, {x:4, y:-3}, puzzleFigures.hexa_L, cellSize, withLetters)
+  puzzleFigures.drawHexaFigure(snap, {x:7, y:-6}, puzzleFigures.hexa_I, cellSize, withLetters)
+  puzzleFigures.drawHexaFigure(snap, {x:10, y:-8}, puzzleFigures.hexa_C, cellSize, withLetters)
+  puzzleFigures.drawHexaFigure(snap, {x:12, y:-10}, puzzleFigures.hexa_Y, cellSize, withLetters)
 },
 
 createPento12: function(snap, withLetters) {
@@ -498,34 +573,37 @@ init: function(element) {
 
   let figures = element.attr('figures');
   let withLetters = (element.attr('letters')=="true");
-  if (figures=="tetro7") {
+  if (figures.toLowerCase()=="tetro7") {
     puzzleFigures.createTetro7(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures=="LITS") {
+  if (figures.toLowerCase()=="lits") {
     puzzleFigures.createTetro4(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures=="LITSO") {
+  if (figures.toLowerCase()=="litso") {
     puzzleFigures.createTetro5(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures=="pento12") {
+  if (figures.toLowerCase()=="slicy") {
+    puzzleFigures.createSlicy(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
+  }
+  if (figures.toLowerCase()=="pento12") {
     puzzleFigures.createPento12(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures=="ship3") {
+  if (figures.toLowerCase()=="ship3") {
     puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship3"));
   }
-  if (figures=="ship4") {
+  if (figures.toLowerCase()=="ship4") {
     puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship4"));
   }
-  if (figures=="ship5") {
+  if (figures.toLowerCase()=="ship5") {
     puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship5"));
   }
-  if (figures=="ship") {
+  if (figures.toLowerCase()=="ship") {
     puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet(element.attr('set')?element.attr('set'):'ship4'));
   }
-  if (figures=="pento") {
+  if (figures.toLowerCase()=="pento") {
     puzzleFigures.createPento(Snap('#figures_svg_' + puzzleFigures.snapId), element.attr('set')?element.attr('set'):'FILNPTUVWXYZ', withLetters);
   }
-  if (figures=="domino") {
+  if (figures.toLowerCase()=="domino") {
     puzzleFigures.createDominoSet(Snap('#figures_svg_' + puzzleFigures.snapId),element.attr('set'), element.attr('doubles')!='false');
   }
 },
