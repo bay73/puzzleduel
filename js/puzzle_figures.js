@@ -572,38 +572,40 @@ init: function(element) {
   element.append('<svg id="figures_svg_' + puzzleFigures.snapId+'"></svg><br>');
 
   let figures = element.attr('figures');
+  if (!figures) return;
+  figures = figures.toLowerCase();
   let withLetters = (element.attr('letters')=="true");
-  if (figures.toLowerCase()=="tetro7") {
+  if (figures=="tetro7") {
     puzzleFigures.createTetro7(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures.toLowerCase()=="lits") {
+  if (figures=="lits") {
     puzzleFigures.createTetro4(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures.toLowerCase()=="litso") {
+  if (figures=="litso") {
     puzzleFigures.createTetro5(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures.toLowerCase()=="slicy") {
+  if (figures=="slicy") {
     puzzleFigures.createSlicy(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures.toLowerCase()=="pento12") {
+  if (figures=="pento12") {
     puzzleFigures.createPento12(Snap('#figures_svg_' + puzzleFigures.snapId), withLetters);
   }
-  if (figures.toLowerCase()=="ship3") {
+  if (figures=="ship3") {
     puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship3"));
   }
-  if (figures.toLowerCase()=="ship4") {
+  if (figures=="ship4") {
     puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship4"));
   }
-  if (figures.toLowerCase()=="ship5") {
+  if (figures=="ship5") {
     puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet("ship5"));
   }
-  if (figures.toLowerCase()=="ship") {
+  if (figures=="ship") {
     puzzleFigures.createBattleship(Snap('#figures_svg_' + puzzleFigures.snapId), puzzleFigures.shipSet(element.attr('set')?element.attr('set'):'ship4'));
   }
-  if (figures.toLowerCase()=="pento") {
+  if (figures=="pento") {
     puzzleFigures.createPento(Snap('#figures_svg_' + puzzleFigures.snapId), element.attr('set')?element.attr('set'):'FILNPTUVWXYZ', withLetters);
   }
-  if (figures.toLowerCase()=="domino") {
+  if (figures=="domino") {
     puzzleFigures.createDominoSet(Snap('#figures_svg_' + puzzleFigures.snapId),element.attr('set'), element.attr('doubles')!='false');
   }
 },
