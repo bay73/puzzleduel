@@ -290,7 +290,7 @@ squarePuzzle.prototype.findSize = function() {
   if (this.typeProperties.needLeft) leftGap += unitSize;
   if (this.typeProperties.needTop) topGap += unitSize;
 
-  return {height: height, width: width, unitSize: unitSize, leftGap: leftGap, topGap: topGap};
+  return {height: height, width: width, unitSize: unitSize, leftGap: leftGap, topGap: topGap, baseThickness: unitSize < 36 ? 4 : Math.round(unitSize/9)};
 }
 
 squarePuzzle.prototype.drawBoard = function() {

@@ -174,7 +174,7 @@ hexaPuzzle.prototype.findSize = function() {
   var vSizeLimit = window.innerHeight*0.67;
   var cols = this.cols;
   var rows = this.rows;
-  // unitCell - diameter of a hexagon cell
+  // unitCell - radius of a hexagon cell
   var unitSize = Math.min(hSizeLimit / (3*cols-1), vSizeLimit / ((cols+rows-1)*Math.sqrt(3)));
   var leftGap = (width - unitSize * (3*cols-1)) /2;
   var topGap = 1;
@@ -182,7 +182,7 @@ hexaPuzzle.prototype.findSize = function() {
   var height = ((cols+rows-1)*Math.sqrt(3))*unitSize + topGap + unitSize / (isSafari ? 1.5 : 2);
   this.chooserSize = Math.min(25 + leftGap + unitSize*0.9, unitSize * (isSafari ? 2.1 : 2.3));
 
-  return {height: height, width: width, unitSize: unitSize, leftGap: leftGap, topGap: topGap};
+  return {height: height, width: width, unitSize: unitSize, leftGap: leftGap, topGap: topGap, baseThickness: unitSize < 36 ? 7 : Math.round(unitSize/5)};
 }
 
 hexaPuzzle.prototype.drawBoard = function() {

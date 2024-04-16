@@ -48,17 +48,13 @@ basePuzzle.prototype.render = function(snap) {
       "strokeWidth": 1,
     },
     edge: {
-      "strokeWidth": this.typeProperties.thickEdges ?
-                       (this.size.unitSize < 36 ? 6 : Math.round(this.size.unitSize/6)) :
-                       (this.size.unitSize < 36 ? 4 : Math.round(this.size.unitSize/9)),
+      "strokeWidth": this.typeProperties.thickEdges ? this.size.baseThickness * 1.5 : this.size.baseThickness,
       "stroke-linecap": "round"
     },
     pencilEdge: {
-      "strokeWidth": this.typeProperties.thickEdges ?
-                       (this.size.unitSize < 32 ? 4 : Math.round(this.size.unitSize/8)) :
-                       (this.size.unitSize < 36 ? 3 : Math.round(this.size.unitSize/12)),
+      "strokeWidth": this.typeProperties.thickEdges ? this.size.baseThickness * 0.7 : this.size.baseThickness,
       "stroke-linecap": "round",
-      "stroke-dasharray": "0 " + (this.size.unitSize < 35 ? 5: Math.round(this.size.unitSize/7))
+      "stroke-dasharray": "0 " + this.size.baseThickness * 1.2
     },
     node: {
     },
@@ -66,15 +62,15 @@ basePuzzle.prototype.render = function(snap) {
       "fill-opacity": 1
     },
     connector: {
-      "strokeWidth": this.typeProperties.thinConnectors ? 1 : (this.size.unitSize < 36 ? 6 : Math.round(this.size.unitSize/6)),
+      "strokeWidth": this.typeProperties.thinConnectors ? 1 : this.size.baseThickness * 1.5,
       "stroke-opacity": 0.5,
       "stroke-linecap": "round"
     },
     pencilConnector: {
-      "strokeWidth": this.typeProperties.thinConnectors ? 1 : (this.size.unitSize < 36 ? 4 : Math.round(this.size.unitSize/9)),
+      "strokeWidth": this.typeProperties.thinConnectors ? 1 : this.size.baseThickness,
       "stroke-opacity": 0.4,
       "stroke-linecap": "round",
-      "stroke-dasharray": "0 " + (this.size.unitSize < 35 ? 5: Math.round(this.size.unitSize/7))
+      "stroke-dasharray": "0 " + this.size.baseThickness * 1.2
     },
     font: {
       "font-family": "sans-serif",
@@ -750,7 +746,7 @@ basePuzzle.prototype.createBoard = function() {
 
 basePuzzle.prototype.findSize = function() {
   // Returns the size of svg and elenetary unit. Computes basic sizes from current window size and puzzle dimension.
-  // Expected return {width:, height:, unitSize: }
+  // Expected return {width:, height:, unitSize:, baseThickness:}
   throw 'findSize is not implemented for ' + this.constructor.name + '!';
 }
 
