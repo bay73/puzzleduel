@@ -7,6 +7,7 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 const PuzzleComment = require('../models/PuzzleComment');
 const League = require('../models/League');
 const Announcement = require('../models/Announcement');
+const sizeof = require('object-sizeof');
 
 const CONTEST_NAME_CACHE_TTL = 10*60*60*1000; // 10 hours
 const CONTEST_CACHE_TTL = 10*60*1000; // 10 minutes
@@ -272,6 +273,26 @@ module.exports.clearCache = function() {
   puzzlesCache.fresheness = undefined;
 }
 
+printedSizeOf = function(object) {
+  return  String(Math.round( sizeof(object)/ 1024)).padStart(6, ' ') + " kB"
+}
+
+module.exports.printCacheSize = function() {
+  console.log("contests:     " + printedSizeOf(contestCache));
+  console.log("contestNames: " + printedSizeOf(contestNameCache));
+  console.log("puzzlesTypes: " + printedSizeOf(puzzleTypeCache));
+  console.log("puzzles:      " + printedSizeOf(puzzlesCache));
+  console.log("puzzleData:   " + printedSizeOf(puzzleCache));
+  console.log("ratings:      " + printedSizeOf(ratingCache));
+  console.log("ratingChange: " + printedSizeOf(monthlyRatingChangeCache));
+  console.log("commenters:   " + printedSizeOf(monthlyCommentersCache));
+  console.log("users:        " + printedSizeOf(userCache));
+  console.log("userLeagues:  " + printedSizeOf(userLeaguesCache));
+  console.log("solvingTimes: " + printedSizeOf(solvingTimeCache));
+  console.log("leagues:      " + printedSizeOf(leagueCache));
+  console.log("announcement: " + printedSizeOf(announcementsCache));
+}
+
 module.exports.printCache = function() {
   console.log(new Date().getTime());
   console.log("contests:");
@@ -297,5 +318,6 @@ module.exports.printCache = function() {
   Object.keys(solvingTimeCache).forEach(function(key) { console.log(key, solvingTimeCache[key].fresheness); });
   console.log("leagues:");
   Object.keys(leagueCache).forEach(function(key) { console.log(key, leagueCache[key].fresheness); });
+  console.log("announcements:");
+  console.log(announcementsCache.fresheness);
 }
-

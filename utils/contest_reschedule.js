@@ -15,10 +15,7 @@ recount = async function () {
 
 // Connect to MongoDB
 mongoose
-  .connect(
-    db,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(db)
   .then(() => {
     console.log('MongoDB Connected')
     recount().then(() => {

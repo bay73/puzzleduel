@@ -14,10 +14,7 @@ require('dotenv').config();
 require('./config/passport')(passport);
 
 mongoose
-  .connect(
-    require('./config/keys').mongoURI,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(require('./config/keys').mongoURI)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
@@ -62,7 +59,8 @@ const PORT = process.env.PORT || 5000;
 
 setInterval(()=>{
   const used = process.memoryUsage().heapUsed / 1024 / 1024;
-  console.log('used ' + (Math.round(used * 100) / 100) + ' MB');
+  console.log('Memory used:    ' + (Math.round(used * 100) / 100) + ' MB');
+  cache.printCacheSize();
   profiler.dump(console.log);
 },60000)
 

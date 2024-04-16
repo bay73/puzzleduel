@@ -133,6 +133,9 @@ const ContestSchema = new mongoose.Schema({
     type: Mixed,
     required: false
   }
+},
+{
+  suppressReservedKeysWarning: true
 });
 
 const Contest = mongoose.model('Contest', ContestSchema);
