@@ -40,7 +40,7 @@ router.get('/clearcache', ensureAuthenticated, async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    cache.clearCache();
+    cache.resetCache();
     res.redirect('/');
     profiler.log('adminClearCache', processStart);
   } catch (e) {

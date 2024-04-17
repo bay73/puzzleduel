@@ -257,20 +257,39 @@ module.exports.readAnnouncements = async function() {
   return announcementsCache.announcements;
 }
 
-module.exports.clearCache = function() {
-  Object.keys(contestCache).forEach(function(key) { delete contestCache[key]; });
-  Object.keys(puzzleCache).forEach(function(key) { delete puzzleCache[key]; });
-  Object.keys(ratingCache).forEach(function(key) { delete ratingCache[key]; });
-  Object.keys(monthlyRatingChangeCache).forEach(function(key) { delete solvingTimeCache[key]; });
-  Object.keys(monthlyCommentersCache).forEach(function(key) { delete solvingTimeCache[key]; });
-  Object.keys(userCache).forEach(function(key) { delete userCache[key]; });
-  Object.keys(solvingTimeCache).forEach(function(key) { delete solvingTimeCache[key]; });
-  Object.keys(leagueCache).forEach(function(key) { delete leagueCache[key]; });
-  puzzleTypeCache.fresheness = undefined;
+module.exports.resetCache = function() {
+  let deleteAll = function(cache) {
+    Object.keys(cache).forEach(function(key) { delete cache[key]; });
+  }
+
+  deleteAll(contestCache);
   contestNameCache.fresheness = undefined;
-  announcementsCache.fresheness = undefined;
-  userLeaguesCache.fresheness = undefined;
+  puzzleTypeCache.fresheness = undefined;
   puzzlesCache.fresheness = undefined;
+  deleteAll(puzzleCache);
+  deleteAll(ratingCache);
+  deleteAll(monthlyRatingChangeCache);
+  deleteAll(monthlyCommentersCache);
+  deleteAll(userCache);
+  userLeaguesCache.fresheness = undefined;
+  deleteAll(solvingTimeCache);
+  deleteAll(leagueCache);
+  announcementsCache.fresheness = undefined;
+}
+
+module.exports.clearOutdatedCache = function() {
+  const currentTime = new Date().getTime();
+  let deleteOtdatedKeys = function(cache) {
+    Object.keys(cache).forEach(function(key) { if (cache[key].fresheness < currentTime) { delete cache[key]; }});
+  }
+  deleteOtdatedKeys(contestCache);
+  deleteOtdatedKeys(puzzleCache);
+  deleteOtdatedKeys(ratingCache);
+  deleteOtdatedKeys(monthlyRatingChangeCache);
+  deleteOtdatedKeys(monthlyCommentersCache);
+  deleteOtdatedKeys(userCache);
+  deleteOtdatedKeys(solvingTimeCache);
+  deleteOtdatedKeys(leagueCache);
 }
 
 printedSizeOf = function(object) {
