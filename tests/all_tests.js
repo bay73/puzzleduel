@@ -20,6 +20,10 @@ requirejs(["tests/chaos.test.js"], ()=>{
   allTestSuites.push(chaosTestSuite);
 })
 
+requirejs(["tests/choco_banana.test.js"], ()=>{
+  allTestSuites.push(chocoBananaTestSuite);
+})
+
 requirejs(["tests/clouds.test.js"], ()=>{
   allTestSuites.push(cloudsTestSuite);
 })

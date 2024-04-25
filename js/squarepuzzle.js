@@ -390,6 +390,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="choco_banana") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.WHITE_CIRCLE)
+        .addNumbers(1,29,{textColor: this.colorSchema.textColor}))
+      .add(controller().forSolver().cell().noClue(StdItem.WHITE_CIRCLE).clickSwitch()
+        .addItem(StdItem.GREY.submitAs('1'))
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().noClue().copyPaste((data) => {return {image: data.image, color: data.color};}))
+     .build(this);
+
   // Paint
   } else if (typeCode=="clouds") {
     var maxValue = Math.max(this.rows, this.cols);
