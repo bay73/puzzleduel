@@ -164,6 +164,10 @@ requirejs(["tests/railroad.test.js"], ()=>{
   allTestSuites.push(railroadTestSuite);
 })
 
+requirejs(["tests/ring_ring.test.js"], ()=>{
+  allTestSuites.push(ringringTestSuite);
+})
+
 requirejs(["tests/ripple_effect.test.js"], ()=>{
   allTestSuites.push(rippleEffectTestSuite);
 })
