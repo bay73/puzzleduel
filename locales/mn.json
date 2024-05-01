@@ -456,5 +456,7 @@
 	"White cells in each area should form valid tetromino": "White cells in each area should form valid tetromino",
 	"Three shaded cells cannot have common point": "Three shaded cells cannot have common point",
 	"Black cells in each area should form valid tetrahex": "Black cells in each area should form valid tetrahex",
-	"Tetrahexes of the same type shoudln't share an edge": "Tetrahexes of the same type shoudln't share an edge"
+	"Tetrahexes of the same type shoudln't share an edge": "Tetrahexes of the same type shoudln't share an edge",
+	"Month-long marathons": "Month-long marathons",
+	"Tetromino Canvas Clash": "Tetromino Canvas Clash"
 }
