@@ -458,6 +458,8 @@
 	"Three shaded cells cannot have common point": "Три закрашенных ячейки не должны иметь общей вершины",
 	"Black cells in each area should form valid tetrahex": "Закрашенные ячейки в каждой области должны образовывать тетрагекс",
 	"Tetrahexes of the same type shoudln't share an edge": "Тетрагексы одного типа не должны касаться стороной",
+	"Shaded area should have rectnagular or square shape": "Закрашенная область должна иметь прямоугольную или квадратную форму",
+	"Unshaded area should have non-rectnagular shape": "Незакрашенная область не должна иметь прямоугольную форму",
 	"Month-long marathons": "Месячные марафоны",
 	"Tetromino Canvas Clash": "Tetromino Canvas Clash"
 }

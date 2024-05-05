@@ -113,13 +113,15 @@
   </div>
 </div>
 <div class="d-flex flex-wrap card-body pt-0" id="puzzleRules">
+  <!--
   <div class="col-lg-4">
-    <span class="puzzle-figures w-100 d-block" theme="default" figures="slicy" set="12345" doubles="true"></span>
+    <span class="puzzle-figures w-100 d-block" theme="default" figures="domino" set="12345" doubles="true"></span>
   </div>
+  -->
   <div class="col-lg-8">
-    <p class="card-text text-left mt-2 w-100">Shade some empty cells black to create a single connected wall. No 2x2 square can be completely shaded. Numbers in a cell indicate the length of consecutive shaded blocks in the neighboring cells. If there is more than one number in a cell, then there must be at least one white (unshaded) cell between the black cell groups.></p>
+    <p class="card-text text-left mt-2 w-100">Shade some cells such that shaded cells form rectangular blocks und unshaded cells form irregular blocks. Given numbers indicate the sizes of the corresponding blocks; a block may contain one or more numbers, or no numbers at all. No two chocolate regions (rectangles) may share an edge. Likewise, no two banana regions (non-rectangular) may share an edge.</p>
     <p class="card-text text-left mt-1"><b>Grid control</b>:
-      Click at a cell reveals the value chooser. Click at the selected value changes the state of the cell.
+      Click the mouse button at the selected cell to change the filling of the cell.
       More details about grid control are at the <a href='/help'>help page</a>.
     </p>
   </div>
@@ -130,101 +132,19 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "slicy",
+      typeCode: "choco_banana",
       id: "puzzle.code",
-      dimension: "5x5"
+      dimension: "14x10"
     };
     var settings = {
       local: true,
-      data: {
-    "areas": [
-        [
-            "a1",
-            "b1",
-            "c1",
-            "d1",
-            "e1"
-        ],
-        [
-            "a2",
-            "b2",
-            "c2",
-            "d2",
-            "b3",
-            "c3",
-            "b4",
-            "d4",
-            "b5"
-        ],
-        [
-            "e2",
-            "f2",
-            "f3",
-            "g3",
-            "g4",
-            "h4",
-            "i5"
-        ],
-        [
-            "d3",
-            "e3",
-            "e4",
-            "f4",
-            "e5",
-            "f5",
-            "g5"
-        ],
-        [
-            "a3",
-            "a4",
-            "a5",
-            "b6",
-            "c7",
-            "d8"
-        ],
-        [
-            "c4",
-            "c5",
-            "d5",
-            "c6",
-            "d6",
-            "e6",
-            "f6",
-            "d7",
-            "e7"
-        ],
-        [
-            "h5",
-            "g6",
-            "h6",
-            "i6",
-            "g7",
-            "h7",
-            "h8"
-        ],
-        [
-            "e8",
-            "f8",
-            "e9",
-            "f9",
-            "g9"
-        ],
-        [
-            "f7",
-            "i7",
-            "g8",
-            "i8",
-            "h9",
-            "i9"
-        ]
-    ],
-    "tag": ""
-}
+      //data: {"b1":"1","e1":"4","a2":"3","e3":"2","b4":"4","h4":"2","a5":"4","g5":"4","i5":"4","b6":"2","h6":"2","e7":"2","i8":"2","e9":"4","h9":"4"},
+      data: {"a8":"4","b3":"3","b4":"3","c3":"3","d5":"4","d8":"3","e2":"4","e6":"4","f7":"4","f9":"3","g1":"4","g8":"4","i4":"5","k9":"2","l1":"4","l7":"6","m2":"4","n3":"4","n10":"6"},
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["hexapuzzle"], function() {
-      puzzle = new hexaPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
