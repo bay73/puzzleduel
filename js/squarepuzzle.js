@@ -393,14 +393,15 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="choco_banana") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
-        .addItem(StdItem.WHITE_CIRCLE)
         .addNumbers(1,29,{textColor: this.colorSchema.textColor}))
-      .add(controller().forSolver().cell().noClue(StdItem.WHITE_CIRCLE).clickSwitch()
+      .add(controller().forSolver().cell().noClue(StdItem.CROSS).clickSwitch()
         .addItem(StdItem.GREY.submitAs('1'))
-        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
-      .add(controller().forSolver().cell().clue().copy())
-      .add(controller().forSolver().cell().noClue().copyPaste((data) => {return {image: data.image, color: data.color};}))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().copy())
+      .add(controller().forSolver().cell().noClue(StdItem.CROSS)
+        .copyPaste((data, elementData) => Object.assign({}, elementData, {image: data.image, color: data.color})))
      .build(this);
+
 
   // Paint
   } else if (typeCode=="clouds") {

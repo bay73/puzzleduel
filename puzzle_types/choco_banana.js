@@ -50,20 +50,22 @@ checkAreas: function(cells, cluecells) {
         var connected = util.findConnected(cells, {x:x0, y:y0}, [topLeftCell]);
         var connectedCount = 0;
         var clueCount = 0;
+        var connectedCoords = []
         for (var y = 0; y < cells.rows; y++) {
           for (var x = 0; x < cells.cols; x++) {
             if (connected[y][x]){
               connectedCount++;
+              connectedCoords.push(util.coord(x,y))
             }
           }
         }
         if (topLeftCell) {
           if (cellsInRectangle != rectangleArea || connectedCount != rectangleArea) {
-            return {status: "Shaded area should have rectnagular or square shape", errors: [util.coord(x0,y0)]};
+            return {status: "Shaded area should have rectnagular or square shape", errors: connectedCoords};
           }
         } else {
           if (cellsInRectangle == rectangleArea && connectedCount == rectangleArea) {
-            return {status: "Unshaded area should have non-rectnagular shape", errors: [util.coord(x0,y0)]};
+            return {status: "Unshaded area should have non-rectnagular shape", errors: connectedCoords};
           }
         }
         for (var y = 0; y < cells.rows; y++) {
