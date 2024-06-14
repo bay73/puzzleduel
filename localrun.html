@@ -119,9 +119,9 @@
   </div>
   -->
   <div class="col-lg-8">
-    <p class="card-text text-left mt-2 w-100">Shade some cells such that shaded cells form rectangular blocks und unshaded cells form irregular blocks. Given numbers indicate the sizes of the corresponding blocks; a block may contain one or more numbers, or no numbers at all. No two chocolate regions (rectangles) may share an edge. Likewise, no two banana regions (non-rectangular) may share an edge.</p>
+    <p class="card-text text-left mt-2 w-100">Draw rectangular loops through the centers of unshaded cell so that every unshaded cell is used. The sides of different rectangles may intersect each other, but not turn at their intersections or otherwise overlap.</p>
     <p class="card-text text-left mt-1"><b>Grid control</b>:
-      Click the mouse button at the selected cell to change the filling of the cell.
+      To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.
       More details about grid control are at the <a href='/help'>help page</a>.
     </p>
   </div>
@@ -132,14 +132,18 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "choco_banana",
+      typeCode: "ring_ring",
       id: "puzzle.code",
-      dimension: "14x10"
+      //dimension: "14x8"
+      //dimension: "11x10"
+      dimension: "9x9"
+
     };
     var settings = {
       local: true,
-      //data: {"b1":"1","e1":"4","a2":"3","e3":"2","b4":"4","h4":"2","a5":"4","g5":"4","i5":"4","b6":"2","h6":"2","e7":"2","i8":"2","e9":"4","h9":"4"},
-      data: {"a8":"4","b3":"3","b4":"3","c3":"3","d5":"4","d8":"3","e2":"4","e6":"4","f7":"4","f9":"3","g1":"4","g8":"4","i4":"5","k9":"2","l1":"4","l7":"6","m2":"4","n3":"4","n10":"6"},
+      //data: {"d1":"black","d2":"black","d3":"black","d7":"black","d8":"black","g4":"black","i2":"black","j2":"black","l3":"black","l4":"black","n5":"black","n8":"black"}, // from HPC24
+      //data: {"a1":"black","a7":"black","c10":"black","e5":"black","e8":"black","f8":"black","g1":"black","h1":"black","h10":"black","i4":"black","j7":"black","k4":"black","k9":"black","k10":"black"},
+      data: {"a6":"black","b2":"black","d4":"black","d9":"black","e1":"black","f4":"black","g7":"black","i1":"black","i9":"black"},
     };
     settings.theme = "default";
     var grid = "#mainGrid"
