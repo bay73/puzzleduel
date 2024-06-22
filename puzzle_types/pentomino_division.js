@@ -41,6 +41,9 @@ checkAreas: function(cells, areas) {
   var areaLetter = []
   for (var a=0; a<areas.length; a++) {
     var clues = [];
+    if (areas[a].length != 5) {
+      return {status: "Each marked area should form a pentomino", errors: areas[a]};
+    }
     for (var i=0; i<areas[a].length;i++) {
       var pos = util.parseCoord(areas[a][i]);
       if (cells[pos.y][pos.x] != "") {
@@ -50,6 +53,9 @@ checkAreas: function(cells, areas) {
     }
     areaCode = pentomino_util.getAreaCode(areas[a])
     areaLetter[a] = pentomino_util.pentominoes[areaCode];
+    if (areaLetter[a]==undefined) {
+      return {status: "Each marked area should form a pentomino", errors: areas[a]};
+    }
     let wrongClues = clues.filter( clue => clue != areaLetter[a])
     if (wrongClues.length > 0) {
       return {status: "The shape is not correct", errors: areas[a]};
