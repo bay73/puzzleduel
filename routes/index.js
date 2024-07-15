@@ -138,7 +138,7 @@ router.get('/help/authors', async (req, res, next) => {
       User.find({role: "author"}, "_id name about")
     ])
     var byAuthorCountMap = {};
-    allPuzzles.filter(puzzle => !puzzle.needLogging).forEach(puzzle => {
+    allPuzzles.filter(puzzle => !puzzle.hidden).forEach(puzzle => {
       if (typeof byAuthorCountMap[puzzle.author] == 'undefined') {
         byAuthorCountMap[puzzle.author]=0;
       }

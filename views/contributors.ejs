@@ -4,7 +4,7 @@
     <div class="col-12 col-lg-10 m-auto">
       <div class="card">
         <h1 class="card-header"><%= __("Our contributors") %></h1>
-          <% contributors.sort((a1,a2) => a2.puzzleCount - a1.puzzleCount).forEach(function(contributor) { %>
+          <% contributors.filter(a => a.puzzleCount > 0).sort((a1,a2) => a2.puzzleCount - a1.puzzleCount).forEach(function(contributor) { %>
           <div class="card mb-5">
             
             <h2 class="card-header">
