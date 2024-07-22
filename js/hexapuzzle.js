@@ -54,6 +54,9 @@ hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
+      .add(controller().forSolver().cell().copyPaste((data, elementData) => {
+         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+      }))
       .build(this);
 
   } else if (typeCode =="slicy") {

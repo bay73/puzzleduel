@@ -828,15 +828,15 @@ squarePuzzleCell.prototype.hasMultiPencil = function() {
 }
 
 squarePuzzleCell.prototype.processDragEnd = function(startElement) {
+  if (startElement.constructor.name != this.constructor.name) {
+    return false;
+  }
   if (this.dragProcessor == null) {
     return false;
   }
   if (typeof this.dragProcessor=='function') {
     return this.dragProcessor(startElement);
   } else {
-    if (startElement.constructor.name != this.constructor.name) {
-      return false;
-    }
     if (startElement == this) {
       return false;
     }
