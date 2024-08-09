@@ -408,7 +408,7 @@ diagonalPuzzleType.prototype.setTypeProperties = function(typeCode) {
 }
 sudokuPuzzleType.prototype.createBoard = function() {
   squarePuzzle.prototype.createBoard.call(this);
-  var dx = this.cols==8?4:3;
+  var dx = this.cols==8?4:(this.cols==4?2:3);
   var dy = this.rows==9?3:2;
   for (var x=dx-1;x<this.cols;x+=dx) {
     for (var y=0;y<this.rows;y++) {

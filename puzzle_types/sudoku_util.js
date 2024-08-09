@@ -60,6 +60,17 @@ checkAreaMagic: function(cells, colors, areas) {
     }
     return {status: "OK"};
   }
+  if (cells.rows == 4) {
+    for (var j = 0; j < 2; j++) {
+      for (var i = 0; i < 2; i++) {
+        var res = SudokuUtil.checkOnceInRectangle(cells, i*2, i*2 + 2, j*2, j*2 + 2, colors);
+        if (res){
+          return {status: "All digits should be exactly once in every area", errors: res};
+        }
+      }
+    }
+    return {status: "OK"};
+  }
   return {status: "OK"};
 },
 checkOnceInRectangle: function(cells, xFrom, xTo, yFrom, yTo, colors) {
