@@ -900,6 +900,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
+      .add(controller().forSolver().cell().copyPaste((data, elementData) => {
+         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+      }))
       .build(this);
 
   } else if (typeCode=="fence_knapp_daneben") {
@@ -914,6 +917,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
+      .add(controller().forSolver().cell().copyPaste((data, elementData) => {
+         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+      }))
       .build(this);
 
   } else if (typeCode=="fence_pentomino") {
@@ -928,6 +934,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
+      .add(controller().forSolver().cell().copyPaste((data, elementData) => {
+         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+      }))
       .build(this);
 
   } else if (typeCode=="fence_turning") {
@@ -945,6 +954,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
+      .add(controller().forSolver().cell().copyPaste((data, elementData) => {
+         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+      }))
       .build(this);
 
   } else if (typeCode=="polygraph") {
@@ -959,6 +971,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
+      .add(controller().forSolver().cell().copyPaste((data, elementData) => {
+         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+      }))
       .build(this);
 
   } else if (typeCode=="fence_even_odd") {
@@ -973,6 +988,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
+      .add(controller().forSolver().cell().copyPaste((data, elementData) => {
+         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+      }))
       .build(this);
 
   // Connector drawing

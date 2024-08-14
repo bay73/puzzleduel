@@ -522,6 +522,9 @@ hexaPuzzleCell.prototype.isPointInside = function(position) {
 }
 
 hexaPuzzleCell.prototype.processDragEnd = function(startElement) {
+  if (startElement.constructor.name != this.constructor.name) {
+    return false;
+  }
   if (this.dragProcessor == null) {
     return false;
   }
