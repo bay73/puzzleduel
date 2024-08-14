@@ -462,5 +462,10 @@
 	"Month-long marathons": "Month-long marathons",
 	"Tetromino Canvas Clash": "Tetromino Canvas Clash",
 	"Puzzle XL 2024": "Puzzle XL 2024",
-	"dOubLESHOW 10": "dOubLESHOW 10"
+	"dOubLESHOW 10": "dOubLESHOW 10",
+	"Rectangles should pass through all cells": "Rectangles should pass through all cells",
+	"Rectangle can't pass through the black cell": "Rectangle can't pass through the black cell",
+	"Intersection with overlapping is not allowed": "Intersection with overlapping is not allowed",
+	"This loop is not a rectangle": "This loop is not a rectangle",
+	"Rectangles should be a closed loop": "Rectangles should be a closed loop"
 }
