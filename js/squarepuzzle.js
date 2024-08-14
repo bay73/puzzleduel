@@ -1108,6 +1108,25 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
   }
 
+  typeProperties["ring_ring"] = {
+    needNodes: false,
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.textColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{color: self.colorSchema.textColor, returnValue: "black"}];},
+    decodeClue: value => {
+      if (value=="black") {
+        return {color: self.colorSchema.textColor}
+      } else {
+        return {text: value}
+      }
+    },
+  }
+
   typeProperties["maxi_loop"] = {
     needNodes: true,
     needConnectors: true,
