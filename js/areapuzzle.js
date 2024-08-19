@@ -546,6 +546,18 @@ fillominoPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.asAreaConnector()))
       .build(this);
 
+  } else if (typeCode =="double_choco") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.LIGHT_GREY)
+        .addNumbers(1,9,StdColor.LIGHT_GREY, undefined, (i)=>"grey" + i.toString())
+        .addNumbers(1,9))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
+
   }
 }
 })

@@ -620,6 +620,7 @@ BLACK: {color: (puzzle, isPencil) => puzzle.colorSchema.gridColor,
         textColor: "#fff"},
 GREY:  {color: (puzzle, isPencil) => puzzle.colorSchema.greyColor,
         textColor: (puzzle, isPencil) => puzzle.colorSchema.textColor},
+LIGHT_GREY:  {color: (puzzle, isPencil) => puzzle.colorSchema.lightGreyColor},
 OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueColor},
 DARK_OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueSecondColor},
 WHITE_TEXT: {textColor: "#fff"}
