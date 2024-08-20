@@ -25,6 +25,8 @@ basePuzzle.prototype.render = function(snap) {
   // Draw puzzle grid
   this.snap = snap;
   this.size = this.findSize();
+  this.snap.node.setAttribute("xmlns","http://www.w3.org/2000/svg")
+  this.snap.node.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
   this.snap.node.setAttribute("height", this.size.height);
   this.snap.node.setAttribute("width", this.size.width);
   this.snap.node.setAttribute("viewBox", "0 0 " + this.size.width + " " + this.size.height);
@@ -205,6 +207,7 @@ basePuzzle.prototype.initControls = function (controls) {
   this.controls.rollbackNo = this.controls.rollbackModal + " [name=confirmNo]";
   this.controls.saveBtn = controls + " [name=saveBtn]";
   this.controls.checkBtn = controls + " [name=checkBtn]";
+  this.controls.toFileBtn = controls + " [name=toFileBtn]";
   this.controls.pencilMarkCtrl = controls + " [name=pencilMarkCtrl]";
   this.controls.pencilMarkCb = controls + " [name=pencilMarkCb]";
   this.controls.timer = controls + " [name=timer]";
@@ -242,6 +245,7 @@ basePuzzle.prototype.initControls = function (controls) {
   $(this.controls.savepointBtn).click(() => self.toggleSavepoint());
   $(this.controls.resetSavepointBtn).click(() => self.setSavepoint());
   $(this.controls.removeSavepointBtn).click(() => self.removeSavepoint());
+  $(this.controls.toFileBtn).click(() => self.saveToFile());
 }
 
 basePuzzle.prototype.convertControls = function () {
@@ -335,6 +339,21 @@ basePuzzle.prototype.start = function() {
   $.getJSON("/puzzles/" + this.id + "/start")
     .done(data => self.processClueData(data))
     .fail((jqxhr, textStatus, error) => {self.showError(jqxhr.responseText);});
+}
+
+basePuzzle.prototype.saveToFile = function () {
+  let link = document.createElement('a');
+  link.setAttribute('download', this.typeCode + '-' + this.dimension + '.svg');
+  let data = new Blob([$(this.snap.node)[0].outerHTML], {type: 'text/plain'});
+  link.href = window.URL.createObjectURL(data);
+  document.body.appendChild(link);
+
+  // wait for the link to be added to the document
+  window.requestAnimationFrame(function () {
+    var event = new MouseEvent('click');
+    link.dispatchEvent(event);
+    document.body.removeChild(link);
+  });
 }
 
 basePuzzle.prototype.edit = function() {

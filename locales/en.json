@@ -467,5 +467,6 @@
 	"Rectangle can't pass through the black cell": "Rectangle can't pass through the black cell",
 	"Intersection with overlapping is not allowed": "Intersection with overlapping is not allowed",
 	"This loop is not a rectangle": "This loop is not a rectangle",
-	"Rectangles should be a closed loop": "Rectangles should be a closed loop"
+	"Rectangles should be a closed loop": "Rectangles should be a closed loop",
+	"Save to File": "Save to File"
 }

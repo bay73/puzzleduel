@@ -468,5 +468,6 @@
 	"Rectangles should pass through all cells": "Прямоугольники должны проходить через все клетки",
 	"Rectangles should be a closed loop": "Прямоугольники должны представлять собой закнутый цикл",
 	"Intersection with overlapping is not allowed": "Пересечение с перекрытием не допускается",
-	"This loop is not a rectangle": "Этот цикл не явлвется прямоугольником"
+	"This loop is not a rectangle": "Этот цикл не является прямоугольником",
+	"Save to File": "В файл"
 }
