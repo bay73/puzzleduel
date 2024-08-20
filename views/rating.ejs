@@ -106,13 +106,14 @@
                 </th>
               </tr>
               <% function rate(ratingObj) { return Math.round(ratingObj.totalStarted==0?0:ratingObj.totalSolved/ratingObj.totalStarted*100); }%>
+              <% function isCurrent(ratingObj) { if (user){ return ratingObj.userId.equals(user._id);  } else { return false; } } %>
               <% ratings.sort((r1,r2) => {  %>
               <%   if (sortColumn=='success') {return (rate(r2) == rate(r1))?(Math.round(r2.value) - Math.round(r1.value)):(rate(r2) - rate(r1));}
                    else if (sortColumn=='change') {return (Math.round(r2.change) == Math.round(r1.change))?(Math.round(r2.value) - Math.round(r1.value)):(Math.round(r2.change) - Math.round(r1.change));}
                    else if (sortColumn=='name') {return r1.userName.localeCompare(r2.userName);}
                    else {return (Math.round(r2.value)==Math.round(r1.value))?(rate(r2) - rate(r1)):(Math.round(r2.value) - Math.round(r1.value));}  %>
               <% }).forEach(function(rating) { %>
-              <tr <%= rating.missedWeek>2?"class=text-muted":"" %> >
+              <tr <%- rating.missedWeek>2?"class='text-muted'":(isCurrent(rating)?"class='bg-info text-dark'":"") %> >
                 <td>
                   <% var league = leagueSettings[rating.userLeague] || {markerStyle: "", name: ""} %>
                   <a class="league-marker" style="<%= league.markerStyle %>"

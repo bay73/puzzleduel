@@ -30,7 +30,7 @@
               <% let style = setting.mainStyle %>
               <% if (index < setting.top ) style = setting.topStyle %>
               <% if (index >= setting.bottom ) style = setting.bottomStyle %>
-              <tr style='<%= style %>' >
+                <tr style='<%= style %>' <%- (user && result.userId.equals(user._id))?"class='bg-info text-dark'":"" %> >
                 <td><%= result.userName %></td>
                 <td class="text-center">
                   <%= result.solvedCount %>

@@ -83,7 +83,7 @@
           <table class="table table-hover table-condensed">
             <tbody>
               <% times.forEach(function(time) { %>
-              <tr>
+              <tr <%- (user && time.userId.equals(user._id))?"class='bg-info text-dark'":"" %> >
                 <% var league = leagueSettings[time.userLeague] || {markerStyle: "", name: ""} %>
                 <td>
                   <a class="league-marker" style="<%= league.markerStyle %>"

@@ -36,7 +36,7 @@
                 <% }  %>
                 <% league.results.sort(sorting).slice(0, setting.top).forEach(function(result) { %>
                 <% let style = setting.mainStyle %>
-                <tr style='<%= style %>' >
+                <tr style='<%= style %>' <%- (user && result.userId.equals(user._id))?"class='bg-info text-dark'":"" %> >
                   <td class="p-0 pl-2"><%= result.userName %></td>
                   <td class="text-center p-0">
                     <%= result.solvedCount %>
