@@ -60,7 +60,7 @@ checkRegion: function(dim, cells, shades, area) {
     if (cells[pos.y][pos.x] != '') {
       hints.push(util.coord(pos.x, pos.y));
       if (hintValue != 0 && hintValue != cells[pos.y][pos.x]) {
-        return {status: "All numbers in the region must be equal", errors: hints};
+        return {status: "All numbers in a region must be equal", errors: hints};
       }
       hintValue = cells[pos.y][pos.x];
     }
@@ -76,18 +76,18 @@ checkRegion: function(dim, cells, shades, area) {
     return {status: "White area should be connected", errors: whiteAreaCoords};
   }
   if (!Checker.isAreaConnected(dim, greyAreaPositions)) {
-    return {status: "Grey area should be connected", errors: greyAreaCoords};
+    return {status: "Shaded area should be connected", errors: greyAreaCoords};
   }
   if (greyAreaCoords.length != whiteAreaCoords.length) {
-    return {status: "Areas of white cells and gray cells must have the same size.", errors: area};
+    return {status: "Areas of white cells and shaded cells must have the same shape", errors: area};
   }
   if (hintValue != 0 && greyAreaCoords.length != hintValue) {
-    return {status: "The number must be equal to the number of cells of each color in the region.", errors: area};
+    return {status: "The number must be equal to the number of cells of each color in a region", errors: area};
   }
   let whiteForm = Checker.findMinimalShape(whiteAreaPositions);
   let shadedForm = Checker.findMinimalShape(greyAreaPositions);
   if (Checker.compareShapes(whiteForm, shadedForm) != 0) {
-    return {status: "Areas of white cells and gray cells must have the same shape.", errors: area};
+    return {status: "Areas of white cells and gray cells must have the same shape", errors: area};
   }
   return {status: "OK"};
 },
