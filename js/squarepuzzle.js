@@ -1093,7 +1093,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     needNodes: false,
     needConnectors: true,
     cellController: cell => {
-      cell.dragProcessor = true;
+      if (!cell.isClue) {
+        cell.dragProcessor = true;
+      }
     },
     connectorController: connector => {
       setDragSwitch(connector, false, [{},{color: self.colorSchema.textColor, returnValue: 1}]);
@@ -1112,7 +1114,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     needNodes: false,
     needConnectors: true,
     cellController: cell => {
-      cell.dragProcessor = true;
+      if (!cell.isClue) {
+        cell.dragProcessor = true;
+      }
     },
     connectorController: connector => {
       setDragSwitch(connector, false, [{},{color: self.colorSchema.textColor, returnValue: 1}]);
