@@ -56,7 +56,8 @@ router.get('/:puzzleid', async (req, res, next) => {
     puzzleObj.showComments = solvedByCurrent || puzzle.author.equals(userId) || !puzzleObj.needLogging;
     res.render('single', {
       user: req.user,
-      puzzle: puzzleObj
+      puzzle: puzzleObj,
+      autoStart: req.query.start=='true'
     });
     profiler.log('singlePuzzle', processStart);
   } catch (e) {

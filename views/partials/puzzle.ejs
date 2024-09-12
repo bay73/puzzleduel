@@ -125,7 +125,7 @@
 <script src="/js/locale_<%= getLocale() %>.js"></script>
 <script src="/js/puzzle_figures.js"></script>
 <script>
-  function show<%= (typeof prefix != undefined)?prefix+'Puzzle':'Puzzle' %>() {
+  function show<%= (typeof prefix != undefined)?prefix+'Puzzle':'Puzzle' %>(autoStart) {
     var controls = "#<%= (typeof prefix != undefined)?prefix+'Controls':'puzzleControls' %>";
     var puzzleData = {
       typeCode: "<%= puzzle.type.code %>",
@@ -140,6 +140,9 @@
       <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %> = new <%= puzzle.type.puzzleObj %>(puzzleData, controls, settings);
       <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %>.figures = figures;
       <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %>.render(Snap(grid));
+      if (autoStart) {
+        <%= (typeof prefix != undefined)?prefix+'Puzzle':'puzzle' %>.start();
+      }
     });
 
   }
