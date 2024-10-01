@@ -467,7 +467,10 @@
 	"This loop is not a rectangle": "This loop is not a rectangle",
 	"Rectangles should be a closed loop": "Rectangles should be a closed loop",
 	"Save to File": "Save to File",
-    "All numbers in a region must be equal": "All numbers in a region must be equal",
-    "The number must be equal to the number of cells of each color in a region": "The number must be equal to the number of cells of each color in a region",
-    "Areas of white cells and shaded cells must have the same shape": "Areas of white cells and shaded cells in the region must have the same shape"
+	"All numbers in a region must be equal": "All numbers in a region must be equal",
+	"The number must be equal to the number of cells of each color in a region": "The number must be equal to the number of cells of each color in a region",
+	"Areas of white cells and shaded cells must have the same shape": "Areas of white cells and shaded cells in the region must have the same shape",
+	"All digits should be at most once in every area": "All digits should be at most once in every area",
+	"All digits should be at most once in every row": "All digits should be at most once in every row",
+	"All digits should be at most once in every column": "All digits should be at most once in every column"
 }

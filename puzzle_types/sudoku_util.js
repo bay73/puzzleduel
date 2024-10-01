@@ -73,21 +73,21 @@ checkAreaMagic: function(cells, colors, areas) {
   }
   return {status: "OK"};
 },
-checkOnceInRectangle: function(cells, xFrom, xTo, yFrom, yTo, colors) {
+checkOnceInRectangle: function(cells, xFrom, xTo, yFrom, yTo, colors, allowMissing) {
   var positionsToCheck = [];
   for (var x = xFrom; x < xTo; x++) {
     for (var y = yFrom; y < yTo; y++) {
       positionsToCheck.push({x:x, y:y});
     }
   }
-  return util.checkOnceInList(cells, positionsToCheck, colors);
+  return util.checkOnceInList(cells, positionsToCheck, colors, allowMissing);
 },
-checkOnceInArea: function(cells, area, colors) {
+checkOnceInArea: function(cells, area, colors, allowMissing) {
   var positionsToCheck = [];
   for (var a=0;a<area.length;a++) {
     positionsToCheck.push(util.parseCoord(area[a]));
   }
-  return util.checkOnceInList(cells, positionsToCheck, colors);
+  return util.checkOnceInList(cells, positionsToCheck, colors, allowMissing);
 }
 };
 

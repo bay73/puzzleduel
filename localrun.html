@@ -132,39 +132,57 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "double_choco",
+      typeCode: "sudoku_blackout",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "9x9"
 
     };
     var settings = {
       local: true,
       data: {
-    "a1": "grey",
-    "b1": "grey",
-    "d1": "grey",
-    "a2": "grey",
-    "c2": "grey3",
-    "e2": "grey",
-    "b3": "grey",
-    "c3": "grey",
-    "e3": "grey",
-    "f3": "grey",
-    "b4": "grey",
-    "d4": "grey",
-    "e4": "grey",
-    "f4": "grey",
-    "a5": "grey",
-    "b5": "grey",
-    "e5": "grey",
-    "f6": "grey",
+    "a1": "8",
+    "b1": "black",
+    "d1": "5",
+    "g1": "7",
+    "c2": "3",
+    "e2": "black",
+    "f2": "6",
+    "i2": "5",
+    "b3": "5",
+    "e3": "8",
+    "g3": "black",
+    "h3": "9",
+    "a4": "4",
+    "c4": "black",
+    "d4": "7",
+    "g4": "8",
+    "c5": "6",
+    "f5": "4",
+    "h5": "black",
+    "i5": "2",
+    "b6": "8",
+    "e6": "1",
+    "f6": "black",
+    "h6": "4",
+    "a7": "1",
+    "d7": "9",
+    "g7": "2",
+    "i7": "black",
+    "c8": "9",
+    "d8": "black",
+    "f8": "7",
+    "i8": "8",
+    "a9": "black",
+    "b9": "6",
+    "e9": "4",
+    "h9": "3",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new fillominoPuzzleType(puzzleData, controls, settings);
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

@@ -125,14 +125,14 @@ const Util = {
     return null;
   },
 
-  checkOnceInRows: function(cells, colors) {
+  checkOnceInRows: function(cells, colors, allowMissing) {
     // Returns list of cells in row which is wring.
     for (var y = 0; y < cells.rows; y++) {
       var positionsToCheck = [];
       for (var x = 0; x < cells.cols; x++) {
         positionsToCheck.push({x:x, y:y});
       }
-      var result = Util.checkOnceInList(cells, positionsToCheck, colors);
+      var result = Util.checkOnceInList(cells, positionsToCheck, colors, allowMissing);
       if (result) {
         return result;
       }
@@ -140,14 +140,14 @@ const Util = {
     return null;
   },
 
-  checkOnceInColumns: function(cells, colors) {
+  checkOnceInColumns: function(cells, colors, allowMissing) {
     // Returns list of cells in column which is wring.
     for (var x = 0; x < cells.cols; x++) {
       var positionsToCheck = [];
       for (var y = 0; y < cells.rows; y++) {
         positionsToCheck.push({x:x, y:y});
       }
-      var result = Util.checkOnceInList(cells, positionsToCheck, colors);
+      var result = Util.checkOnceInList(cells, positionsToCheck, colors, allowMissing);
       if (result) {
         return result;
       }
@@ -155,7 +155,7 @@ const Util = {
     return null;
   },
 
-  checkOnceInList: function(cells, positionsToCheck, colorsToCheck) {
+  checkOnceInList: function(cells, positionsToCheck, colorsToCheck, allowMissing) {
     // Returns list of cells if something is wrong
     // or null if everything is Ok
     var colorsPresent = [];
@@ -173,9 +173,12 @@ const Util = {
       }
     }
     var all = true;
-    for (var i=0;i<colorsToCheck.length;i++) {
-      if (!colorsPresent.includes(colorsToCheck[i])) {
-        all = false;
+    if (allowMissing) {
+    } else {
+      for (var i=0;i<colorsToCheck.length;i++) {
+        if (!colorsPresent.includes(colorsToCheck[i])) {
+          all = false;
+        }
       }
     }
     if (!all || repeat) {

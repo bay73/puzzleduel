@@ -53,17 +53,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "double_choco",
+      typeCode: "sudoku_blackout",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "9x9"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["areapuzzle"], function() {
-      puzzle = new fillominoPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

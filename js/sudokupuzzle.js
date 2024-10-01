@@ -159,6 +159,22 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["sudoku_blackout"] = {
+    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
+    cellEditController: cell => {
+      setNumberChooser(cell, 1, self.rows)
+      cell.chooserValues.push({color: self.colorSchema.gridColor, returnValue: "black"});
+    },
+    decodeClue: value => {
+      if (value=="black") {
+        return {color: self.colorSchema.gridColor};
+      } else {
+        return {text: value};
+      }
+    },
+    cellMultiPencil: true,
+  }
+
   typeProperties["sudoku_consecutive"] = {
     cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
     cellEditController: cell => setNumberChooser(cell, 1, self.rows),

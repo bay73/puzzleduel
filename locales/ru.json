@@ -470,7 +470,10 @@
 	"Intersection with overlapping is not allowed": "Пересечение с перекрытием не допускается",
 	"This loop is not a rectangle": "Этот цикл не является прямоугольником",
 	"Save to File": "В файл",
-    "All numbers in a region must be equal": "Все числа в области должны быть равны",
-    "The number must be equal to the number of cells of each color in a region": "Число должно быть равно числу клеток одного цвета в области",
-    "Areas of white cells and shaded cells must have the same shape": "Формы белой и закрашеной частей в области должны быть одинаковы"
+	"All numbers in a region must be equal": "Все числа в области должны быть равны",
+	"The number must be equal to the number of cells of each color in a region": "Число должно быть равно числу клеток одного цвета в области",
+	"Areas of white cells and shaded cells must have the same shape": "Формы белой и закрашеной частей в области должны быть одинаковы",
+	"All digits should be at most once in every area": "Цифры не должны повторяться в области",
+	"All digits should be at most once in every row": "Цифры не должны повторяться в ряду",
+	"All digits should be at most once in every column": "Цифры не должны повторяться в столбце"
 }
