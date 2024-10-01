@@ -469,5 +469,5 @@
 	"Save to File": "Save to File",
     "All numbers in a region must be equal": "All numbers in a region must be equal",
     "The number must be equal to the number of cells of each color in a region": "The number must be equal to the number of cells of each color in a region",
-    "Areas of white cells and shaded cells must have the same shape": "Areas of white cells and shaded cells must have the same shape"
+    "Areas of white cells and shaded cells must have the same shape": "Areas of white cells and shaded cells in the region must have the same shape"
 }

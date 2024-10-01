@@ -472,5 +472,5 @@
 	"Save to File": "В файл",
     "All numbers in a region must be equal": "Все числа в области должны быть равны",
     "The number must be equal to the number of cells of each color in a region": "Число должно быть равно числу клеток одного цвета в области",
-    "Areas of white cells and shaded cells must have the same shape": "Формы белой и закрашеной частей должны быть одинаковы"
+    "Areas of white cells and shaded cells must have the same shape": "Формы белой и закрашеной частей в области должны быть одинаковы"
 }

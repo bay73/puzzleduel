@@ -30,7 +30,11 @@ check:function(dimension, clues, data){
       }
     }
   }
-  let res = Checker.checkRegions(dim, cells, shades, areas);
+  let res = Checker.checkAllUsed(dim, areas);
+  if (res.status != "OK") {
+    return res;
+  }
+  res = Checker.checkRegions(dim, cells, shades, areas);
   if (res.status != "OK") {
     return res;
   }
@@ -87,7 +91,7 @@ checkRegion: function(dim, cells, shades, area) {
   let whiteForm = Checker.findMinimalShape(whiteAreaPositions);
   let shadedForm = Checker.findMinimalShape(greyAreaPositions);
   if (Checker.compareShapes(whiteForm, shadedForm) != 0) {
-    return {status: "Areas of white cells and gray cells must have the same shape", errors: area};
+    return {status: "Areas of white cells and shaded cells must have the same shape", errors: area};
   }
   return {status: "OK"};
 },
@@ -165,6 +169,27 @@ paintAreaRecursively: function(board, position) {
   }
   return paintedCount;
 },
+checkAllUsed: function(dim, areas) {
+  var used = util.create2DArray(dim.rows, dim.cols, false);
+  for (var a=0; a<areas.length; a++) {
+    var area = areas[a];
+    for (var i=0;i<area.length;i++) {
+      var pos = util.parseCoord(area[i]);
+      if (used[pos.y][pos.x]) {
+        return {status: "Each cell should belong to exactly one area", errors: area[i]};
+      }
+      used[pos.y][pos.x] = true;
+    }
+  }
+  for (var y = 0; y < dim.rows; y++) {
+    for (var x = 0; x < dim.cols; x++) {
+      if (!used[y][x]) {
+        return {status: "Each cell should belong to exactly one area", errors: util.coord(x, y)};
+      }
+    }
+  }
+  return {status: "OK"};
+}
 };
 
 module.exports = Checker;
