@@ -44,6 +44,21 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="sudoku_numbered_rooms") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else if (typeCode=="sudoku_odd_even_big_small") {
     var maxValue = this.rows;
     this.typeProperties = decribePuzzleType()

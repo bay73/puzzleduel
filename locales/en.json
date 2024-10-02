@@ -474,5 +474,7 @@
 	"Areas of white cells and shaded cells must have the same shape": "Areas of white cells and shaded cells in the region must have the same shape",
 	"All digits should be at most once in every area": "All digits should be at most once in every area",
 	"All digits should be at most once in every row": "All digits should be at most once in every row",
-	"All digits should be at most once in every column": "All digits should be at most once in every column"
+	"All digits should be at most once in every column": "All digits should be at most once in every column",
+	"The column clue is not correct": "The column clue is not correct",
+	"The row clue is not correct": "The row clue is not correct"
 }

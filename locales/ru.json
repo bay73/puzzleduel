@@ -475,5 +475,7 @@
 	"Areas of white cells and shaded cells must have the same shape": "Формы белой и закрашеной частей в области должны быть одинаковы",
 	"All digits should be at most once in every area": "Цифры не должны повторяться в области",
 	"All digits should be at most once in every row": "Цифры не должны повторяться в ряду",
-	"All digits should be at most once in every column": "Цифры не должны повторяться в столбце"
+	"All digits should be at most once in every column": "Цифры не должны повторяться в столбце",
+	"The column clue is not correct": "Задающее число в столбце неверно",
+	"The row clue is not correct": "Задающее число в ряду неверно"
 }
