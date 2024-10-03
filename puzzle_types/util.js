@@ -91,6 +91,11 @@ const Util = {
     return filled;
   },
 
+  firstConnected: function(cells, colors) {
+    let first = ConnectedChecker.findFirst(cells, colors);
+    return Util.findConnected(cells, first, colors);
+  },
+
   fillConnected: function(cells, first, colors, result) {
     // Mark cells which of given colors are orthogonally connected in result array.
     ConnectedChecker.fill(cells, result, first, colors);

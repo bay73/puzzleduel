@@ -428,8 +428,13 @@ ControllerBuilder.prototype.addNumbers = function(start, end, color, image, subm
     }
     var itemData = {text: i.toString()};
     if (typeof color != "undefined") {
-      itemData.color = color.color;
-      itemData.textColor = color.textColor;
+      if (typeof color === "function") {
+        itemData.color = color(i).color;
+        itemData.textColor = color(i).textColor;
+      } else {
+        itemData.color = color.color;
+        itemData.textColor = color.textColor;
+      }
     }
     if (typeof submitAs === 'function') {
       itemData.returnValue = submitAs(i);

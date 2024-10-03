@@ -86,6 +86,22 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addNumbers(1, maxValue))
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
+  } else if ( typeCode == "sudoku_citywalk") {
+    let paint2to7 = function(n) {
+      if (n>=3&&n<=7) {
+        return {color: self.colorSchema.lightGreyColor}
+      } else {
+        return {}
+      }
+    }
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue, paint2to7))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue, paint2to7))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
 /*
   } else if (typeCode=="sudoku_square_number") {
     var maxValue = this.rows;

@@ -477,5 +477,6 @@
 	"All digits should be at most once in every row": "Цифры не должны повторяться в ряду",
 	"All digits should be at most once in every column": "Цифры не должны повторяться в столбце",
 	"The column clue is not correct": "Задающее число в столбце неверно",
-	"The row clue is not correct": "Задающее число в ряду неверно"
+	"The row clue is not correct": "Задающее число в ряду неверно",
+	"Cells with digits 3,4,5,6,7 should form single connected area": "Ячейки содержащие цифры 3,4,5,6,7 должны образовывать одну связную область"
 }
