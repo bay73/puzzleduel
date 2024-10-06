@@ -11,13 +11,19 @@ const ConnectedChecker = {
     return null;
   },
 
-  fill: function(cells, filled, position, colors){
+  fill: function(cells, filled, position, colors, diagonalConnection){
     if (!filled[position.y][position.x] && colors.includes(cells[position.y][position.x])) {
       filled[position.y][position.x] = true;
-      if (position.y > 0) this.fill(cells, filled, {x: position.x, y:position.y - 1}, colors);
-      if (position.x > 0) this.fill(cells, filled, {x: position.x - 1, y:position.y}, colors);
-      if (position.y + 1 < cells.rows) this.fill(cells, filled, {x: position.x, y:position.y + 1}, colors);
-      if (position.x + 1 < cells.cols) this.fill(cells, filled, {x: position.x + 1, y:position.y}, colors);
+      if (position.y > 0) this.fill(cells, filled, {x: position.x, y:position.y - 1}, colors, diagonalConnection);
+      if (position.x > 0) this.fill(cells, filled, {x: position.x - 1, y:position.y}, colors, diagonalConnection);
+      if (position.y + 1 < cells.rows) this.fill(cells, filled, {x: position.x, y:position.y + 1}, colors, diagonalConnection);
+      if (position.x + 1 < cells.cols) this.fill(cells, filled, {x: position.x + 1, y:position.y}, colors, diagonalConnection);
+      if (diagonalConnection) {
+        if (position.y > 0 && position.x > 0) this.fill(cells, filled, {x: position.x - 1, y:position.y - 1}, colors, diagonalConnection);
+        if (position.y > 0 && position.x + 1 < cells.cols) this.fill(cells, filled, {x: position.x + 1, y:position.y - 1}, colors, diagonalConnection);
+        if (position.y + 1 < cells.rows && position.x > 0) this.fill(cells, filled, {x: position.x - 1, y:position.y + 1}, colors, diagonalConnection);
+        if (position.y + 1 < cells.rows && position.x + 1 < cells.cols) this.fill(cells, filled, {x: position.x + 1, y:position.y + 1}, colors, diagonalConnection);
+      }
     }
   },
 
@@ -70,13 +76,13 @@ const Util = {
     return String.fromCharCode('a'.charCodeAt(0) + x) + (y+1).toString();
   },
 
-  checkConnected: function(cells, colors) {
+  checkConnected: function(cells, colors, diagonalConnection) {
     // Returns true if all cells of one color are orthogonally connected.
     // Returns false if not.
     var first = ConnectedChecker.findFirst(cells, colors);
     if(first) {
       var filled = Util.create2DArray(cells.rows, cells.cols, false)
-      ConnectedChecker.fill(cells, filled, first, colors);
+      ConnectedChecker.fill(cells, filled, first, colors, diagonalConnection);
       if (!ConnectedChecker.checkAllFilled(cells, filled, colors)) {
         return false;
       }
@@ -84,21 +90,56 @@ const Util = {
     return true;
   },
 
-  findConnected: function(cells, first, colors) {
+  findConnected: function(cells, first, colors, diagonalConnection) {
     // Returns list of cells which of given colors are orthogonally connected.
     var filled = Util.create2DArray(cells.rows, cells.cols, false)
-    ConnectedChecker.fill(cells, filled, first, colors);
+    ConnectedChecker.fill(cells, filled, first, colors, diagonalConnection);
     return filled;
   },
 
-  firstConnected: function(cells, colors) {
+  firstConnected: function(cells, colors, diagonalConnection) {
     let first = ConnectedChecker.findFirst(cells, colors);
-    return Util.findConnected(cells, first, colors);
+    if (first) {
+      return Util.findConnected(cells, first, colors, diagonalConnection);
+    } else {
+      return null;
+    }
   },
 
   fillConnected: function(cells, first, colors, result) {
     // Mark cells which of given colors are orthogonally connected in result array.
-    ConnectedChecker.fill(cells, result, first, colors);
+    ConnectedChecker.fill(cells, result, first, colors, diagonalConnection);
+  },
+
+  getConnectedAreas: function(cells, colors, diagonalConnection) {
+    let map = Util.create2DArray(cells.rows, cells.cols, "")
+    let areas = [];
+    for (let y = 0; y < cells.rows; y++) {
+      for (let x = 0; x < cells.cols; x++) {
+        if (colors.includes(cells[y][x])){
+          map[y][x]="0";
+        };
+      }
+    }
+    let i = 1;
+    while (true) {
+      let next = Util.firstConnected(map, ["0"], diagonalConnection);
+      if (!next) {
+        break;
+      }
+      let nextArea = []
+      for (var y = 0; y < cells.rows; y++) {
+        for (var x = 0; x < cells.cols; x++) {
+          if (next[y][x]){
+            map[y][x]=i.toString();
+            nextArea.push({x: x, y: y});
+          };
+        }
+      }
+      areas.push(nextArea);
+      i++;
+    }
+    return areas;
   },
 
   findWrongValue: function(cells, goodValues) {

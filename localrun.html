@@ -132,48 +132,25 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "sudoku_citywalk",
+      typeCode: "aquapelago",
       id: "puzzle.code",
-      dimension: "9x9"
+      dimension: "7x7"
 
     };
     var settings = {
       local: true,
       data: {
-    "a1": "4",
-    "d1": "7",
-    "g1": "1",
-    "b2": "7",
-    "e2": "6",
-    "h2": "4",
-    "c3": "3",
-    "f3": "1",
-    "i3": "6",
-    "c4": "5",
-    "f4": "4",
-    "i4": "7",
-    "b5": "4",
-    "e5": "2",
-    "h5": "1",
-    "a6": "3",
-    "d6": "6",
-    "g6": "4",
-    "a7": "7",
-    "d7": "5",
-    "g7": "8",
-    "b8": "1",
-    "e8": "7",
-    "h8": "9",
-    "c9": "2",
-    "f9": "6",
-    "i9": "4",
+    "a1": "grey",
+    "e1": "3",
+    "g3": "grey",
+    "b6": "4",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

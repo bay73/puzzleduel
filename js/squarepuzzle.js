@@ -103,6 +103,20 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().clue().copy())
       .build(this);
 
+  } else if (typeCode=="aquapelago") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.GREY)
+        .addNumbers(1,99,StdColor.GREY))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().copyPaste((data, elementData) => {
+         if (data.image=="cross") return data;
+         else return Object.assign({}, {color: data.color==self.colorSchema.gridColor?self.colorSchema.greyColor:data.color} )
+      }))
+      .build(this);
+
   } else if (typeCode=="snake_scope") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()

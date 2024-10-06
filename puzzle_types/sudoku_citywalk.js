@@ -54,10 +54,12 @@ check:function(dimension, clues, data){
 connectedGoodCells: function(cells, goodColors) {
   let filedFirst = util.firstConnected(cells, goodColors);
   let goodCells = [];
-  for (var y = 0; y < filedFirst.rows; y++) {
-    for (var x = 0; x < filedFirst.cols; x++) {
-      if (filedFirst[y][x]){
-        goodCells.push(util.coord(x, y))
+  if (filedFirst) {
+    for (var y = 0; y < filedFirst.rows; y++) {
+      for (var x = 0; x < filedFirst.cols; x++) {
+        if (filedFirst[y][x]){
+          goodCells.push(util.coord(x, y))
+        }
       }
     }
   }
