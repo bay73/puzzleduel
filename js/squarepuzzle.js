@@ -1103,6 +1103,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     decodeClue: value => {return {image: value} },
   }
 
+  typeProperties["kuroshiro"] = {
+    needConnectors: true,
+    cellController: cell => {
+      cell.dragProcessor = true;
+    },
+    connectorController: connector => {
+      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
+    },
+    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"}, {image: "black_circle", returnValue: "black_circle"}];},
+    decodeClue: value => {return {image: value} },
+  }
+
   typeProperties["simple_loop"] = {
     needNodes: false,
     needConnectors: true,

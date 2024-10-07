@@ -475,5 +475,7 @@
 	"All digits should be at most once in every column": "All digits should be at most once in every column",
 	"The column clue is not correct": "The column clue is not correct",
 	"The row clue is not correct": "The row clue is not correct",
-	"Cells with digits 3,4,5,6,7 should form single connected area": "Cells with digits 3,4,5,6,7 should form single connected area"
+	"Cells with digits 3,4,5,6,7 should form single connected area": "Cells with digits 3,4,5,6,7 should form single connected area",
+	"Loop should turn exactly once between the white and black circles": "Loop should turn exactly once between the white and black circles",
+	"Loop should not turn between the circles of the same color": "Loop should not turn between the circles of the same color"
 }

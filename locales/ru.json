@@ -478,5 +478,7 @@
 	"All digits should be at most once in every column": "Цифры не должны повторяться в столбце",
 	"The column clue is not correct": "Задающее число в столбце неверно",
 	"The row clue is not correct": "Задающее число в ряду неверно",
-	"Cells with digits 3,4,5,6,7 should form single connected area": "Ячейки содержащие цифры 3,4,5,6,7 должны образовывать одну связную область"
+	"Cells with digits 3,4,5,6,7 should form single connected area": "Ячейки содержащие цифры 3,4,5,6,7 должны образовывать одну связную область",
+	"Loop should turn exactly once between the white and black circles": "Между двумя кружками разного цвета цикл должен делать ровно один поворот",
+	"Loop should not turn between the circles of the same color": "Между двумя кружками одного цвета цикл не должен поворачивать"
 }
