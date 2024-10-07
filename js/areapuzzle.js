@@ -241,44 +241,34 @@ fillominoPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, a
 }
 
 doubleChocoPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
-  if (area1Coordinates.length > 1 && area2Coordinates.length > 1 && area1Coordinates.length + area2Coordinates.length > this.maxAreaSize) {
-    return true;
+  if (area1Coordinates.length <= 1 || area2Coordinates.length <= 1) {
+    return false;
   }
   var self = this;
-  function getDigits(areaCoordinates) {
-    var digits = [];
+  function getColorCount(areaCoordinates, isGrey) {
+    var colorCount = 0;
     for (let i=0; i < areaCoordinates.length; i++) {
       let coord = self.decodeCoordinate(areaCoordinates[i]);
       if (self.cells[coord.y] && self.cells[coord.y][coord.x]) {
-        let value = self.cells[coord.y][coord.x].data.text;
-        if (value && !digits.includes(value)) {
-          digits.push(value)
+        let value = self.cells[coord.y][coord.x].data.color;
+        if (isGrey && value==self.colorSchema.lightGreyColor) {
+          colorCount++;
+        }
+        if (!isGrey && value!=self.colorSchema.lightGreyColor) {
+          colorCount++;
         }
       }
     }
-    return digits;
+    return colorCount;
   }
-  function hasDifferent(setOne, setTwo) {
-    if (setOne.length == 0 || setTwo.length == 0) {
-      return false;
-    }
-    for (let i=0; i<setOne.length; i++) {
-      if (!setTwo.includes(setOne[i])) {
-        return true;
-      }
-    }
+  const grey1Count = getColorCount(area1Coordinates, true)
+  const grey2Count = getColorCount(area2Coordinates, true)
+  const white1Count = getColorCount(area1Coordinates, false)
+  const white2Count = getColorCount(area2Coordinates, false)
+  if ((grey1Count==0 || grey2Count==0) && (white1Count==0 || white2Count==0)) {
     return false;
   }
-  if (hasDifferent(getDigits(area1Coordinates), getDigits(area2Coordinates))) {
-    return true;
-  }
-  if (area1Coordinates.length > 1 && getDigits(area2Coordinates).includes('1')) {
-    return true;
-  }
-  if (area2Coordinates.length > 1 && getDigits(area1Coordinates).includes('1')) {
-    return true;
-  }
-  return false;
+  return true;
 }
 
 // If areas of any size contains more than two digits, then put edge
