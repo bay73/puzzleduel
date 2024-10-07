@@ -25,6 +25,12 @@ fillominoPuzzleType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(fillominoPuzzleType.prototype, areaPuzzleType.prototype);
 
+doubleChocoPuzzleType = function(puzzleData, controls, settings) {
+  areaPuzzleType.call(this, puzzleData, controls, settings);
+}
+
+Object.setPrototypeOf(doubleChocoPuzzleType.prototype, areaPuzzleType.prototype);
+
 arafPuzzleType = function(puzzleData, controls, settings) {
   this.maxAreaSize = 100;
   areaPuzzleType.call(this, puzzleData, controls, settings);
@@ -194,6 +200,47 @@ galaxiesType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coo
 
 // If areas of any size contains different digits, then put edge
 fillominoPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
+  if (area1Coordinates.length > 1 && area2Coordinates.length > 1 && area1Coordinates.length + area2Coordinates.length > this.maxAreaSize) {
+    return true;
+  }
+  var self = this;
+  function getDigits(areaCoordinates) {
+    var digits = [];
+    for (let i=0; i < areaCoordinates.length; i++) {
+      let coord = self.decodeCoordinate(areaCoordinates[i]);
+      if (self.cells[coord.y] && self.cells[coord.y][coord.x]) {
+        let value = self.cells[coord.y][coord.x].data.text;
+        if (value && !digits.includes(value)) {
+          digits.push(value)
+        }
+      }
+    }
+    return digits;
+  }
+  function hasDifferent(setOne, setTwo) {
+    if (setOne.length == 0 || setTwo.length == 0) {
+      return false;
+    }
+    for (let i=0; i<setOne.length; i++) {
+      if (!setTwo.includes(setOne[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+  if (hasDifferent(getDigits(area1Coordinates), getDigits(area2Coordinates))) {
+    return true;
+  }
+  if (area1Coordinates.length > 1 && getDigits(area2Coordinates).includes('1')) {
+    return true;
+  }
+  if (area2Coordinates.length > 1 && getDigits(area1Coordinates).includes('1')) {
+    return true;
+  }
+  return false;
+}
+
+doubleChocoPuzzleType.prototype.needEdgeBetwenAreas = function(area1Coordinates, area2Coordinates) {
   if (area1Coordinates.length > 1 && area2Coordinates.length > 1 && area1Coordinates.length + area2Coordinates.length > this.maxAreaSize) {
     return true;
   }
@@ -545,8 +592,12 @@ fillominoPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.asAreaConnector()))
       .build(this);
+  }
+}
 
-  } else if (typeCode =="double_choco") {
+doubleChocoPuzzleType.prototype.setTypeProperties = function(typeCode) {
+  var self = this;
+  if (typeCode =="double_choco") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addItem(StdItem.LIGHT_GREY)
