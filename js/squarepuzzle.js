@@ -141,8 +141,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue(StdItem.CROSS).clickSwitch()
         .addItem(StdItem.GREY.submitAs("1"))
         .addItem(StdItem.CROSS.doNotSubmit()))
-      .add(controller().forSolver().cell().clue().copy())
-      .add(controller().forSolver().cell().noClue().copyPaste((data) => {return {image: data.image, color: data.color};}))
+      .add(controller().forSolver().cell()
+        .copyPaste((data, elementData) => Object.assign({}, elementData, {image: data.image, color: data.color} )))
      .build(this);
 
   } else if (typeCode=="aqre") {
