@@ -106,7 +106,7 @@ const Util = {
     }
   },
 
-  fillConnected: function(cells, first, colors, result) {
+  fillConnected: function(cells, first, colors, result, diagonalConnection) {
     // Mark cells which of given colors are orthogonally connected in result array.
     ConnectedChecker.fill(cells, result, first, colors, diagonalConnection);
   },
