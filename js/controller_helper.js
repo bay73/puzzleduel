@@ -510,15 +510,15 @@ ControllerBuilder.prototype.build = function(){
         if (gridElement != start) {
           if (typeof self.pasteFn == 'function') {
             if (gridElement.puzzle.pencilMarkMode) {
-              gridElement.setPencilData(start.pencilData);
+              gridElement.setPencilData(start.pencilData, false);
             } else {
-              gridElement.switchToData(self.pasteFn(start.data, gridElement.data));
+              gridElement.switchToData(self.pasteFn(start.data, gridElement.data), false);
             }
           } else {
             if (gridElement.puzzle.pencilMarkMode) {
-              gridElement.setPencilData(start.pencilData);
+              gridElement.setPencilData(start.pencilData, false);
             } else {
-              gridElement.switchToData(start.data);
+              gridElement.switchToData(start.data, false);
             }
           }
           return gridElement;

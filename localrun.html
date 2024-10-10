@@ -132,40 +132,41 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "kuroshiro",
+      typeCode: "kaitoramma",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "7x7"
 
     };
     var settings = {
       local: true,
       data: {
-    "f1": "white_circle",
+    "a1": "white_circle",
+    "c1": "black_circle",
+    "b2": "black_circle",
     "d2": "black_circle",
-    "e2": "black_circle",
-    "f2": "black_circle",
-    "a3": "white_circle",
-    "f3": "black_circle",
-    "g3": "black_circle",
+    "f2": "white_circle",
+    "g2": "white_circle",
+    "c3": "black_circle",
+    "e3": "white_circle",
+    "g3": "white_circle",
     "a4": "black_circle",
-    "d4": "black_circle",
-    "e4": "black_circle",
-    "f5": "white_circle",
-    "g5": "black_circle",
-    "a6": "white_circle",
+    "d4": "white_circle",
+    "f4": "black_circle",
+    "b5": "black_circle",
+    "d5": "white_circle",
+    "a6": "black_circle",
+    "b6": "black_circle",
+    "e6": "black_circle",
+    "f6": "white_circle",
     "c7": "white_circle",
-    "d7": "black_circle",
-    "h7": "black_circle",
-    "b8": "black_circle",
-    "d8": "black_circle",
-    "g8": "white_circle",
+    "g7": "black_circle",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
     requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+      puzzle = new krammaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

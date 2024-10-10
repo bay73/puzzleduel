@@ -39,33 +39,39 @@ gridElement.prototype.setClue = function(clueData) {
   this.redraw();
 }
 
-gridElement.prototype.revertTo = function(oldData, oldPencilData) {
+gridElement.prototype.revertTo = function(oldData, oldPencilData, noLogging) {
   this.data = oldData;
   this.pencilData = oldPencilData;
-  var coord = this.getLogCoordinates();
-  let logItem = this.dataToLog(oldData);
-  logItem.a = "revert";
-  this.puzzle.logStep(coord, logItem);
+  if (noLogging) {
+  } else {
+    var coord = this.getLogCoordinates();
+    let logItem = this.dataToLog(oldData);
+    logItem.a = "revert";
+    this.puzzle.logStep(coord, logItem);
+  }
   this.redraw();
 }
 
-gridElement.prototype.switchToData = function(data) {
+gridElement.prototype.switchToData = function(data, noLogging) {
   var oldData = Object.assign({}, this.data);
-  if (this.hasMultiPencil()) {
-    var oldPencilData = [];
-    if (this.pencilData) {
-      for (var i=0; i<this.pencilData.length; i++){
-        oldPencilData.push(Object.assign({}, this.pencilData[i]));
-      }
-    }
+  if (noLogging==true) {
   } else {
-    var oldPencilData = Object.assign({}, this.pencilData);
+    if (this.hasMultiPencil()) {
+      var oldPencilData = [];
+      if (this.pencilData) {
+        for (var i=0; i<this.pencilData.length; i++){
+          oldPencilData.push(Object.assign({}, this.pencilData[i]));
+        }
+      }
+    } else {
+      var oldPencilData = Object.assign({}, this.pencilData);
+    }
+    var self = this;
+    var coord = this.getLogCoordinates();
+    this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData, false));
+    this.puzzle.logStep(coord, this.dataToLog(data))
   }
-  var self = this;
-  var coord = this.getLogCoordinates();
-  this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData));
   this.data = Object.assign({text: null, image: null, color: null, textColor: null}, data);
-  this.puzzle.logStep(coord, this.dataToLog(data))
   if (!data.keepPencil) {
     this.pencilData = null;
   }
@@ -125,11 +131,11 @@ gridElement.prototype.applyLogData = function(logData) {
     this.pencilData = data;
     this.redraw();
   } else {
-    this.switchToData(decodeLogData(logData));
+    this.switchToData(decodeLogData(logData), true);
   }
 }
 
-gridElement.prototype.setPencilData = function(data) {
+gridElement.prototype.setPencilData = function(data, noLogging) {
   var oldData = Object.assign({}, this.data);
   if (this.hasMultiPencil()) {
     var oldPencilData = [];
@@ -142,7 +148,7 @@ gridElement.prototype.setPencilData = function(data) {
     var oldPencilData = Object.assign({}, this.pencilData);
   }
   var self = this;
-  this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData));
+  this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData, false));
   if (this.hasMultiPencil()){
     if (!this.pencilData) {
       this.pencilData = [];
@@ -199,13 +205,13 @@ gridElement.prototype.processClick = function() {
   if (this.puzzle.pencilMarkMode) {
     if (this.pencilClickSwitch != null) {
       var currentIndex = this.findCurrentPencil(this.pencilClickSwitch);
-      this.setPencilData(this.pencilClickSwitch[(currentIndex + 1)%this.pencilClickSwitch.length]);
+      this.setPencilData(this.pencilClickSwitch[(currentIndex + 1)%this.pencilClickSwitch.length], false);
       return true;
     }
   } else {
     if (this.clickSwitch != null) {
       var currentIndex = this.findCurrent(this.clickSwitch);
-      this.switchToData(this.clickSwitch[(currentIndex + 1)%this.clickSwitch.length]);
+      this.switchToData(this.clickSwitch[(currentIndex + 1)%this.clickSwitch.length], false);
       return true;
     }
   }
@@ -217,12 +223,12 @@ gridElement.prototype.switchOnDrag = function() {
   if (this.puzzle.pencilMarkMode) {
     if (this.pencilDragSwitch != null) {
       var currentIndex = this.findCurrentPencil(this.pencilDragSwitch);
-      this.setPencilData(this.pencilDragSwitch[(currentIndex + 1)%this.pencilDragSwitch.length]);
+      this.setPencilData(this.pencilDragSwitch[(currentIndex + 1)%this.pencilDragSwitch.length], false);
     }
   } else {
     if (this.dragSwitch != null) {
       var currentIndex = this.findCurrent(this.dragSwitch);
-      this.switchToData(this.dragSwitch[(currentIndex + 1)%this.dragSwitch.length]);
+      this.switchToData(this.dragSwitch[(currentIndex + 1)%this.dragSwitch.length], false);
     }
   }  
   return null;
@@ -238,9 +244,9 @@ gridElement.prototype.switchOnChooser = function(index) {
       }
     }
     if (this.puzzle.pencilMarkMode) {
-      this.setPencilData(this.chooserValues[index]);
+      this.setPencilData(this.chooserValues[index], false);
     } else {
-      this.switchToData(this.chooserValues[index]);
+      this.switchToData(this.chooserValues[index], false);
     }
   }
   return null;

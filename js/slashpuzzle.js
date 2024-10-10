@@ -35,12 +35,12 @@ slashPuzzleType.prototype.setTypeProperties = function(typeCode) {
 squarePuzzleCell.prototype.switchToSlash = function(slashType) {
   if (this.clickSwitch) {
     if (this.getValue() == slashType) {
-      this.switchToData(this.clickSwitch[0]);
+      this.switchToData(this.clickSwitch[0], false);
       return true;
     } else {
       for (var i=0; i<this.clickSwitch.length; i++){
         if (this.clickSwitch[i].returnValue == slashType) {
-          this.switchToData(this.clickSwitch[i]);
+          this.switchToData(this.clickSwitch[i], false);
           return true;
         }
       }

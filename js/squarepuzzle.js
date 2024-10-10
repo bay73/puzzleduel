@@ -12,6 +12,12 @@ snailPuzzleType = function(puzzleData, controls, settings) {
 
 Object.setPrototypeOf(snailPuzzleType.prototype, squarePuzzleType.prototype);
 
+krammaPuzzleType = function(puzzleData, controls, settings) {
+  squarePuzzleType.call(this, puzzleData, controls, settings);
+}
+
+Object.setPrototypeOf(krammaPuzzleType.prototype, squarePuzzleType.prototype);
+
 squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
 
@@ -1529,6 +1535,84 @@ snailPuzzleType.prototype.drawBoard = function() {
     if (direction.x==0) lineLength--;
   }
 }
+
+krammaPuzzleType.prototype.setTypeProperties = function(typeCode) {
+  if (typeCode =="kaitoramma") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE)
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().edge().toAreas().drag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .build(this);
+  }
+}
+
+krammaPuzzleType.prototype.extendLine = function(edge) {
+  const side = edge.side;
+  const dataToSet = Object.assign({}, edge.data)
+  const pencilDataToSet = Object.assign({}, edge.pencilData)
+  if (side%2 == 0) {
+    // horizontal line
+    const row = edge.row;
+    for (let i=0;i<this.cols;i++) {
+      if (i!=edge.col) {
+        this.edges[row][i][side].switchToData(dataToSet, true);
+        this.edges[row][i][side].setPencilData(pencilDataToSet, true);
+      }
+    }
+  } else {
+    // vertical line
+    const col = edge.col;
+    for (let i=0;i<this.cols;i++) {
+      if (i!=edge.row) {
+        this.edges[i][col][side].switchToData(dataToSet, true);
+        this.edges[i][col][side].setPencilData(pencilDataToSet, true);
+      }
+    }
+  }
+}
+
+squarePuzzleEdge.prototype.revertTo = function(oldData, oldPencilData, noLogging) {
+  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData, noLogging);
+  if (this.puzzle instanceof krammaPuzzleType) {
+    if (!noLogging) {
+      this.puzzle.extendLine(this);
+    }
+  }
+}
+
+squarePuzzleEdge.prototype.switchToData = function(data, noLogging) {
+  squareGridElement.prototype.switchToData.call(this, data, noLogging);
+  if (this.puzzle instanceof krammaPuzzleType) {
+    if (!noLogging) {
+      this.puzzle.extendLine(this);
+    }
+  }
+}
+
+squarePuzzleEdge.prototype.setPencilData = function(data, noLogging) {
+  squareGridElement.prototype.setPencilData.call(this, data, noLogging);
+  if (this.puzzle instanceof krammaPuzzleType) {
+    if (!noLogging) {
+      this.puzzle.extendLine(this);
+    }
+  }
+}
+
+squarePuzzleNode.prototype.processDragMove = function(startElement) {
+  if (!this.processDragEnd(startElement)) {
+    return false;
+  }
+  if (this.puzzle instanceof krammaPuzzleType) {
+    return {stopDrag: true};
+  }
+  return {newMouseStartElement: this};
+}
+
 
 function setClickSwitch(element, withClues, clickSwitch, pencilClickSwitch) {
   if (element.isClue && !withClues) {

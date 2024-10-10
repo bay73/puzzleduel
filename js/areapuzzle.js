@@ -322,16 +322,16 @@ dominoType.prototype.addConnector = function(connector) {
   return;
 }
 
-squarePuzzleConnector.prototype.revertTo = function(oldData, oldPencilData) {
-  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData);
+squarePuzzleConnector.prototype.revertTo = function(oldData, oldPencilData, noLogging) {
+  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData, noLogging);
   if (!(this.puzzle instanceof areaPuzzleType)) {
     return;
   }
   this.puzzle.recountConnectorAreas();
 }
 
-squarePuzzleConnector.prototype.switchToData = function(data) {
-  squareGridElement.prototype.switchToData.call(this, data);
+squarePuzzleConnector.prototype.switchToData = function(data, noLogging) {
+  squareGridElement.prototype.switchToData.call(this, data, noLogging);
   if (!(this.puzzle instanceof areaPuzzleType)) {
     return;
   }
@@ -354,32 +354,32 @@ squarePuzzleConnector.prototype.switchToData = function(data) {
   this.puzzle.recountConnectorAreas();
 }
 
-squarePuzzleCell.prototype.revertTo = function(oldData, oldPencilData) {
-  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData);
+squarePuzzleCell.prototype.revertTo = function(oldData, oldPencilData, noLogging) {
+  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData, noLogging);
   if (!(this.puzzle instanceof fillominoPuzzleType)) {
     return;
   }
   this.puzzle.recountConnectorAreas();
 }
 
-squarePuzzleCell.prototype.switchToData = function(data) {
-  squareGridElement.prototype.switchToData.call(this, data);
+squarePuzzleCell.prototype.switchToData = function(data, noLogging) {
+  squareGridElement.prototype.switchToData.call(this, data, noLogging);
   if (!(this.puzzle instanceof fillominoPuzzleType)) {
     return;
   }
   this.puzzle.recountConnectorAreas();
 }
 
-squarePuzzleEdge.prototype.revertTo = function(oldData, oldPencilData) {
-  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData);
+squarePuzzleEdge.prototype.revertTo = function(oldData, oldPencilData, noLogging) {
+  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData, noLogging);
   if (!(this.puzzle instanceof areaPuzzleType)) {
     return;
   }
   this.puzzle.recountConnectorAreas();
 }
 
-squarePuzzleEdge.prototype.switchToData = function(data) {
-  squareGridElement.prototype.switchToData.call(this, data);
+squarePuzzleEdge.prototype.switchToData = function(data, noLogging) {
+  squareGridElement.prototype.switchToData.call(this, data, noLogging);
   if (!(this.puzzle instanceof areaPuzzleType)) {
     return;
   }

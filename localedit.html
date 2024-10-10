@@ -53,9 +53,9 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "kuroshiro",
+      typeCode: "kaitoramma",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "7x7"
     };
     var settings = {
       local: true,
@@ -63,7 +63,7 @@
     };
     settings.theme = "default";
     requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
+      puzzle = new krammaPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });
