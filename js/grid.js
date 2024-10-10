@@ -136,19 +136,22 @@ gridElement.prototype.applyLogData = function(logData) {
 }
 
 gridElement.prototype.setPencilData = function(data, noLogging) {
-  var oldData = Object.assign({}, this.data);
-  if (this.hasMultiPencil()) {
-    var oldPencilData = [];
-    if (this.pencilData) {
-      for (var i=0; i<this.pencilData.length; i++){
-        oldPencilData.push(Object.assign({}, this.pencilData[i]));
-      }
-    }
+  if (noLogging) {
   } else {
-    var oldPencilData = Object.assign({}, this.pencilData);
+    var oldData = Object.assign({}, this.data);
+    if (this.hasMultiPencil()) {
+      var oldPencilData = [];
+      if (this.pencilData) {
+        for (var i=0; i<this.pencilData.length; i++){
+          oldPencilData.push(Object.assign({}, this.pencilData[i]));
+        }
+      }
+    } else {
+      var oldPencilData = Object.assign({}, this.pencilData);
+    }
+    var self = this;
+    this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData, false));
   }
-  var self = this;
-  this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData, false));
   if (this.hasMultiPencil()){
     if (!this.pencilData) {
       this.pencilData = [];
@@ -166,8 +169,11 @@ gridElement.prototype.setPencilData = function(data, noLogging) {
   } else {
     this.pencilData = Object.assign({text: null, image: null, color: null, textColor: null}, data);
   }
-  let logItem = {a: "pencil", v: this.dataToLog(this.pencilData)};
-  this.puzzle.logStep(this.getLogCoordinates(), logItem);
+  if (noLogging) {
+  } else {
+    let logItem = {a: "pencil", v: this.dataToLog(this.pencilData)};
+    this.puzzle.logStep(this.getLogCoordinates(), logItem);
+  }
   this.redraw();
 }
 
