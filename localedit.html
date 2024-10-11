@@ -53,17 +53,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "kaitoramma",
+      typeCode: "double_choco_notouch",
       id: "puzzle.code",
-      dimension: "7x7"
+      dimension: "6x6"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new krammaPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new doubleChocoPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

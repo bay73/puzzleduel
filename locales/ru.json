@@ -481,7 +481,9 @@
 	"Cells with digits 3,4,5,6,7 should form single connected area": "Ячейки содержащие цифры 3,4,5,6,7 должны образовывать одну связную область",
 	"Loop should turn exactly once between the white and black circles": "Между двумя кружками разного цвета цикл должен делать ровно один поворот",
 	"Loop should not turn between the circles of the same color": "Между двумя кружками одного цвета цикл не должен поворачивать",
-    "The dividing lines must start and end on the grid boundary": "Разрез должен начинаться и кончаться на границах сетки",
+	"The dividing lines must start and end on the grid boundary": "Разрез должен начинаться и кончаться на границах сетки",
 	"The area should not contain circles of different color": "Область не должна содержать кружки разного цвета",
-	"Each area should contain at least one circle": "Каждая область должна содержать как минимум один кружок"
+	"Each area should contain at least one circle": "Каждая область должна содержать как минимум один кружок",
+	"Areas of white cells and shaded cells must have different shapes": "Белая и закрашеная части должны иметь разные формы",
+	"Areas of white cells and shaded cells must have the same size": "Белая и закрашеная части должны иметь одинаковый размер"
 }

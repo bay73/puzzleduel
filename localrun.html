@@ -132,41 +132,40 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "kaitoramma",
+      typeCode: "double_choco_notouch",
       id: "puzzle.code",
-      dimension: "7x7"
+      dimension: "6x6"
 
     };
     var settings = {
       local: true,
       data: {
-    "a1": "white_circle",
-    "c1": "black_circle",
-    "b2": "black_circle",
-    "d2": "black_circle",
-    "f2": "white_circle",
-    "g2": "white_circle",
-    "c3": "black_circle",
-    "e3": "white_circle",
-    "g3": "white_circle",
-    "a4": "black_circle",
-    "d4": "white_circle",
-    "f4": "black_circle",
-    "b5": "black_circle",
-    "d5": "white_circle",
-    "a6": "black_circle",
-    "b6": "black_circle",
-    "e6": "black_circle",
-    "f6": "white_circle",
-    "c7": "white_circle",
-    "g7": "black_circle",
+    "a1": "grey",
+    "b1": "grey",
+    "f1": "grey",
+    "a2": "grey",
+    "c2": "2",
+    "d2": "grey",
+    "f2": "grey",
+    "b3": "grey",
+    "d3": "grey3",
+    "e3": "grey",
+    "f3": "grey",
+    "b4": "grey",
+    "d4": "grey",
+    "e4": "grey",
+    "a5": "grey",
+    "e5": "grey",
+    "b6": "grey",
+    "c6": "grey",
+    "e6": "grey",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new krammaPuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new doubleChocoPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
