@@ -587,7 +587,7 @@ fillominoPuzzleType.prototype.setTypeProperties = function(typeCode) {
 
 doubleChocoPuzzleType.prototype.setTypeProperties = function(typeCode) {
   var self = this;
-  if (typeCode =="double_choco" || typeCode =="double_choco_inverse" || typeCode =="double_choco_notouch" ) {
+  if (typeCode =="double_choco" || typeCode =="double_choco_inverse" || typeCode =="double_choco_notouch" || typeCode =="double_choco_consecutive" ) {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addItem(StdItem.LIGHT_GREY)
