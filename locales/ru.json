@@ -486,5 +486,6 @@
 	"Each area should contain at least one circle": "Каждая область должна содержать как минимум один кружок",
 	"Areas of white cells and shaded cells must have different shapes": "Белая и закрашеная части должны иметь разные формы",
 	"Areas of white cells and shaded cells must have the same size": "Белая и закрашеная части должны иметь одинаковый размер",
-	"The region should have a neighbouring region of consecutive size": "У региона должен быть соседний регион с размером отличающимся на 1"
+	"The region should have a neighbouring region of consecutive size": "У региона должен быть соседний регион с размером отличающимся на 1",
+	"Double Choco Delight": "Double Choco Delight"
 }
