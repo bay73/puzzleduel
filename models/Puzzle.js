@@ -155,6 +155,11 @@ PuzzleSchema.virtual('published').get(function() {
     d.setDate(d.getDate()+2);
     return this.daily && this.daily < d
   } else if (this.tag.includes("contest")) {
+    if (this.contest && this.contest.puzzleDate) {
+      var d = new Date();
+      d.setDate(d.getDate()+2);
+      return this.contest.puzzleDate && this.contest.puzzleDate < d
+    }
     return true;
   }
   return false;
