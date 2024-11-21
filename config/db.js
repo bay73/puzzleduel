@@ -7,8 +7,8 @@ const config = require('../config/keys');
 
 const connectDBs = () => {
     try {
-        const db = await mongoose.createConnection(config.mongoURI).asPromise();
-        const logDb = await mongoose.createConnection(config.mongoLogURI).asPromise();
+        const db = mongoose.createConnection(config.mongoURI)
+        const logDb = mongoose.createConnection(config.mongoLogURI)
         return { db, logDb }
     } catch (error) {
         console.error(`Error:${error.message}`)
