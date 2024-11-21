@@ -5,11 +5,6 @@ const switchUserLeagues = require('../utils/league').switchUserLeagues;
 
 const mongoose = require('mongoose');
 
-require('dotenv').config();
-
-// DB Config
-const db = require('../config/keys').mongoURI;
-
 recount = async function () {
   if (new Date().getDate() < 2) {
     await createNextMonth(new Date());
@@ -24,16 +19,9 @@ recount = async function () {
   }
 }
 
-// Connect to MongoDB
-mongoose
-  .connect(db)
-  .then(() => {
-    console.log('MongoDB Connected')
-    recount().then(() => {
-      mongoose.disconnect();
-    });
-  })
-  .catch(err => console.log(err));
+recount().then(() => {
+  mongoose.disconnect();
+}).catch(err => console.log(err));
 
 
 
