@@ -33,7 +33,7 @@ const UserActionLogSchema = new mongoose.Schema({
 
 UserActionLogSchema.index({userId: 1, puzzleId: 1})
 
-const { db, logDb } = connectDBs()
+const { logDb } = connectDBs()
 
 const UserActionLog = logDb.model('UserActionLog', UserActionLogSchema);
 

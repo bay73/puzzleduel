@@ -23,7 +23,7 @@ module.exports = {
       maxAge: 900000000 // 10*24*60*60*1000 + delta
     },
     store: MongoStore.create({
-      mongoUrl: require('./keys').mongoURI,
+      mongoUrl: require('./keys').mongoAuthURI,
       touchAfter: 24 * 3600
     })
   },

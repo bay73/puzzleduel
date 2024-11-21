@@ -39,8 +39,8 @@ const SudoqLogSchema = new mongoose.Schema({
   },
 });
 
-const { db, logDb } = connectDBs()
+const { logDb } = connectDBs()
 
-const SudoqLog = db.model('SudoqLog', SudoqLogSchema);
+const SudoqLog = logDb.model('SudoqLog', SudoqLogSchema);
 
 module.exports = SudoqLog;
