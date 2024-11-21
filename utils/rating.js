@@ -1,6 +1,5 @@
 const Rating = require('../models/Rating');
 const UserSolvingTime = require('../models/UserSolvingTime');
-const UserActionLog = require('../models/UserActionLog');
 const Puzzle = require('../models/Puzzle');
 const User = require('../models/User');
 

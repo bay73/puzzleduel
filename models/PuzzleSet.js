@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { connectDBs } = require('../config/db')
+
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Mixed = mongoose.Schema.Types.Mixed;
 
@@ -41,6 +43,8 @@ const PuzzleSetSchema = new mongoose.Schema({
   }],
 });
 
-const PuzzleSet = mongoose.model('PuzzleSet', PuzzleSetSchema);
+const { db, logDb } = connectDBs()
+
+const PuzzleSet = db.model('PuzzleSet', PuzzleSetSchema);
 
 module.exports = PuzzleSet;
