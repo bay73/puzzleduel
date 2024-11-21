@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { connectDBs } = require('../config/db')
-
 const Mixed = mongoose.Schema.Types.Mixed;
 
 const AnnouncementSchema = new mongoose.Schema({
@@ -26,8 +24,6 @@ const AnnouncementSchema = new mongoose.Schema({
   }
 });
 
-const { db, logDb } = connectDBs()
-
-const Announcement = db.model('Announcement', AnnouncementSchema);
+const Announcement = mongoose.model('Announcement', AnnouncementSchema);
 
 module.exports = Announcement;

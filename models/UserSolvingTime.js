@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { connectDBs } = require('../config/db')
-
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const UserSolvingTimeSchema = new mongoose.Schema({
@@ -45,8 +43,6 @@ const UserSolvingTimeSchema = new mongoose.Schema({
 
 UserSolvingTimeSchema.index({userId: 1, puzzleId: 1}, {unique: true})
 
-const { db, logDb } = connectDBs()
-
-const UserSolvingTime = db.model('UserSolvingTime', UserSolvingTimeSchema);
+const UserSolvingTime = mongoose.model('UserSolvingTime', UserSolvingTimeSchema);
 
 module.exports = UserSolvingTime;

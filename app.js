@@ -1,5 +1,6 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
+const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
 const expressip = require('express-ip');
@@ -11,6 +12,11 @@ const app = express();
 
 require('dotenv').config();
 require('./config/passport')(passport);
+
+mongoose
+  .connect(require('./config/keys').mongoURI)
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
 
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
