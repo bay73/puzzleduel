@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { connectDBs } = require('../config/db')
-
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Mixed = mongoose.Schema.Types.Mixed;
 
@@ -53,8 +51,6 @@ const RatingSchema = new mongoose.Schema({
   }
 });
 
-const { db, logDb } = connectDBs()
-
-const Rating = db.model('Rating', RatingSchema);
+const Rating = mongoose.model('Rating', RatingSchema);
 
 module.exports = Rating;

@@ -10,7 +10,7 @@ const User = require('../models/User');
 // UserSolvingTime model
 const UserSolvingTime = require('../models/UserSolvingTime');
 // UserActionLog model
-const { UserActionLog } = require('../models/UserActionLog');
+const UserActionLog = require('../models/UserActionLog');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');

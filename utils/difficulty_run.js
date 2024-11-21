@@ -2,13 +2,25 @@ const computeDifficulty = require('../utils/difficulty');
 
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
+// DB Config
+const db = require('../config/keys').mongoURI;
+
 recompute = async function () {
   await computeDifficulty();
 }
 
-recompute().then(() => {
-  mongoose.disconnect();
-}).catch(err => console.log(err));
+// Connect to MongoDB
+mongoose
+  .connect(db)
+  .then(() => {
+    console.log('MongoDB Connected')
+    recompute().then(() => {
+      mongoose.disconnect();
+    });
+  })
+  .catch(err => console.log(err));
 
 
 

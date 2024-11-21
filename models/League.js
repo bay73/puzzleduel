@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { connectDBs } = require('../config/db')
-
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Mixed = mongoose.Schema.Types.Mixed;
 
@@ -56,8 +54,6 @@ const LeagueSchema = new mongoose.Schema({
   }]
 });
 
-const { db, logDb } = connectDBs()
-
-const League = db.model('League', LeagueSchema);
+const League = mongoose.model('League', LeagueSchema);
 
 module.exports = League;

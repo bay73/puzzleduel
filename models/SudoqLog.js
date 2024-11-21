@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { connectDBs } = require('../config/db')
-
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Mixed = mongoose.Schema.Types.Mixed;
 
@@ -39,8 +37,6 @@ const SudoqLogSchema = new mongoose.Schema({
   },
 });
 
-const { db, logDb } = connectDBs()
-
-const SudoqLog = db.model('SudoqLog', SudoqLogSchema);
+const SudoqLog = mongoose.model('SudoqLog', SudoqLogSchema);
 
 module.exports = SudoqLog;
