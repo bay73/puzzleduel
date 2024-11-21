@@ -6,8 +6,11 @@ const expressip = require('express-ip');
 const cookieParser = require('cookie-parser');
 const profiler = require('./utils/profiler');
 const cache = require('./utils/cache');
+const { connectDBs } = require('./config/db')
 
 const app = express();
+
+connectDBs()
 
 require('dotenv').config();
 require('./config/passport')(passport);
