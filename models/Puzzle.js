@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { connectDBs } = require('../config/db')
+
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Mixed = mongoose.Schema.Types.Mixed;
 
@@ -165,6 +167,8 @@ PuzzleSchema.virtual('published').get(function() {
   return false;
 });
 
-const Puzzle = mongoose.model('Puzzle', PuzzleSchema);
+const { db, logDb } = connectDBs()
+
+const Puzzle = db.model('Puzzle', PuzzleSchema);
 
 module.exports = Puzzle;

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { connectDBs } = require('../config/db')
+
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Mixed = mongoose.Schema.Types.Mixed;
 
@@ -31,6 +33,9 @@ const UserActionLogSchema = new mongoose.Schema({
 
 UserActionLogSchema.index({userId: 1, puzzleId: 1})
 
-const UserActionLog = mongoose.model('UserActionLog', UserActionLogSchema);
+const { db, logDb } = connectDBs()
 
-module.exports = UserActionLog;
+const UserActionLog = logDb.model('UserActionLog', UserActionLogSchema);
+const UserActionLogOld = db.model('UserActionLog', UserActionLogSchema);
+
+module.exports = { UserActionLog, UserActionLogOld };

@@ -5,7 +5,7 @@ const router = express.Router();
 // Puzzle model
 const Puzzle = require('../models/Puzzle');
 // UserActionLog model
-const UserActionLog = require('../models/UserActionLog');
+const { UserActionLog, UserActionLogOld } = require('../models/UserActionLog');
 // UserSolvingTime model
 const UserSolvingTime = require('../models/UserSolvingTime');
 const PuzzleComment = require('../models/PuzzleComment');
@@ -51,7 +51,9 @@ async function writeSolvingTime(user, puzzleId, hidden, clientTime) {
   if (time != null && time.solvingTime != null) {
     return;
   }
-  const logs = await UserActionLog.find({userId: user._id, puzzleId: puzzleId}).sort('date');
+  const logsOld = await UserActionLogOld.find({userId: user._id, puzzleId: puzzleId}).sort('date');
+  const logsNew = await UserActionLog.find({userId: user._id, puzzleId: puzzleId}).sort('date');
+  const logs = logsOld.concat(logsNew);
   var startTime = null;
   var solveTime = null;
   var errCount = 0;
@@ -472,7 +474,9 @@ router.get('/:puzzleid/log/:userid', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    const logs = await UserActionLog.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort('date');
+    const logsOld = await UserActionLogOld.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort('date');
+    const logsNew = await UserActionLog.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort('date');
+    const logs = logsOld.concat(logsNew)
     let result = [];
     for (let i=0;i<logs.length;i++) {
       let logItem = logs[i];
@@ -495,10 +499,12 @@ router.get('/:puzzleid/log/:userid', async (req, res, next) => {
 });
 
 async function getSolversLog(puzzleId) {
-  const [times, logs] = await Promise.all([
+  const [times, logsOld, logsNew] = await Promise.all([
     UserSolvingTime.find({puzzleId: puzzleId}).lean(),
+    UserActionLogOld.find({puzzleId: puzzleId}).sort('userId date'),
     UserActionLog.find({puzzleId: puzzleId}).sort('userId date')
   ]);
+  const logs = logsOld.concat(logsNew);
   var userSolvingTime = {};
   times.forEach(time => {
     if (typeof time.solvingTime != 'undefined') {
