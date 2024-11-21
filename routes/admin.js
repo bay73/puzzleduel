@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { UserActionLog, UserActionLogOld } = require('../models/UserActionLog');
+const UserActionLog = require('../models/UserActionLog');
 const User = require('../models/User');
 const Puzzle = require('../models/Puzzle');
 const Rating = require('../models/Rating');
@@ -21,9 +21,7 @@ router.get('/actionlog', ensureAuthenticated, async (req, res, next) => {
     }
     var users = req.query.users.split(',');
     var userData = await User.find({_id: {$in: users}});
-    var logOld = await UserActionLogOld.find({userId: {$in: users}}).sort("date");
-    var logNew = await UserActionLog.find({userId: {$in: users}}).sort("date");
-    var log = logOld.concat(logNew)
+    var log = await UserActionLog.find({userId: {$in: users}}).sort("date");
     res.render('actionlog', {
       user: req.user,
       users: userData.map(user => user.toObject()),
@@ -58,9 +56,7 @@ router.get('/actionlog/:puzzleid/:userid', ensureAuthenticated, async (req, res,
       return;
     }
     const userMap = await util.userNameMap();
-    var logOld = await UserActionLogOld.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort("date");
-    var logNew = await UserActionLog.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort("date");
-    var log = logOld.concat(logNew)
+    var log = await UserActionLog.find({userId: req.params.userid, puzzleId: req.params.puzzleid}).sort("date");
     if (log.length > 0) {
       var startTime = log[0].date;
     }
@@ -294,9 +290,7 @@ router.get('/instantrating', ensureAuthenticated, async (req, res, next) => {
     }
     var date = new Date(lastDate);
     date.setDate(lastDate.getDate() - 42);
-    const actionLogOld = await UserActionLogOld.find({date: {$gt: date}});
-    const actionLogNew = await UserActionLog.find({date: {$gt: date}});
-    const actionLog = actionLogOld.concat(actionLogNew)
+    const actionLog = await UserActionLog.find({date: {$gt: date}});
     actionLog.forEach(log => {if (userData[log.userId].ipCountries.indexOf(log.ipInfo.country)==-1) userData[log.userId].ipCountries.push(log.ipInfo.country)});
     console.log(userData)
     var allData = [];

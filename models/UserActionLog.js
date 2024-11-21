@@ -36,6 +36,5 @@ UserActionLogSchema.index({userId: 1, puzzleId: 1})
 const { db, logDb } = connectDBs()
 
 const UserActionLog = logDb.model('UserActionLog', UserActionLogSchema);
-const UserActionLogOld = db.model('UserActionLog', UserActionLogSchema);
 
-module.exports = { UserActionLog, UserActionLogOld };
+module.exports = UserActionLog;
