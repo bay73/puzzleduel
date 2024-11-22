@@ -26,8 +26,8 @@ const AnnouncementSchema = new mongoose.Schema({
   }
 });
 
-const { db, logDb } = connectDBs()
+const { dataDb } = connectDBs()
 
-const Announcement = db.model('Announcement', AnnouncementSchema);
+const Announcement = dataDb.model('Announcement', AnnouncementSchema);
 
 module.exports = Announcement;

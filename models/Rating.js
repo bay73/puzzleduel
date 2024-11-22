@@ -53,8 +53,8 @@ const RatingSchema = new mongoose.Schema({
   }
 });
 
-const { db, logDb } = connectDBs()
+const { dataDb } = connectDBs()
 
-const Rating = db.model('Rating', RatingSchema);
+const Rating = dataDb.model('Rating', RatingSchema);
 
 module.exports = Rating;
