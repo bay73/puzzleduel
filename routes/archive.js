@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Puzzle = require('../models/Puzzle');
 const PuzzleType = require('../models/PuzzleType');
-const UserSolvingTime = require('../models/UserSolvingTime');
 const User = require('../models/User');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');

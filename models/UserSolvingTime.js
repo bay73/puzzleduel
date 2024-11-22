@@ -45,8 +45,8 @@ const UserSolvingTimeSchema = new mongoose.Schema({
 
 UserSolvingTimeSchema.index({userId: 1, puzzleId: 1}, {unique: true})
 
-const { db, logDb } = connectDBs()
+const { dataDb } = connectDBs()
 
-const UserSolvingTime = db.model('UserSolvingTime', UserSolvingTimeSchema);
+const UserSolvingTime = dataDb.model('UserSolvingTime', UserSolvingTimeSchema);
 
 module.exports = UserSolvingTime;
