@@ -56,8 +56,8 @@ const LeagueSchema = new mongoose.Schema({
   }]
 });
 
-const { db, logDb } = connectDBs()
+const { dataDb } = connectDBs()
 
-const League = db.model('League', LeagueSchema);
+const League = dataDb.model('League', LeagueSchema);
 
 module.exports = League;

@@ -140,8 +140,8 @@ const ContestSchema = new mongoose.Schema({
   suppressReservedKeysWarning: true
 });
 
-const { db, logDb } = connectDBs()
+const { dataDb } = connectDBs()
 
-const Contest = db.model('Contest', ContestSchema);
+const Contest = dataDb.model('Contest', ContestSchema);
 
 module.exports = Contest;
