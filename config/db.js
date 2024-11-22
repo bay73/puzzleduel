@@ -4,18 +4,11 @@ require('dotenv').config();
 
 const config = require('../config/keys');
 
-var db
 var dataDb
 var logDb
 
 const connectDBs = () => {
     try {
-        if (db == undefined) {
-          db = mongoose.createConnection(config.mongoAuthURI)
-          db.on('connected', () => console.log('authDb connected'));
-          db.on('open', () => console.log('authDb open'));
-          db.on('disconnected', () => console.log('authDb disconnected'));
-        }
         if (dataDb == undefined) {
           dataDb = mongoose.createConnection(config.mongoDataURI)
           dataDb.on('connected', () => console.log('dataDb connected'));
@@ -28,7 +21,7 @@ const connectDBs = () => {
           logDb.on('open', () => console.log('logDb open'));
           logDb.on('disconnected', () => console.log('logDb disconnected'));
         }
-        return { db, dataDb, logDb }
+        return { dataDb, logDb }
     } catch (error) {
         console.error(`Error:${error.message}`)
         process.exit(1)
