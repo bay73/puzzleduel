@@ -43,8 +43,8 @@ const PuzzleCommentSchema = new mongoose.Schema({
 
 PuzzleCommentSchema.index({userId: 1, puzzleId: 1})
 
-const { db, logDb } = connectDBs()
+const { dataDb } = connectDBs()
 
-const PuzzleComment = db.model('PuzzleComment', PuzzleCommentSchema);
+const PuzzleComment = dataDb.model('PuzzleComment', PuzzleCommentSchema);
 
 module.exports = PuzzleComment;
