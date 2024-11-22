@@ -43,8 +43,8 @@ const PuzzleSetSchema = new mongoose.Schema({
   }],
 });
 
-const { db, logDb } = connectDBs()
+const { dataDb } = connectDBs()
 
-const PuzzleSet = db.model('PuzzleSet', PuzzleSetSchema);
+const PuzzleSet = dataDb.model('PuzzleSet', PuzzleSetSchema);
 
 module.exports = PuzzleSet;
