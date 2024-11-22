@@ -68,8 +68,8 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-const { db, logDb } = connectDBs()
+const { dataDb } = connectDBs()
 
-const User = db.model('User', UserSchema);
+const User = dataDb.model('User', UserSchema);
 
 module.exports = User;

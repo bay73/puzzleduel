@@ -167,8 +167,8 @@ PuzzleSchema.virtual('published').get(function() {
   return false;
 });
 
-const { db, logDb } = connectDBs()
+const { dataDb } = connectDBs()
 
-const Puzzle = db.model('Puzzle', PuzzleSchema);
+const Puzzle = dataDb.model('Puzzle', PuzzleSchema);
 
 module.exports = Puzzle;
