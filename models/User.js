@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { connectDBs } = require('../config/db')
+
 const Mixed = mongoose.Schema.Types.Mixed;
 
 const UserSchema = new mongoose.Schema({
@@ -66,6 +68,8 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-const User = mongoose.model('User', UserSchema);
+const { dataDb } = connectDBs()
+
+const User = dataDb.model('User', UserSchema);
 
 module.exports = User;

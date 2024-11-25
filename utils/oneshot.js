@@ -2,15 +2,10 @@ const recountContest = require('../utils/contest');
 
 const mongoose = require('mongoose');
 
-require('dotenv').config();
-
 const User = require('../models/User');
 const Puzzle = require('../models/Puzzle');
-const UserActionLog = require('../models/UserActionLog');
+const { UserActionLog } = require('../models/UserActionLog');
 const UserSolvingTime = require('../models/UserSolvingTime');
-
-// DB Config
-const db = require('../config/keys').mongoURI;
 
 refill = async function () {
   var userMap = {}
@@ -39,16 +34,9 @@ refill = async function () {
   }
 }
 
-// Connect to MongoDB
-mongoose
-  .connect(db)
-  .then(() => {
-    console.log('MongoDB Connected')
-    refill().then(() => {
-      mongoose.disconnect();
-    });
-  })
-  .catch(err => console.log(err));
+refill().then(() => {
+  mongoose.disconnect();
+}).catch(err => console.log(err));
 
 
 

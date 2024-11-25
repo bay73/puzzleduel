@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { connectDBs } = require('../config/db')
+
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Mixed = mongoose.Schema.Types.Mixed;
 
@@ -138,6 +140,8 @@ const ContestSchema = new mongoose.Schema({
   suppressReservedKeysWarning: true
 });
 
-const Contest = mongoose.model('Contest', ContestSchema);
+const { dataDb } = connectDBs()
+
+const Contest = dataDb.model('Contest', ContestSchema);
 
 module.exports = Contest;

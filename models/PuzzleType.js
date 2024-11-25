@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { connectDBs } = require('../config/db')
+
 const Mixed = mongoose.Schema.Types.Mixed;
 
 const PuzzleTypeSchema = new mongoose.Schema({
@@ -48,6 +50,8 @@ const PuzzleTypeSchema = new mongoose.Schema({
   },
 });
 
-const PuzzleType = mongoose.model('PuzzleType', PuzzleTypeSchema);
+const { dataDb } = connectDBs()
+
+const PuzzleType = dataDb.model('PuzzleType', PuzzleTypeSchema);
 
 module.exports = PuzzleType;

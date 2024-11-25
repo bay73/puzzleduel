@@ -28,7 +28,10 @@ async function hashWithSalt(password) {
 }
 
 // Login Page
-router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
+router.get('/login', forwardAuthenticated, (req, res) => {
+  res.render('login', {errors: req.session.messages})
+  req.session.messages = undefined;
+});
 
 // Register Page
 router.get('/register', forwardAuthenticated, recaptcha.middleware.render, (req, res) => {
@@ -390,7 +393,7 @@ router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/users/login',
-    failureFlash: true
+    failureMessage: true
   })(req, res, next);
 });
 

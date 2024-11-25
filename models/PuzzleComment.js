@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { connectDBs } = require('../config/db')
+
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const PuzzleCommentSchema = new mongoose.Schema({
@@ -41,6 +43,8 @@ const PuzzleCommentSchema = new mongoose.Schema({
 
 PuzzleCommentSchema.index({userId: 1, puzzleId: 1})
 
-const PuzzleComment = mongoose.model('PuzzleComment', PuzzleCommentSchema);
+const { dataDb } = connectDBs()
+
+const PuzzleComment = dataDb.model('PuzzleComment', PuzzleCommentSchema);
 
 module.exports = PuzzleComment;
