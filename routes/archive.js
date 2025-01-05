@@ -464,7 +464,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       map[key] = {name: value.name, puzzleCount: 0, newCount: 0, lastDate: null, properties: value.properties};
       return map;
     }, {});
-    const allPuzzles = await Puzzle.find({tag: "daily"}, "-data");
+    const allPuzzles = await Puzzle.find({}, "-data");
     allPuzzles.forEach(puzzle => {
       typePuzzleCount[puzzle.type].puzzleCount++;
       if (puzzle.daily) {
@@ -509,7 +509,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
         return {
           code: key,
           name: value.name,
-          rating: Math.round(((Date.now() - value.lastDate)/(1000*60*60*24) + 50) / (10 + 3*Math.min(value.newCount, 5) + Math.min(value.puzzleCount, 10 )))
+          rating: Math.round(((Date.now() - value.lastDate)/(1000*60*60*24) + 60) / (1 + 2*Math.min(value.newCount, 5) + 2*Math.min(value.puzzleCount, 12 )))
         };
       })
     });
