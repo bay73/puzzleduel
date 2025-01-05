@@ -112,8 +112,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="aquapelago") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
-        .addItem(StdItem.GREY)
-        .addNumbers(1,99,StdColor.GREY))
+        .addItem(StdItem.CLUE_COLOR.submitAs("grey"))
+        .addNumbers(1,99,StdColor.CLUE))
       .add(controller().forSolver().cell().noClue().clickSwitch()
         .addItem(StdItem.GREY.submitAs("1"))
         .addItem(StdItem.CROSS.doNotSubmit()))

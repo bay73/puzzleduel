@@ -623,6 +623,8 @@ ControllerItemBuilder.prototype.keepPencil = function(){
 StdColor = {
 BLACK: {color: (puzzle, isPencil) => puzzle.colorSchema.gridColor,
         textColor: "#fff"},
+CLUE: {color: (puzzle, isPencil) => puzzle.colorSchema.clueColor,
+        textColor: "#fff"},
 GREY:  {color: (puzzle, isPencil) => puzzle.colorSchema.greyColor,
         textColor: (puzzle, isPencil) => puzzle.colorSchema.textColor},
 LIGHT_GREY:  {color: (puzzle, isPencil) => puzzle.colorSchema.lightGreyColor},
