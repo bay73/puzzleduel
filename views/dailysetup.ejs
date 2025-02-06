@@ -36,7 +36,8 @@
                   </a>
                   <% } %>
                 </td>
-                <td class="<%= puzzle.daily<new Date()?'text-warning':'' %> p-1">
+                <% var competitiveDate = new Date(); competitiveDate.setDate(competitiveDate.getDate()-5); %>
+                <td class="<%= puzzle.daily<competitiveDate?'text-info':(puzzle.daily<new Date()?'text-warning':'') %> p-1">
                   <%= puzzle.tag %>
                   <%= puzzle.daily?("("+puzzle.daily.toISOString().split('T')[0]+")"):"" %>
                 </td>
