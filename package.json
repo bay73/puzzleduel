@@ -34,7 +34,7 @@
     "glob": "^11.0.1",
     "i18n": "^0.15.1",
     "mongoose": "^8.10.1",
-    "nodemailer": "^6.9.16",
+    "nodemailer": "^6.10.0",
     "object-sizeof": "^2.6.5",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
