@@ -488,5 +488,7 @@
 	"Areas of white cells and shaded cells must have the same size": "Белая и закрашеная части должны иметь одинаковый размер",
 	"The region should have a neighbouring region of consecutive size": "У региона должен быть соседний регион с размером отличающимся на 1",
 	"Double Choco Delight": "Double Choco Delight",
-	"dOubLESHOW 22/2": "dOubLESHOW 22/2"
+	"dOubLESHOW 22/2": "dOubLESHOW 22/2",
+	"Rules": "Rules",
+	"Donate": "Поддержать"
 }
