@@ -226,9 +226,17 @@ router.post('/:contestid/edit', async (req, res, next) => {
         } else {
           puzzleNum=1;
         }
-        contest.puzzles.push({puzzleNum: puzzleNum, puzzleId: puzzleId, revealDate: contest.start});
+        let revealDate = contest.start
+        if (contest.type=="daily_shadow" || contest.type=="daily" ) {
+          let maxDate = Math.max(...contest.puzzles.map(o => o.revealDate))
+          if (maxDate) {
+            revealDate = new Date(maxDate);
+            revealDate.setDate(revealDate.getDate() + 1);
+          }
+        }
+        contest.puzzles.push({puzzleNum: puzzleNum, puzzleId: puzzleId, revealDate: revealDate});
         contest.markModified('puzzles');
-        puzzle.contest = {contestId: contestId, puzzleDate: contest.start};
+        puzzle.contest = {contestId: contestId, puzzleDate: revealDate};
         if (!puzzle.daily) {
           puzzle.tag = "contest";
         }
@@ -239,10 +247,20 @@ router.post('/:contestid/edit', async (req, res, next) => {
     if (req.body.operation == "removepuzzle") {
       const puzzleId = req.body.puzzle
       const puzzles = contest.puzzles;
+      let puzzleNum = 0;
       for( var i = 0; i < puzzles.length; i++){
         if ( puzzles[i].puzzleId == puzzleId) {
+          puzzleNum = puzzles[i].puzzleNum;
           puzzles.splice(i, 1);
           i--;
+        }
+      }
+      if (puzzleNume == 0) {
+        return;
+      }
+      for( var i = 0; i < puzzles.length; i++){
+        if ( puzzles[i].puzzleNum > puzzleNum) {
+          puzzles[i].puzzleNum--;
         }
       }
       contest.puzzles = puzzles
@@ -253,6 +271,55 @@ router.post('/:contestid/edit', async (req, res, next) => {
           puzzle.tag = "temporary";
         }
         await puzzle.save();
+      }
+      await contest.save();
+    }
+    if (req.body.operation == "movepuzzleup") {
+      const puzzleId = req.body.puzzle
+      const puzzles = contest.puzzles;
+      let puzzleNum = 0;
+      let puzzleDate = 0;
+      for( var i = 0; i < puzzles.length; i++){
+        if ( puzzles[i].puzzleId == puzzleId) {
+          puzzleNum = puzzles[i].puzzleNum;
+          puzzleDate = puzzles[i].revealDate;
+        }
+      }
+      if (puzzleNum == 0) {
+        return;
+      }
+      let otherDate = puzzleDate;
+      let otherPuzzle = puzzleId;
+      for( var i = 0; i < puzzles.length; i++){
+        if ( puzzles[i].puzzleNum == puzzleNum-1 && puzzles[i].puzzleId != puzzleId) {
+          otherDate = puzzles[i].revealDate;
+          otherPuzzle = puzzles[i].puzzleId;
+          puzzles[i].puzzleNum = puzzleNum;
+          puzzles[i].revealDate = puzzleDate;
+        }
+      }
+      for( var i = 0; i < puzzles.length; i++){
+        if ( puzzles[i].puzzleId == puzzleId) {
+          puzzles[i].puzzleNum = puzzleNum - 1;
+          puzzles[i].revealDate = otherDate;
+        }
+      }
+      contest.puzzles = puzzles
+      const puzzle = await Puzzle.findOne({code: puzzleId})
+      if (typeof(puzzle.contest) != "undefined" && puzzle.contest.contestId == contestId) {
+        puzzle.contest.puzzleDate = otherDate;
+        if (puzzle.daily) {
+          puzzle.daily = otherDate;
+        }
+        await puzzle.save();
+      }
+      const puzzle2 = await Puzzle.findOne({code: otherPuzzle})
+      if (typeof(puzzle2.contest) != "undefined" && puzzle2.contest.contestId == contestId) {
+        puzzle2.contest.puzzleDate = puzzleDate;
+        if (puzzle2.daily) {
+          puzzle2.daily = puzzleDate;
+        }
+        await puzzle2.save();
       }
       await contest.save();
     }

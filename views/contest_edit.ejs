@@ -83,6 +83,18 @@
                     </button>
                   </form>
                 </td>
+                <td>
+                  <% if (puzzle.num > 1) { %>
+                  <form action="/contest/<%= contest.code %>/edit" method="post">
+                    <input type="hidden" value="<%= puzzle.code%>" name="puzzle">
+                    <input type="hidden" name="operation" value="movepuzzleup">
+                    <button type="submit" class="btn btn-link p-0">
+                      <span class="glyphicon glyphicon-chevron-up"></span>
+                    </button>
+                  </form>
+                  <% } %>
+                </td>
+              </tr>
               </tr>
               <% }) %>
               <tr>
