@@ -647,6 +647,7 @@ BLACK_CIRCLE: controllerItem({image: "black_circle", returnValue: "black_circle"
 HUGE_WHITE_CIRCLE: controllerItem({image: "huge_white_circle", returnValue: "huge_white_circle"}),
 HUGE_BLACK_CIRCLE: controllerItem({image: "huge_black_circle", returnValue: "huge_black_circle"}),
 SMALL_CIRCLE: controllerItem({image: "small_circle", returnValue: "small_circle"}),
+WHITE_DOT: controllerItem({image: "white_dot", returnValue: "white_dot"}),
 CROSS: controllerItem({image: "cross", returnValue: "cross"}),
 WHITE_CROSS: controllerItem({image: "white_cross", returnValue: "white_cross"}),
 STAR: controllerItem({image: "star", returnValue: "star"}),

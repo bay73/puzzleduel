@@ -1027,6 +1027,30 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.submitAs('1')))
       .build(this);
 
+  } else if (typeCode=="maxi_loop") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1,99))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="double_back") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
   } else if (typeCode=="inturnal") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
@@ -1034,6 +1058,99 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().node().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit())
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="simple_loop") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="kuroshiro") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE)
+        .addItem(StdItem.WHITE_CIRCLE))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="alternate_loop") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE)
+        .addItem(StdItem.WHITE_CIRCLE))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="masyu") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE)
+        .addItem(StdItem.WHITE_CIRCLE))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="every_second_turn") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="every_second_straight") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="loop_minesweeper") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,8))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller.forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .build(this);
+
+  } else if (typeCode=="loop_bounds") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,99))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller.forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .build(this);
+
+  } else if (typeCode=="ring_ring") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="four_winds") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,99))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.WHITE_DOT.doNotSubmit()))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
       .build(this);
@@ -1059,168 +1176,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       cell.chooserValues = chooserValues;
     },
     decodeClue: value => {return value=="+"?{image: "big_plus"}:{text: value};},
-  }
-
-  typeProperties["loop_minesweeper"] = {
-    needConnectors: true,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{image: "cross"},{image: "white_circle"}]);
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 8);},
-  }
-
-  typeProperties["loop_bounds"] = {
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 0, 99);},
-    usePlus10: this.editMode?10:0,
-  }
-
-  typeProperties["every_second_turn"] = {
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"}];},
-    decodeClue: value => {return {image: value} },
-  }
-
-  typeProperties["every_second_straight"] = {
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"}];},
-    decodeClue: value => {return {image: value} },
-  }
-
-  typeProperties["kuroshiro"] = {
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"}, {image: "black_circle", returnValue: "black_circle"}];},
-    decodeClue: value => {return {image: value} },
-  }
-
-  typeProperties["simple_loop"] = {
-    needNodes: false,
-    needConnectors: true,
-    cellController: cell => {
-      if (!cell.isClue) {
-        cell.dragProcessor = true;
-      }
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.textColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{color: self.colorSchema.textColor, returnValue: "black"}];},
-    decodeClue: value => {
-      if (value=="black") {
-        return {color: self.colorSchema.textColor}
-      } else {
-        return {text: value}
-      }
-    },
-  }
-
-  typeProperties["ring_ring"] = {
-    needNodes: false,
-    needConnectors: true,
-    cellController: cell => {
-      if (!cell.isClue) {
-        cell.dragProcessor = true;
-      }
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.textColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{color: self.colorSchema.textColor, returnValue: "black"}];},
-    decodeClue: value => {
-      if (value=="black") {
-        return {color: self.colorSchema.textColor}
-      } else {
-        return {text: value}
-      }
-    },
-  }
-
-  typeProperties["maxi_loop"] = {
-    needNodes: true,
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 99);},
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    collectAreas: this.editMode,
-    usePlus10: this.editMode?10:0,
-  }
-
-  typeProperties["double_back"] = {
-    needNodes: true,
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
-    },
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    collectAreas: this.editMode,
-  }
-
-  typeProperties["four_winds"] = {
-    needNodes: false,
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-      if (cell.isClue) {
-        setClickSwitch(cell, true, [{},{image: "white_circle"}]);
-      } else {
-        setClickSwitch(cell, false, [{},{image: "white_dot"}]);
-      }
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.greyColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, 99);},
-    usePlus10: this.editMode?10:0,
   }
 
   typeProperties["product_latin_square"] = {
@@ -1326,30 +1281,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         cell.chooserValues = chooserValues;
       }
     },
-  }
-
-  typeProperties["alternate_loop"] = {
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
-    decodeClue: value => {return {image: value} },
-  }
-
-  typeProperties["masyu"] = {
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "white_circle"},{image: "black_circle", returnValue: "black_circle"}];},
-    decodeClue: value => {return {image: value} },
   }
 
   typeProperties["russian_loop"] = {
