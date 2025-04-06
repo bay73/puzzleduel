@@ -1025,6 +1025,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="maxi_loop") {
@@ -1038,6 +1040,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="double_back") {
@@ -1049,6 +1053,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="inturnal") {
@@ -1060,6 +1066,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="simple_loop") {
@@ -1068,6 +1076,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.BLACK))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="kuroshiro") {
@@ -1077,6 +1087,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="alternate_loop") {
@@ -1086,6 +1098,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="masyu") {
@@ -1095,6 +1109,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="every_second_turn") {
@@ -1103,6 +1119,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="every_second_straight") {
@@ -1111,6 +1129,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="loop_minesweeper") {
@@ -1122,6 +1142,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller.forSolver().cell().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit())
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="loop_bounds") {
@@ -1133,6 +1155,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller.forSolver().cell().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit())
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="ring_ring") {
@@ -1141,6 +1165,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.BLACK))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="four_winds") {
