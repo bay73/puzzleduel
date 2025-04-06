@@ -921,7 +921,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
       .add(controller().forSolver().cell().copyPaste((data, elementData) => {
-         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+         return Object.assign({}, elementData, {image: data.image} );
       }))
       .build(this);
 
@@ -938,7 +938,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
       .add(controller().forSolver().cell().copyPaste((data, elementData) => {
-         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+         return Object.assign({}, elementData, {image: data.image} );
       }))
       .build(this);
 
@@ -955,7 +955,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
       .add(controller().forSolver().cell().copyPaste((data, elementData) => {
-         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+         return Object.assign({}, elementData, {image: data.image} );
       }))
       .build(this);
 
@@ -975,7 +975,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
       .add(controller().forSolver().cell().copyPaste((data, elementData) => {
-         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+         return Object.assign({}, elementData, {image: data.image} );
       }))
       .build(this);
 
@@ -992,7 +992,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
       .add(controller().forSolver().cell().copyPaste((data, elementData) => {
-         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+         return Object.assign({}, elementData, {image: data.image} );
       }))
       .build(this);
 
@@ -1009,7 +1009,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().drag()
         .addItem(StdItem.LINE.submitAs("1")))
       .add(controller().forSolver().cell().copyPaste((data, elementData) => {
-         return Object.assign({}, elementData, {color: data.color, image: data.image} );
+         return Object.assign({}, elementData, {image: data.image} );
       }))
       .build(this);
 
