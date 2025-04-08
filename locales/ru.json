@@ -469,6 +469,7 @@
 	"Rectangles should be a closed loop": "Прямоугольники должны представлять собой закнутый цикл",
 	"Intersection with overlapping is not allowed": "Пересечение с перекрытием не допускается",
 	"This loop is not a rectangle": "Этот цикл не является прямоугольником",
+	"Two rectangles should share a vertex at the marked cell": "Два прямоугольника должны иметь общую вершину в отмеченой клетке",
 	"Save to File": "В файл",
 	"All numbers in a region must be equal": "Все числа в области должны быть равны",
 	"The number must be equal to the number of cells of each color in a region": "Число должно быть равно числу клеток одного цвета в области",

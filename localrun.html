@@ -132,41 +132,34 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "double_choco_consecutive",
+      typeCode: "ring_ring_battenberg",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "9x9"
 
     };
     var settings = {
       local: true,
       data: {
-    "f1": "grey4",
-    "c2": "grey",
-    "d2": "grey",
-    "f2": "grey",
-    "d3": "1",
-    "e3": "grey",
-    "f3": "grey",
-    "a4": "grey",
-    "c4": "3",
-    "d4": "grey",
-    "e4": "grey",
-    "f4": "grey",
-    "a5": "grey",
-    "b5": "grey",
-    "d5": "grey",
-    "e5": "grey",
-    "f5": "grey",
-    "a6": "grey5",
-    "b6": "grey",
-    "c6": "grey",
+    "a1": "black",
+    "g1": "black",
+    "d4": "battenberg",
+    "i4": "black",
+    "a5": "black",
+    "e5": "battenberg",
+    "g5": "battenberg",
+    "f7": "black",
+    "h7": "black",
+    "b8": "black",
+    "g8": "battenberg",
+    "h9": "black",
+    "i9": "black",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new doubleChocoPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
