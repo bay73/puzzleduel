@@ -148,13 +148,18 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
       User.find(),
       cache.readPuzzleTypes(),
       util.bestSolvingTimeMap(true),
-      Puzzle.find(filter, "code type dimension tag daily author rating").sort(req.query.sort=='t'?{daily: -1, type: 1}:{daily: -1}),
+      Puzzle.find(filter, "code type dimension tag daily author rating createdAt").sort(req.query.sort=='t'?{daily: -1, type: 1}:{daily: -1}),
       Puzzle.find(oldDailyFilter, "type daily").sort({daily: -1})
     ])
 
     oldPuzzles.forEach(puzzle => {
       if (typeof typeMap[puzzle.type].last == "undefined" || typeMap[puzzle.type].last < puzzle.daily) {
         typeMap[puzzle.type].last = puzzle.daily;
+      }
+    })
+    puzzles.forEach(puzzle => {
+      if (puzzle.daily > new Date()) {
+        typeMap[puzzle.type].alreadyAssigned = true;
       }
     })
     var userMap = {}
@@ -173,9 +178,12 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
           time: util.timeToString(timesMap[puzzle.code]),
           author: userMap[puzzle.author],
           published: puzzle.published,
-          rating: puzzle.rating
+          rating: puzzle.rating,
+          createdAt: puzzle.createdAt,
+          alreadyAssigned: typeMap[puzzle.type].alreadyAssigned
         };
-      })
+      }),
+      sort: req.query.sort
     });
     profiler.log('adminDailySetup', processStart);
   } catch (e) {

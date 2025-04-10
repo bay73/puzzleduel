@@ -124,7 +124,8 @@ router.get('/:typeid/:dimension/new', ensureAuthenticated, async (req, res, next
       dimension: req.params.dimension,
       data: "{}",
       author: req.user._id,
-      tag: "daily"
+      tag: "daily",
+      createdAt: new Date(),
     });
     await puzzle.save();
     res.redirect("/single/" + puzzleid + "/author/");

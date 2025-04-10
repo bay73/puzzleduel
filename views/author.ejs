@@ -187,7 +187,12 @@
           <table class="table table-hover table-condensed">
             <tbody>
               <% let sortFn = (p1,p2) => {
-                 if (typeof(p1.puzzleDate)=='undefined' && typeof(p2.puzzleDate)=='undefined') return 0;
+                 if (typeof(p1.puzzleDate)=='undefined' && typeof(p2.puzzleDate)=='undefined') {
+                   if (typeof(p1.createdAt)=='undefined' && typeof(p2.createdAt)=='undefined') return p1.code.localeCompare(p2.code);
+	               if (typeof(p1.createdAt)=='undefined') return -1;
+                   if (typeof(p2.createdAt)=='undefined') return 1;
+                   return p1.createdAt - p2.createdAt;
+                 }
                  if (typeof(p1.puzzleDate)=='undefined') return 1;
                  if (typeof(p2.puzzleDate)=='undefined') return -1;
                  return p2.puzzleDate - p1.puzzleDate;

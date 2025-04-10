@@ -501,7 +501,8 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
             puzzleDate: puzzle.daily?puzzle.daily:(typeof(puzzle.contest)=="undefined"?"":puzzle.contest.puzzleDate),
             time: util.timeToString(timesMap[puzzle.code]),
             published: puzzle.published,
-            rating: puzzle.rating
+            rating: puzzle.rating,
+            createdAt: puzzle.createdAt
           };
       }),
       typesRating: Object.entries(typePuzzleCount)

@@ -19,8 +19,28 @@
         </div>
         <div class="card-body">
           <table class="table table-hover table-condensed">
+            <% let sortFunction = (p1, p2) => {
+              if (p1.daily && p2.daily) return p2.daily - p1.daily;
+              else if(p1.daily) return -1;
+              else if(p2.daily) return 1;
+              else if (sort=="c") {
+                if (typeof(p1.createdAt)=='undefined' && typeof(p2.createdAt)=='undefined') return p1.code.localeCompare(p2.code);
+	            if (typeof(p1.createdAt)=='undefined') return -1;
+                if (typeof(p2.createdAt)=='undefined') return 1;
+                return p1.createdAt - p2.createdAt;
+              }  else {
+                if (p2.publishAge == p1.publishAge) {
+                  if (typeof(p1.createdAt)=='undefined' && typeof(p2.createdAt)=='undefined') return p1.code.localeCompare(p2.code);
+	              if (typeof(p1.createdAt)=='undefined') return -1;
+                  if (typeof(p2.createdAt)=='undefined') return 1;
+                  return p1.createdAt - p2.createdAt;
+                }
+                else return p2.publishAge - p1.publishAge;
+              }
+            }
+            %>
             <tbody>
-              <% puzzles.forEach(function(puzzle) { %>
+              <% puzzles.sort(sortFunction).forEach(function(puzzle) { %>
               <tr>
                 <td class="p-1">
                   <% if (!puzzle.daily) { %>
@@ -43,8 +63,9 @@
                 </td>
                 <td class="p-1">
                   <% var visibleAge = Math.ceil(puzzle.publishAge/86400000); %>
+                  <% var ageColor = (!puzzle.daily && puzzle.alreadyAssigned)?256:(visibleAge?220-visibleAge:0); %>
                   <a href="/single/<%= puzzle.code %>">
-                    <span class="age-marker" style="background-color: hsl(<%= visibleAge?200-visibleAge:"0" %>,100%,50%)"><%= visibleAge?visibleAge:"" %></span>
+                    <span class="age-marker" style="background-color: hsl(<%= ageColor %>,100%,50%)"><%= visibleAge?visibleAge:"" %></span>
                     <%= puzzle.type %>
                     <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
                   </a>

@@ -31,6 +31,10 @@ const PuzzleSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  createdAt: {
+    type: Date,
+    required: false,
+  },
   daily: {
     type: Date,
     required: false,
