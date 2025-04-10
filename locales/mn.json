@@ -466,6 +466,7 @@
 	"Intersection with overlapping is not allowed": "Intersection with overlapping is not allowed",
 	"This loop is not a rectangle": "This loop is not a rectangle",
 	"Rectangles should be a closed loop": "Rectangles should be a closed loop",
+	"Two rectangles should share a vertex at the marked cell": "Two rectangles should share a vertex at the marked cell",
 	"Save to File": "Save to File",
 	"All numbers in a region must be equal": "All numbers in a region must be equal",
 	"The number must be equal to the number of cells of each color in a region": "The number must be equal to the number of cells of each color in a region",
@@ -487,6 +488,5 @@
 	"Double Choco Delight": "Double Choco Delight",
 	"dOubLESHOW 22/2": "dOubLESHOW 22/2",
 	"Rules": "Rules",
-	"Donate": "Donate",
-	"Two rectangles should share a vertex at the marked cell": "Two rectangles should share a vertex at the marked cell"
+	"Donate": "Donate"
 }
