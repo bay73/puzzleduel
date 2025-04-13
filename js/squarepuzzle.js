@@ -659,7 +659,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .useOuterColors(StdOuter.LEFT | StdOuter.TOP, StdColor.DARK_OUTER)
       .useOuterColors(StdOuter.RIGHT | StdOuter.BOTTOM, StdColor.OUTER)
       .add(controller().forAuthor().cell().outer().chooser()
-        .addNumbers(1,maxValue))
+        .addNumbers(0,maxValue))
       .add(controller().forSolver().cell().inner().noClue().clickSwitch()
         .addItem(StdItem.BLACK)
         .addItem(StdItem.BRIGHT.submitAs('grey')))
