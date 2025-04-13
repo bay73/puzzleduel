@@ -30,7 +30,7 @@
             <% var prevCategory = null; %>
             <% function compareVideos(v1, v2) {
               if (v1.category==v2.category) {
-                return v1.type.localeCompare(v2.type);
+                return v1.name.localeCompare(v2.name);
               } else {
                 return v1.category.localeCompare(v2.category);
               }
