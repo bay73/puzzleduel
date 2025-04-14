@@ -461,7 +461,8 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     }
     const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
     var typePuzzleCount = Object.entries(typeMap).reduce((map, [key, value]) => {
-      map[key] = {name: value.name, puzzleCount: 0, newCount: 0, lastDate: null, properties: value.properties};
+      const type = util.puzzleTypeToPresent(value, req.getLocale())
+      map[key] = {name: type.name, puzzleCount: 0, newCount: 0, lastDate: null, properties: type.properties, rules: type.rules};
       return map;
     }, {});
     const allPuzzles = await Puzzle.find({}, "-data");
@@ -510,6 +511,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
         return {
           code: key,
           name: value.name,
+          rules: value.rules,
           rating: Math.round(((Date.now() - value.lastDate)/(1000*60*60*24) + 60) / (1 + 2*Math.min(value.newCount, 5) + 2*Math.min(value.puzzleCount, 12 )))
         };
       })

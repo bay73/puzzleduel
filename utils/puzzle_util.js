@@ -97,30 +97,39 @@ function processTags(text, dimension) {
   return text;
 }
 
+function puzzleTypeToPresent(type_, locale, dimension) {
+  let type = {...type_}
+  if (locale != 'en') {
+    if (type.translations[locale]) {
+      if (type.translations[locale].rules) {
+        type.rules = type.translations[locale].rules;
+      }
+      if (type.translations[locale].gridControl) {
+        type.gridControl = type.translations[locale].gridControl;
+      }
+    }
+  }
+  if (type.properties) {
+    type.properties = Object.assign({}, type.properties);
+  }
+  if (dimension) {
+    type.rules = processTags(type.rules, dimension);
+    type.gridControl = processTags(type.gridControl, dimension);
+    if (type.properties) {
+      if (type.properties.figuresAttribute) {
+        type.properties.figuresAttribute = processTags(type.properties.figuresAttribute, dimension);
+      }
+    }
+  }
+  return type;
+}
+
 module.exports.puzzleToObj = async function(puzzle, locale) {
   if (!puzzle) return null;
   let puzzleObj = puzzle.toObject();
   let type = await PuzzleType.findOne({ code: puzzleObj.type });
   if(type) {
-    if (locale != 'en') {
-      if (type.translations[locale]) {
-        if (type.translations[locale].rules) {
-          type.rules = type.translations[locale].rules;
-        }
-        if (type.translations[locale].gridControl) {
-          type.gridControl = type.translations[locale].gridControl;
-        }
-      }
-    }
-    type.rules = processTags(type.rules, puzzleObj.dimension);
-    type.gridControl = processTags(type.gridControl, puzzleObj.dimension);
-    if (type.properties) {
-      type.properties = Object.assign({}, type.properties);
-      if (type.properties.figuresAttribute) {
-        type.properties.figuresAttribute = processTags(type.properties.figuresAttribute, puzzleObj.dimension);
-      }
-    }
-    puzzleObj.type = type.toObject();
+    puzzleObj.type = puzzleTypeToPresent(type.toObject(), locale, puzzleObj.dimension);
   }
   if (puzzleObj.author) {
     puzzleObj.authorId = puzzleObj.author;
@@ -135,25 +144,7 @@ module.exports.puzzleToPresent = async function(puzzle, locale) {
   let puzzleObj = Object.assign({}, puzzle);
   let type = Object.assign({}, await cache.readPuzzleType(puzzleObj.type));
   if(type) {
-    if (locale != 'en') {
-      if (type.translations[locale]) {
-        if (type.translations[locale].rules) {
-          type.rules = type.translations[locale].rules;
-        }
-        if (type.translations[locale].gridControl) {
-          type.gridControl = type.translations[locale].gridControl;
-        }
-      }
-    }
-    type.rules = processTags(type.rules, puzzleObj.dimension);
-    type.gridControl = processTags(type.gridControl, puzzleObj.dimension);
-    if (type.properties) {
-      type.properties = Object.assign({}, type.properties);
-      if (type.properties.figuresAttribute) {
-        type.properties.figuresAttribute = processTags(type.properties.figuresAttribute, puzzleObj.dimension);
-      }
-    }
-    puzzleObj.type = type;
+    puzzleObj.type = puzzleTypeToPresent(type, locale, puzzleObj.dimension);
   }
   if (puzzleObj.author) {
     puzzleObj.authorId = puzzle.author;
@@ -165,3 +156,4 @@ module.exports.puzzleToPresent = async function(puzzle, locale) {
   return puzzleObj;
 }
 
+module.exports.puzzleTypeToPresent = puzzleTypeToPresent;

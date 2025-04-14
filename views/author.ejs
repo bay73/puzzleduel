@@ -37,7 +37,9 @@
                     <% typesRating.sort((type1,type2) => (type2.rating - type1.rating)).forEach(function(type) { %>
                     <tr>
                       <td>
-                        <%= type.name %>
+                        <span data-toggle="tooltip" title="<%= type.rules %>">
+                          <%= type.name %>
+                        </span>
                       </td>
                       <td>
                         <%= type.rating %>
