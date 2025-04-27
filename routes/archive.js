@@ -512,7 +512,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
           code: key,
           name: value.name,
           rules: value.rules,
-          rating: Math.round(((Date.now() - value.lastDate)/(1000*60*60*24) + 60) / (1 + 2*Math.min(value.newCount, 5) + 2*Math.min(value.puzzleCount, 12 )))
+          rating: Math.round(((Date.now() - (value.lastDate==null?Date.now():value.lastDate))/(1000*60*60*24) + 60) / (1 + 2*Math.min(value.newCount, 5) + 2*Math.min(value.puzzleCount, 12 )))
         };
       })
     });

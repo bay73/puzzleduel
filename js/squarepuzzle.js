@@ -1172,12 +1172,15 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   } else if (typeCode=="ring_ring_battenberg") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
-        .addItem(StdItem.BATTENBERG)
+        .addItem(controllerItem({image: "battenberg_small_e", returnValue: "battenberg"}))
         .addItem(StdItem.BLACK))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
       .add(controller().forSolver().edge().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(controllerItem({image: "battenberg_small", returnValue: "battenberg"}).doNotSubmit())
+        .addItem(controllerItem({image: "battenberg_small_1", returnValue: "battenberg"}).doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="four_winds") {
