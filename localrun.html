@@ -132,29 +132,18 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "ring_ring_battenberg",
+      typeCode: "ring_ring_square_rectangle",
       id: "puzzle.code",
-      dimension: "9x9"
+      dimension: "6x6"
 
     };
     var settings = {
       local: true,
       data: {
-    "a1": "black",
-    "g1": "black",
-    "d4": "battenberg",
-    "i4": "black",
-    "a5": "black",
-    "e5": "battenberg",
-    "g5": "battenberg",
-    "f7": "black",
-    "h7": "black",
-    "b8": "black",
-    "g8": "battenberg",
-    "h9": "black",
-    "i9": "black",
-    "tag": ""
-}
+        f3: 'black_circle', 
+        f4: 'white_circle', 
+        tag: ''
+      }  
     };
     settings.theme = "default";
     var grid = "#mainGrid"

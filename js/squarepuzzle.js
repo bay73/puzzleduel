@@ -1169,6 +1169,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
+    } else if (typeCode=="ring_ring_square_rectangle") {
+      this.typeProperties = decribePuzzleType()
+        .add(controller().forAuthor().cell().clickSwitch()
+          .addItem(StdItem.BLACK)
+          .addItem(StdItem.WHITE_CIRCLE)
+          .addItem(StdItem.BLACK_CIRCLE))
+        .add(controller().forSolver().connector().drag()
+          .addItem(StdItem.LINE.submitAs('1')))
+        .add(controller().forSolver().edge().clickSwitch()
+          .addItem(StdItem.CROSS.doNotSubmit()))
+        .build(this);
+
   } else if (typeCode=="ring_ring_battenberg") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
