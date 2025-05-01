@@ -491,5 +491,8 @@
 	"Double Choco Delight": "Double Choco Delight",
 	"dOubLESHOW 22/2": "dOubLESHOW 22/2",
 	"Rules": "Rules",
-	"Donate": "Поддержать"
+	"Donate": "Поддержать",
+	"Loop should pass straight through all circles": "Цикл должен проходить через все точки без поворота",
+	"Dot should be in the middle of the corresponding straight segment": "Точка должна быть в середине прямого отрезка",
+	"Loop should have not more than one dot at each straight segment": "Не должно быть двух точек на одном прямом отрезке"
 }
