@@ -491,5 +491,7 @@
 	"Donate": "Donate",
 	"Loop should pass straight through all circles": "Loop should pass straight through all circles",
 	"Dot should be in the middle of the corresponding straight segment": "Dot should be in the middle of the corresponding straight segment",
-	"Loop should have not more than one dot at each straight segment": "Loop should have not more than one dot at each straight segment"
+	"Loop should have not more than one dot at each straight segment": "Loop should have not more than one dot at each straight segment",
+	"All cells of one colour should be used": "All cells of one colour should be used",
+	"Line should pass only through the cells of one colour": "Line should pass only through the cells of one colour"
 }

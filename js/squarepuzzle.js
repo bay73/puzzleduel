@@ -1029,6 +1029,21 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
+  } else if (typeCode=="expressway") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.LIGHT_GREY))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
+
   } else if (typeCode=="maxi_loop") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()

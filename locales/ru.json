@@ -494,5 +494,7 @@
 	"Donate": "Поддержать",
 	"Loop should pass straight through all circles": "Цикл должен проходить через все точки без поворота",
 	"Dot should be in the middle of the corresponding straight segment": "Точка должна быть в середине прямого отрезка",
-	"Loop should have not more than one dot at each straight segment": "Не должно быть двух точек на одном прямом отрезке"
+	"Loop should have not more than one dot at each straight segment": "Не должно быть двух точек на одном прямом отрезке",
+	"All cells of one colour should be used": "Все клетки одного цвета должны быть использованы",
+	"Line should pass only through the cells of one colour": "Линия должна проходить только через клетки одного цвета"
 }
