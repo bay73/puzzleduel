@@ -1550,7 +1550,7 @@ krammaPuzzleType.prototype.extendLine = function(edge) {
   } else {
     // vertical line
     const col = edge.col;
-    for (let i=0;i<this.cols;i++) {
+    for (let i=0;i<this.rows;i++) {
       if (i!=edge.row) {
         this.edges[i][col][side].switchToData(dataToSet, true);
         this.edges[i][col][side].setPencilData(pencilDataToSet, true);
