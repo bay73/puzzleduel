@@ -1195,6 +1195,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.submitAs('1')))
       .build(this);
 
+  } else if (typeCode=="mid_loop") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.SMALL_CIRCLE))
+      .add(controller().forAuthor().edge().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().noClue().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
+
   } else {
 
   var typeProperties = {}
