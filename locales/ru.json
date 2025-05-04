@@ -491,5 +491,14 @@
 	"Double Choco Delight": "Double Choco Delight",
 	"dOubLESHOW 22/2": "dOubLESHOW 22/2",
 	"Rules": "Rules",
-	"Donate": "Поддержать"
+	"Donate": "Поддержать",
+	"Loop should pass straight through all circles": "Цикл должен проходить через все точки без поворота",
+	"Dot should be in the middle of the corresponding straight segment": "Точка должна быть в середине прямого отрезка",
+	"Loop should have not more than one dot at each straight segment": "Не должно быть двух точек на одном прямом отрезке",
+	"All cells of one colour should be used": "Все клетки одного цвета должны быть использованы",
+	"Line should pass only through the cells of one colour": "Линия должна проходить только через клетки одного цвета",
+	"One rectangle can't pass throw circles of different colors": "Один прямоугольник не может проходить через кружки разного цвета",
+	"Two rectangles can't cross at a circle": "Два прямогольника не могут проходить через одиин кружок",
+	"Rectangle with a black circle must be a square": "Прямоугольник с чёрным кружком должен быть квадратом",
+	"Rectangle with a white circle can not be a square": "Прямоугольник с белым кружком не может быть квадратом"
 }

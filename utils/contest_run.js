@@ -3,7 +3,7 @@ const recountContest = require('../utils/contest').recountContest;
 const mongoose = require('mongoose');
 
 recount = async function () {
-  await recountContest('iuyacbpquzq');
+  await recountContest('stovtriaiujamsa');
 }
 
 recount().then(() => {

@@ -69,7 +69,7 @@ checkValidWhiteCells: function(v, h, blacks, circles) {
         }
       } else if (circles[y][x]){
         if (ends != 2) {
-          return {status: "Two rectangles can't cross at circle", errors: [util.coord(x,y)]}
+          return {status: "Two rectangles can't cross at a circle", errors: [util.coord(x,y)]}
         } else if (v_ends != 1) {
           return {status: "Circle shoud be at angle", errors: [util.coord(x,y)]}
         }
@@ -130,7 +130,7 @@ buildLine: function(v, h, x0, y0, circles) {
         circleCount++;
         if (color) {
           if (color!= circles[current.y][current.x]) {
-            return {status: "Rectangale can't pass throw different color circles", errors: usedCircles};
+            return {status: "One rectangle can't pass throw circles of different colors", errors: usedCircles};
           }
         } else {
           color = circles[current.y][current.x];
@@ -172,10 +172,10 @@ buildLine: function(v, h, x0, y0, circles) {
   }
   if (color) {
     if (color == "white_circle" && width == height) {
-      return {status: "Rectangle with white circle  may not be square", errors: line};
+      return {status: "Rectangle with a white circle can not be a square", errors: line};
     }
     if (color == "black_circle" && width != height) {
-      return {status: "Rectangle with black circle must be square", errors: line};
+      return {status: "Rectangle with a black circle must be a square", errors: line};
     }
   }
   return {status: "OK", line: line, turns: turns};

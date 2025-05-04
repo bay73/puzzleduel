@@ -1029,6 +1029,21 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
+  } else if (typeCode=="expressway") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.LIGHT_GREY))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
+
   } else if (typeCode=="maxi_loop") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
@@ -1205,6 +1220,18 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_DOT.doNotSubmit()))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
+      .build(this);
+
+  } else if (typeCode=="mid_loop") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.SMALL_CIRCLE))
+      .add(controller().forAuthor().edge().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().noClue().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
   } else {
@@ -1550,7 +1577,7 @@ krammaPuzzleType.prototype.extendLine = function(edge) {
   } else {
     // vertical line
     const col = edge.col;
-    for (let i=0;i<this.cols;i++) {
+    for (let i=0;i<this.rows;i++) {
       if (i!=edge.row) {
         this.edges[i][col][side].switchToData(dataToSet, true);
         this.edges[i][col][side].setPencilData(pencilDataToSet, true);
