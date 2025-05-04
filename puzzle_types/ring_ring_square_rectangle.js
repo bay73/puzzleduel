@@ -71,7 +71,7 @@ checkValidWhiteCells: function(v, h, blacks, circles) {
         if (ends != 2) {
           return {status: "Two rectangles can't cross at a circle", errors: [util.coord(x,y)]}
         } else if (v_ends != 1) {
-          return {status: "Circle shoud be at angle", errors: [util.coord(x,y)]}
+          return {status: "Circle shoud be at ring angle", errors: [util.coord(x,y)]}
         }
       } else {
         if (ends == 0) {
