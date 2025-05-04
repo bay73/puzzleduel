@@ -60,7 +60,9 @@ check:function(dimension, clueData, data){
 checkValidWhiteCells: function(v, h, blacks, circles) {
   for (var y = 0; y < h.rows; y++) {
     for (var x = 0; x < h.cols; x++) {
-      var ends = (y > 0 && v[y-1][x]) + v[y][x] + (x > 0 && h[y][x - 1]) + h[y][x];
+      var v_ends = (y > 0 && v[y-1][x]) + v[y][x];
+      var h_ends = (x > 0 && h[y][x - 1]) + h[y][x];
+      var ends = h_ends + v_ends;
       if (blacks[y][x]) {
         if (ends != 0) {
           return {status: "Rectangle can't pass through the black cell", errors: [util.coord(x,y)]}
@@ -68,6 +70,8 @@ checkValidWhiteCells: function(v, h, blacks, circles) {
       } else if (circles[y][x]){
         if (ends != 2) {
           return {status: "Two rectangles can't cross at circle", errors: [util.coord(x,y)]}
+        } else if (v_ends != 1) {
+          return {status: "Circle shoud be at angle", errors: [util.coord(x,y)]}
         }
       } else {
         if (ends == 0) {
