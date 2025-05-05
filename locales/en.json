@@ -499,5 +499,6 @@
 	"One rectangle can't pass throw circles of different colors": "One rectangle can't pass throw circles of different colors",
 	"Two rectangles can't cross at a circle": "Two rectangles can't cross at a circle",
 	"Rectangle with a black circle must be a square": "Rectangle with a black circle must be a square",
-	"Rectangle with a white circle can not be a square": "Rectangle with a white circle can not be a square"
+	"Rectangle with a white circle can not be a square": "Rectangle with a white circle can not be a square",
+	"Circle should be at a corner of the rectangle": "Circle should be at a corner of the rectangle"
 }
