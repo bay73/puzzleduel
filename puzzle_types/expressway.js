@@ -141,7 +141,7 @@ checkArea: function(line, area, clues) {
     return {status: "Line should pass only through the cells of one colour", errors: area};
   }
   if (greyUsed==0 && whiteUsed==0) {
-    return {status: "All cells of one colour should be used", errors: area};
+    return {status: "There should be a single loop passing through all areas", errors: area};
   }
   if (greyUsed!=0 && greyUsed!=greyCount) {
     return {status: "All cells of one colour should be used", errors: area};

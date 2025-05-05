@@ -501,5 +501,6 @@
 	"Two rectangles can't cross at a circle": "Два прямогольника не могут проходить через одиин кружок",
 	"Rectangle with a black circle must be a square": "Прямоугольник с чёрным кружком должен быть квадратом",
 	"Rectangle with a white circle can not be a square": "Прямоугольник с белым кружком не может быть квадратом",
-	"Circle should be at a corner of the rectangle": "Кружок должен быть в углу прямоугольника"
+	"Circle should be at a corner of the rectangle": "Кружок должен быть в углу прямоугольника",
+	"There should be a single loop passing through all areas": "Один цикл должен заходить во все области"
 }
