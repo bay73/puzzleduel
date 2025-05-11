@@ -20,6 +20,7 @@ PuzzleTypeBuilder = function() {
   this.upgradeClue = undefined;
   this.outerEdges = true;
   this.thickEdges = false;
+  this.cornerTexts = false;
 }
 
 // Adds new controller to the puzzle type descriptor.
@@ -46,6 +47,11 @@ PuzzleTypeBuilder.prototype.add = function(controller) {
 // Adds new controller to the puzzle type descriptor.
 PuzzleTypeBuilder.prototype.useOuterCells = function(outerCellType) {
   this.outerCellType = outerCellType;
+  return this;
+}
+
+PuzzleTypeBuilder.prototype.useCornerTexts = function(cornerTexts) {
+  this.cornerTexts = cornerTexts;
   return this;
 }
 
@@ -166,6 +172,7 @@ PuzzleTypeBuilder.prototype.build = function(puzzle) {
   typeDesc.needRight = this.outerCellType & StdOuter.RIGHT;
   typeDesc.needTop = this.outerCellType & StdOuter.TOP;
   typeDesc.needLeft = this.outerCellType & StdOuter.LEFT;
+  typeDesc.cornerTexts = this.cornerTexts;
   if (Object.keys(this.outerColor).length) {
     typeDesc.outerColorMap = (cell) => {
       for (const [key, value] of Object.entries(self.outerColor)) {

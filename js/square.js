@@ -710,7 +710,11 @@ squarePuzzleCell.prototype.drawImage = function() {
 }
 
 squarePuzzleCell.prototype.drawText = function() {
-  var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.7, this.data.text);
+  if (this.puzzle.typeProperties.cornerTexts) {
+    var text = this.snapText(this.cornerTextPosition(), this.puzzle.size.unitSize*0.4, this.data.text);
+  } else {
+    var text = this.snapText(this.center(), this.puzzle.size.unitSize*0.7, this.data.text);
+  }
   var textColor = this.data.textColor;
   if (!textColor) {
     if (this.outerCell) {
@@ -726,6 +730,15 @@ squarePuzzleCell.prototype.drawText = function() {
   text.attr({"fill": textColor});
   return text;
 }
+
+squarePuzzleCell.prototype.cornerTextPosition = function() {
+  var innerSize = this.puzzle.size.unitSize*0.75;
+  return {
+    x: this.center().x - innerSize*3/8,
+    y: this.center().y - innerSize*3/8
+  }
+}
+
 
 squarePuzzleCell.prototype.drawPencilColor = function() {
   if (Array.isArray(this.pencilData)) {

@@ -139,6 +139,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   // With areas
   } else if (typeCode=="heyawake") {
     this.typeProperties = decribePuzzleType()
+      .useCornerTexts(true)
       .add(controller().forAuthor().cell().chooser()
         .addItem(StdItem.CROSS)
         .addNumbers(0,20,{textColor: this.colorSchema.textColor}))
@@ -153,6 +154,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   } else if (typeCode=="aqre") {
     this.typeProperties = decribePuzzleType()
+      .useCornerTexts(true)
       .add(controller().forAuthor().cell().chooser()
         .addItem(StdItem.CROSS)
         .addNumbers(0,20,{textColor: this.colorSchema.textColor}))
@@ -1016,6 +1018,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   // Connector drawing
   } else if (typeCode=="country_road") {
     this.typeProperties = decribePuzzleType()
+      .useCornerTexts(true)
       .add(controller().forAuthor().cell().chooser()
         .addNumbers(1,99))
       .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
@@ -1046,6 +1049,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
 
   } else if (typeCode=="maxi_loop") {
     this.typeProperties = decribePuzzleType()
+      .useCornerTexts(true)
       .add(controller().forAuthor().cell().chooser()
         .addNumbers(1,99))
       .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
