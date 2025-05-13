@@ -148,7 +148,7 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
       User.find(),
       cache.readPuzzleTypes(),
       util.bestSolvingTimeMap(true),
-      Puzzle.find(filter, "code type dimension tag daily author rating createdAt").sort(req.query.sort=='t'?{daily: -1, type: 1}:{daily: -1}),
+      Puzzle.find(filter, "code type dimension tag daily author rating createdAt comment").sort(req.query.sort=='t'?{daily: -1, type: 1}:{daily: -1}),
       Puzzle.find(oldDailyFilter, "type daily").sort({daily: -1})
     ])
 
@@ -180,7 +180,8 @@ router.get('/daily', ensureAuthenticated, async (req, res, next) => {
           published: puzzle.published,
           rating: puzzle.rating,
           createdAt: puzzle.createdAt,
-          alreadyAssigned: typeMap[puzzle.type].alreadyAssigned
+          alreadyAssigned: typeMap[puzzle.type].alreadyAssigned,
+          comment: puzzle.comment
         };
       }),
       sort: req.query.sort
@@ -300,7 +301,6 @@ router.get('/instantrating', ensureAuthenticated, async (req, res, next) => {
     date.setDate(lastDate.getDate() - 42);
     const actionLog = await UserActionLog.find({date: {$gt: date}});
     actionLog.forEach(log => {if (userData[log.userId].ipCountries.indexOf(log.ipInfo.country)==-1) userData[log.userId].ipCountries.push(log.ipInfo.country)});
-    console.log(userData)
     var allData = [];
     for (let [userId, data] of Object.entries(userData)) {
       var sum = 0;

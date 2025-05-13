@@ -503,7 +503,8 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
             time: util.timeToString(timesMap[puzzle.code]),
             published: puzzle.published,
             rating: puzzle.rating,
-            createdAt: puzzle.createdAt
+            createdAt: puzzle.createdAt,
+            comment: puzzle.comment
           };
       }),
       typesRating: Object.entries(typePuzzleCount)

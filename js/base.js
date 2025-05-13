@@ -213,6 +213,7 @@ basePuzzle.prototype.initControls = function (controls) {
   this.controls.timer = controls + " [name=timer]";
   this.controls.tag =  controls + " [name=tag]";
   this.controls.difficulty =  controls + " [name=difficulty]";
+  this.controls.comment =  controls + " [name=comment]";
   this.controls.successText =  controls + " [name=successMessageText]";
   this.controls.successMsg =  controls + " [name=successMessage]";
   this.controls.errorText =  controls + " [name=errorMessageText]";
@@ -408,6 +409,7 @@ basePuzzle.prototype.save = function() {
   if (this.changeDifficulty) {
     data.difficulty = $(this.controls.difficulty).val()*1000;
   }
+  data.comment = $(this.controls.comment).val();
   this.removeMessages();
   console.log(data);
   // Read result from server and show.

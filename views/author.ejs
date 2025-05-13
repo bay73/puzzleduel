@@ -201,38 +201,52 @@
                  } %>
               <% puzzles.sort(sortFn).forEach(function(puzzle) { %>
               <tr>
-                <td>
+                <td class="pb-0" style="width:155px">
                   <%= puzzle.tag %>
-                  <%= puzzle.puzzleDate?("("+puzzle.puzzleDate.toISOString().split('T')[0]+")"):"" %></td>
-                <td>
+                  <%= puzzle.puzzleDate?("("+puzzle.puzzleDate.toISOString().split('T')[0]+")"):"" %>
+                </td>
+                <td class="pb-0">
                   <a href="/single/<%= puzzle.code %>">
                     <%= puzzle.type %>
                     <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
                   </a>
                 </td>
-                <td>
+                <td class="pb-0">
                   <a href="/archive/<%= puzzle.code %>/scores">
                     <%= puzzle.time %>
                   </a>
                 </td>
-                <td>
+                <td class="pb-0">
                   <% if (puzzle.rating && puzzle.rating.rating>0) { %>
                   <a href="javascript:void(0);" onclick="showPuzzleComments('<%= puzzle.code %>','<%= puzzle.type %><%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>',<%= Math.round(puzzle.rating.rating*10)/10 %>,<%= puzzle.rating.count %>)" >
                     <%- include ('./partials/rating_span', {rating: puzzle.rating.rating, ratingCount: puzzle.rating.count}) %>
                   </a>
                   <% } %>
                 </td>
-                <td><% if(!puzzle.published) { %>
+                <td class="pb-0">
+                <% if(!puzzle.published) { %>
                   <a href="/single/<%= puzzle.code %>/author/">
                     Edit
                   </a>
-                <% } %></td>
-                <td><% if(!puzzle.tag || puzzle.tag=='temporary' || puzzle.tag=='daily' && !puzzle.puzzleDate) { %>
+                <% } %>
+                </td>
+                <td class="pb-0">
+                <% if(!puzzle.tag || puzzle.tag=='temporary' || puzzle.tag=='daily' && !puzzle.puzzleDate) { %>
                   <a href="" onclick = "deletePuzzle('<%= puzzle.code %>')">
                     Delete
                   </a>
-                <% } %></td>
+                <% } %>
+                </td>
               </tr>
+              <% if (puzzle.comment && puzzle.comment.trim().length > 0) {%>
+              <tr>
+                <td class="pt-0">
+                </td>
+                <td class="pt-0" colspan=4>
+                  <%= puzzle.comment %>
+                </td>
+              </tr>
+              <% }%>
               <% }) %>
             </tbody>
           </table>

@@ -299,12 +299,15 @@ router.post('/:puzzleid/edit', async (req, res, next) => {
     }
     var tag = req.body["tag"];
     var difficulty = req.body["difficulty"];
+    var comment = req.body["comment"];
     var data = req.body;
     delete data["tag"];
     delete data["difficulty"];
+    delete data["comment"];
     var newData = JSON.stringify(data);
     puzzle.tag = tag;
     puzzle.difficulty = difficulty;
+    puzzle.comment = comment;
     if (puzzle.data != newData) {
       puzzle.data = newData;
       await Promise.all([

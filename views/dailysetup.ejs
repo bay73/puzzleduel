@@ -42,7 +42,7 @@
             <tbody>
               <% puzzles.sort(sortFunction).forEach(function(puzzle) { %>
               <tr>
-                <td class="p-1">
+                <td class="p-1 pb-0" style="width:45px">
                   <% if (!puzzle.daily) { %>
                   <a href="/admin/daily/<%= puzzle.code %>/top">
                     <span class="glyphicon glyphicon-arrow-up"></span>
@@ -57,11 +57,11 @@
                   <% } %>
                 </td>
                 <% var competitiveDate = new Date(); competitiveDate.setDate(competitiveDate.getDate()-5); %>
-                <td class="<%= puzzle.daily<competitiveDate?'text-info':(puzzle.daily<new Date()?'text-warning':'') %> p-1">
+                <td class="<%= puzzle.daily<competitiveDate?'text-info':(puzzle.daily<new Date()?'text-warning':'') %> p-1 pb-0" style="width:155px">
                   <%= puzzle.tag %>
                   <%= puzzle.daily?("("+puzzle.daily.toISOString().split('T')[0]+")"):"" %>
                 </td>
-                <td class="p-1">
+                <td class="p-1 pb-0">
                   <% var visibleAge = Math.ceil(puzzle.publishAge/86400000); %>
                   <% var ageColor = (!puzzle.daily && puzzle.alreadyAssigned)?256:(visibleAge?220-visibleAge:0); %>
                   <a href="/single/<%= puzzle.code %>">
@@ -70,22 +70,31 @@
                     <%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>
                   </a>
                 </td>
-                <td class="p-1">
+                <td class="p-1 pb-0">
                   <a href="/archive/<%= puzzle.code %>/scores">
                     <%= puzzle.time %>
                   </a>
                 </td>
-                <td class="p-1">
+                <td class="p-1 pb-0">
                   <a href="javascript:void(0);" onclick="showPuzzleComments('<%= puzzle.code %>','<%= puzzle.type %><%= puzzle.dimension?" ("+puzzle.dimension.split('-')[0]+")":"" %>')" >
                   <% if (puzzle.rating && puzzle.rating.rating>0) { %>
                   <%- include ('./partials/rating_span', {rating: puzzle.rating.rating, ratingCount: puzzle.rating.count}) %>
                   <% } %>
                   </a>
                 </td>
-                <td class="p-1">
+                <td class="p-1 pb-0">
                   <%= puzzle.author %>
                 </td>
               </tr>
+              <% if (puzzle.comment && puzzle.comment.trim().length > 0) {%>
+              <tr>
+                <td class="pt-0" colspan=2>
+                </td>
+                <td class="pt-0" colspan=5>
+                  <%= puzzle.comment %>
+                </td>
+              </tr>
+              <% }%>
               <% }) %>
             </tbody>
           </table>
