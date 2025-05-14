@@ -78,10 +78,51 @@
             <li><a class="nav-link" href="/rating"><%= __('Rating') %></a></li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('League scores') %></a>
               <ul class="dropdown-menu bg-dark">
-                <li><a class="nav-link" href="/league/2025-01-01"><%= __('January') %> 2025</a></li>
-                <li><a class="nav-link" href="/league/2025-02-01"><%= __('February') %> 2025</a></li>
-                <li><a class="nav-link" href="/league/2025-03-01"><%= __('March') %> 2025</a></li>
-                <li><a class="nav-link" href="/league/2025-04-01"><%= __('April') %> 2025</a></li>
+                <% let year = new Date().getFullYear(); %>
+                <% let month = new Date().getMonth(); %>
+                <% if(month<1) { %>
+                <li><a class="nav-link" href="/league/<%=year-1 %>-10-01"><%= __('October') %> <%=year-1 %></a></li>
+                <% } %>
+                <% if(month<2) { %>
+                <li><a class="nav-link" href="/league/<%=year-1 %>-11-01"><%= __('November') %> <%=year-1 %></a></li>
+                <% } %>
+                <% if(month<3) { %>
+                <li><a class="nav-link" href="/league/<%=year-1 %>-12-01"><%= __('December') %> <%=year-1 %></a></li>
+                <% } %>
+                <li><a class="nav-link" href="/league/<%=year %>-01-01"><%= __('January') %> <%=year %></a></li>
+                <% if(month>0) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-02-01"><%= __('February') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>1) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-03-01"><%= __('March') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>2) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-04-01"><%= __('April') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>3) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-05-01"><%= __('May') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>4) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-06-01"><%= __('June') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>5) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-07-01"><%= __('July') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>6) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-08-01"><%= __('August') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>7) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-09-01"><%= __('September') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>8) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-10-01"><%= __('October') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>9) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-11-01"><%= __('November') %> <%=year %></a></li>
+                <% } %>
+                <% if(month>10) { %>
+                <li><a class="nav-link" href="/league/<%=year %>-12-01"><%= __('December') %> <%=year %></a></li>
+                <% } %>
               </ul>
             </li>
             <li class="dropdown-divider"></li>
