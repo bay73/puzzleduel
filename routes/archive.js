@@ -467,14 +467,16 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     }, {});
     const allPuzzles = await Puzzle.find({}, "-data");
     allPuzzles.forEach(puzzle => {
-      typePuzzleCount[puzzle.type].puzzleCount++;
+      if (!puzzle.hidden) {
+        typePuzzleCount[puzzle.type].puzzleCount++;
+      }
       if (puzzle.daily) {
         if (puzzle.daily < Date.now()) {
           typePuzzleCount[puzzle.type].lastDate = Math.max(typePuzzleCount[puzzle.type].lastDate, puzzle.daily);
         } else {
           typePuzzleCount[puzzle.type].lastDate = Math.max(typePuzzleCount[puzzle.type].lastDate, Date.now());
         }
-      } else {
+      } else if (puzzle.tag=="daily") {
         typePuzzleCount[puzzle.type].newCount++;
       }
     });
