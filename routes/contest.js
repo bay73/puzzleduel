@@ -226,10 +226,10 @@ router.post('/:contestid/edit', async (req, res, next) => {
         } else {
           puzzleNum=1;
         }
-        let revealDate = contest.start
+        let revealDate = contest.start;
         if (contest.type=="daily_shadow" || contest.type=="daily" ) {
           let maxDate = Math.max(...contest.puzzles.map(o => o.revealDate))
-          if (maxDate) {
+          if (maxDate && maxDate > revealDate) {
             revealDate = new Date(maxDate);
             revealDate.setDate(revealDate.getDate() + 1);
           }
