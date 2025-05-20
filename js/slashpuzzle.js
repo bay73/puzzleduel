@@ -29,24 +29,6 @@ slashPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.SLASH)
         .addItem(StdItem.BACKSLASH))
       .build(this);
-
-  // 24 hours drawings
-  } else if (typeCode=="half_cut") {
-    var letters = self.dimensionExtra;
-    this.typeProperties = decribePuzzleType().edgeStyle(false, false)
-      .add(controller().forAuthor().edge().clickSwitch().withDrag()
-        .addItem(StdItem.BLACK))
-      .add(controller().forAuthor().node().dragEnabled())
-      .add(controller().forAuthor().cell().noClue().clickSwitch()
-        .addItem(StdItem.SLASH)
-        .addItem(StdItem.BACKSLASH))
-      .add(controller().forSolver().edge().clickSwitch().withDrag()
-        .addItem(StdItem.BLACK))
-      .add(controller().forSolver().node().dragEnabled())
-      .add(controller().forSolver().cell().noClue().clickSwitch()
-        .addItem(StdItem.SLASH)
-        .addItem(StdItem.BACKSLASH))
-      .build(this);
   }
 }
 

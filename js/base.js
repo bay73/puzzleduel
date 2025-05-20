@@ -343,12 +343,6 @@ basePuzzle.prototype.start = function() {
 }
 
 basePuzzle.prototype.saveToFile = function () {
-  const snap = this.snap;
-  $(snap.defs).children("image").each(function() {
-    const e = $(this)
-    e.attr("savedHref", e.attr("href"));
-    e.removeAttr("href")
-  });
   let link = document.createElement('a');
   link.setAttribute('download', this.typeCode + '-' + this.dimension + '.svg');
   let data = new Blob([$(this.snap.node)[0].outerHTML], {type: 'text/plain'});
@@ -360,11 +354,6 @@ basePuzzle.prototype.saveToFile = function () {
     var event = new MouseEvent('click');
     link.dispatchEvent(event);
     document.body.removeChild(link);
-    $(snap.defs).children("image").each(function() {
-      const e = $(this)
-      e.attr("href", e.attr("savedHref"));
-      e.removeAttr("savedHref")
-    });
   });
 }
 

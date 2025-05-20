@@ -53,17 +53,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "half_cut",
+      typeCode: "cartons",
       id: "puzzle.code",
-      dimension: "5x4"
+      dimension: "7x7"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["slashpuzzle"], function() {
-      puzzle = new slashPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

@@ -135,37 +135,26 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "half_cut",
+      typeCode: "cartons",
       id: "puzzle.code",
-      dimension: "5x4"
+      dimension: "7x7"
 
     };
     var settings = {
       local: true,
       data: {
-    "c1": "\\",
-    "e1": "\\",
-    "a2": "/",
-    "e3": "/",
-    "a4": "\\",
-    "c4": "/",
-    "edges": {
-        "b1-2": "black",
-        "c1-0": "black",
-        "c1-2": "black",
-        "d1-0": "black",
-        "e2-1": "black",
-        "a3-3": "black",
-        "d3-2": "black",
-        "b4-2": "black"
-    },
+    "a1": "Y",
+    "d3": "P",
+    "f4": "W",
+    "d5": "?",
+    "g7": "T",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["slashpuzzle"], function() {
-      puzzle = new slashPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
