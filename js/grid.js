@@ -282,9 +282,37 @@ gridElement.prototype.getValue = function() {
 
 // Drawing utility
 gridElement.prototype.snapImage = function(center, size, image) {
-  return this.puzzle.snap.image(
-    this.puzzle.imageUrl(image),
-    center.x-size/2, center.y-size/2, size, size);
+  function addBase64Source(sourceImg, defElement) {
+      const canvas = document.createElement('canvas');
+      canvas.width = sourceImg[0].naturalWidth;
+      canvas.height = sourceImg[0].naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(sourceImg[0], 0, 0);
+      const base64String = canvas.toDataURL('image/png');
+      $(defElement.node).attr("xlink:href", base64String)
+  }
+  const snap = this.puzzle.snap;
+  if ($(snap.defs).children("image#"+image).length == 0) {
+    let defElement = snap.image(this.puzzle.imageUrl(image), 0, 0, size, size).toDefs()
+    $(defElement.node).attr("id", image)
+    const sourceImg = $("<img src='"+this.puzzle.imageUrl(image)+"'>")
+    // Wait until the image is fully loaded
+    if (!sourceImg.complete) {
+      sourceImg.on("load", function () {
+        addBase64Source(sourceImg, defElement);
+      });
+    } else {
+      addBase64Source(sourceImg, defElement);
+    }
+  }
+  const element = snap.use(image)
+  element.attr({
+    x: center.x-size/2,
+    y: center.y-size/2,
+    width: size,
+    height: size
+  })
+  return element
 }
 
 
