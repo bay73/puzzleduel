@@ -281,7 +281,7 @@ gridElement.prototype.getValue = function() {
 }
 
 // Drawing utility
-gridElement.prototype.snapImage = function(center, size, image) {
+gridElement.prototype.snapImage = function(center, size, imageName) {
   function addBase64Source(sourceImg, defElement) {
       const canvas = document.createElement('canvas');
       canvas.width = sourceImg[0].naturalWidth;
@@ -292,11 +292,12 @@ gridElement.prototype.snapImage = function(center, size, image) {
       $(defElement.node).attr("xlink:href", base64String)
   }
   const snap = this.puzzle.snap;
-  if ($(snap.defs).children("image#"+image).length == 0) {
-    let defElement = snap.image(this.puzzle.imageUrl(image), 0, 0, size, size).toDefs()
-    $(defElement.node).attr("id", image)
-    const sourceImg = $("<img src='"+this.puzzle.imageUrl(image)+"'>")
-    // Wait until the image is fully loaded
+  const imageId = imageName + "-" + Math.round(size).toString()
+  if ($(snap.defs).children("image#"+imageId).length == 0) {
+    let defElement = snap.image(this.puzzle.imageUrl(imageName), 0, 0, size, size).toDefs()
+    $(defElement.node).attr("id", imageId)
+    const sourceImg = $("<img src='"+this.puzzle.imageUrl(imageName)+"'>")
+    // Wait until the source image is fully loaded
     if (!sourceImg.complete) {
       sourceImg.on("load", function () {
         addBase64Source(sourceImg, defElement);
@@ -305,12 +306,10 @@ gridElement.prototype.snapImage = function(center, size, image) {
       addBase64Source(sourceImg, defElement);
     }
   }
-  const element = snap.use(image)
+  const element = snap.use(imageId)
   element.attr({
     x: center.x-size/2,
-    y: center.y-size/2,
-    width: size,
-    height: size
+    y: center.y-size/2
   })
   return element
 }
