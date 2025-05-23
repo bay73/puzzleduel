@@ -240,6 +240,7 @@ basePuzzle.prototype.initControls = function (controls) {
   $(this.controls.checkBtn).prop('disabled', true).click(() => self.check());
   $(this.controls.saveBtn).click(() => self.save());
   $(this.controls.tag).change(() => $(self.controls.saveBtn).prop('disabled', false));
+  $(this.controls.comment).change(() => $(self.controls.saveBtn).prop('disabled', false));
   $(this.controls.difficulty).change(() => {self.changeDifficulty = true; $(self.controls.saveBtn).prop('disabled', false);});
   $(this.controls.pencilMarkCtrl).hide();
   $(this.controls.pencilMarkCb).click(() => self.togglePencilMarkMode());
