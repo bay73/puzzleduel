@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 truncate = async function () {
   var d = new Date();
-  d.setDate(d.getDate()-31)
+  d.setDate(d.getDate()-65)
   result = await UserActionLog.deleteMany({date: {$lt: d}});
   console.log(result)
 }
