@@ -38,6 +38,10 @@ check:function(dimension, clueData, data){
   if (lineRes.status != "OK") {
     return lineRes;
   }
+  var res = Checker.checkSingleLoop(lineRes.line, v, h);
+  if (res.status != "OK") {
+    return res;
+  }
   var res = Checker.checkClues(clues, v, h);
   if (res.status != "OK") {
     return res;
@@ -191,6 +195,23 @@ checkClues: function(clues, v, h) {
           return {status: "The clue is not correct" , errors: [util.coord(x,y)]};
         }
         
+      }
+    }
+  }
+  return {status: "OK"};
+},
+checkSingleLoop: function(line, v, h) {
+  var used = util.create2DArray(v.rows, v.cols, false)
+  used[line[0].y][line[0].x] = true;
+  for (var i=1;i<line.length-1;i++) {
+    used[line[i].y][line[i].x] = true;
+  }
+  for (var x=0;x < v.cols;x++) {
+    for (var y=0;y < v.rows; y++) {
+      if (v[y][x] || h[y][x]){
+        if (!used[y][x]) {
+          return {status: "There should be single loop passing through some cells", errors: []};
+        }
       }
     }
   }
