@@ -294,12 +294,12 @@ router.get('/instantrating', ensureAuthenticated, async (req, res, next) => {
       var d = new Date(lastDate);
       d.setDate(lastDate.getDate() - i*7);
       dates.push(d);
-      const ratingList = await Rating.find({date: d});
+      const ratingList = await Rating.find({date: d}, "userId details");
       ratingList.forEach(rating => userData[rating.userId][d] = rating.details.weekValue);
     }
     var date = new Date(lastDate);
     date.setDate(lastDate.getDate() - 42);
-    const actionLog = await UserActionLog.find({date: {$gt: date}});
+    const actionLog = await UserActionLog.find({date: {$gt: date}}, "userId ipInfo");
     actionLog.forEach(log => {if (userData[log.userId].ipCountries.indexOf(log.ipInfo.country)==-1) userData[log.userId].ipCountries.push(log.ipInfo.country)});
     var allData = [];
     for (let [userId, data] of Object.entries(userData)) {
