@@ -617,7 +617,11 @@ squarePuzzle.prototype.showErrorCells = function(result) {
   if (!Array.isArray(result.errors)) return;
   result.errors.forEach(key => {
     var coord = this.decodeCoordinate(key);
-    this.cells[coord.y][coord.x].markError();
+    if (this.cells[coord.y]) {
+	  if (this.cells[coord.y][coord.x]) {
+        this.cells[coord.y][coord.x].markError();
+      }
+    }
   });
 }
 

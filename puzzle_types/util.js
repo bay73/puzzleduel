@@ -54,6 +54,20 @@ const Util = {
     return cells;
   },
 
+  create2DArrayExtended: function(rows, cols, defaultValue) {
+    // Create 2D array with additional cells outside the grid.
+    var cells = [];
+    for (var y = -1; y <= rows; y++) {
+      cells[y] = new Array(cols);
+      for (var x = -1; x <= cols; x++) {
+        cells[y][x] = defaultValue;
+      }
+    }
+    cells.rows = rows;
+    cells.cols = cols;
+    return cells;
+  },
+
   parseDimension: function(dimension) {
     // Parse dimension string to values.
     var dimensions = dimension.split("x");

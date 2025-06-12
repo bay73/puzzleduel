@@ -7,7 +7,7 @@ check:function(dimension, clues, data){
   // Create array
   var dim = util.parseDimension(dimension);
   var cells = util.create2DArray(dim.rows, dim.cols, false)
-  var clue = util.create2DArray(dim.rows, dim.cols, "")
+  var clue = util.create2DArrayExtended(dim.rows, dim.cols, "")
 
   // Parse data.
   for (var [key, value] of Object.entries(data)) {
@@ -132,8 +132,8 @@ ifCell: function(cells, x, y) {
   return x>=0 && x<cells.cols && y>=0 && y<cells.rows && cells[y][x];
 },
 checkClues: function(cells, clue) {
-  for (var x = 0; x < clue.cols; x++) {
-    for (var y = 0; y < clue.rows; y++) {
+  for (var x = -1; x < clue.cols; x++) {
+    for (var y = -1; y < clue.rows; y++) {
       if (clue[y][x]) {
         var count = 0;
         if (Checker.ifCell(cells, x, y)) count++;
