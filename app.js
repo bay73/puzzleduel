@@ -55,7 +55,7 @@ app.use('/.well-known',express.static(__dirname + '/.well-known'));
 app.use((err, req, res, next) => {
   res.locals.theme = 'default';
   console.error(err.stack)
-  res.status(500).render('error');
+  res.status(500).render('error',{layout: "empty_layout"});
 })
 
 const PORT = process.env.PORT || 5000;
