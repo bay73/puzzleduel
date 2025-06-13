@@ -28,10 +28,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./config/flash'));
 app.use(require('./config/theme'));
+app.use('/users', require('./routes/users.js'));
+app.use((req, res, next) => {
+  console.log(req.session)
+  if (req.session && !req.session.passport) {
+    req.session.destroy(() => {});
+  }
+  next();
+});
 
 // Routes
 app.use('/', require('./routes/index.js'));
-app.use('/users', require('./routes/users.js'));
 app.use('/puzzles', require('./routes/puzzles.js'));
 app.use('/single', require('./routes/single.js'));
 app.use('/archive', require('./routes/archive.js'));
@@ -57,6 +64,7 @@ app.use((err, req, res, next) => {
   console.error(err.stack)
   res.status(500).render('error',{layout: "empty_layout"});
 })
+
 
 const PORT = process.env.PORT || 5000;
 
