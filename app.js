@@ -30,7 +30,6 @@ app.use(require('./config/flash'));
 app.use(require('./config/theme'));
 app.use('/users', require('./routes/users.js'));
 app.use((req, res, next) => {
-  console.log(req.session)
   if (req.session && !req.session.passport) {
     req.session.destroy(() => {});
   }
