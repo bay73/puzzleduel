@@ -64,6 +64,10 @@ app.use((err, req, res, next) => {
   res.status(500).render('error',{layout: "empty_layout"});
 })
 
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send(`User-agent: *\nDisallow: /single/`);
+});
 
 const PORT = process.env.PORT || 5000;
 
