@@ -35,7 +35,7 @@
                   if (typeof(p2.createdAt)=='undefined') return 1;
                   return p1.createdAt - p2.createdAt;
                 }
-                else return p2.publishAge - p1.publishAge;
+                else return (p2.publishAge || 1000) - (p1.publishAge || 1000);
               }
             }
             %>
