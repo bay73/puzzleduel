@@ -1188,7 +1188,64 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
-    } else if (typeCode=="ring_ring_square_rectangle") {
+  } else if (typeCode=="ring_ring_empty") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
+
+  } else if (typeCode=="ring_ring_max") {
+    var maxValue = Math.max(this.rows - 1, this.cols - 1);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0, maxValue))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .build(this);
+
+  } else if (typeCode=="ring_ring_nested") {
+    var maxValue = Math.floor(Math.min(this.rows / 2, this.cols / 2));
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.BLACK))
+      .add(controller().forAuthor().node().inner().clickSwitch()
+          .addNumbers(0, maxValue, StdColor.BLACK))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
+/* как бы добавить пометки на нарисованную линию внутрь/наружу.... или четвертику батенберга в клетку.
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(controllerItem({image: "battenberg_small", returnValue: "battenberg"}).doNotSubmit())
+        .addItem(controllerItem({image: "battenberg_small_1", returnValue: "battenberg"}).doNotSubmit()))
+*/
+
+  } else if (typeCode=="ring_ring_numbered") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.BLACK)
+        .addNumbers(1, 20, {textColor: this.colorSchema.textColor}))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
+        
+  } else if (typeCode=="ring_ring_square_rectangle") {
       this.typeProperties = decribePuzzleType()
         .add(controller().forAuthor().cell().clickSwitch()
           .addItem(StdItem.BLACK)
