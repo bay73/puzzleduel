@@ -171,7 +171,7 @@ checkColumnClues: function(rectangles, clues) {
     if (clues[x] && clues[x] != "white") {
       res = Checker.checkColumnClue(rectangles, clues[x], x);
       if (res) {
-        return {status: "Wrong length of line in the column", col: x};
+        return {status: "Wrong length of the longest line in the column", col: x};
       }
     }
   }
@@ -197,7 +197,7 @@ checkRowClues: function(rectangles, clues) {
     if (clues[y] && clues[y] != "white") {
       res = Checker.checkRowClue(rectangles, clues[y], y);
       if (res) {
-        return {status: "Wrong length of line in the row", row: y};
+        return {status: "Wrong length of the longest line in the row", row: y};
       }
     }
   }

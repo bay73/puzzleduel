@@ -67,7 +67,7 @@ checkValidWhiteCells: function(v, h, clues) {
           misses[length] = util.coord(x, y);
           length += 1;
           if (length > 1) {
-            return {status: "Rectangles should pass through all cells except exact one", errors: misses}
+            return {status: "Rectangles should pass through all cells except exactly one", errors: misses}
           }
         } else if (ends == 1) {
           return {status: "Rectangles should be a closed loop", errors: [util.coord(x,y)]}
@@ -78,7 +78,7 @@ checkValidWhiteCells: function(v, h, clues) {
     }
   }
   if (length < 1) {
-    return {status: "Rectangles should pass through all cells except exact one"}
+    return {status: "Rectangles should pass through all cells except exactly one"}
 }
   return {status: "OK"};
 },

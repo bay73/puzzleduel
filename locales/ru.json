@@ -502,5 +502,11 @@
 	"Rectangle with a black circle must be a square": "Прямоугольник с чёрным кружком должен быть квадратом",
 	"Rectangle with a white circle can not be a square": "Прямоугольник с белым кружком не может быть квадратом",
 	"Circle should be at a corner of the rectangle": "Кружок должен быть в углу прямоугольника",
-	"There should be a single loop passing through all areas": "Один цикл должен заходить во все области"
+	"There should be a single loop passing through all areas": "Один цикл должен заходить во все области",
+	"Rectangles should pass through all cells except exactly one": "Прямогольники должны проходить через все белые клетки, кроме ровно одной",
+	"Wrong length of the longest line in the column": "Длина самой длинной линии в столбце неверная",
+	"Wrong length of the longest line in the row": "Длина самой длинной линии в строке неверная",
+	"Only one rectangle should pass through a cell with number": "Через клетку с числом может проходить только один прямоунольник",
+	"All equal numbers should be at the same rectangle": "Все равные числа должны быть на одном прямоцгольнике",
+	"One rectangle can't pass through cells with different numbers": "Один прямоугольник не может проходить через разные числа"
 }

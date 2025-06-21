@@ -499,5 +499,11 @@
 	"Rectangle with a black circle must be a square": "Rectangle with a black circle must be a square",
 	"Rectangle with a white circle can not be a square": "Rectangle with a white circle can not be a square",
 	"Circle should be at a corner of the rectangle": "Circle should be at a corner of the rectangle",
-	"There should be a single loop passing through all areas": "There should be a single loop passing through all areas"
+	"There should be a single loop passing through all areas": "There should be a single loop passing through all areas",
+	"Rectangles should pass through all cells except exactly one": "Rectangles should pass through all cells except exactly one",
+	"Wrong length of the longest line in the column": "Wrong length of the longest line in the column",
+	"Wrong length of the longest line in the row": "Wrong length of the longest line in the row",
+	"Only one rectangle should pass through a cell with number": "Only one rectangle should pass through a cell with number",
+	"All equal numbers should be at the same rectangle": "All equal numbers should be at the same rectangle",
+	"One rectangle can't pass through cells with different numbers": "One rectangle can't pass through cells with different numbers"
 }

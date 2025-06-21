@@ -71,7 +71,7 @@ checkValidWhiteCells: function(v, h, clues) {
         } else if (ends == 3) {
           return {status: "Intersection with overlapping is not allowed", errors: [util.coord(x,y)]}
         } else if (ends == 4 && clues[y][x] != "") {
-          return {status: "Rectangles can't intersect at a cell with number", errors: [util.coord(x,y)]}
+          return {status: "Only one rectangle should pass through a cell with number", errors: [util.coord(x,y)]}
         }
       }
     }
@@ -92,7 +92,7 @@ checkRectangles: function(v, h, clues) {
         }
         if (res.number != "") {
           if (res.number in usedNumbers) {
-            return {status: "All equal numbers should be at one rectangle", errors: [res.numberPos,usedNumbers[res.number]]};
+            return {status: "All equal numbers should be at the same rectangle", errors: [res.numberPos,usedNumbers[res.number]]};
           } else {
             usedNumbers[res.number] = res.numberPos;
           }
@@ -145,7 +145,7 @@ buildLine: function(v, h, x0, y0, clues) {
             number = clues[current.y][current.x];
             numberPos = util.coord(current.x, current.y)
         } else if (number != clues[current.y][current.x]) {
-            return {status: "Rectangle can't pass through cells with different numbers", errors: [numberPos, util.coord(current.x, current.y)]}
+            return {status: "One rectangle can't pass through cells with different numbers", errors: [numberPos, util.coord(current.x, current.y)]}
         }
     }
     line[length] = util.coord(next.x, next.y);
