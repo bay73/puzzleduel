@@ -508,5 +508,6 @@
 	"Wrong length of the longest line in the row": "Длина самой длинной линии в строке неверная",
 	"Only one rectangle should pass through a cell with number": "Через клетку с числом может проходить только один прямоунольник",
 	"All equal numbers should be at the same rectangle": "Все равные числа должны быть на одном прямоцгольнике",
-	"One rectangle can't pass through cells with different numbers": "Один прямоугольник не может проходить через разные числа"
+	"One rectangle can't pass through cells with different numbers": "Один прямоугольник не может проходить через разные числа",
+	"Puzzle XL 2025": "Puzzle XL 2025"
 }
