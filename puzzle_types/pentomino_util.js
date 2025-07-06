@@ -72,23 +72,25 @@ pentominoes: {
 checkPento: function(cells, requiredLetters) {
   var start = {x:0, y:0};
   var map = util.create2DArray(cells.rows, cells.cols, "")
+  var count = 0;
   while (true) {
-    let res = PentominoUtil.findNextPentomino(cells, start, map, requiredLetters);
+    let res = PentominoUtil.findNextPentomino(cells, start, map, requiredLetters, count);
     if (!res) break;
     if (res.status != "OK") {
       return res;
     }
+    count++;
   }
   var res = PentominoUtil.checkAllUsedOnce(map, requiredLetters);
   if (res.status != "OK") {
     return res;
   }
-  return {status: "OK"};
+  return {status: "OK", map: map};
 },
 ifCell: function(cells, x, y) {
   return x>=0 && x<cells.cols && y>=0 && y<cells.rows && cells[y][x];
 },
-findNextPentomino: function(cells, start, map, requiredLetters) {
+findNextPentomino: function(cells, start, map, requiredLetters, count) {
   while (true) {
     if (start.x>=cells.cols) {
       start.x = 0;
@@ -106,7 +108,7 @@ findNextPentomino: function(cells, start, map, requiredLetters) {
           return {status: "Each marked area should form a pentomino from the given set" , errors: area.coords};
         }
         for (let i=0;i<area.cells.length;i++) {
-          map[area.cells[i].y][area.cells[i].x]=pento;
+          map[area.cells[i].y][area.cells[i].x]=pento+"-"+count.toString();
         }
         return {status: "OK"};
       }
@@ -130,7 +132,7 @@ checkAllUsedOnce: function(map, requiredLetters) {
   for (var x = 0; x < map.cols; x++) {
     for (var y = 0; y < map.rows; y++) {
       if (map[y][x]!="") {
-        letters[map[y][x]].push(util.coord(x,y));
+        letters[map[y][x].charAt(0)].push(util.coord(x,y));
       }
     }
   }

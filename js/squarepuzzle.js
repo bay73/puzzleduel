@@ -277,6 +277,19 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().copyPaste())
      .build(this);
 
+  } else if (typeCode=="pentomino_areas") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.CROSS))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().noClue().copyPaste())
+     .build(this);
+
   } else if (typeCode=="norinori") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
