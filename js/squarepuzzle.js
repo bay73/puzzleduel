@@ -73,6 +73,40 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="snake_striped") {
+    var maxValue = Math.max((this.rows+1)/2, (this.cols+1)/2);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.RIGHT | StdOuter.BOTTOM)
+      .useOuterColors(StdOuter.BOTTOM, StdColor.OUTER)
+      .useOuterColors(StdOuter.RIGHT, StdColor.DARK_OUTER)
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0,maxValue))
+      .add(controller().forAuthor().cell().inner().clickSwitch()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.CLUE_COLOR))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(StdItem.BLACK)
+        .addItem(StdItem.BRIGHT.submitAs('black'))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().cell().inner().noClue().copyPaste())
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
+  } else if (typeCode=="snake_minesweeper") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,8)
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.CLUE_COLOR))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.BLACK)
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().copyPaste())
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else if (typeCode=="snake_max") {
     var maxValue = Math.max(this.rows, this.cols);
     this.typeProperties = decribePuzzleType()
@@ -1248,10 +1282,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
 */
 
   } else if (typeCode=="ring_ring_numbered") {
+    var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addItem(StdItem.BLACK)
-        .addNumbers(1, 20, {textColor: this.colorSchema.textColor}))
+        .addLetters(letters))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
       .add(controller().forSolver().edge().clickSwitch()
