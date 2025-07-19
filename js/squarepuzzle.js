@@ -1274,13 +1274,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.submitAs('1')))
       .add(controller().forSolver().edge().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().node().inner().clickSwitch()
+          .addNumbers(0, maxValue, StdColor.LIGHT_GREY, undefined, false))
       .build(this);
-/* как бы добавить пометки на нарисованную линию внутрь/наружу.... или четвертику батенберга в клетку.
-      .add(controller().forSolver().cell().noClue().clickSwitch()
-        .addItem(controllerItem({image: "battenberg_small", returnValue: "battenberg"}).doNotSubmit())
-        .addItem(controllerItem({image: "battenberg_small_1", returnValue: "battenberg"}).doNotSubmit()))
-*/
-
   } else if (typeCode=="ring_ring_numbered") {
     var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
