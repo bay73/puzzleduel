@@ -255,7 +255,7 @@ router.post('/:contestid/edit', async (req, res, next) => {
           i--;
         }
       }
-      if (puzzleNume == 0) {
+      if (puzzleNum == 0) {
         return;
       }
       for( var i = 0; i < puzzles.length; i++){
