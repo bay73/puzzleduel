@@ -135,19 +135,37 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "snake_minesweeper",
+      typeCode: "statue_park",
       id: "puzzle.code",
-      dimension: "8x8"
+      dimension: "12x12-pento12"
 
     };
     var settings = {
       local: true,
-//      data: {
-//      	h6: 'black', h8: 'black',
-//      	bottom: ['4', '1', '2', '2', '2', '1', '2', '0'],
-//      	right: ['2', '1', '1', '1', '3', '1', '3', '3']
-//      }
-      data: {a1:"black", a3:"4", b5:"5", d7:"6", e3:"5", f4:"1", f8:"3", g2:"6", h8:"black"}
+      data: {
+    "g1": "black_circle",
+    "l1": "black_circle",
+    "l2": "black_circle",
+    "f3": "black_circle",
+    "k3": "black_circle",
+    "a4": "black_circle",
+    "i4": "white_circle",
+    "j4": "black_circle",
+    "j5": "white_circle",
+    "l5": "black_circle",
+    "a6": "black_circle",
+    "c8": "black_circle",
+    "g8": "white_circle",
+    "l8": "black_circle",
+    "a10": "black_circle",
+    "l10": "black_circle",
+    "j11": "black_circle",
+    "k11": "black_circle",
+    "b12": "black_circle",
+    "c12": "black_circle",
+    "e12": "black_circle",
+    "tag": ""
+}
     };
     settings.theme = "default";
     var grid = "#mainGrid"

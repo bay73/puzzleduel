@@ -324,6 +324,26 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().copyPaste())
      .build(this);
 
+  } else if (typeCode=="statue_park") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE)
+        .addItem(StdItem.BLACK_CIRCLE))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue(StdItem.WHITE_CIRCLE, StdItem.BLACK_CIRCLE).clickSwitch()
+        .addItem(StdItem.GREY.submitAs("1")))
+      .add(controller().forSolver().cell().noClue().copyPaste((data, elementData) => {
+         if (data.image=="cross") return data;
+         else return Object.assign({}, data, {image: null} )
+      }))
+      .add(controller().forSolver().cell().clue().copyPaste((data, elementData) => {
+         if (elementData.image=="cross") return elementData;
+         else return Object.assign({}, elementData, {color: data.color} );
+      }))
+      .build(this);
+
   } else if (typeCode=="norinori") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
