@@ -332,7 +332,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().clickSwitch()
         .addItem(StdItem.GREY.submitAs("1"))
         .addItem(StdItem.CROSS.doNotSubmit()))
-      .add(controller().forSolver().cell().clue(StdItem.WHITE_CIRCLE, StdItem.BLACK_CIRCLE).clickSwitch()
+      .add(controller().forSolver().cell().clue(StdItem.BLACK_CIRCLE).clickSwitch()
         .addItem(StdItem.GREY.submitAs("1")))
       .add(controller().forSolver().cell().noClue().copyPaste((data, elementData) => {
          if (data.image=="cross") return data;
