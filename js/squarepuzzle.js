@@ -1264,7 +1264,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().inner().noClue().clickSwitch()
-        .addItem(StdItem.CROSS.doNotSubmit()))
+        .addItem(StdItem.CROSS.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="ring_ring_max") {
@@ -1294,7 +1295,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.submitAs('1')))
       .add(controller().forSolver().edge().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
-      .add(controller().forSolver().node().inner().clickSwitch()
+      .add(controller().forSolver().node().inner().clue().clickSwitch()
+          .addItem(StdItem.LIGHT_GREY.doNotSubmit()))
+      .add(controller().forSolver().node().inner().noClue().clickSwitch()
           .addNumbers(0, maxValue, StdColor.LIGHT_GREY, undefined, false))
       .build(this);
   } else if (typeCode=="ring_ring_numbered") {
