@@ -587,6 +587,21 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
       .build(this);
 
+  } else if (typeCode=="canal_view") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.CLUE_COLOR.submitAs('black'))
+        .addNumbers(1,29))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs('black'))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
+      .build(this);
+
   } else if (typeCode=="nurikabe") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
