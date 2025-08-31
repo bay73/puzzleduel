@@ -1325,17 +1325,20 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .build(this);
 
   } else if (typeCode=="ring_ring_battenberg") {
+    let EMPTY_BATTENBERG = controllerItem({image: "battenberg_small_e", returnValue: "battenberg"})
+    let LEFT_BATTENBERG = controllerItem({image: "battenberg_small", returnValue: "battenberg"})
+    let RIGHT_BATTENBERG = controllerItem({image: "battenberg_small_1", returnValue: "battenberg"})
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
-        .addItem(controllerItem({image: "battenberg_small_e", returnValue: "battenberg"}))
+        .addItem(EMPTY_BATTENBERG)
         .addItem(StdItem.BLACK))
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.submitAs('1')))
       .add(controller().forSolver().edge().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
-      .add(controller().forSolver().cell().clue().clickSwitch()
-        .addItem(controllerItem({image: "battenberg_small", returnValue: "battenberg"}).doNotSubmit())
-        .addItem(controllerItem({image: "battenberg_small_1", returnValue: "battenberg"}).doNotSubmit()))
+      .add(controller().forSolver().cell().clue(EMPTY_BATTENBERG).clickSwitch()
+        .addItem(LEFT_BATTENBERG.doNotSubmit())
+        .addItem(RIGHT_BATTENBERG.doNotSubmit()))
       .build(this);
 
   } else if (typeCode=="four_winds") {
