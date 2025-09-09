@@ -832,8 +832,8 @@ squarePuzzleCell.prototype.pencilMarkAttribute = function(pencilMark) {
 
 squarePuzzleCell.prototype.isPointInside = function(position) {
   var center = this.center();
-  return Math.abs(position.x - center.x) < this.puzzle.size.unitSize / 2.2
-      && Math.abs(position.y - center.y) < this.puzzle.size.unitSize / 2.2;
+  return Math.abs(position.x - center.x) < this.puzzle.size.unitSize / 2.1
+      && Math.abs(position.y - center.y) < this.puzzle.size.unitSize / 2.1;
 }
 
 squarePuzzleCell.prototype.hasMultiPencil = function() {
@@ -1007,11 +1007,11 @@ squarePuzzleEdge.prototype.isPointInside = function(position) {
   var end = corners[(this.side+1)%4];
   var middle = this.center();
   if (start.x == end.x) {
-    return Math.abs(position.x - middle.x) < this.puzzle.size.unitSize / 4.4
+    return Math.abs(position.x - middle.x) < this.puzzle.size.unitSize / 5.4
         && Math.abs(position.y - middle.y) < this.puzzle.size.unitSize / 2.4;
   } else {
     return Math.abs(position.x - middle.x) < this.puzzle.size.unitSize / 2.4
-        && Math.abs(position.y - middle.y) < this.puzzle.size.unitSize / 4.4;
+        && Math.abs(position.y - middle.y) < this.puzzle.size.unitSize / 5.4;
   }
   return this.distanceSquare(position, middle) < this.puzzle.size.unitSize*this.puzzle.size.unitSize/9;
 }
