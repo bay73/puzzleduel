@@ -53,17 +53,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "canal_view",
+      typeCode: "sudoku_battenberg",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "9x9"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

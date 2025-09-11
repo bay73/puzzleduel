@@ -226,6 +226,36 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     cellMultiPencil: true,
   }
 
+  typeProperties["sudoku_battenberg"] = {
+    needNodes: true,
+    cellController: cell => {
+       if (!cell.isClue) {
+         var chooserValues = [{}];
+         for (var i=1; i<=self.rows; i++) {
+           chooserValues.push({text: i.toString(), returnValue: i.toString()});
+         }
+         chooserValues.push({image: "odd"});
+         chooserValues.push({image: "even"});
+         cell.chooserValues = chooserValues;
+       }
+    },
+    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
+    nodeEditController: node => {
+      if (node.allCells.length > 3) {
+        node.isClue = true;
+        node.clickSwitch = [{}, {image: "battenberg_small", returnValue: "battenberg"}];
+      }
+    },
+    decodeClue: value => {
+      if (value=="battenberg") {
+        return {image: "battenberg_small"}
+      } else {
+        return {text: value}
+      }
+    },
+    cellMultiPencil: true,
+  }
+
   typeProperties["sudoku_fortress"] = {
     cellController: cell => {
       if (!cell.data.text) {
