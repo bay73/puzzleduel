@@ -510,5 +510,6 @@
 	"All equal numbers should be at the same rectangle": "Все равные числа должны быть на одном прямоцгольнике",
 	"One rectangle can't pass through cells with different numbers": "Один прямоугольник не может проходить через разные числа",
 	"Puzzle XL 2025": "Puzzle XL 2025",
-	"Ring-Ring Rally": "Ring-Ring Rally"
+	"Ring-Ring Rally": "Ring-Ring Rally",
+	"Sum of digits in each grey region should be the same": "Суммы цифр во всех серых областях должны быть одинаковы"
 }

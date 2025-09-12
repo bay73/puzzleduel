@@ -507,5 +507,6 @@
 	"All equal numbers should be at the same rectangle": "All equal numbers should be at the same rectangle",
 	"One rectangle can't pass through cells with different numbers": "One rectangle can't pass through cells with different numbers",
 	"Puzzle XL 2025": "Puzzle XL 2025",
-	"Ring-Ring Rally": "Ring-Ring Rally"
+	"Ring-Ring Rally": "Ring-Ring Rally",
+	"Sum of digits in each grey region should be the same": "Sum of digits in each grey region should be the same"
 }
