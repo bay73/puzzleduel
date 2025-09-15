@@ -511,5 +511,7 @@
 	"One rectangle can't pass through cells with different numbers": "Один прямоугольник не может проходить через разные числа",
 	"Puzzle XL 2025": "Puzzle XL 2025",
 	"Ring-Ring Rally": "Ring-Ring Rally",
-	"Sum of digits in each grey region should be the same": "Суммы цифр во всех серых областях должны быть одинаковы"
+	"Sum of digits in each grey region should be the same": "Суммы цифр во всех серых областях должны быть одинаковы",
+	"The digit should be equal to the distance to the maximum value in the column": "Цифра должна показывать расстояния до максимума в столбце",
+	"The digit should be equal to the distance to the maximum value in the row": "Цифра должна показывать расстояния до максимума в ряду"
 }

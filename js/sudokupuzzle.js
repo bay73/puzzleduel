@@ -86,6 +86,30 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addNumbers(1, maxValue))
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
+  } else if (typeCode=="sudoku_search_max") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.WHITE_ARROW_U)
+        .addItem(StdItem.WHITE_ARROW_R)
+        .addItem(StdItem.WHITE_ARROW_D)
+        .addItem(StdItem.WHITE_ARROW_L))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().inner().clue(StdItem.WHITE_ARROW_U, StdItem.WHITE_ARROW_R, StdItem.WHITE_ARROW_D, StdItem.WHITE_ARROW_L).chooser()
+        .addNumbers(1, maxValue))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+    this.typeProperties.toChooserShow = function(value) {
+      if (self.editMode==false) {
+        let showValue = Object.assign({}, value);
+        showValue.image = null;
+        return showValue;
+      } else {
+        return value;
+      }
+    }
   } else if ( typeCode == "sudoku_citywalk") {
     let paint2to7 = function(n) {
       if (n>=3&&n<=7) {

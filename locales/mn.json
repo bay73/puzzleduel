@@ -508,5 +508,7 @@
 	"One rectangle can't pass through cells with different numbers": "One rectangle can't pass through cells with different numbers",
 	"Puzzle XL 2025": "Puzzle XL 2025",
 	"Ring-Ring Rally": "Ring-Ring Rally",
-	"Sum of digits in each grey region should be the same": "Sum of digits in each grey region should be the same"
+	"Sum of digits in each grey region should be the same": "Sum of digits in each grey region should be the same",
+	"The digit should be equal to the distance to the maximum value in the column": "The digit should be equal to the distance to the maximum value in the column",
+	"The digit should be equal to the distance to the maximum value in the row": "The digit should be equal to the distance to the maximum value in the row"
 }
