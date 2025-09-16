@@ -131,6 +131,7 @@ router.get('/:contestid', async (req, res, next) => {
           userTime: (typeof userTimes[puzzle.puzzleId]=="undefined")?"":util.timeToString(userTimes[puzzle.puzzleId].time),
           userErrCount: (typeof userTimes[puzzle.puzzleId]=="undefined")?0:userTimes[puzzle.puzzleId].errCount,
           userScore: req.user ? getUserScore(puzzle, req.user._id) : "",
+          rating: puzzleObj.needLogging ? null : puzzleObj.rating,
         };
       });
     res.render('contest', {user: req.user, contest: contestObj, puzzles: puzzleList})
