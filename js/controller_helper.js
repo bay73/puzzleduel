@@ -637,7 +637,8 @@ GREY:  {color: (puzzle, isPencil) => puzzle.colorSchema.greyColor,
 LIGHT_GREY:  {color: (puzzle, isPencil) => puzzle.colorSchema.lightGreyColor},
 OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueColor},
 DARK_OUTER: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueSecondColor},
-WHITE_TEXT: {textColor: "#fff"}
+WHITE_TEXT: {textColor: "#fff"},
+STANDARD: {textColor: (puzzle, isPencil) => puzzle.colorSchema.outerClueSecondColor}
 }
 
 // Standard items
@@ -686,6 +687,14 @@ WHITE_ARROW_D: controllerItem({image: "white_arrow_d", returnValue: "arrow_d"}),
 WHITE_ARROW_DL: controllerItem({image: "white_arrow_dl", returnValue: "arrow_dl"}),
 WHITE_ARROW_L: controllerItem({image: "white_arrow_l", returnValue: "arrow_l"}),
 WHITE_ARROW_UL: controllerItem({image: "white_arrow_ul", returnValue: "arrow_ul"}),
+GREY_ARROW_U: controllerItem({image: "grey_arrow_u", returnValue: "arrow_u"}),
+GREY_ARROW_UR: controllerItem({image: "grey_arrow_ur", returnValue: "arrow_ur"}),
+GREY_ARROW_R: controllerItem({image: "grey_arrow_r", returnValue: "arrow_r"}),
+GREY_ARROW_DR: controllerItem({image: "grey_arrow_dr", returnValue: "arrow_dr"}),
+GREY_ARROW_D: controllerItem({image: "grey_arrow_d", returnValue: "arrow_d"}),
+GREY_ARROW_DL: controllerItem({image: "grey_arrow_dl", returnValue: "arrow_dl"}),
+GREY_ARROW_L: controllerItem({image: "grey_arrow_l", returnValue: "arrow_l"}),
+GREY_ARROW_UL: controllerItem({image: "grey_arrow_ul", returnValue: "arrow_ul"}),
 }
 
 StdOuter = {

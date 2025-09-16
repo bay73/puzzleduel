@@ -377,10 +377,10 @@ gridElement.prototype.draw = function() {
   }
   addElementIfExists(this.elements.path);
   addElementIfExists(this.elements.pencilColor);
-  addElementIfExists(this.elements.pencilImage);
-  addElementIfExists(this.elements.pencilText);
   addElementIfExists(this.elements.color);
+  addElementIfExists(this.elements.pencilImage);
   addElementIfExists(this.elements.image);
+  addElementIfExists(this.elements.pencilText);
   addElementIfExists(this.elements.text);
 }
 
