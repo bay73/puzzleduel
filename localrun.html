@@ -135,34 +135,28 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "sudoku_search_max",
+      typeCode: "point_crowd",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "4x4"
 
     };
     var settings = {
       local: true,
-      data: {
-    "a1": "arrow_d",
-    "d1": "arrow_l",
-    "e1": "arrow_l",
-    "a2": "arrow_d",
-    "b2": "arrow_r",
-    "c2": "arrow_r",
-    "e2": "arrow_d",
-    "b3": "arrow_r",
-    "c3": "arrow_u",
-    "d4": "arrow_l",
-    "f4": "arrow_u",
-    "b5": "arrow_u",
+      data:{
+    "d2": "arrow_dl",
+    "a4": "arrow_ur",
+    "g4": "arrow_d",
+    "c5": "arrow_ur",
+    "f5": "arrow_u",
     "e6": "arrow_u",
+    "d7": "arrow_u",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
+    requirejs(["hexapuzzle"], function() {
+      puzzle = new hexaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

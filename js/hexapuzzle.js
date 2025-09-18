@@ -72,6 +72,20 @@ hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
       .add(controller().forSolver().cell().noClue().copyPaste())
      .build(this);
 
+  } else if (typeCode =="point_crowd") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.ARROW_U)
+        .addItem(StdItem.ARROW_UR)
+        .addItem(StdItem.ARROW_DR)
+        .addItem(StdItem.ARROW_D)
+        .addItem(StdItem.ARROW_DL)
+        .addItem(StdItem.ARROW_UL))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.BLACK_CIRCLE.submitAs("1"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
+
   }
 }
 })
