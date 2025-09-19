@@ -514,5 +514,6 @@
 	"The digit should be equal to the distance to the maximum value in the column": "The digit should be equal to the distance to the maximum value in the column",
 	"The digit should be equal to the distance to the maximum value in the row": "The digit should be equal to the distance to the maximum value in the row",
 	"The arrow should point to the most circles": "The arrow should point to the most circles",
-	"Consecutive numbers should share an edge in the area": "Consecutive numbers should share an edge in the area"
+	"Consecutive numbers should share an edge in the area": "Consecutive numbers should share an edge in the area",
+	"Loop can't pass through the clue cell": "Loop can't pass through the clue cell"
 }

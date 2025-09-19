@@ -1191,6 +1191,49 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
+  } else if (typeCode=="yajilin") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.LIGHT_GREY)
+        .addItem(controllerItem({image: "bg_arrow_u", text: "0", returnValue: "u0"}))
+        .addItem(controllerItem({image: "bg_arrow_u", text: "1", returnValue: "u1"}))
+        .addItem(controllerItem({image: "bg_arrow_u", text: "2", returnValue: "u2"}))
+        .addItem(controllerItem({image: "bg_arrow_u", text: "3", returnValue: "u3"}))
+        .addItem(controllerItem({image: "bg_arrow_u", text: "4", returnValue: "u4"}))
+        .addItem(controllerItem({image: "bg_arrow_u", text: "5", returnValue: "u5"}))
+        .addItem(controllerItem({image: "bg_arrow_r", text: "0", returnValue: "r0"}))
+        .addItem(controllerItem({image: "bg_arrow_r", text: "1", returnValue: "r1"}))
+        .addItem(controllerItem({image: "bg_arrow_r", text: "2", returnValue: "r2"}))
+        .addItem(controllerItem({image: "bg_arrow_r", text: "3", returnValue: "r3"}))
+        .addItem(controllerItem({image: "bg_arrow_r", text: "4", returnValue: "r4"}))
+        .addItem(controllerItem({image: "bg_arrow_r", text: "5", returnValue: "r5"}))
+        .addItem(controllerItem({image: "bg_arrow_d", text: "0", returnValue: "d0"}))
+        .addItem(controllerItem({image: "bg_arrow_d", text: "1", returnValue: "d1"}))
+        .addItem(controllerItem({image: "bg_arrow_d", text: "2", returnValue: "d2"}))
+        .addItem(controllerItem({image: "bg_arrow_d", text: "3", returnValue: "d3"}))
+        .addItem(controllerItem({image: "bg_arrow_d", text: "4", returnValue: "d4"}))
+        .addItem(controllerItem({image: "bg_arrow_d", text: "5", returnValue: "d5"}))
+        .addItem(controllerItem({image: "bg_arrow_l", text: "0", returnValue: "l0"}))
+        .addItem(controllerItem({image: "bg_arrow_l", text: "1", returnValue: "l1"}))
+        .addItem(controllerItem({image: "bg_arrow_l", text: "2", returnValue: "l2"}))
+        .addItem(controllerItem({image: "bg_arrow_l", text: "3", returnValue: "l3"}))
+        .addItem(controllerItem({image: "bg_arrow_l", text: "4", returnValue: "l4"}))
+        .addItem(controllerItem({image: "bg_arrow_l", text: "5", returnValue: "l5"}))
+        )
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.BLACK.doNotSubmit())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
+    this.typeProperties.toChooserShow = function(value) {
+      let showValue = Object.assign({}, value);
+      showValue.textColor = "#fff";
+      return showValue;
+    }
+
   } else if (typeCode=="kuroshiro") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()

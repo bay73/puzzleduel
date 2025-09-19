@@ -113,8 +113,10 @@ chooserToggler.prototype.draw = function(value) {
   this.togglerCircle = this.snap.circle(this.center.x, this.center.y, this.size);
   this.togglerCircle.attr({stroke: "#430", strokeWidth: 2, fill: "#750", opacity: 0.1});
   this.defaultOpacity = 0.1;
+  var isDefaultValue = false;
   if (typeof puzzle.typeProperties.toChooserShow=="function") {
     showValue = puzzle.typeProperties.toChooserShow(value);
+    isDefaultValue = true;
   } else {
     showValue = value;
   }
@@ -149,7 +151,9 @@ chooserToggler.prototype.draw = function(value) {
       textColor = "white";
       var filter = "";
     } else {
-      var filter = this.chooserBuilder.chooserFilter;
+      if (isDefaultValue) {
+        var filter = this.chooserBuilder.chooserFilter;
+      }
     }
     Object.assign(attr, {"fill": textColor, "filter": filter, "font-size": this.size*1.2,"textLength": width });
     togglerText.attr(attr);
