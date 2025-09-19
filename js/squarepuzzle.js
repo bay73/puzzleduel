@@ -247,6 +247,16 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addNumbers(1,6))
      .build(this);
 
+  } else if (typeCode=="meandering_numbers") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1,9))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().noClue().chooser()
+        .addNumbers(1,9))
+     .build(this);
+
   } else if (typeCode=="nanro") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()

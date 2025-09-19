@@ -135,28 +135,71 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "point_crowd",
+      typeCode: "meandering_numbers",
       id: "puzzle.code",
-      dimension: "4x4"
+      dimension: "6x6"
 
     };
     var settings = {
       local: true,
       data:{
-    "d2": "arrow_dl",
-    "a4": "arrow_ur",
-    "g4": "arrow_d",
-    "c5": "arrow_ur",
-    "f5": "arrow_u",
-    "e6": "arrow_u",
-    "d7": "arrow_u",
+    "areas": [
+        [
+            "c1",
+            "d1",
+            "e1",
+            "f1",
+            "f2",
+            "f3"
+        ],
+        [
+            "a1",
+            "a2",
+            "a3",
+            "a4",
+            "a5"
+        ],
+        [
+            "b1",
+            "b2",
+            "c2",
+            "b3",
+            "c3",
+            "b4"
+        ],
+        [
+            "d2",
+            "d3",
+            "d4",
+            "d5",
+            "c6",
+            "d6"
+        ],
+        [
+            "e2",
+            "e3",
+            "e4",
+            "f4",
+            "e5",
+            "f5",
+            "e6",
+            "f6"
+        ],
+        [
+            "c4",
+            "b5",
+            "c5",
+            "a6",
+            "b6"
+        ]
+    ],
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["hexapuzzle"], function() {
-      puzzle = new hexaPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }
