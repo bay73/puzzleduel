@@ -84,6 +84,9 @@ hexaPuzzleType.prototype.setTypeProperties = function(typeCode){
       .add(controller().forSolver().cell().noClue().clickSwitch()
         .addItem(StdItem.BLACK_CIRCLE.submitAs("1"))
         .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().noClue().copyPaste())
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.LIGHT_GREY.doNotSubmit()))
       .build(this);
 
   }
