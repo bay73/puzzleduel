@@ -258,8 +258,8 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
          for (var i=1; i<=self.rows; i++) {
            chooserValues.push({text: i.toString(), returnValue: i.toString()});
          }
-         chooserValues.push({image: "odd"});
-         chooserValues.push({image: "even"});
+         chooserValues.push({image: "odd_1"});
+         chooserValues.push({image: "even_1"});
          cell.chooserValues = chooserValues;
        }
     },
