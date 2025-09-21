@@ -713,7 +713,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
-  } else if (typeCode=="tapa_classic") {
+  } else if (typeCode=="tapa_classic" || typeCode=="pata") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addItem(controllerItem({image: "0", returnValue: "0"}))
