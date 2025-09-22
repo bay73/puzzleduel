@@ -69,6 +69,7 @@ checkTapaClue: function(clue, position, cells) {
   var paintedCount = -1;
   var prevCell = 'black';
   var firstCell = 'black';
+  var isFirst = true;
   for (var i=0;i<8;i++) {
     var newX = position.x + neighbour[i].x;
     var newY = position.y + neighbour[i].y;
@@ -76,8 +77,9 @@ checkTapaClue: function(clue, position, cells) {
     if (newY >=0 && newY < cells.rows && newX >=0 && newX < cells.cols) {
       var cell = cells[newY][newX];
     }
-    if (cell && !firstCell) {
+    if (cell && isFirst) {
       firstCell = cell;
+      isFirst = false;
     }
     if (cell != 'black') {
       if (prevCell != 'black') {
