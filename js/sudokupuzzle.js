@@ -110,6 +110,15 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
         return value;
       }
     }
+    this.typeProperties.toPencilShow = function(value) {
+      if (self.editMode==false) {
+        let showValue = Object.assign({}, value);
+        showValue.image = null;
+        return showValue;
+      } else {
+        return value;
+      }
+    }
   } else if ( typeCode == "sudoku_citywalk") {
     let paint2to7 = function(n) {
       if (n>=3&&n<=7) {

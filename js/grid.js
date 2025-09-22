@@ -152,22 +152,23 @@ gridElement.prototype.setPencilData = function(data, noLogging) {
     var self = this;
     this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData, false));
   }
+  var dataToSet = data;
   if (this.hasMultiPencil()){
     if (!this.pencilData) {
       this.pencilData = [];
     }
     var bFound = false;
     for (var i=0; i<this.pencilData.length; i++){
-      if (this.compareData(this.pencilData[i], data)) {
+      if (this.compareData(this.pencilData[i], dataToSet)) {
         this.pencilData.splice(i,1);
         bFound = true;
       }
     }
     if (!bFound) {
-      this.pencilData.push(Object.assign({text: null, image: null, color: null, textColor: null}, data));
+      this.pencilData.push(Object.assign({text: null, image: null, color: null, textColor: null}, dataToSet));
     }
   } else {
-    this.pencilData = Object.assign({text: null, image: null, color: null, textColor: null}, data);
+    this.pencilData = Object.assign({text: null, image: null, color: null, textColor: null}, dataToSet);
   }
   if (noLogging) {
   } else {

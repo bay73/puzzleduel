@@ -766,9 +766,13 @@ squarePuzzleCell.prototype.drawPencilImage = function() {
   if (Array.isArray(this.pencilData)) {
     var pencilGroup = this.puzzle.snap.group();
     for (var i=0;i<this.pencilData.length;i++) {
-      if (this.pencilData[i].image) {
+      let dataToShow = this.pencilData[i];
+      if (typeof this.puzzle.typeProperties.toPencilShow=="function") {
+        dataToShow = this.puzzle.typeProperties.toPencilShow(this.pencilData[i]);
+      }
+      if (dataToShow.image) {
         var attr = this.pencilMarkAttribute(this.pencilData[i]);
-        pencilGroup.append(this.snapImage(attr.center, this.puzzle.size.unitSize/attr.rows, this.pencilData[i].image));
+        pencilGroup.append(this.snapImage(attr.center, this.puzzle.size.unitSize/attr.rows, dataToShow.image));
       }
     }
     return pencilGroup;
@@ -781,9 +785,13 @@ squarePuzzleCell.prototype.drawPencilText = function() {
   if (Array.isArray(this.pencilData)) {
     var pencilGroup = this.puzzle.snap.group();
     for (var i=0;i<this.pencilData.length;i++) {
-      if (this.pencilData[i].text) {
+      let dataToShow = this.pencilData[i];
+      if (typeof this.puzzle.typeProperties.toPencilShow=="function") {
+        dataToShow = this.puzzle.typeProperties.toPencilShow(this.pencilData[i]);
+      }
+      if (dataToShow.text) {
         var attr = this.pencilMarkAttribute(this.pencilData[i]);
-        pencilGroup.append(this.snapText(attr.center, this.puzzle.size.unitSize*0.8/attr.rows, this.pencilData[i].text));
+        pencilGroup.append(this.snapText(attr.center, this.puzzle.size.unitSize*0.8/attr.rows, dataToShow.text));
       }
     }
     return pencilGroup;
