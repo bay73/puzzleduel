@@ -372,7 +372,6 @@ router.get('/', async (req, res, next) => {
         author: author,
       })
     }
-    console.log(contests)
     res.render('contest_list', {user: req.user, contests: contests})
     profiler.log('listContests', processStart);
   } catch (e) {
