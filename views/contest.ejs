@@ -9,7 +9,7 @@
         <% } else { %>
         <h1 class="card-header"><%- contest.name %></h1>
         <% }%>
-        <div class="card-body">
+        <div class="card-body" id="contest-description">
           <%- contest.description %>
           <% if(!contest.type || contest.type != 'championship') {%>
           <br><br>
@@ -18,7 +18,7 @@
           <% } %>
         </div>
         <div class="card-body">
-          <table class="table table-hover table-condensed">
+          <table class="table table-hover table-condensed" id="contest-puzzles">
             <tbody>
               <tr>
                 <th><%= __('#') %></th><th><%= __('Puzzle') %></th>
