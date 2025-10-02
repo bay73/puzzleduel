@@ -356,5 +356,29 @@ router.get('/:contestid/recount', async (req, res, next) => {
   }
 });
 
+router.get('/', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    let contestNames = await cache.readContestNames()
+    let contests = []
+    for (let code in contestNames) {
+      let data = await cache.readContest(code)
+      let author = await cache.readUserName(data.author)
+      contests.push({
+        code: code,
+        name: contestNames[code],
+        start: data.start,
+        finish: data.finish,
+        author: author,
+      })
+    }
+    console.log(contests)
+    res.render('contest_list', {user: req.user, contests: contests})
+    profiler.log('listContests', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = router;
 

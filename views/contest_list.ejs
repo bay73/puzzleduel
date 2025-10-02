@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <div class="card">
+        <div class="d-flex flex-row flex-wrap justify-content-between card-header">
+          <h1 class="">Contests</h1>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-condensed" id="contest-list">
+            <tbody>
+              <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Start date</th>
+                <th>End date</th>
+              </tr>
+              <% contests.forEach(function(contest) { %>
+              <tr>
+                <td class="p-1 pb-0"">
+                   <%= contest.code %>
+                </td>
+                <td class="p-1 pb-0"">
+                   <a href="/contest/<%= contest.code%>"><%= contest.name %></a>
+                </td>
+                <td class="p-1 pb-0"">
+                   <%= contest.author %>
+                </td>
+                <td class="p-1 pb-0"">
+                   <%= contest.start.toISOString().split('T')[0] %>
+                </td>
+                <td class="p-1 pb-0"">
+                   <%= contest.finish.toISOString().split('T')[0] %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
