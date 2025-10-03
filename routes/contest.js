@@ -359,14 +359,14 @@ router.get('/:contestid/recount', async (req, res, next) => {
 router.get('/', async (req, res, next) => {
   try {
     const processStart = new Date().getTime();
-    let contestNames = await cache.readContestNames()
+    let contestHeaders = await cache.readContestHeaders()
     let contests = []
-    for (let code in contestNames) {
-      let data = await cache.readContest(code)
+    for (let code in contestHeaders) {
+      let data = contestHeaders[code]
       let author = await cache.readUserName(data.author)
       contests.push({
         code: code,
-        name: contestNames[code],
+        name: data.name,
         start: data.start,
         finish: data.finish,
         author: author,

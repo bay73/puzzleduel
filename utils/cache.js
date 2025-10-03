@@ -21,7 +21,7 @@ const LEAGUE_CACHE_TTL = 10*60*1000; // 10 minutes
 const ANNOUNCEMENTS_CACHE_TTL = 10*60*60*1000; // 10 hours
 
 const contestCache = {}
-const contestNameCache = {fresheness: undefined, contestNames: {}}
+const contestHeadersCache = {fresheness: undefined, contestHeaders: {}}
 const puzzleTypeCache = {fresheness: undefined, puzzleTypes: {}}
 const puzzleCache = {}
 const puzzlesCache = {fresheness: undefined, puzzles: {}}
@@ -43,19 +43,24 @@ module.exports.readContest = async function(contestId) {
   return contestCache[contestId].contest;
 }
 
-module.exports.readContestNames = async function() {
+module.exports.readContestHeaders = async function() {
   const currentTime = new Date().getTime();
-  if (typeof contestNameCache.fresheness=='undefined' || currentTime > contestNameCache.fresheness) {
-    const contests = await Contest.find({}, "code name").lean();
-    contests.forEach(contest => contestNameCache.contestNames[contest.code] = contest.name);
-    contestNameCache.fresheness = new Date().getTime() + CONTEST_NAME_CACHE_TTL;
+  if (typeof contestHeadersCache.fresheness=='undefined' || currentTime > contestHeadersCache.fresheness) {
+    const contests = await Contest.find({}, "code name start finish author").lean();
+    contests.forEach(contest => contestHeadersCache.contestHeaders[contest.code] = {
+      name: contest.name,
+      start: contest.start,
+      finish: contest.finish,
+      author: contest.author
+    });
+    contestHeadersCache.fresheness = new Date().getTime() + CONTEST_NAME_CACHE_TTL;
   }
-  return contestNameCache.contestNames;
+  return contestHeadersCache.contestHeaders;
 }
 
 module.exports.readContestName = async function(contestId) {
-  const names = await module.exports.readContestNames();
-  return names[contestId];
+  const headers = await module.exports.readContestHeaders();
+  return headers[contestId].name;
 }
 
 module.exports.refreshContest = async function(contestId) {
@@ -263,7 +268,7 @@ module.exports.resetCache = function() {
   }
 
   deleteAll(contestCache);
-  contestNameCache.fresheness = undefined;
+  contestHeadersCache.fresheness = undefined;
   puzzleTypeCache.fresheness = undefined;
   puzzlesCache.fresheness = undefined;
   deleteAll(puzzleCache);
@@ -298,7 +303,7 @@ printedSizeOf = function(object) {
 
 module.exports.printCacheSize = function() {
   console.log("contests:     " + printedSizeOf(contestCache));
-  console.log("contestNames: " + printedSizeOf(contestNameCache));
+  console.log("contestNames: " + printedSizeOf(contestHeadersCache));
   console.log("puzzlesTypes: " + printedSizeOf(puzzleTypeCache));
   console.log("puzzles:      " + printedSizeOf(puzzlesCache));
   console.log("puzzleData:   " + printedSizeOf(puzzleCache));
@@ -316,8 +321,8 @@ module.exports.printCache = function() {
   console.log(new Date().getTime());
   console.log("contests:");
   Object.keys(contestCache).forEach(function(key) { console.log(key, contestCache[key].fresheness);});
-  console.log("contestNames:");
-  console.log(contestNameCache.fresheness);
+  console.log("contestHeaders:");
+  console.log(contestHeadersCache.fresheness);
   console.log("puzzlesTypes:");
   console.log(puzzleTypeCache.fresheness);
   console.log("puzzles:");
