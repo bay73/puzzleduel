@@ -132,7 +132,9 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forAuthor().cell().chooser()
         .addNumbers(1, maxValue, paint2to7))
       .add(controller().forSolver().cell().inner().noClue().chooser()
-        .addNumbers(1, maxValue, paint2to7))
+        .addNumbers(1, maxValue, paint2to7)
+        .addItem(StdItem.LIGHT_GREY.doNotSubmit())
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 /*
