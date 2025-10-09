@@ -87,25 +87,6 @@ checkExtraRegions: function(cells, shades, colors) {
 },
 buildArea: function(shades, start, used) {
    var area = Checker.buildSimpleArea(shades, start, used);
-   while (area.length < used.rows) {
-     var extention1 = []
-     var extention2 = []
-     var extention3 = []
-     var extention4 = []
-     var extended = false;
-     for (let a=0; a<area.length; a++) {
-       extention1 = Checker.buildSimpleArea(shades, {x: area[a].x-1, y: area[a].y-1}, used);
-       extention2 = Checker.buildSimpleArea(shades, {x: area[a].x+1, y: area[a].y-1}, used);
-       extention3 = Checker.buildSimpleArea(shades, {x: area[a].x-1, y: area[a].y+1}, used);
-       extention4 = Checker.buildSimpleArea(shades, {x: area[a].x+1, y: area[a].y+1}, used);
-       area = area.concat(extention1).concat(extention2).concat(extention3).concat(extention4);
-       if (extention1.length + extention2.length + extention3.length + extention4.length != 0) {
-         extended = true;
-         break;
-       }
-     }
-     if (!extended) break;
-   }
    return area;
 },
 buildSimpleArea: function(shades, start, used) {
