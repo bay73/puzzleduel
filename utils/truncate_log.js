@@ -1,5 +1,4 @@
 const UserActionLog = require('../models/UserActionLog');
-const { connectDBs } = require('../config/db')
 
 const mongoose = require('mongoose');
 
