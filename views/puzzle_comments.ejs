@@ -1,7 +1,8 @@
-<% if(comments.length > 0){ %>
 <strong><%= __('Solvers comments:') %></strong>
 <table class="table table-condensed text-left">
   <tbody>
+    <tr>
+    <% if(comments.length > 0){ %>
     <% const compare = function(c1, c2) { %>
     <%   if (c1.rootDate == c2.rootDate) {  %>
     <%     if (c1.replyTo && !c2.replyTo) {  %>
@@ -69,11 +70,17 @@
       </td>
     </tr>
     <% } %>
+    <% } else { %>
+    <br><strong><%= __('Nobody left comments for this puzzle') %></strong>
+    <% } %>
+      <td class="p-0 border-0">
+        <div class="reply text-right">
+        <button type="button" class="replyBtn badge bg-info"><%= __('Add comment') %></button>
+        </div>
+      </td>
+    </tr>
   </tbody>
 </table>
-<% } else { %>
-<strong><%= __('Nobody left comments for this puzzle') %></strong>
-<% } %>
 <script>
   $(document).ready(function () {
     $('.replyBtn').click(function(event) {
