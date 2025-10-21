@@ -428,11 +428,12 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
 
     var typeMap = await cache.readPuzzleTypes();
     var timesMap = await util.bestSolvingTimeMap(true);
+    var authorId = req.user._id;
 
-    var filter = {author: req.user._id};
+    var filter = {author: authorId};
     if (publishFilter == "true") {
       filter = {
-        author: req.user._id,
+        author: authorId,
         $or : [
           {tag: {$eq: "example"}},
           {tag: {$eq: "public"}},
@@ -443,7 +444,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
     }
     if (publishFilter == "false") {
       filter = {
-        author: req.user._id,
+        author: authorId,
         $or : [
           {$and: [
             {tag: {$eq: "contest"}},
@@ -466,7 +467,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       map[key] = {name: type.name, puzzleCount: 0, newCount: 0, lastDate: null, properties: type.properties, rules: type.rules};
       return map;
     }, {});
-    const allPuzzles = await Puzzle.find({}, "-data");
+    const allPuzzles = await Puzzle.find({}, "hidden type daily tag");
     allPuzzles.forEach(puzzle => {
       if (!puzzle.hidden) {
         typePuzzleCount[puzzle.type].puzzleCount++;
