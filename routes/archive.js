@@ -467,7 +467,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       map[key] = {name: type.name, puzzleCount: 0, newCount: 0, lastDate: null, properties: type.properties, rules: type.rules};
       return map;
     }, {});
-    const allPuzzles = await Puzzle.find({}, "hidden type daily tag");
+    const allPuzzles = await Puzzle.find({}, "hidden type daily tag contest");
     allPuzzles.forEach(puzzle => {
       if (!puzzle.hidden) {
         typePuzzleCount[puzzle.type].puzzleCount++;
