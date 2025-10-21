@@ -157,7 +157,7 @@ async function rescheduleDailyContest(contestId) {
     if (puzzle.puzzleId) {
       var puzzleStorage = await Puzzle.findOne({code: puzzle.puzzleId});
       if (puzzleStorage) {
-        if (typeof puzzleStorage.contest=="undefined" || puzzleStorage.contest.contestId == contestId) {
+        if (typeof puzzleStorage.contest=="undefined" || typeof puzzleStorage.contest.contestId=="undefined" || puzzleStorage.contest.contestId == contestId) {
           puzzleStorage.contest = {contestId: contestId, puzzleDate: puzzleStorage.daily};
           await puzzleStorage.save();
         }

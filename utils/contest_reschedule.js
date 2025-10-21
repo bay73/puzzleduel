@@ -5,7 +5,7 @@ const rescheduleDailyShadowContest = require('../utils/contest').rescheduleDaily
 const mongoose = require('mongoose');
 
 recount = async function () {
-  await rescheduleDailyContest('yeurw8yqash');
+  await rescheduleDailyContest('iuyacsoubuzqq');
 }
 
 recount().then(() => {
