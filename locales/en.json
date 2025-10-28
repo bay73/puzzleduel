@@ -516,5 +516,8 @@
 	"The arrow should point to the most circles": "The arrow should point to the most circles",
 	"Consecutive numbers should share an edge in the area": "Consecutive numbers should share an edge in the area",
 	"Loop can't pass through the clue cell": "Loop can't pass through the clue cell",
-	"Add comment": "Add comment"
+	"Add comment": "Add comment",
+	"Click to see the answer.": "Click to see the answer.",
+	"Variations": "Variations",
+	"Hardest puzzles": "Hardest puzzles"
 }

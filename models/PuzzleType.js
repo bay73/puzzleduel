@@ -18,6 +18,10 @@ const PuzzleTypeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  description: {
+    type: String,
+    required: false
+  },
   gridControl: {
     type: String,
     required: false
@@ -48,6 +52,9 @@ const PuzzleTypeSchema = new mongoose.Schema({
     type: Mixed,
     required: false
   },
+  variations: [
+    String
+  ]
 });
 
 const { dataDb } = connectDBs()

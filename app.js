@@ -51,6 +51,7 @@ app.use('/league', require('./routes/leagues.js'));
 app.use('/announcements', require('./routes/announcements.js'));
 app.use('/mailbox', require('./routes/mailbox.js'));
 app.use('/sudoqlog', require('./routes/sudoqlog.js'));
+app.use('/types', require('./routes/types.js'));
 
 // Static content
 app.use('/images', express.static(__dirname + '/images', { maxage: '3d' }));
