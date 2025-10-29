@@ -174,4 +174,28 @@ router.get('/help/authors', async (req, res, next) => {
   }
 });
 
+// List of example puzzles
+router.get('/help/types', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    const typeMap = await cache.readPuzzleTypes();
+    res.render('types', {
+      user: req.user,
+      types: Object.keys(typeMap)
+        .map(code => typeMap[code])
+        .filter(type => !util.isHiddenType(type))
+        .map(type => {
+        return {
+          code: type.code,
+          category: type.category,
+          name: type.name
+        };
+      })
+    });
+    profiler.log('typesList‚', processStart);
+  } catch (e) {
+    next(e)
+  }
+});
+
 module.exports = router;
