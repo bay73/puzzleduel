@@ -110,8 +110,9 @@
   <% }%>
     <p class="card-text text-left mt-2"><%= puzzle.type.rules %></p>
     <% if (typeof puzzle.type.example != 'undefined' && puzzle.type.example.puzzleId) { %>
-    <p class="card-text text-left mt-2"><a href="/single/<%= puzzle.type.example.puzzleId %>"><b><%= __('Example puzzle') %></b></a></p>
+    <p class="card-text text-left mt-2 mb-0"><a href="/single/<%= puzzle.type.example.puzzleId %>"><b><%= __('Example puzzle') %></b></a></p>
     <% } %>
+    <p class="card-text text-right mt-0"><a href="/types/<%= puzzle.type.code %>"><b><%= __('More obout this puzzle') %></b></a></p>
     <p class="card-text text-left mt-1"><b><%= __('Grid control') %></b>:
       <%= puzzle.type.gridControl?puzzle.type.gridControl:__('Click the mouse button at the selected cell to change the filling of the cell.') + __('To draw a line press the mouse button at a start cell and move mouse to another cell holding the button.') %>
       <%= __('More details about grid control are at the') %> <a href='/help'><%= __('help page') %></a>.
