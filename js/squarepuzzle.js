@@ -1191,7 +1191,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
-  } else if (typeCode=="yajilin") {
+  } else if (typeCode=="yajilin" || typeCode=="yajilin_domino" ) {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addItem(StdItem.LIGHT_GREY)

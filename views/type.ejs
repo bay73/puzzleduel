@@ -72,6 +72,9 @@
     $(event.target).attr("src", src1)
     $(event.target).attr("src1", src)
   })
+  $(document).ready(function () {
+    showMessage("<%= __('Type description warning') %>");
+  });
 </script>
 <%- include ('./partials/footer') %>
 
