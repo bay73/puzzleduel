@@ -135,18 +135,82 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "yajilin_sum",
+      typeCode: "yajilin_regional",
       id: "puzzle.code",
       dimension: "7x7"
     };
     var settings = {
       local: true,
       data: {
-    "e2": "0",
-    "b3": "1",
-    "d4": "0",
-    "c6": "4",
-    "g7": "4",
+    "a1": "2",
+    "c1": "2",
+    "d3": "0",
+    "a4": "2",
+    "e5": "1",
+    "a6": "2",
+    "areas": [
+        [
+            "a1",
+            "b1",
+            "a2",
+            "b2",
+            "a3",
+            "b3"
+        ],
+        [
+            "c1",
+            "d1",
+            "e1",
+            "f1",
+            "c2",
+            "d2",
+            "e2",
+            "f2",
+            "f3"
+        ],
+        [
+            "g1",
+            "g2",
+            "d3",
+            "e3",
+            "g3",
+            "d4",
+            "e4",
+            "f4",
+            "g4",
+            "d5"
+        ],
+        [
+            "c3",
+            "a4",
+            "b4",
+            "c4",
+            "a5",
+            "b5",
+            "c5"
+        ],
+        [
+            "e5",
+            "f5",
+            "g5",
+            "g6",
+            "g7"
+        ],
+        [
+            "a6",
+            "b6",
+            "c6",
+            "d6",
+            "e6",
+            "f6",
+            "a7",
+            "b7",
+            "c7",
+            "d7",
+            "e7",
+            "f7"
+        ]
+    ],
     "tag": ""
 }
     };

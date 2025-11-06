@@ -1254,6 +1254,21 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       return showValue;
     }
 
+  } else if (typeCode=="yajilin_regional" ) {
+    this.typeProperties = decribePuzzleType()
+      .useCornerTexts(true)
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(0,20,{textColor: this.colorSchema.greyColor}))
+      .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().cell().clickSwitch()
+        .addItem(StdItem.BLACK.doNotSubmit())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
   } else if (typeCode=="kuroshiro") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
