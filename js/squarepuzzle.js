@@ -1234,6 +1234,26 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       return showValue;
     }
 
+  } else if (typeCode=="yajilin_sum" ) {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.LIGHT_GREY)
+        .addNumbers(0, 15, StdColor.LIGHT_GREY)
+        )
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.BLACK.doNotSubmit())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs('1')))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
+    this.typeProperties.toChooserShow = function(value) {
+      let showValue = Object.assign({}, value);
+      showValue.textColor = "#fff";
+      return showValue;
+    }
+
   } else if (typeCode=="kuroshiro") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
