@@ -43,7 +43,7 @@ check:function(dimension, clueData, data){
   if (lineRes.status != "OK") {
     return lineRes;
   }
-  var res = Checker.checkAllFilled(clues, lineRes.line);
+  var res = Checker.checkAllFilled(clues, lineRes.line, v, h);
   if (res.status != "OK") {
     return res;
   }
@@ -61,7 +61,7 @@ check:function(dimension, clueData, data){
 buildLine: function(v, h) {
   var start = Checker.findStart(h);
   if (!start) {
-    return {status: "There should be single loop passing through all cells"};
+    return {status: "There should be single loop passing through some cells"};
   }
   var line = [];
   line[0] = start;
@@ -106,7 +106,7 @@ findStart: function(h) {
   }
   return null;
 },
-checkAllFilled: function(cells, line) {
+checkAllFilled: function(cells, line, v, h) {
   var used = util.create2DArray(cells.rows, cells.cols, false)
   var unused = util.create2DArray(cells.rows, cells.cols, false)
   for (var i=0;i<line.length;i++) {
@@ -115,6 +115,9 @@ checkAllFilled: function(cells, line) {
   for (var y=0;y<used.rows;y++) {
     for (var x=0;x<used.cols;x++) {
       if (!used[y][x]) {
+        if (h[y][x] || v[y][x]) {
+          return {status: "There should be single loop passing through some cells", errors: [util.coord(x, y)]};
+        }
         unused[y][x] = true;
       }
     }
