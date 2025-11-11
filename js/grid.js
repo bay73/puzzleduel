@@ -39,6 +39,12 @@ gridElement.prototype.setClue = function(clueData) {
   this.redraw();
 }
 
+gridElement.prototype.setClueValue = function(clueValue) {
+  let data = this.puzzle.typeProperties.decodeClue(clueValue, this.puzzle)
+  this.clueValue = clueValue;
+  this.setClue(data);
+}
+
 gridElement.prototype.revertTo = function(oldData, oldPencilData, noLogging) {
   this.data = oldData;
   this.pencilData = oldPencilData;

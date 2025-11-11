@@ -182,6 +182,10 @@ squarePuzzle.prototype.initController = function () {
         }
       }
       if (typeof this.typeProperties.connectorController == "function") {
+        if (typeof this.typeProperties.connectorsDisabled == "function") {
+          let cell = this.cells[y][x];
+          this.cells[y][x].connectorsDenied = () => this.typeProperties.connectorsDisabled(cell);
+        }
         if (this.connectors[y][x]['v']) {
           this.typeProperties.connectorController(this.connectors[y][x]['v']);
         }
@@ -321,7 +325,7 @@ squarePuzzle.prototype.showClues = function(data) {
     } else {
       var coord = this.decodeCoordinate(key);
       if (this.cells[coord.y] && this.cells[coord.y][coord.x]) {
-        this.cells[coord.y][coord.x].setClue(this.decodeClue(value));
+        this.cells[coord.y][coord.x].setClueValue(value);
       }
     }
   }
@@ -358,7 +362,7 @@ squarePuzzle.prototype.drawEdgeClues = function(edges) {
     } else {
       var side = parseInt(part[1]);
     }
-    this.edges[coord.y][coord.x][side].setClue(this.decodeClue(value));
+    this.edges[coord.y][coord.x][side].setClueValue(value);
   }
 }
 
@@ -371,7 +375,7 @@ squarePuzzle.prototype.drawNodeClues = function(nodes) {
     } else {
       var side = parseInt(part[1]);
     }
-    this.nodes[coord.y][coord.x][side].setClue(this.decodeClue(value));
+    this.nodes[coord.y][coord.x][side].setClueValue(value);
   }
 }
 
@@ -379,7 +383,7 @@ squarePuzzle.prototype.drawBottomClues = function(bottom) {
   if (this.bottom) {
     for(var i=0; i<bottom.length;i++) {
       if (this.bottom[i]) {
-        this.bottom[i].setClue(this.decodeClue(bottom[i]));
+        this.bottom[i].setClueValue(bottom[i]);
       }
     }
   }
@@ -389,7 +393,7 @@ squarePuzzle.prototype.drawTopClues = function(top) {
   if (this.top) {
     for(var i=0; i<top.length;i++) {
       if (this.top[i]) {
-        this.top[i].setClue(this.decodeClue(top[i]));
+        this.top[i].setClueValue(top[i]);
       }
     }
   }
@@ -399,7 +403,7 @@ squarePuzzle.prototype.drawRightClues = function(right) {
   if (this.right) {
     for(var i=0; i<right.length;i++) {
       if (this.right[i]) {
-        this.right[i].setClue(this.decodeClue(right[i]));
+        this.right[i].setClueValue(right[i]);
       }
     }
   }
@@ -409,7 +413,7 @@ squarePuzzle.prototype.drawLeftClues = function(left) {
   if (this.left) {
     for(var i=0; i<left.length;i++) {
       if (this.left[i]) {
-        this.left[i].setClue(this.decodeClue(left[i]));
+        this.left[i].setClueValue(left[i]);
       }
     }
   }
@@ -852,6 +856,17 @@ squarePuzzleCell.prototype.hasMultiPencil = function() {
   }
 }
 
+squarePuzzleCell.prototype.canDragStart = function() {
+  if (this.dragProcessor != null) {
+    if (this.connectorsDenied != null) {
+      return !this.connectorsDenied();
+    }
+    return true;
+  }
+  return false;
+}
+
+
 squarePuzzleCell.prototype.processDragEnd = function(startElement) {
   if (startElement.constructor.name != this.constructor.name) {
     return false;
@@ -902,7 +917,9 @@ squarePuzzleCell.prototype.commonConnectors = function(startElement) {
     var side = 'v';
     var connectors = [];
     for (var r=row1; r<row2; r++) {
-      connectors.push(this.puzzle.connectors[r][col][side])
+      if (this.puzzle.cells[r][col].connectorsAllowed() && this.puzzle.cells[r+1][col].connectorsAllowed()) {
+        connectors.push(this.puzzle.connectors[r][col][side])
+      }
     }
   }
   if (this.row == startElement.row) {
@@ -912,7 +929,9 @@ squarePuzzleCell.prototype.commonConnectors = function(startElement) {
     var side = 'h';
     var connectors = [];
     for (var c=col1; c<col2; c++) {
-      connectors.push(this.puzzle.connectors[row][c][side])
+      if (this.puzzle.cells[row][c].connectorsAllowed() && this.puzzle.cells[row][c+1].connectorsAllowed()) {
+        connectors.push(this.puzzle.connectors[row][c][side])
+      }
     }
   }
   if (connectors) {
@@ -921,6 +940,12 @@ squarePuzzleCell.prototype.commonConnectors = function(startElement) {
   return null;
 }
 
+squarePuzzleCell.prototype.connectorsAllowed = function() {
+   if (this.connectorsDenied != null) {
+     return !this.connectorsDenied();
+   }
+   return true;
+}
 
 // edge of square grid ///////////////////////////////////////////
 squarePuzzleEdge = function(puzzle, col, row, side) {

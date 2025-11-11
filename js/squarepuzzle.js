@@ -1191,6 +1191,10 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue;
+    }
+
   } else if (typeCode=="yajilin" || typeCode=="yajilin_domino" || typeCode=="yajilin_liar" ) {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
@@ -1233,6 +1237,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       showValue.textColor = "#fff";
       return showValue;
     }
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue || cell.data.color == self.colorSchema.gridColor;
+    }
 
   } else if (typeCode=="yajilin_sum" ) {
     this.typeProperties = decribePuzzleType()
@@ -1253,6 +1260,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       showValue.textColor = "#fff";
       return showValue;
     }
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue || cell.data.color == self.colorSchema.gridColor;
+    }
 
   } else if (typeCode=="yajilin_regional" ) {
     this.typeProperties = decribePuzzleType()
@@ -1269,6 +1279,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.data.color == self.colorSchema.gridColor;
+    }
   } else if (typeCode=="kuroshiro") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
@@ -1335,6 +1348,10 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue;
+    }
+
   } else if (typeCode=="loop_bounds") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
@@ -1357,6 +1374,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue;
+    }
 
   } else if (typeCode=="ring_ring_empty") {
     this.typeProperties = decribePuzzleType()
@@ -1370,6 +1390,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit())
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue;
+    }
 
   } else if (typeCode=="ring_ring_max") {
     var maxValue = Math.max(this.rows - 1, this.cols - 1);
@@ -1386,6 +1409,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().outer().clue().clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue;
+    }
 
   } else if (typeCode=="ring_ring_nested") {
     var maxValue = Math.floor(Math.min(this.rows / 2, this.cols / 2));
@@ -1403,6 +1429,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().node().inner().noClue().clickSwitch()
           .addNumbers(0, maxValue, StdColor.LIGHT_GREY, undefined, false))
       .build(this);
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue;
+    }
   } else if (typeCode=="ring_ring_numbered") {
     var letters = self.dimensionExtra;
     this.typeProperties = decribePuzzleType()
@@ -1414,7 +1443,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
-        
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue && cell.clueValue == "black";
+    }
   } else if (typeCode=="ring_ring_square_rectangle") {
       this.typeProperties = decribePuzzleType()
         .add(controller().forAuthor().cell().clickSwitch()
@@ -1426,6 +1457,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .add(controller().forSolver().edge().clickSwitch()
           .addItem(StdItem.CROSS.doNotSubmit()))
         .build(this);
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue && cell.clueValue == "black";
+    }
 
   } else if (typeCode=="ring_ring_battenberg") {
     let EMPTY_BATTENBERG = controllerItem({image: "battenberg_small_e", returnValue: "battenberg"})
@@ -1443,6 +1477,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(LEFT_BATTENBERG.doNotSubmit())
         .addItem(RIGHT_BATTENBERG.doNotSubmit()))
       .build(this);
+    this.typeProperties.connectorsDisabled = function(cell) {
+      return cell.isClue;
+    }
 
   } else if (typeCode=="four_winds") {
     this.typeProperties = decribePuzzleType()
@@ -1923,6 +1960,14 @@ squarePuzzleCell.prototype.switchOnChooser = function(index) {
   } else  {
     return squareGridElement.prototype.switchOnChooser.call(this, index);
   }
+}
+
+squarePuzzleCell.prototype.switchToData = function(data, noLogging) {
+  squareGridElement.prototype.switchToData.call(this, data, noLogging);
+  if (!this.puzzle.typeCode.startsWith("yajilin")) {
+    return;
+  }
+  this.connectors.forEach(connector => connector.switchToData({}));
 }
 
 })

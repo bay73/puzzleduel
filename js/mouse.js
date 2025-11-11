@@ -122,10 +122,12 @@ mouseController.prototype.onMouseMove = function(event) {
       return;
     }
     var end = this.transformPoint(this.eventPosition(event));
-    if (typeof this.mouseStartElement.drawDragHandler=="function") {
-      this.dragHandler.path = this.mouseStartElement.drawDragHandler(end);
-    } else {
-      this.dragHandler.path = this.drawLineHandler(this.mouseStartElement, end);
+    if (this.mouseStartElement.canDragStart()) {
+      if (typeof this.mouseStartElement.drawDragHandler=="function") {
+        this.dragHandler.path = this.mouseStartElement.drawDragHandler(end);
+      } else {
+        this.dragHandler.path = this.drawLineHandler(this.mouseStartElement, end);
+      }
     }
   }
 }
