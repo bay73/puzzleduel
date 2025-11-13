@@ -18,9 +18,9 @@ router.get('/:type',
       Puzzle.find({type: req.params.type}, "code dimension hidden type daily tag contest rating difficulty")
     ]);
     const type = util.puzzleTypeToPresent(rawType, req.getLocale());
-    
-    let best = puzzles.filter(puzzle => !puzzle.hidden).sort((p1, p2) => p2.rating.rating - p1.rating.rating).slice(0, 5);
-    let hardest = puzzles.filter(puzzle => !puzzle.hidden).sort((p1, p2) => p2.difficulty - p1.difficulty).slice(0, 5);
+
+    let best = puzzles.filter(puzzle => !puzzle.hidden && !puzzle.needLogging).sort((p1, p2) => p2.rating.rating - p1.rating.rating).slice(0, 5);
+    let hardest = puzzles.filter(puzzle => !puzzle.hidden && !puzzle.needLogging).sort((p1, p2) => p2.difficulty - p1.difficulty).slice(0, 5);
     let example = puzzles.filter(puzzle => puzzle.code==type.example.puzzleId)[0];
     
     res.render('type', {
