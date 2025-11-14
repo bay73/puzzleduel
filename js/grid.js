@@ -40,7 +40,7 @@ gridElement.prototype.setClue = function(clueData) {
 }
 
 gridElement.prototype.setClueValue = function(clueValue) {
-  let data = this.puzzle.typeProperties.decodeClue(clueValue, this.puzzle)
+  let data = this.puzzle.decodeClue(clueValue, this.puzzle)
   this.clueValue = clueValue;
   this.setClue(data);
 }
