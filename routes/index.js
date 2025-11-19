@@ -135,7 +135,7 @@ router.get('/help/authors', async (req, res, next) => {
     const processStart = new Date().getTime();
     const [allPuzzles, authors] = await Promise.all([
       cache.readAllPuzzles(),
-      User.find({role: "author"}, "_id name about")
+      User.find({role: "author"}, "_id name about titles")
     ])
     var byAuthorCountMap = {};
     allPuzzles.filter(puzzle => !puzzle.hidden).forEach(puzzle => {
@@ -164,7 +164,8 @@ router.get('/help/authors', async (req, res, next) => {
           about: author.about,
           realName: typeof author.about!="undefined"?author.about.realName:"",
           picture: typeof author.about!="undefined"?author.about.picture:"",
-          text: text
+          text: text,
+          userTitles: author.titles,
         }
       })
     });
