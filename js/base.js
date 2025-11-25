@@ -499,8 +499,9 @@ basePuzzle.prototype.logStep = function(cell, data ) {
   }
 }
 
-basePuzzle.prototype.addStep = function(step) {
+basePuzzle.prototype.addStep = function(step, attachTo) {
   if(typeof step == 'function') {
+    step.attachTo = attachTo;
     this.steps.push(step);
   }
   if (this.steps.length > 0) {
@@ -512,6 +513,14 @@ basePuzzle.prototype.revertStep = function() {
   var lastStep = this.steps.pop();
   if(typeof lastStep == 'function') {
     lastStep();
+    if (lastStep.attachTo != undefined) {
+      while (this.steps.length >= lastStep.attachTo) {
+        var attachedtStep = this.steps.pop();
+        if(typeof attachedtStep == 'function') {
+          attachedtStep();
+        }
+      }
+    }
   }
   this.savepointButtonState();
   if (this.steps.length == 0) {

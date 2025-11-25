@@ -58,7 +58,7 @@ gridElement.prototype.revertTo = function(oldData, oldPencilData, noLogging) {
   this.redraw();
 }
 
-gridElement.prototype.switchToData = function(data, noLogging) {
+gridElement.prototype.switchToData = function(data, noLogging, attachTo) {
   var oldData = Object.assign({}, this.data);
   if (noLogging==true) {
   } else {
@@ -74,7 +74,7 @@ gridElement.prototype.switchToData = function(data, noLogging) {
     }
     var self = this;
     var coord = this.getLogCoordinates();
-    this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData, false));
+    this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData, false), attachTo);
     this.puzzle.logStep(coord, this.dataToLog(data))
   }
   this.data = Object.assign({text: null, image: null, color: null, textColor: null}, data);
@@ -141,7 +141,7 @@ gridElement.prototype.applyLogData = function(logData) {
   }
 }
 
-gridElement.prototype.setPencilData = function(data, noLogging) {
+gridElement.prototype.setPencilData = function(data, noLogging, attachTo) {
   if (noLogging) {
   } else {
     var oldData = Object.assign({}, this.data);
@@ -156,7 +156,7 @@ gridElement.prototype.setPencilData = function(data, noLogging) {
       var oldPencilData = Object.assign({}, this.pencilData);
     }
     var self = this;
-    this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData, false));
+    this.puzzle.addStep(()=>self.revertTo(oldData, oldPencilData, false), attachTo);
   }
   var dataToSet = data;
   if (this.hasMultiPencil()){

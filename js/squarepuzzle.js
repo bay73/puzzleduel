@@ -1866,8 +1866,8 @@ squarePuzzleEdge.prototype.revertTo = function(oldData, oldPencilData, noLogging
   }
 }
 
-squarePuzzleEdge.prototype.switchToData = function(data, noLogging) {
-  squareGridElement.prototype.switchToData.call(this, data, noLogging);
+squarePuzzleEdge.prototype.switchToData = function(data, noLogging, attachTo) {
+  squareGridElement.prototype.switchToData.call(this, data, noLogging, attachTo);
   if (this.puzzle instanceof krammaPuzzleType) {
     if (!noLogging) {
       this.puzzle.extendLine(this);
@@ -1962,12 +1962,13 @@ squarePuzzleCell.prototype.switchOnChooser = function(index) {
   }
 }
 
-squarePuzzleCell.prototype.switchToData = function(data, noLogging) {
-  squareGridElement.prototype.switchToData.call(this, data, noLogging);
+squarePuzzleCell.prototype.switchToData = function(data, noLogging, attachTo) {
+  squareGridElement.prototype.switchToData.call(this, data, noLogging, attachTo);
   if (!this.puzzle.typeCode.startsWith("yajilin")) {
     return;
   }
-  this.connectors.forEach(connector => connector.switchToData({}));
+  let currentStep = this.puzzle.steps.length;
+  this.connectors.forEach(connector => connector.switchToData({}, false, currentStep));
 }
 
 })
