@@ -1478,7 +1478,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(RIGHT_BATTENBERG.doNotSubmit()))
       .build(this);
     this.typeProperties.connectorsDisabled = function(cell) {
-      return cell.isClue;
+      return cell.isClue && cell.clueValue == "black";
     }
 
   } else if (typeCode=="four_winds") {
