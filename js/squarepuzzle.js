@@ -1967,8 +1967,14 @@ squarePuzzleCell.prototype.switchToData = function(data, noLogging, attachTo) {
   if (!this.puzzle.typeCode.startsWith("yajilin")) {
     return;
   }
-  let currentStep = this.puzzle.steps.length;
-  this.connectors.forEach(connector => connector.switchToData({}, false, currentStep));
+  if (this.data.color == this.puzzle.colorSchema.gridColor) {
+    let currentStep = this.puzzle.steps.length;
+    this.connectors.forEach(connector => {
+      if (connector.getValue() == 1) {
+        connector.switchToData({}, false, currentStep);
+      }
+    });
+  }
 }
 
 })
