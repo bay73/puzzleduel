@@ -248,13 +248,14 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
      .build(this);
 
   } else if (typeCode=="meandering_numbers") {
+    var maxValue = Number(self.dimensionExtra);
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
-        .addNumbers(1,9))
+        .addNumbers(1,maxValue))
       .add(controller().forAuthor().edge().toAreas().clickSwitch().withDrag()
         .addItem(StdItem.BLACK.asAreaBorder()))
       .add(controller().forSolver().cell().noClue().chooser()
-        .addNumbers(1,9))
+        .addNumbers(1,maxValue))
      .build(this);
 
   } else if (typeCode=="nanro") {
