@@ -301,7 +301,7 @@ ControllerBuilder.prototype.copy = function(){
     throw "Controller type is already defined"
   }
   if (this.elementType!=ControllerBuilder.CELL) {
-    throw "drag conroller can be used only for cells"
+    throw "copy conroller can be used only for cells"
   }
   this.type = ControllerBuilder.DRAG_COPY;
   return this;
@@ -313,7 +313,7 @@ ControllerBuilder.prototype.copyPaste = function(pasteFn){
     throw "Controller type is already defined"
   }
   if (this.elementType!=ControllerBuilder.CELL) {
-    throw "drag conroller can be used only for cells"
+    throw "copy conroller can be used only for cells"
   }
   this.type = ControllerBuilder.DRAG_COPY_PASTE;
   this.pasteFn = pasteFn;

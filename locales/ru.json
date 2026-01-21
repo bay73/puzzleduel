@@ -490,7 +490,7 @@
 	"The region should have a neighbouring region of consecutive size": "У региона должен быть соседний регион с размером отличающимся на 1",
 	"Double Choco Delight": "Double Choco Delight",
 	"dOubLESHOW 22/2": "dOubLESHOW 22/2",
-	"Rules": "Rules",
+	"Rules": "Условие",
 	"Donate": "Поддержать",
 	"Loop should pass straight through all circles": "Цикл должен проходить через все точки без поворота",
 	"Dot should be in the middle of the corresponding straight segment": "Точка должна быть в середине прямого отрезка",
@@ -517,5 +517,14 @@
 	"The arrow should point to the most circles": "Стрелка должна показывать в направлении максимума кружков",
 	"Consecutive numbers should share an edge in the area": "Последовательные числа должны иметь общую сторону в области",
 	"Loop can't pass through the clue cell": "Цикл не может проходить через клетки с задающими",
-	"Add comment": "Добавить комментарий"
+	"Add comment": "Добавить комментарий",
+	"Click to see the answer.": "Нажмите, чтобы увидеть ответ.",
+	"Variations": "Вариации",
+	"Hardest puzzles": "Сложные задачи",
+	"Puzzle types": "Типы головоломок",
+	"List puzzle types text": "На этой странице вы можете найти полный список всех типов головоломок, представленных на сайте.",
+	"dOubLESHOW 12": "dOubLESHOW 12",
+	"More about this puzzle": "Об этой задаче",
+	"Type description warning": "Некоторая информация на этой странице может быть неполной или неточной. Пожалуйста, свяжитесь с администратором сайта, если у вас есть дополнительные сведения или интересные факты об этом типе головоломок.",
+	"Yajilin Trail Run": "Yajilin Trail Run"
 }

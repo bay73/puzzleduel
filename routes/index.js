@@ -135,7 +135,7 @@ router.get('/help/authors', async (req, res, next) => {
     const processStart = new Date().getTime();
     const [allPuzzles, authors] = await Promise.all([
       cache.readAllPuzzles(),
-      User.find({role: "author"}, "_id name about")
+      User.find({role: "author"}, "_id name about titles")
     ])
     var byAuthorCountMap = {};
     allPuzzles.filter(puzzle => !puzzle.hidden).forEach(puzzle => {
@@ -164,13 +164,38 @@ router.get('/help/authors', async (req, res, next) => {
           about: author.about,
           realName: typeof author.about!="undefined"?author.about.realName:"",
           picture: typeof author.about!="undefined"?author.about.picture:"",
-          text: text
+          text: text,
+          userTitles: author.titles,
         }
       })
     });
     profiler.log('helpAuthors', processStart);
   } catch (e) {
     next(e);
+  }
+});
+
+// List of example puzzles
+router.get('/help/types', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    const typeMap = await cache.readPuzzleTypes();
+    res.render('types', {
+      user: req.user,
+      types: Object.keys(typeMap)
+        .map(code => typeMap[code])
+        .filter(type => !util.isHiddenType(type))
+        .map(type => {
+        return {
+          code: type.code,
+          category: type.category,
+          name: type.name
+        };
+      })
+    });
+    profiler.log('typesList‚', processStart);
+  } catch (e) {
+    next(e)
   }
 });
 

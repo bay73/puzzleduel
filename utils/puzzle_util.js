@@ -107,6 +107,9 @@ function puzzleTypeToPresent(type_, locale, dimension) {
       if (type.translations[locale].gridControl) {
         type.gridControl = type.translations[locale].gridControl;
       }
+      if (type.translations[locale].description) {
+        type.description = type.translations[locale].description;
+      }
     }
   }
   if (type.properties) {
@@ -157,3 +160,4 @@ module.exports.puzzleToPresent = async function(puzzle, locale) {
 }
 
 module.exports.puzzleTypeToPresent = puzzleTypeToPresent;
+module.exports.processTags = processTags;

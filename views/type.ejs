@@ -1,0 +1,80 @@
+<%- include ('./partials/navbar') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <div class="card">
+        <h1 class="card-header"><%= type.name %></h1>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md mb-5">
+              <%- type.description %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md">
+              <h2><%= __('Rules') %></h2>
+              <%= type.rules %>
+            </div>
+            <div class="col-md text-center mb-5">
+              <img id=puzzleImg src="/images/puzzles/<%=type.exampleId %>.svg" src1="/images/answers/<%=type.exampleId %>.svg" width="100%">
+              <p>
+              <i><%= __('Click to see the answer.') %></i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md">
+	          <h4 class="pl-3"><%= __('Best puzzles') %></h4>
+	          <ul>
+  				<% bestPuzzles.forEach( puzzle => { %>
+                <% var stars=puzzle.difficulty>0?(1+Math.round(10*Math.log(puzzle.difficulty/30000))/10):0; %>
+                <li>
+                  <a style="white-space: nowrap;" class="mr-3" href="/single/<%= puzzle.code %>"><%= puzzle.dimension.split('-')[0] %>
+                  <%- include ('./partials/rating_span', {rating: puzzle.rating.rating, ratingCount: puzzle.rating.count}) %>
+                  </a>
+                </li>
+  				<% }) %>
+              </ul>
+            </div>
+            <div class="col-md">
+			  <h4 class="pl-3"><%= __('Hardest puzzles') %></h4>
+              <ul>
+  				<% hardestPuzzles.forEach( puzzle => { %>
+                <% var stars=puzzle.difficulty>0?(1+Math.round(10*Math.log(puzzle.difficulty/30000))/10):0; %>
+                <li>
+                  <a style="white-space: nowrap;" class="mr-3" href="/single/<%= puzzle.code %>"><%= puzzle.dimension.split('-')[0] %>
+                    <span class="stars" style="width: calc(15px * <%= stars %>)" data-toggle="tooltip" title="<%= stars %>">
+                    </span>
+                  </a>
+                </li> 
+  				<% })  %>
+			  </ul>
+            </div>
+            <% if(type.variations.length > 0) { %>
+            <div class="col-md">
+              <h4 class="pl-3"><%= __('Variations') %></h4>
+	          <ul>
+	            <% type.variations.forEach( variation => {%>
+	            <li><a href="/types/<%= variation.code%>"><%= variation.name%></a></li>
+	            <% }) %>
+	          </ul>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("#puzzleImg").on("click", (event) => {
+    let src = $(event.target).attr("src")
+    let src1 = $(event.target).attr("src1")
+    $(event.target).attr("src", src1)
+    $(event.target).attr("src1", src)
+  })
+  $(document).ready(function () {
+    showMessage("<%= __('Type description warning') %>");
+  });
+</script>
+<%- include ('./partials/footer') %>
+

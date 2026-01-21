@@ -1,0 +1,87 @@
+<%- include ('./partials/navbar') %>
+<style>
+   @media (max-width: 767px) {
+    .btn-xs-block {
+        display: block;
+        width: 100%;
+    }
+    input[type="submit"].btn-xs-block,
+    input[type="reset"].btn-xs-block,
+    input[type="button"].btn-xs-block {
+        width: 100%;
+    }
+    .btn-block + .btn-xs-block,
+    .btn-xs-block + .btn-block,
+    .btn-xs-block + .btn-xs-block {
+        margin-top: 0.5rem;
+    }
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-10 m-auto">
+      <div class="card">
+        <h1 class="card-header"><%= __('Puzzle types') %></h1>
+        <div class="card-body">
+          <p>
+            <%= __('List puzzle types text') %>
+          </p>
+          <div class="accordion" id="mainAccordion">
+            <% var prevCategory = null; %>
+            <% function compareTypes(t1, t2) {
+              if (t1.category==t2.category) {
+                return t1.name.localeCompare(t2.name);
+              } else {
+                return t1.category.localeCompare(t2.category);
+              }
+            } %>
+            <% types.sort((t1,t2) => compareTypes(t1, t2)).forEach(function(type) { %>
+            <% if (type.category != prevCategory) { %>
+            <% if (prevCategory!=null) { %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <% } %>
+            <div class="card">
+              <div class="card-header" id="<%= type.category.substr(3) %>Heading">
+                <button class="btn btn-link btn-xs-block" type="button"
+                  data-toggle="collapse" data-target="#<%= type.category.substr(3) %>Collapse"
+                  aria-expanded="true" aria-controls="<%= type.category.substr(3) %>Collapse"
+                >
+                  <h2><%= __(type.category.substr(3)) %></h2>
+                </button>
+              </div>
+              <div id="<%= type.category.substr(3) %>Collapse" class="collapse <%= prevCategory==null?"show":"" %>" aria-labelledby="<%= type.category.substr(3) %>Heading" data-parent="#mainAccordion">
+                <table class="card-body table table-hover table-condensed ml-5">
+                  <tbody>
+            <% } %>
+            <% prevCategory = type.category; %>
+                    <tr>
+                      <td>
+                        <a href="/types/<%= type.code %>">
+                          <%= type.name %>
+                        </a>
+                      </td>
+                    </tr>
+            <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+    $('.collapse').on('shown.bs.collapse', function(e) {
+      var $card = $(this).closest('.card');
+      $('html,body').animate({scrollTop: $card.offset().top},500);
+    });
+  });
+</script>
+<%- include ('./partials/footer') %>
+

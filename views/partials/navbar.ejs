@@ -48,6 +48,7 @@
                 <li><a class="nav-link" href="/contest/yeurw8yqash"><%= __('dOubLESHOW 3') %><sup>2</sup></a></li>
                 <li><a class="nav-link" href="/contest/iuywcxpqnpi"><%= __('dOubLESHOW 10') %></a></li>
                 <li><a class="nav-link" href="/contest/iuyacbpquzq"><%= __('dOubLESHOW 22/2') %></a></li>
+                <li><a class="nav-link" href="/contest/iuyacsoubuzqq"><%= __('dOubLESHOW 12') %></a></li>
               </ul>
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('Month-long marathons') %></a>
@@ -59,6 +60,9 @@
                 <li><a class="nav-link" href="/contest/gh459823vcd65jj"><%= __('Double Choco Delight') %></a></li>
                 <li><a class="nav-link" href="/contest/stovtriaiujamsa"><%= __('Tap into Tapa') %> 2</a></li>
                 <li><a class="nav-link" href="/contest/sringriaiujamsa"><%= __('Ring-Ring Rally') %></a></li>
+                <% if (new Date() > new Date('2025-12-01T00:00:00.000+00:00')) { %>
+                <li><a class="nav-link" href="/contest/yaj11lr3t8mqt"><%= __('Yajilin Trail Run') %></a></li>
+                <% } %>
               </ul>
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('Other contests') %></a>
@@ -151,6 +155,7 @@
                 <li><a class="nav-link" href="/contest/yeurw8yqash/results"><%= __('dOubLESHOW 3') %><sup>2</sup></a></li>
                 <li><a class="nav-link" href="/contest/iuywcxpqnpi/results"><%= __('dOubLESHOW 10') %></a></li>
                 <li><a class="nav-link" href="/contest/iuyacbpquzq/results"><%= __('dOubLESHOW 22/2') %></a></li>
+                <li><a class="nav-link" href="/contest/iuyacsoubuzqq/results"><%= __('dOubLESHOW 12') %></a></li>
               </ul>
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('Month-long marathons') %></a>
@@ -162,6 +167,9 @@
                 <li><a class="nav-link" href="/contest/gh459823vcd65jj/results"><%= __('Double Choco Delight') %></a></li>
                 <li><a class="nav-link" href="/contest/stovtriaiujamsa/results"><%= __('Tap into Tapa') %> 2</a></li>
                 <li><a class="nav-link" href="/contest/sringriaiujamsa/results"><%= __('Ring-Ring Rally') %></a></li>
+                <% if (new Date() > new Date('2025-12-01T00:00:00.000+00:00')) { %>
+                <li><a class="nav-link" href="/contest/yaj11lr3t8mqt/results"><%= __('Yajilin Trail Run') %></a></li>
+                <% } %>
               </ul>
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('Other contests') %></a>
@@ -197,6 +205,7 @@
           <span class="caret"></span></a>
           <ul class="dropdown-menu bg-dark">
             <li><a class="nav-link" href="/help"><%= __('About') %></a></li>
+            <li><a class="nav-link" href="/help/types"><%= __('Puzzle types') %></a></li>
             <li><a class="nav-link" href="/archive/examples"><%= __('Example puzzles') %></a></li>
             <li><a class="nav-link" href="/help/videos"><%= __('Explainer videos') %></a></li>
             <li><a class="nav-link" href="/help/authors"><%= __('Our contributors') %></a></li>

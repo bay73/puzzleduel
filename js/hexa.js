@@ -205,7 +205,7 @@ hexaPuzzle.prototype.showClues = function(data) {
     } else {
       var coord = this.decodeCoordinate(key);
       if (this.cells[coord.y] && this.cells[coord.y][coord.x]) {
-        this.cells[coord.y][coord.x].setClue(this.decodeClue(value));
+        this.cells[coord.y][coord.x].setClueValue(value);
       }
     }
   }
@@ -247,7 +247,7 @@ hexaPuzzle.prototype.drawEdgeClues = function(edges) {
     } else {
       var side = parseInt(part[1]);
     }
-    this.edges[coord.y][coord.x][side].setClue(this.decodeClue(value));
+    this.edges[coord.y][coord.x][side].setClueValue(value);
   }
 }
 
@@ -260,7 +260,7 @@ hexaPuzzle.prototype.drawNodeClues = function(nodes) {
     } else {
       var side = parseInt(part[1]);
     }
-    this.nodes[coord.y][coord.x][side].setClue(this.decodeClue(value));
+    this.nodes[coord.y][coord.x][side].setClueValue(value);
   }
 }
 

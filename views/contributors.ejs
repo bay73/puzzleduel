@@ -19,6 +19,15 @@
                   <p class="text-justify">
                   <%- contributor.text %>
                   </p>
+                  <% if (contributor.userTitles && contributor.userTitles.length > 0) { %>
+                  <p class="text-left">
+                    <% contributor.userTitles.forEach(title => { %>
+                    <div>
+                      <a href="<%= title.contestLink %>"><%- title.title %></a>
+                    </div>
+                    <% }) %>
+                  </p>
+                  <% } %>
                   <p class="text-right"><a href="/archive/types/author/<%= contributor.id %>"><%= __('Puzzles') %></a></p>
                   <span style="display: none"><%= contributor.puzzleCount %></span>
                 </div>
