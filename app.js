@@ -57,6 +57,7 @@ app.use('/types', require('./routes/types.js'));
 app.use('/images', express.static(__dirname + '/images', { maxage: '3d' }));
 app.use('/js', express.static(__dirname + '/js', { maxage: '3h' }));
 app.use('/css', express.static(__dirname + '/css', { maxage: '3h' }));
+app.use('/docs', express.static(__dirname + '/docs', { maxage: '3h' }));
 app.use('/.well-known',express.static(__dirname + '/.well-known'));
 
 app.use((err, req, res, next) => {

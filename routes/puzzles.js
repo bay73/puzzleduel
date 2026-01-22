@@ -272,6 +272,29 @@ router.post('/:puzzleid/check', async (req, res, next) => {
   }
 });
 
+// Check puzzle solution
+router.post('/:puzzleid/delete/:userid', async (req, res, next) => {
+  try {
+    const processStart = new Date().getTime();
+    if (!req.user || req.user.role != "admin") {
+      res.sendStatus(404);
+      profiler.log('puzzleDeleteResultFailed', processStart);
+      return;
+    }
+    if (req.user.role == "admin") {
+      const time = await UserSolvingTime.findOne({userId: req.params.userid, puzzleId: req.params.puzzleid});
+      if (time != null) {
+        time.solvingTime = undefined;
+        await time.save();
+      }
+    }
+    res.redirect('/archive/' + req.params.puzzleid + '/scores');
+    profiler.log('puzzleDeleteResult', processStart);
+  } catch (e) {
+    next(e);
+  }
+});
+
 // Save puzzle data
 router.post('/:puzzleid/edit', async (req, res, next) => {
   try {
