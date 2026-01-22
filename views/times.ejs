@@ -102,6 +102,15 @@
                 <td>
                   <%= time.errors==0 ? "" : (time.errors + " " + __n("error", time.errors)) %>
                 </td>
+                <% if (typeof user != 'undefined' && user.role=='admin') { %>
+                <td>
+                  <form action="/puzzles/<%= puzzle.code %>/delete/<%= time.userId %>" method="post">
+                    <button type="submit" class="btn btn-link p-0">
+                      <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                  </form>
+                </td>
+                <% } %>
               </tr>
               <% }) %>
               <% notFinished.forEach(function(userName) { %>
