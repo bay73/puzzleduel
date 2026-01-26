@@ -80,7 +80,7 @@ setInterval(()=>{
   profiler.dump(console.log);
 },60000)
 
-setInterval(cache.clearOutdatedCache, 10*60*000)
+setInterval(cache.clearOutdatedCache, 10*60*1000)
 
 setInterval(cache.resetCache, 24*60*60*1000)
 
