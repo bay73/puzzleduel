@@ -15,7 +15,7 @@ module.exports.timeToString = function(millis) {
     (secs + " s");
 }
 
-module.exports.bestSolvingTimeMap = async function(includeHidden) {
+module.exports.bestSolvingTimeMap = async function(includeHidden, minDate, maxDate) {
   var filter = {};
   if (!includeHidden) {
     filter = {
@@ -26,6 +26,16 @@ module.exports.bestSolvingTimeMap = async function(includeHidden) {
         {hidden: {$exists: false}}
       ]
     }
+  }
+  if (minDate || maxDate) {
+    var dateFilter = {}
+    if (minDate) {
+      dateFilter.$gte = minDate
+    }
+    if (maxDate) {
+      dateFilter.$lte = maxDate
+    }
+    filter.date = dateFilter
   }
   const times = await UserSolvingTime.aggregate([{
     $match : filter
@@ -40,7 +50,7 @@ module.exports.bestSolvingTimeMap = async function(includeHidden) {
   return timesMap;
 }
 
-module.exports.userSolvingTimeMap = async function(userId, includeHidden) {
+module.exports.userSolvingTimeMap = async function(userId, includeHidden, minDate, maxDate) {
   var filter = {};
   if (!includeHidden) {
     filter = {
@@ -54,6 +64,16 @@ module.exports.userSolvingTimeMap = async function(userId, includeHidden) {
     filter = {
       userId : userId
     }
+  }
+  if (minDate || maxDate) {
+    var dateFilter = {}
+    if (minDate) {
+      dateFilter.$gte = minDate
+    }
+    if (maxDate) {
+      dateFilter.$lte = maxDate
+    }
+    filter.date = dateFilter
   }
   const times = await UserSolvingTime.find(filter, "puzzleId solvingTime errCount");
   var timesMap = {};

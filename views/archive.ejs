@@ -84,6 +84,11 @@
             <%= __('Puzzles which are older than 5 days are non-competitive and can be attempted without registration.') %><br>
             <%= __('Click at the best solving time value to see the score table for the selected puzzle.') %>
           </p>
+          <p class="card-text text-justify pt-2">
+            <%= __('Choose year:') %><% for (let year = 2020; year <= new Date().getFullYear(); year++) { %>
+            &nbsp;&nbsp;<a href="/archive/daily?year=<%=year %>"><%=year %></a>
+            <% } %>
+          </p>
         </div>
       </div>
     </div>

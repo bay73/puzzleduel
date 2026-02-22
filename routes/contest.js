@@ -149,10 +149,14 @@ router.get('/:contestid/edit', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
+    var startDate = new Date(contest.start)
+    var finishDate = new Date(contest.finish)
+    startDate.setDate(startDate.getDate()-10)
+    finishDate.setDate(finishDate.getDate()+6)
     const [typeMap, puzzles, timesMap] = await Promise.all([
       cache.readPuzzleTypes(),
       Puzzle.find({'contest.contestId': req.params.contestid}),
-      util.bestSolvingTimeMap(true)
+      util.bestSolvingTimeMap(true, startDate, finishDate)
     ]);
     var puzzleMap = {};
     puzzles.forEach(puzzle => {puzzleMap[puzzle.code] = puzzle.toObject();puzzleMap[puzzle.code].needLogging = puzzle.needLogging});

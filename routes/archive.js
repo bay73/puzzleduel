@@ -15,9 +15,31 @@ router.use(require('./common.js'));
 router.get(['/','/daily'],
   async (req, res, next) => {
   try {
+    let year = req.query.year;
+    if (year!=undefined) {
+      var numYear = parseInt(year, 10);
+      if (numYear < 2020 || numYear > new Date().getFullYear()) {
+        numYear = new Date().getFullYear()
+      }
+      var minDate = new Date(numYear,0,1)
+      var maxDate = new Date(numYear+1,0,1)
+    } else {
+      let currentYear = new Date().getFullYear()
+      const currentMonth = new Date().getMonth() + 1
+      let minYear = currentYear
+      if (currentMonth < 5) {
+        minYear--
+      }
+      var minDate = new Date(minYear,0,1)
+      var maxDate = new Date(currentYear+1,0,1)
+    }
     const processStart = new Date().getTime();
+    let solvingMin = new Date(minDate);
+    let solvingMax = new Date(maxDate);
+    solvingMin.setDate(solvingMin.getDate()-10)
+    solvingMax.setDate(solvingMax.getDate()+6)
     if (req.user) {
-      var userTimesPromise = util.userSolvingTimeMap(req.user._id, false);
+      var userTimesPromise = util.userSolvingTimeMap(req.user._id, false, solvingMin, solvingMax);
     } else {
       var userTimesPromise = Promise.resolve({});
     }
@@ -27,7 +49,7 @@ router.get(['/','/daily'],
 
     const [userTimesMap, timesMap, typeMap, allPuzzles] = await Promise.all([
       userTimesPromise,
-      util.bestSolvingTimeMap(false),
+      util.bestSolvingTimeMap(false, solvingMin, solvingMax),
       cache.readPuzzleTypes(),
       cache.readAllPuzzles()
     ]);
@@ -35,7 +57,7 @@ router.get(['/','/daily'],
     profiler.log('archiveDaily:readData', processPoint);
     processPoint = new Date().getTime();
 
-    var filter = puzzle => puzzle.daily && puzzle.daily <= new Date();
+    var filter = puzzle => puzzle.daily && puzzle.daily <= new Date() && puzzle.daily >= minDate && puzzle.daily < maxDate;
     if (req.user && req.user.role == "test") {
       filter = puzzle => true;
     }
@@ -98,8 +120,10 @@ router.get(['/','/tester'],
     let to = new Date();
     to.setDate(to.getDate() + 6);
     var filter = {$or: [{daily: {$gte: from, $lte: to} }, {'contest.puzzleDate': {$gte: from, $lte: to} }] };
+    let solvingFrom = new Date();
+    solvingFrom.setDate(solvingFrom.getDate() - 15);
     if (req.user) {
-      var userTimesPromise = util.userSolvingTimeMap(req.user._id, true);
+      var userTimesPromise = util.userSolvingTimeMap(req.user._id, true, solvingFrom, to);
     }
 
     const [userTimesMap, typeMap, puzzles] = await Promise.all([
