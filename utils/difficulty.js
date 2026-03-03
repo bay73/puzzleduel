@@ -1,6 +1,7 @@
 const UserSolvingTime = require('../models/UserSolvingTime');
 const PuzzleComment = require('../models/PuzzleComment');
 const Puzzle = require('../models/Puzzle');
+const puzzleMedianTime = require('../utils/rating').puzzleMedianTime;
 
 async function singlePuzzleDifficulty(puzzleId) {
   const times = await UserSolvingTime.find({
@@ -11,20 +12,7 @@ async function singlePuzzleDifficulty(puzzleId) {
       {hidden: {$exists: false}}
     ]
   }).sort("solvingTime");
-  if (times.length == 0) {
-    return null;
-  }
-  var success = times.filter(time => !time.errCount);
-  if (success.length==0) {
-    success = times;
-  }
-  var best = success[0].solvingTime;
-  if (success.length%2==0) {
-    var median = (success[success.length/2].solvingTime + success[success.length/2-1].solvingTime)/2;
-  } else {
-    var median = success[(success.length-1)/2].solvingTime;
-  }
-  return median;
+  return puzzleMedianTime(times)
 }
 
 async function singlePuzzleRating(puzzleId) {

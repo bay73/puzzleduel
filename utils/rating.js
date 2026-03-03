@@ -3,7 +3,35 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 const Puzzle = require('../models/Puzzle');
 const User = require('../models/User');
 
-async function singlePuzzleRating(puzzleId) {
+function puzzleMedianTime(times) {
+  if (times.length == 0) {
+    return null;
+  }
+  var success = times.filter(time => !time.errCount);
+  if (success.length==0) {
+    success = times;
+  }
+  if (success.length%2==0) {
+    var median = (success[success.length/2].solvingTime + success[success.length/2-1].solvingTime)/2;
+  } else {
+    var median = success[(success.length-1)/2].solvingTime;
+  }
+  return median
+}
+
+function singlePuzzlePerformance(result, median) {
+  if (result.solvingTime) {
+    let score = 2000 - 500*Math.log2(result.solvingTime / median + result.errCount);
+    if (score < 0) {
+      return 0;
+    }
+    return score;
+  } else {
+    return 0;
+  }
+}
+
+async function singlePuzzleUserRatings(puzzleId) {
   const times = await UserSolvingTime.find({
     puzzleId: puzzleId,
     solvingTime: {$exists: true},
@@ -15,16 +43,7 @@ async function singlePuzzleRating(puzzleId) {
   if (times.length == 0) {
     return [];
   }
-  var success = times.filter(time => !time.errCount);
-  if (success.length==0) {
-    success = times;
-  }
-  var best = success[0].solvingTime;
-  if (success.length%2==0) {
-    var median = (success[success.length/2].solvingTime + success[success.length/2-1].solvingTime)/2;
-  } else {
-    var median = success[(success.length-1)/2].solvingTime;
-  }
+  var median = puzzleMedianTime(times)
   const notFinished = await UserSolvingTime.find({
     puzzleId: puzzleId,
     solvingTime: {$exists: false},
@@ -36,7 +55,7 @@ async function singlePuzzleRating(puzzleId) {
   ratings = [];
   times.forEach(time => {
     var result = time.toObject();
-    var rating = 2000 - 500*Math.log2(result.solvingTime / median + result.errCount);
+    var rating = singlePuzzlePerformance(result, median);
     if (rating < 1) rating = 1;
     ratings.push({userId: result.userId, value: rating, finished: true});
   });
@@ -75,8 +94,8 @@ async function computeRating(computeDate) {
   const puzzles = await Puzzle.find(filter, "code tag daily type").sort({daily: 1});
   for (var i=0; i<puzzles.length; i++) {
     var puzzleId = puzzles[i].code;
-    var puzzleRating = await singlePuzzleRating(puzzleId);
-    puzzleRating.forEach(rating => {
+    var puzzleRatings = await singlePuzzleUserRatings(puzzleId);
+    puzzleRatings.forEach(rating => {
       if (typeof ratingMap[rating.userId]=='undefined'){
         ratingMap[rating.userId] = {
           userName: userMap[rating.userId],
@@ -152,5 +171,7 @@ async function computeRating(computeDate) {
   }
 };
 
-module.exports = computeRating;
+module.exports.computeRating = computeRating
+module.exports.puzzleMedianTime = puzzleMedianTime
+module.exports.singlePuzzlePerformance = singlePuzzlePerformance
 

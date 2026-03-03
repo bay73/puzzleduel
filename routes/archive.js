@@ -6,6 +6,7 @@ const User = require('../models/User');
 const util = require('../utils/puzzle_util');
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
+const singlePuzzlePerformance = require('../utils/rating').singlePuzzlePerformance;
 
 const ensureAuthenticated = require('../config/auth').ensureAuthenticated;
 
@@ -44,18 +45,12 @@ router.get(['/','/daily'],
       var userTimesPromise = Promise.resolve({});
     }
 
-    profiler.log('archiveDaily:userTimesPromise', processStart);
-    processPoint = new Date().getTime();
-
     const [userTimesMap, timesMap, typeMap, allPuzzles] = await Promise.all([
       userTimesPromise,
       util.bestSolvingTimeMap(false, solvingMin, solvingMax),
       cache.readPuzzleTypes(),
       cache.readAllPuzzles()
     ]);
-
-    profiler.log('archiveDaily:readData', processPoint);
-    processPoint = new Date().getTime();
 
     var filter = puzzle => puzzle.daily && puzzle.daily <= new Date() && puzzle.daily >= minDate && puzzle.daily < maxDate;
     if (req.user && req.user.role == "test") {
@@ -79,9 +74,6 @@ router.get(['/','/daily'],
       }
     });
 
-    profiler.log('archiveDaily:allPuzzles', processPoint);
-    processPoint = new Date().getTime();
-
     res.render('archive', {
       user: req.user,
       puzzles: puzzles.map(puzzle => {
@@ -91,15 +83,15 @@ router.get(['/','/daily'],
           dimension: puzzle.dimension,
           daily: puzzle.daily,
           competitive: puzzle.needLogging,
-          userTime: userTimesMap[puzzle.code]?util.timeToString(userTimesMap[puzzle.code].time):"",
-          userErr: userTimesMap[puzzle.code]?userTimesMap[puzzle.code].errors:0,
+          userTime: userTimesMap[puzzle.code]?util.timeToString(userTimesMap[puzzle.code].solvingTime):"",
+          userErr: userTimesMap[puzzle.code]?userTimesMap[puzzle.code].errCount:0,
           difficulty: puzzle.difficulty,
           rating: puzzle.needLogging?null:puzzle.rating,
-          time: util.timeToString(timesMap[puzzle.code])
+          time: util.timeToString(timesMap[puzzle.code]),
+          userPerformance: userTimesMap[puzzle.code]?Math.round(singlePuzzlePerformance(userTimesMap[puzzle.code], puzzle.difficulty)):null,
         };
       })
     });
-    profiler.log('archiveDaily:render', processPoint);
     profiler.log('archiveDaily', processStart);
   } catch (e) {
     next(e)
@@ -139,7 +131,7 @@ router.get(['/','/tester'],
           code: puzzle.code,
           type: typeMap[puzzle.type].name,
           dimension: puzzle.dimension,
-          userTime: userTimesMap[puzzle.code]?util.timeToString(userTimesMap[puzzle.code].time):""
+          userTime: userTimesMap[puzzle.code]?util.timeToString(userTimesMap[puzzle.code].solvingTime):""
         };
       })
     });
@@ -460,18 +452,9 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       publishFilter = "false";
     }
 
-    profiler.log('authorPuzzleList:publishFilter', processStart);
-    let processPoint = new Date().getTime();
-
     var typeMap = await cache.readPuzzleTypes();
 
-    profiler.log('authorPuzzleList:typeMap', processPoint);
-    processPoint = new Date().getTime();
-
     var timesMap = await util.bestSolvingTimeMap(true);
-
-    profiler.log('authorPuzzleList:timesMap', processPoint);
-    processPoint = new Date().getTime();
 
     var authorId = req.user._id;
     var filter = {author: authorId};
@@ -506,13 +489,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       }
     }
 
-    profiler.log('authorPuzzleList:filter', processPoint);
-    processPoint = new Date().getTime();
-
     const puzzles = await Puzzle.find(filter, "-data").sort({daily: -1});
-
-    profiler.log('authorPuzzleList:puzzles', processPoint);
-    processPoint = new Date().getTime();
 
     var typePuzzleCount = Object.entries(typeMap).reduce((map, [key, value]) => {
       const type = util.puzzleTypeToPresent(value, req.getLocale())
@@ -520,13 +497,7 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
       return map;
     }, {});
 
-    profiler.log('authorPuzzleList:typePuzzleCountInit', processPoint);
-    processPoint = new Date().getTime();
-
     const allPuzzles = await Puzzle.find({}, "hidden type daily tag contest");
-
-    profiler.log('authorPuzzleList:allPuzzles', processPoint);
-    processPoint = new Date().getTime();
 
     allPuzzles.forEach(puzzle => {
       if (!puzzle.hidden) {
@@ -542,9 +513,6 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
         typePuzzleCount[puzzle.type].newCount++;
       }
     });
-
-    profiler.log('authorPuzzleList:typePuzzleCountProcess', processPoint);
-    processPoint = new Date().getTime();
 
     res.render('author', {
       user: req.user,
@@ -585,7 +553,6 @@ router.get('/author', ensureAuthenticated, async (req, res, next) => {
         };
       })
     });
-    profiler.log('authorPuzzleList:render', processPoint);
     profiler.log('authorPuzzleList', processStart);
   } catch (e) {
     next(e);

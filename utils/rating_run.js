@@ -1,4 +1,4 @@
-const computeRating = require('../utils/rating');
+const computeRating = require('../utils/rating').computeRating;
 
 const mongoose = require('mongoose');
 

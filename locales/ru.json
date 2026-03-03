@@ -527,5 +527,7 @@
 	"More about this puzzle": "Об этой задаче",
 	"Type description warning": "Некоторая информация на этой странице может быть неполной или неточной. Пожалуйста, свяжитесь с администратором сайта, если у вас есть дополнительные сведения или интересные факты об этом типе головоломок.",
 	"Yajilin Trail Run": "Yajilin Trail Run",
-	"Choose year:": "Выберите год:"
+	"Choose year:": "Выберите год:",
+	"Efficiency": "Результат",
+	"The <Efficiency> value provides a normalized value based on solving time and aligned with the rating calculation.": "Колонка <Результат> даёт нормализованное значение, основанное на времени решения и согласованное с расчётом рейтинга."
 }

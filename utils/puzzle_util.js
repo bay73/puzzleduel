@@ -77,7 +77,7 @@ module.exports.userSolvingTimeMap = async function(userId, includeHidden, minDat
   }
   const times = await UserSolvingTime.find(filter, "puzzleId solvingTime errCount");
   var timesMap = {};
-  times.forEach(time => timesMap[time.puzzleId] = {time: time.solvingTime, errors: time.errCount});
+  times.forEach(time => timesMap[time.puzzleId] = {solvingTime: time.solvingTime, errCount: time.errCount});
   return timesMap;
 }
 

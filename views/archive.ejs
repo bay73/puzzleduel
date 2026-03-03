@@ -30,7 +30,7 @@
                    class="collapse <%= prevMonth==null?"show":"" %>"
                    aria-labelledby="month<%= getMonthAndYear(puzzle) %>Heading"
                    data-parent="#mainAccordion">
-                <table class="card-body table table-hover table-condensed ml-5">
+                <table class="card-body table table-hover table-condensed ml-2">
                   <tbody>
                     <tr>
                       <th><%= __('Date') %></th>
@@ -38,6 +38,7 @@
                       <th><%= __('Puzzle') %></th>
                       <% if (user) { %>
                       <th class="d-none d-sm-table-cell"><%= __('Your time') %></th>
+                      <th class="d-none d-sm-table-cell"><%= __('Efficiency') %></th>
                       <% } %>
                       <th class="d-none d-sm-table-cell"><%= __('Best score') %></th>
                     </tr>
@@ -66,6 +67,9 @@
                       <td class="d-none d-sm-table-cell">
                         <%= puzzle.userTime %>
                       </td>
+                      <td class="d-none d-sm-table-cell">
+                        <%= puzzle.userPerformance %>
+                      </td>
                       <% } %>
                       <td class="d-none d-sm-table-cell">
                         <a href="/archive/<%= puzzle.code %>/scores">
@@ -79,6 +83,9 @@
               </div>
             </div>
           </div>
+          <p class="card-text text-left pt-3">
+            <%= __('The <Efficiency> value provides a normalized value based on solving time and aligned with the rating calculation.') %>
+          </p>
           <p class="card-text text-left pt-3">
             <%= __('Click at the puzzle name to solve the selected puzzle.') %>
             <%= __('Puzzles which are older than 5 days are non-competitive and can be attempted without registration.') %><br>
