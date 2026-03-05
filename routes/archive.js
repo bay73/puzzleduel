@@ -16,6 +16,7 @@ router.use(require('./common.js'));
 router.get(['/','/daily'],
   async (req, res, next) => {
   try {
+    const processStart = new Date().getTime();
     let year = req.query.year;
     if (year!=undefined) {
       var numYear = parseInt(year, 10);
@@ -34,7 +35,6 @@ router.get(['/','/daily'],
       var minDate = new Date(minYear,0,1)
       var maxDate = new Date(currentYear+1,0,1)
     }
-    const processStart = new Date().getTime();
     let solvingMin = new Date(minDate);
     let solvingMax = new Date(maxDate);
     solvingMin.setDate(solvingMin.getDate()-10)
@@ -112,10 +112,8 @@ router.get(['/','/tester'],
     let to = new Date();
     to.setDate(to.getDate() + 6);
     var filter = {$or: [{daily: {$gte: from, $lte: to} }, {'contest.puzzleDate': {$gte: from, $lte: to} }] };
-    let solvingFrom = new Date();
-    solvingFrom.setDate(solvingFrom.getDate() - 15);
     if (req.user) {
-      var userTimesPromise = util.userSolvingTimeMap(req.user._id, true, solvingFrom, to);
+      var userTimesPromise = util.userSolvingTimeMap(req.user._id, true);
     }
 
     const [userTimesMap, typeMap, puzzles] = await Promise.all([
