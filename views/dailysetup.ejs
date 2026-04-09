@@ -63,7 +63,7 @@
                 </td>
                 <td class="p-1 pb-0">
                   <% var visibleAge = Math.ceil(puzzle.publishAge/86400000); %>
-                  <% var ageColor = (!puzzle.daily && puzzle.alreadyAssigned)?256:(visibleAge?220-visibleAge:0); %>
+                  <% var ageColor = (!puzzle.daily && puzzle.alreadyAssigned)?256:(visibleAge?250-250*visibleAge/(40+visibleAge):0); %>
                   <a href="/single/<%= puzzle.code %>">
                     <span class="age-marker" style="background-color: hsl(<%= ageColor %>,100%,50%)"><%= visibleAge?visibleAge:"" %></span>
                     <%= puzzle.type %>
