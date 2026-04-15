@@ -14,6 +14,13 @@
             <div class="col-md">
               <h2><%= __('Rules') %></h2>
               <%= type.rules %>
+              <% if (type.videos != undefined && type.videos.length > 0){ %>
+              <p>
+              <h2><%= __('Explainer videos') %></h2>
+              <% type.videos.forEach(id => {%>
+              <a class="p-1 pr-3" href="https://youtu.be/<%= id %>"><img src="https://img.youtube.com/vi/<%= id %>/default.jpg"></a>
+              <% }) %>
+              <% } %>
             </div>
             <div class="col-md text-center mb-5">
               <img id=puzzleImg src="/images/puzzles/<%=type.exampleId %>.svg" src1="/images/answers/<%=type.exampleId %>.svg" width="100%">

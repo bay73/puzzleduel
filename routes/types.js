@@ -7,7 +7,6 @@ const Puzzle = require('../models/Puzzle');
 
 router.use(require('./common.js'));
 
-// Solving time for a single puzzle
 router.get('/:type',
   async (req, res, next) => {
   try {
@@ -32,6 +31,7 @@ router.get('/:type',
         rules: util.processTags(type.rules, example.dimension),
         exampleId: type.example.puzzleId,
         variations: type.variations?.map(code => {return {code: code, name: typesMap[code].name}}) ?? [],
+        videos: type.properties.youtubeId,
       },
       bestPuzzles: best,
       hardestPuzzles: hardest,
