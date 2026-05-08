@@ -12,7 +12,7 @@ module.exports = {
   forwardAuthenticated: function(req, res, next) {
     if (!req.isAuthenticated()) {
       return next();
-    }
+    }-
     res.redirect('/');      
   },
   sessionConfig: {
@@ -20,7 +20,7 @@ module.exports = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 900000000 // 10*24*60*60*1000 + delta
+      maxAge: 928800000 // 10*24*60*60*1000 + 18*60*60*1000
     },
     store: MongoStore.create({
       mongoUrl: require('./keys').mongoAuthURI,
@@ -28,3 +28,4 @@ module.exports = {
     })
   },
 };
++#´
