@@ -866,7 +866,11 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .build(this);
 
   } else if (typeCode=="fuzuli") {
-    var maxValue = Math.max(this.rows, this.cols) - 2;
+    if (self.dimensionExtra) {
+      var maxValue = Number(self.dimensionExtra);
+    } else {
+       var maxValue = Math.max(this.rows, this.cols) - 2;
+    }
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().inner().chooser()
         .addNumbers(1, maxValue)

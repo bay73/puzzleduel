@@ -5,7 +5,13 @@ if (typeof util=="undefined") {
 var Checker = {
 check:function(dimension, clues, data){
   // Create array
-  var dim = util.parseDimension(dimension);
+  var part = dimension.split("-");
+  var dim = util.parseDimension(part[0]);
+  if (part[1]) {
+    var maxValue = parseInt(part[1]);
+  } else {
+    var maxValue = parseInt(dim.rows) - 2
+  }
   var cells = util.create2DArray(dim.rows, dim.cols, "")
 
   // Parse data.
@@ -23,7 +29,7 @@ check:function(dimension, clues, data){
     }
   }
   var colors = [];
-  for (var i=1;i<=parseInt(dim.rows) - 2;i++) {
+  for (var i=1;i<=maxValue;i++) {
     colors.push(i.toString());
   }
   var res = Checker.checkNo2x2(cells, colors);
