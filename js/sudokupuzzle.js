@@ -533,6 +533,7 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
   }
+  this.typeProperties.usePlus10 = false;
 }
 
 diagonalPuzzleType.prototype.setTypeProperties = function(typeCode) {
@@ -557,11 +558,32 @@ diagonalPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
   }
+  this.typeProperties.usePlus10 = false;
 }
 sudokuPuzzleType.prototype.createBoard = function() {
   squarePuzzle.prototype.createBoard.call(this);
-  var dx = this.cols==8?4:(this.cols==4?2:3);
-  var dy = this.rows==9?3:2;
+  if (this.cols ==4) {
+    var dx = 2;
+    var dy = 2;
+  } else if (this.cols ==6) {
+    var dx = 3;
+    var dy = 2;
+  } else if (this.cols ==8) {
+    var dx = 4;
+    var dy = 2;
+  } else if (this.cols ==9) {
+    var dx = 3;
+    var dy = 3;
+  } else if (this.cols ==10) {
+    var dx = 5;
+    var dy = 2;
+  } else if (this.cols ==12) {
+    var dx = 4;
+    var dy = 3;
+  } else if (this.cols ==16) {
+    var dx = 4;
+    var dy = 4;
+  }
   for (var x=dx-1;x<this.cols;x+=dx) {
     for (var y=0;y<this.rows;y++) {
       this.edges[y][x][1].isFinal = true;

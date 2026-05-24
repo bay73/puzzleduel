@@ -27,6 +27,39 @@ checkAreaMagic: function(cells, colors, areas) {
     }
     return {status: "OK"};
   }
+  if (cells.rows == 16) {
+    for (var j = 0; j < 4; j++) {
+      for (var i = 0; i < 4; i++) {
+        var res = SudokuUtil.checkOnceInRectangle(cells, i*4, i*4 + 4, j*4, j*4 + 4, colors);
+        if (res){
+          return {status: "All digits should be exactly once in every area", errors: res};
+        }
+      }
+    }
+    return {status: "OK"};
+  }
+  if (cells.rows == 12) {
+    for (var j = 0; j < 4; j++) {
+      for (var i = 0; i < 3; i++) {
+        var res = SudokuUtil.checkOnceInRectangle(cells, i*4, i*4 + 4, j*3, j*3 + 3, colors);
+        if (res){
+          return {status: "All digits should be exactly once in every area", errors: res};
+        }
+      }
+    }
+    return {status: "OK"};
+  }
+  if (cells.rows == 10) {
+    for (var j = 0; j < 5; j++) {
+      for (var i = 0; i < 2; i++) {
+        var res = SudokuUtil.checkOnceInRectangle(cells, i*5, i*5 + 5, j*2, j*2 + 2, colors);
+        if (res){
+          return {status: "All digits should be exactly once in every area", errors: res};
+        }
+      }
+    }
+    return {status: "OK"};
+  }
   if (cells.rows == 9) {
     for (var j = 0; j < 3; j++) {
       for (var i = 0; i < 3; i++) {
