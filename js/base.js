@@ -448,9 +448,9 @@ basePuzzle.prototype.showSaveResult = function(result) {
   this.removeMessages();
   if (result.status == 'OK') {
     this.stopTimer();
-    this.showSuccess(__["The puzzle has been saved!"]);
+    this.showSuccess(__["The puzzle has been saved!"], 5000);
   } else {
-    this.showError(__["Error while saving. "] + result.status + ".");
+    this.showError(__["Error while saving. "] + result.status + ".", 5000);
     this.showErrorCells(result);
   }
 }
