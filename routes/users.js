@@ -111,29 +111,29 @@ router.post('/register', recaptcha.middleware.verify, recaptcha.middleware.rende
     let errors = [];
 
     if (!name || !email || !password || !password2) {
-      errors.push({ msg: 'Please enter all fields' });
+      errors.push('Please enter all fields');
     }
 
     if (password != password2) {
-      errors.push({ msg: 'Passwords do not match' });
+      errors.push('Passwords do not match');
     }
 
     if (password.length < 6) {
-      errors.push({ msg: 'Password must be at least 6 characters' });
+      errors.push('Password must be at least 6 characters');
     }
 
     user = await User.findOne({ email: email }, "email");
     if (user) {
-      errors.push({ msg: 'This email is already registered. You can reset password for it' });
+      errors.push('This email is already registered. You can reset password for it');
     }
 
     user = await User.findOne({ name: name }, "name");
     if (user) {
-      errors.push({ msg: 'The user with this name already exists. Choose different name' });
+      errors.push('The user with this name already exists. Choose different name');
     }
 
     if (req.recaptcha.error) {
-      errors.push({ msg: 'Please confirm that you are not a robot' });
+      errors.push('Please confirm that you are not a robot');
     }
 
     if (errors.length > 0) {
@@ -181,27 +181,27 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
     let errors = [];
 
     if (!oldpassword) {
-      errors.push({ msg: 'Please enter the current password' });
+      errors.push('Please enter the current password');
     }
 
     if (password) {
       if (password != password2) {
-        errors.push({ msg: 'Passwords do not match' });
+        errors.push('Passwords do not match');
       }
       if (password.length < 6) {
-        errors.push({ msg: 'New password must be at least 6 characters' });
+        errors.push('New password must be at least 6 characters');
       }
     }
     if (email) {
       var user = await User.findOne({ email: email, _id: {$ne: req.user._id} }, "email");
       if (user) {
-        errors.push({ msg: 'This email is already registered' });
+        errors.push('This email is already registered');
       }
     }
     if (name) {
       var user = await User.findOne({ name: name, _id: {$ne: req.user._id} }, "name");
       if (user) {
-        errors.push({ msg: 'The user with this name already exists. Choose different name' });
+        errors.push('The user with this name already exists. Choose different name');
       }
     }
 
@@ -210,7 +210,7 @@ router.post('/edit', ensureAuthenticated, async (req, res, next) => {
     var isMatch = await bcrypt.compare(oldpassword, user.password);
 
     if (!isMatch) {
-      errors.push({ msg: 'Current password is incorrect' });
+      errors.push('Current password is incorrect');
     }
     if (errors.length > 0) {
       res.render('edit_user', {
@@ -263,15 +263,15 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
     let errors = [];
 
     if (!email) {
-      errors.push({ msg: 'Please enter email' });
+      errors.push('Please enter email');
     }
 
     if (password) {
       if (password != password2) {
-        errors.push({ msg: 'Passwords do not match' });
+        errors.push('Passwords do not match');
       }
       if (password.length < 6) {
-        errors.push({ msg: 'New password must be at least 6 characters' });
+        errors.push('New password must be at least 6 characters');
       }
     }
 
@@ -291,7 +291,7 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
 
     if (token) {
       if (!user) {
-        errors.push({ msg: 'Email is not correct' });
+        errors.push('Email is not correct');
         res.render('reset_password', {
           errors: errors,
           email: email,
@@ -304,10 +304,10 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
       } else {
         var isMatch = await bcrypt.compare(token, user.resetToken);
         if (!isMatch) {
-          errors.push({ msg: 'Email is not correct' });
+          errors.push('Email is not correct');
         } else {
           if (user.resetExpire < new Date()) {
-            errors.push({ msg: 'Token is expired. Please, request password reset again' });
+            errors.push('Token is expired. Please, request password reset again');
           }
         }
       }
@@ -334,7 +334,7 @@ router.post('/reset', recaptcha.middleware.verify, recaptcha.middleware.render, 
       res.redirect('/users/login');
     } else {
       if (req.recaptcha.error) {
-        errors.push({ msg: 'Please confirm that you are not a robot' });
+        errors.push('Please confirm that you are not a robot');
       }
       if (errors.length > 0) {
         res.render('reset_password', {
