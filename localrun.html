@@ -135,26 +135,64 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "sequential_path",
+      typeCode: "sudoku_index_to_one",
       id: "puzzle.code",
-      dimension: "6x6"
+      dimension: "9x9-100"
     };
     var settings = {
       local: true,
       data: {
-    "a1": "5",
-    "e2": "1",
-    "c3": "6",
-    "c5": "2",
-    "d5": "4",
-    "f6": "3",
+    "bottom": [
+        "7",
+        "8",
+        "1",
+        "6",
+        "1",
+        "2",
+        "7",
+        "6",
+        "1"
+    ],
+    "right": [
+        "5",
+        "5",
+        "3",
+        "8",
+        "3",
+        "9",
+        "8",
+        "1",
+        "9"
+    ],
+    "top": [
+        "5",
+        "2",
+        "6",
+        "5",
+        "5",
+        "1",
+        "2",
+        "1",
+        "1"
+    ],
+    "left": [
+        "9",
+        "1",
+        "6",
+        "4",
+        "1",
+        "1",
+        "9",
+        "1",
+        "8"
+    ],
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["squarepuzzle"], function() {
-      puzzle = new squarePuzzleType(puzzleData, controls, settings);
+    requirejs(["sudokupuzzle"], function() {
+      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

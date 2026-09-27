@@ -59,6 +59,21 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="sudoku_index_to_one") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.LEFT | StdOuter.RIGHT | StdOuter.TOP | StdOuter.BOTTOM)
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else if (typeCode=="sudoku_odd_even_big_small") {
     var maxValue = this.rows;
     this.typeProperties = decribePuzzleType()
@@ -475,6 +490,46 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     },
     decodeClue: value => {
       if (value =="-") {
+        return {color: "grey"}
+      } else if (value.startsWith("-")) {
+        return {color: "grey", text: value.substring(1)}
+      } else {
+        return {text: value}
+      }
+    },
+    cellMultiPencil: true,
+    toChooserShow: value => {
+      showValue = Object.assign({}, value);
+      if (!self.editMode) {
+        delete showValue.color;
+      }
+      return showValue;
+    },
+  }
+
+  typeProperties["sudoku_hundred"] = {
+    cellController: cell => {
+      if (!cell.data.text) {
+        var chooserValues = [{color: cell.data.color}];
+        for (var i=1; i<=self.rows; i++) {
+          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
+        }
+        cell.chooserValues = chooserValues;
+      }
+    },
+    cellEditController: cell => {
+      var chooserValues = [{}];
+      for (var i=1; i<=self.rows; i++) {
+        chooserValues.push({text: i.toString(), returnValue: i.toString()});
+      }
+      chooserValues.push({color: "grey", returnValue: "-"});
+      for (var i=1; i<=self.rows; i++) {
+        chooserValues.push({text: i.toString(), color: "grey", returnValue: "-" + i.toString()});
+      }
+      cell.chooserValues = chooserValues;
+    },
+    decodeClue: value => {
+      if (value=="-") {
         return {color: "grey"}
       } else if (value.startsWith("-")) {
         return {color: "grey", text: value.substring(1)}

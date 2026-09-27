@@ -531,5 +531,6 @@
 	"Efficiency": "Результат",
 	"The <Efficiency> value provides a normalized value based on solving time and aligned with the rating calculation.": "Колонка <Результат> даёт нормализованное значение, основанное на времени решения и согласованное с расчётом рейтинга.",
 	"Puzzle XL 2026": "Puzzle XL 2026",
-	"dOubLESHOW 13": "dOubLESHOW 13"
+	"dOubLESHOW 13": "dOubLESHOW 13",
+	"Sum of the numbers in the row in not correct": "Сумма чисел в ряду неверная"
 }
