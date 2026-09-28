@@ -92,7 +92,7 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
-  } else if (typeCode=="sudoku_classic" || typeCode == "sudoku_antiknight" || typeCode == "sudoku_notouch" || typeCode == "sudoku_queen") {
+  } else if (typeCode=="sudoku_classic" || typeCode == "sudoku_antiknight" || typeCode == "sudoku_notouch") {
     var maxValue = this.rows;
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
