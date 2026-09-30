@@ -480,6 +480,16 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.asAreaConnector()))
       .build(this);
 
+  } else if (typeCode == "recto"){
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1,99))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
+
   } else if (typeCode == "araf"){
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()

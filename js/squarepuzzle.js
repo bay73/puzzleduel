@@ -891,6 +891,17 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="sukoro") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addNumbers(1, 4))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, 4)
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit().keepPencil())
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .addUpgradeClue(clue=>clue=="white"?null:clue)
+      .build(this);
+
   } else if (typeCode=="doubleblock") {
     var maxValue = Math.max(this.rows, this.cols) - 2;
     this.typeProperties = decribePuzzleType()

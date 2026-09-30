@@ -135,48 +135,30 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "sudoku_queen",
+      typeCode: "recto",
       id: "puzzle.code",
-      dimension: "9x9-100"
+      dimension: "9x9"
     };
     var settings = {
       local: true,
       data: {
-    "b1": "2",
-    "d1": "6",
-    "f1": "4",
-    "h1": "7",
-    "a2": "3",
-    "i2": "4",
-    "c3": "6",
-    "e3": "8",
-    "g3": "1",
-    "a4": "7",
-    "d4": "4",
-    "f4": "5",
+    "h1": "9",
+    "e2": "6",
+    "c3": "5",
+    "d4": "6",
     "i4": "8",
-    "c5": "4",
-    "g5": "7",
-    "a6": "9",
-    "d6": "8",
-    "f6": "7",
-    "i6": "6",
-    "c7": "7",
-    "e7": "6",
-    "g7": "9",
-    "a8": "6",
-    "i8": "1",
-    "b9": "8",
-    "d9": "1",
-    "f9": "9",
-    "h9": "2",
+    "c5": "5",
+    "a6": "7",
+    "b7": "6",
+    "e7": "8",
+    "g8": "7",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, controls, settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

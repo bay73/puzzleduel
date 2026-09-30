@@ -53,7 +53,7 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "sudoku_queen",
+      typeCode: "recto",
       id: "puzzle.code",
       dimension: "9x9"
     };
@@ -62,8 +62,8 @@
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["sudokupuzzle"], function() {
-      puzzle = new sudokuPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["areapuzzle"], function() {
+      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });
