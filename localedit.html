@@ -53,17 +53,17 @@
 <script>
   function showPuzzle() {
     var puzzleData = {
-      typeCode: "recto",
+      typeCode: "pentasight",
       id: "puzzle.code",
-      dimension: "9x9"
+      dimension: "12x12-FILNPTUVWXYZ"
     };
     var settings = {
       local: true,
       data:  {}
     };
     settings.theme = "default";
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, "#editControls", settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, "#editControls", settings);
       puzzle.render(Snap("#mainGrid"));
       puzzle.edit();
     });

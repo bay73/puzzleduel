@@ -135,30 +135,44 @@
   function showPuzzle() {
     var controls = "#puzzleControls";
     var puzzleData = {
-      typeCode: "recto",
+      typeCode: "pentasight",
       id: "puzzle.code",
-      dimension: "9x9"
+      dimension: "12x12-FILNPTUVWXYZ"
     };
     var settings = {
       local: true,
       data: {
-    "h1": "9",
-    "e2": "6",
-    "c3": "5",
-    "d4": "6",
-    "i4": "8",
-    "c5": "5",
-    "a6": "7",
-    "b7": "6",
-    "e7": "8",
-    "g8": "7",
+    "l1": "3",
+    "d2": "4",
+    "i2": "4",
+    "k2": "10",
+    "e3": "4",
+    "h3": "4",
+    "a4": "6",
+    "b5": "9",
+    "f5": "13",
+    "e6": "7",
+    "j6": "3",
+    "a7": "7",
+    "g7": "2",
+    "i7": "4",
+    "b8": "4",
+    "f8": "5",
+    "l8": "3",
+    "k9": "3",
+    "c10": "4",
+    "b11": "3",
+    "f11": "3",
+    "i11": "3",
+    "e12": "7",
+    "j12": "7",
     "tag": ""
 }
     };
     settings.theme = "default";
     var grid = "#mainGrid"
-    requirejs(["areapuzzle"], function() {
-      puzzle = new areaPuzzleType(puzzleData, controls, settings);
+    requirejs(["squarepuzzle"], function() {
+      puzzle = new squarePuzzleType(puzzleData, controls, settings);
       puzzle.render(Snap(grid));
     });
   }

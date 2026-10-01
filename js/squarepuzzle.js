@@ -645,6 +645,21 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
 
+  } else if (typeCode=="pentasight") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(StdItem.CROSS)
+        .addItem(StdItem.CLUE_COLOR.submitAs('black'))
+        .addNumbers(1,29))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.GREY.submitAs('black'))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().copy())
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
+      .build(this);
+
   } else if (typeCode=="pentomino_hungarian") {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().inner().clickSwitch()
