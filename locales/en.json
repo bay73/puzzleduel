@@ -535,5 +535,7 @@
 	"There should be a digits which does not repeat on any diagonal": "There should be a digits which does not repeat on any diagonal",
 	"Clue should show the sum of side length of the rectangle": "Clue should show the sum of side length of the rectangle",
 	"Wrong number of neighbours for the cell": "Wrong number of neighbours for the cell",
-	"Two cells sharing an edge shouldn't contain the same numbers": "Two cells sharing an edge shouldn't contain the same numbers"
+	"Two cells sharing an edge shouldn't contain the same numbers": "Two cells sharing an edge shouldn't contain the same numbers",
+	"Segment passing through the clue should have the indicated length": "Segment passing through the clue should have the indicated length",
+	"Loop should pass through all cells with numbers": "Loop should pass through all cells with numbers"
 }

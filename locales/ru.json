@@ -536,5 +536,7 @@
 	"There should be a digits which does not repeat on any diagonal": "Должна быть цифра, которая не повторяется на диагоналях",
 	"Clue should show the sum of side length of the rectangle": "Число должно показывать сумму сторон прямоугольника",
 	"Wrong number of neighbours for the cell": "Неверное число соседей у цифры",
-	"Two cells sharing an edge shouldn't contain the same numbers": "Клетки соседние по стороне не должны содержать одинаковые цифры"
+	"Two cells sharing an edge shouldn't contain the same numbers": "Клетки соседние по стороне не должны содержать одинаковые цифры",
+	"Segment passing through the clue should have the indicated length": "Отрезок проходящий через число должен иметь соответствующую длину",
+	"Loop should pass through all cells with numbers": "Цикл должен проходить через все клетки с числами"
 }
