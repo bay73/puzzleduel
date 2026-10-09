@@ -425,12 +425,12 @@ ControllerBuilder.prototype.addItem = function(item){
 }
 
 // Adds items with numbers from the given range (ends included).
-ControllerBuilder.prototype.addNumbers = function(start, end, color, image, submitAs){
+ControllerBuilder.prototype.addNumbers = function(start, end, color, image, submitAs, usePlus10){
   this.isNumberController = true;
   this.isMultiController = true;
   this.Number10Item = null;
   for (var i=start; i<=end; i++) {
-    if (i==10) {
+    if (i==10 && usePlus10) {
       this.Number10Item = this.items.length;
     }
     var itemData = {text: i.toString()};
