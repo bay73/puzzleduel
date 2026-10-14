@@ -172,7 +172,8 @@ router.get('/:contestid/edit', async (req, res, next) => {
           dimension: puzzleObj.dimension,
           puzzleDate: puzzleObj.contest.puzzleDate,
           time: util.timeToString(timesMap[puzzle.puzzleId]),
-          rating: puzzleObj.rating
+          rating: puzzleObj.rating,
+          comment: puzzle.comment
         };
       });
     res.render('contest_edit', {user: req.user, contest: contestObj, puzzles: puzzleList})

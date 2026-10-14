@@ -47,7 +47,7 @@
               <% puzzles.sort((puzzle1, puzzle2) => puzzle1.num - puzzle2.num).forEach(function(puzzle) { %>
               <tr>
                 <td>
-                  <%= puzzle.num %>
+                  <%= puzzle.num %> (<%= puzzle.code %>)
                 </td>
                 <td>
                   <%= puzzle.puzzleDate.toISOString().split('T')[0] %>
@@ -95,7 +95,15 @@
                   <% } %>
                 </td>
               </tr>
+              <% if (puzzle.comment && puzzle.comment.trim().length > 0) {%>
+              <tr>
+                <td class="pt-0" colspan=2>
+                </td>
+                <td class="pt-0" colspan=5>
+                  <%= puzzle.comment %>
+                </td>
               </tr>
+              <% }%>
               <% }) %>
               <tr>
                 <td>
