@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Rating = require('../models/Rating');
-const computeRating = require('../utils/rating');
+const computeRating = require('../utils/rating').computeRating;
 const profiler = require('../utils/profiler');
 const cache = require('../utils/cache');
 
