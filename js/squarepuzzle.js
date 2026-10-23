@@ -943,7 +943,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forAuthor().cell().inner().clickSwitch()
         .addNumbers(1, maxValue))
       .add(controller().forAuthor().cell().outer().chooser()
-        .addNumbers(0, maxSum, usePlus10 = false))
+        .addNumbers(0, maxSum, undefined,  undefined, undefined, maxSum < 11))
       .add(controller().forSolver().cell().inner().noClue().chooser()
         .addNumbers(1, maxValue)
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit().keepPencil())
