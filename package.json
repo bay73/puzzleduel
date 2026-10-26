@@ -32,7 +32,7 @@
     "express-recaptcha": "^5.1.0",
     "express-session": "^1.19.0",
     "glob": "^13.0.6",
-    "i18n": "^0.15.1",
+    "i18n": "^0.15.4",
     "mongoose": "^9.11.3",
     "nodemailer": "^10.2.1",
     "object-sizeof": "^2.6.5",
