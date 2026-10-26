@@ -55,6 +55,9 @@
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('Month-long marathons') %></a>
               <ul class="dropdown-menu bg-dark">
+                <% if (new Date() > new Date('2026-11-01T00:00:00.000+00:00')) { %>
+                <li><a class="nav-link" href="/contest/akarirbvjvghvn"><%= __('Akari Light Run') %></a></li>
+                <% } %>
                 <li><a class="nav-link" href="/contest/yaj11lr3t8mqt"><%= __('Yajilin Trail Run') %></a></li>
                 <li><a class="nav-link" href="/contest/sringriaiujamsa"><%= __('Ring-Ring Rally') %></a></li>
                 <li><a class="nav-link" href="/contest/stovtriaiujamsa"><%= __('Tap into Tapa') %> 2</a></li>
@@ -162,6 +165,9 @@
             </li>
             <li class="dropdown-submenu"><a  class="dropdown-toggle nav-link" data-toggle="dropdown" href="#"><%= __('Month-long marathons') %></a>
               <ul class="dropdown-menu bg-dark">
+                <% if (new Date() > new Date('2026-11-01T00:00:00.000+00:00')) { %>
+                <li><a class="nav-link" href="/contest/akarirbvjvghvn/results"><%= __('Akari Light Run') %></a></li>
+                <% } %>
                 <li><a class="nav-link" href="/contest/yaj11lr3t8mqt/results"><%= __('Yajilin Trail Run') %></a></li>
                 <li><a class="nav-link" href="/contest/sringriaiujamsa/results"><%= __('Ring-Ring Rally') %></a></li>
                 <li><a class="nav-link" href="/contest/stovtriaiujamsa/results"><%= __('Tap into Tapa') %> 2</a></li>
