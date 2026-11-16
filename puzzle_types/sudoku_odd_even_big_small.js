@@ -113,7 +113,7 @@ checkRowClues: function(cells, left, right, digits) {
     if (right[y] && right[y] != "white") {
       res = Checker.checkRightClue(cells, y, right[y]);
       if (res) {
-        return {status: "Wrong condition for the last two digits in the column", errors: res};
+        return {status: "Wrong condition for the last two digits in the row", errors: res};
       }
     }
   }

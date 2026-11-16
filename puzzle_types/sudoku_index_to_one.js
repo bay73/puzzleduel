@@ -43,14 +43,7 @@ check:function(dimension, clues, data){
   for (var i=1;i<=parseInt(dim.rows);i++) {
     digits.push(i.toString());
   }
-  var res = Checker.checkColumnClues(cells, top, bottom, digits);
-  if (res.status != "OK") {
-    return res;
-  }
-  var res = Checker.checkRowClues(cells, left, right, digits);
-  if (res.status != "OK") {
-    return res;
-  }
+  // The grid is checked first: clues can be checked only when all cells contain valid digits.
   var res = sudoku_util.checkAreaMagic(cells, digits);
   if (res.status != "OK") {
     return res;
@@ -60,6 +53,14 @@ check:function(dimension, clues, data){
     return res;
   }
   var res = sudoku_util.checkColumnMagic(cells, digits);
+  if (res.status != "OK") {
+    return res;
+  }
+  var res = Checker.checkColumnClues(cells, top, bottom, digits);
+  if (res.status != "OK") {
+    return res;
+  }
+  var res = Checker.checkRowClues(cells, left, right, digits);
   if (res.status != "OK") {
     return res;
   }

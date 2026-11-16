@@ -130,4 +130,21 @@ test('Wrong left clue',(suite) => {
   assert("Wrong left clue response").that(Checker.check("8x8", clues, data)).isEqualTo({status: "Wrong condition for the first two digits in the row", errors: ["a1", "b1"]});
 }),
 
+test('Wrong right clue',(suite) => {
+  // Right clue of the first row is small, but the last two digits of the row are 8 and 7.
+  let clues = {"top": ["odd","even",null,null,null,null,null,null], "bottom": ["even",null,null,null,null,null,null,"odd"], "left": ["small","big",null,null,null,null,null,null], "right": ["small",null,null,"small",null,null,null,null], "c3": "4"};
+  let data = {
+    "a1": "1", "b1": "2", "c1": "3", "d1": "4", "e1": "5", "f1": "6", "g1": "7", "h1": "8",
+    "a2": "5", "b2": "6", "c2": "7", "d2": "8", "e2": "1", "f2": "2", "g2": "3", "h2": "4",
+    "a3": "2", "b3": "1", "d3": "3", "e3": "6", "f3": "5", "g3": "8", "h3": "7",
+    "a4": "6", "b4": "5", "c4": "8", "d4": "7", "e4": "2", "f4": "1", "g4": "4", "h4": "3",
+    "a5": "3", "b5": "4", "c5": "1", "d5": "2", "e5": "7", "f5": "8", "g5": "5", "h5": "6",
+    "a6": "7", "b6": "8", "c6": "5", "d6": "6", "e6": "3", "f6": "4", "g6": "1", "h6": "2",
+    "a7": "4", "b7": "3", "c7": "2", "d7": "1", "e7": "8", "f7": "7", "g7": "6", "h7": "5",
+    "a8": "8", "b8": "7", "c8": "6", "d8": "5", "e8": "4", "f8": "3", "g8": "2", "h8": "1",
+  };
+
+  assert("Wrong right clue response").that(Checker.check("8x8", clues, data)).isEqualTo({status: "Wrong condition for the last two digits in the row", errors: ["h1", "g1"]});
+}),
+
 );

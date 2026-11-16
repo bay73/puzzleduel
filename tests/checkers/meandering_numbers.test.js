@@ -29,6 +29,17 @@ test('Empty cell',(suite) => {
     {status: "Area should contain sequential numbers from 1 to N", errors: ["a1","b1","a2"]});
 }),
 
+test('Number is bigger than the area size',(suite) => {
+  let clues = {"areas": [["a1","b1","a2"], ["c1","d1","c2","d2"], ["b2","a3","b3","a4","b4"], ["c3","d3","c4","d4"]],
+               "d1": "1", "b2": "5"};
+  // 5 instead of 2 in a1: the area a1-b1-a2 consists of three cells only.
+  let data = {"a1": "5", "b1": "1", "c1": "4", "a2": "3", "c2": "3", "d2": "2",
+              "a3": "1", "b3": "4", "c3": "1", "d3": "4", "a4": "2", "b4": "3", "c4": "2", "d4": "3"};
+
+  assert("Number is bigger than the area size response").that(Checker.check("4x4-5", clues, data)).isEqualTo(
+    {status: "Area should contain sequential numbers from 1 to N", errors: ["a1", "b1", "a2"]});
+}),
+
 test('Repeated number in the area',(suite) => {
   let clues = {"areas": [["a1","b1","a2"], ["c1","d1","c2","d2"], ["b2","a3","b3","a4","b4"], ["c3","d3","c4","d4"]],
                "d1": "1", "b2": "5"};

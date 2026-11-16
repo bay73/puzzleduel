@@ -18,6 +18,7 @@ check:function(dimension, clues, data){
       cells[pos.y][pos.x] = value;
     }
   }
+  var areas = [];
   // Parse clues.
   for (var [key, value] of Object.entries(clues)) {
     if (key=="areas") {
@@ -50,6 +51,10 @@ checkAreas: function(areas, cells) {
       var pos = util.parseCoord(area[j]);
       var value = parseInt(cells[pos.y][pos.x]);
       if (value) {
+        // The number can be bigger than the size of the area (it's limited by the biggest area of the puzzle).
+        if (!values[value]) {
+          return {status: "Area should contain sequential numbers from 1 to N", errors: area};
+        }
         values[value].exists = true;
         values[value].pos = pos;
       }

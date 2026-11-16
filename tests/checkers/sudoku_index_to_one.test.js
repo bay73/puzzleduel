@@ -86,4 +86,38 @@ test('Repeated digits in column',(suite) => {
   assert("Repeated digits in column response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "All digits should be exactly once in every column", errors: ["c1", "c2", "c3", "c4"]});
 }),
 
+test('Empty cell used by the column clue',(suite) => {
+  let clues = {"top": [null,"1",null,null], "bottom": ["2",null,null,null], "left": ["2",null,null,null], "right": ["4",null,null,null], "d2": "3"};
+  // a3 is empty: it is the 2nd cell from the bottom of column a, which is used by the bottom clue.
+  // The grid is checked before the clues, so the area with the empty cell is reported.
+  let data = {
+    "a1": "2", "b1": "3", "c1": "1", "d1": "4",
+    "a2": "1", "b2": "4", "c2": "2",
+    "b3": "1", "c3": "4", "d3": "2",
+    "a4": "4", "b4": "2", "c4": "3", "d4": "1",
+  };
+
+  assert("Empty cell response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "All digits should be exactly once in every area", errors: ["a3", "a4", "b3", "b4"]});
+}),
+
+test('Empty cell used by the row clue',(suite) => {
+  // Left clue of the third row is 1: the 1st cell of the row (a3) is empty.
+  let clues = {"top": [null,"1",null,null], "left": [null,null,"1",null], "d2": "3"};
+  let data = {
+    "a1": "2", "b1": "3", "c1": "1", "d1": "4",
+    "a2": "1", "b2": "4", "c2": "2",
+    "b3": "1", "c3": "4", "d3": "2",
+    "a4": "4", "b4": "2", "c4": "3", "d4": "1",
+  };
+
+  assert("Empty cell response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "All digits should be exactly once in every area", errors: ["a3", "a4", "b3", "b4"]});
+}),
+
+test('Empty grid',(suite) => {
+  let clues = {"top": [null,"1",null,null], "bottom": ["2",null,null,null], "left": ["2",null,null,null], "right": ["4",null,null,null], "d2": "3"};
+  let data = {};
+
+  assert("Empty grid response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "All digits should be exactly once in every area", errors: ["a1", "a2", "b1", "b2"]});
+}),
+
 );
