@@ -178,4 +178,16 @@ For each puzzle type developer can add the next tests:
 *  **Checkers tests** - checks that puzzle type checker processes different solvers mistakes correctly.
    The test execution of corresponding checker for different submission data and assertion for the result.
 
- See `tests/yin_yang.test.js` for examples.
+ See `tests/yin_yang_classic.test.js` for examples.
+
+## Running tests
+
+*  **In browser** - open `tests.html` (served from the project root by any static web server) and run all the suites or a single one.
+   Results are printed to the browser console. All kinds of tests are executed.
+*  **In Node** - `npm test` runs only checkers tests, as they don't need a puzzle grid.
+   A test is considered to be a checker test if it doesn't use the `suite` object;
+   the checker is loaded from `puzzle_types/<type>.js` for the test file `tests/<type>.test.js`.
+   The same command also verifies that every file in `puzzle_types` can be loaded.
+   To run tests for some types only use `node tests/run_checker_tests.js <type> ...`.
+
+ Checkers tests are executed automatically for every push and pull request to master (see `.github/workflows/tests.yml`).
