@@ -60,4 +60,20 @@ test('Wrong size of area with number',(suite) => {
   assert("Wrong number response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "The number must be equal to the number of cells of each color in a region", errors: ["a2", "a3", "a4", "b4"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"c1": "grey", "d1": "grey2", "a2": "3", "b3": "grey", "c3": "grey", "a4": "grey", "b4": "grey", "c4": "grey3", "d4": "grey"};
+  // Solution without the area c2-d2-c3-d3-c4-d4: c2 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1", "c1", "d1"], ["a2", "b2", "a3", "b3", "a4", "b4"]]};
+
+  assert("Cell without area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["c2"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"c1": "grey", "d1": "grey2", "a2": "3", "b3": "grey", "c3": "grey", "a4": "grey", "b4": "grey", "c4": "grey3", "d4": "grey"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1", "c1", "d1"], ["a2", "b2", "a3", "b3", "a4", "b4"], ["c2", "d2", "c3", "d3", "c4", "d4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

@@ -44,4 +44,20 @@ test('Size of the area is greater than both clues',(suite) => {
   assert("Too big area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "The size of an area should be strictly between numbers in area", errors: ["a3", "b3", "a4", "b4", "c4"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"a1": "1", "c1": "5", "d1": "3", "a2": "7", "c3": "2", "a4": "2", "c4": "4", "d4": "6"};
+  // Solution without the area a4-b4-c4: a4 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1", "c1"], ["d1", "d2", "d3", "d4"], ["a2", "b2", "c2", "a3", "b3", "c3"]]};
+
+  assert("Cell without area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a4"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"a1": "1", "c1": "5", "d1": "3", "a2": "7", "c3": "2", "a4": "2", "c4": "4", "d4": "6"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1", "c1"], ["d1", "d2", "d3", "d4"], ["a2", "b2", "c2", "a3", "b3", "c3"], ["a4", "b4", "c4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

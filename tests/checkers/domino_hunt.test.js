@@ -29,4 +29,20 @@ test('Domino used twice',(suite) => {
   assert("Domino used twice response").that(Checker.check("4x3-012", clues, data)).isEqualTo({status: "Each domino should be used once", errors: ["a3", "b3", "c1", "d1"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"a1": "0", "b1": "0", "c1": "1", "d1": "2", "a2": "0", "b2": "2", "c2": "1", "d2": "0", "a3": "1", "b3": "2", "c3": "1", "d3": "2"};
+  // Solution without the area d2-d3: d2 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1"], ["c1", "d1"], ["a2", "a3"], ["b2", "b3"], ["c2", "c3"]]};
+
+  assert("Cell without area response").that(Checker.check("4x3-012", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["d2"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"a1": "0", "b1": "0", "c1": "1", "d1": "2", "a2": "0", "b2": "2", "c2": "1", "d2": "0", "a3": "1", "b3": "2", "c3": "1", "d3": "2"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1"], ["c1", "d1"], ["a2", "a3"], ["b2", "b3"], ["c2", "c3"], ["d2", "d3"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x3-012", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

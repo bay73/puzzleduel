@@ -51,4 +51,20 @@ test('Area is not symmetrical',(suite) => {
   assert("Not symmetrical response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Circle should be at the center of rotational symmetry the area", errors: ["a2","a3","a4","b4"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"a3": "small_circle", "d4": "small_circle", "edges": {"a1-1": "black_circle", "b2-2": "black_circle", "c3-2": "black_circle"}, "nodes": {"c1-2": "black_circle"}};
+  // Solution without the area d4: d4 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1"], ["c1", "d1", "c2", "d2"], ["a2", "a3", "a4"], ["b2", "b3"], ["c3", "d3", "b4", "c4"]]};
+
+  assert("Cell without area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["d4"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"a3": "small_circle", "d4": "small_circle", "edges": {"a1-1": "black_circle", "b2-2": "black_circle", "c3-2": "black_circle"}, "nodes": {"c1-2": "black_circle"}};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1"], ["c1", "d1", "c2", "d2"], ["a2", "a3", "a4"], ["b2", "b3"], ["c3", "d3", "b4", "c4"], ["d4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

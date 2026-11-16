@@ -65,8 +65,7 @@ test('Wrong sum for the column clue',(suite) => {
     "a3": "2", "b3": "1", "c3": "1", "d3": "2",
     "a4": "2", "b4": "2", "c4": "1", "d4": "1"};
 
-  // The status text of the checker says "row" for columns too.
-  assert("Wrong column sum response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Wrong sum in the row", errors: ["a1", "a2"]});
+  assert("Wrong column sum response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Wrong sum in the column", errors: ["a1", "a2"]});
 }),
 
 test('Wrong sum for the row clue',(suite) => {

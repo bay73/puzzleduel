@@ -21,6 +21,14 @@ test('Incorrect unused cells',(suite) => {
   assert("Incorrect unused cells response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"Each cell should belong to exactly one area","errors": ["d4"]});
 }),
 
+test('Cell in two areas',(suite) => {
+  let clues = {"c1": "black_circle", "c4": "white_circle", "edges": {"a1-1": "huge_black_circle", "d2-2": "huge_white_circle"}, "nodes": {"a3-2": "huge_black_circle"} };
+  // The cell d4 is used in two areas.
+  let data = {"areas":[["a1","b1","a2","b2"],["c1"],["d1","d2","d3","d4"],["c2","c3","c4"],["a3","b3","a4","b4"],["d4"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"Each cell should belong to exactly one area","errors": ["d4"]});
+}),
+
 test('Two circles in area',(suite) => {
   let clues = {"c1": "black_circle", "c4": "white_circle", "edges": {"a1-1": "huge_black_circle", "d2-2": "huge_white_circle"}, "nodes": {"a3-2": "huge_black_circle"} };
   let data = {"areas":[["a1","b1","a2","b2"],["d1","d2","d3","d4"],["c1","c2","c3","c4"],["a3","b3","a4","b4"]]};

@@ -50,4 +50,20 @@ test('Line ends inside the grid',(suite) => {
     {status: "The dividing lines must start and end on the grid boundary", errors: []});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"a1": "white_circle", "d1": "black_circle", "b3": "black_circle", "c3": "white_circle", "d4": "white_circle"};
+  // Solution without the area c3-d3-c4-d4: c3 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1", "a2", "b2"], ["c1", "d1", "c2", "d2"], ["a3", "b3", "a4", "b4"]]};
+
+  assert("Cell without area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["c3"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"a1": "white_circle", "d1": "black_circle", "b3": "black_circle", "c3": "white_circle", "d4": "white_circle"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1", "a2", "b2"], ["c1", "d1", "c2", "d2"], ["a3", "b3", "a4", "b4"], ["c3", "d3", "c4", "d4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

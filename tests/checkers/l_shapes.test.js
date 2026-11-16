@@ -78,4 +78,20 @@ test('Black circle in L-shape with different legs',(suite) => {
     {status: "L-shape with a black circle should have equal legs", errors: ["a1","a2","a3","a4","b4"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"d1": "black_circle", "b2": "black_circle", "a4": "white_circle", "c4": "black_circle"};
+  // Solution without the area c3-c4-d4: c3 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "a2", "a3", "a4", "b4"], ["b1", "c1", "d1", "d2", "d3"], ["b2", "c2", "b3"]]};
+
+  assert("Cell without area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["c3"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"d1": "black_circle", "b2": "black_circle", "a4": "white_circle", "c4": "black_circle"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "a2", "a3", "a4", "b4"], ["b1", "c1", "d1", "d2", "d3"], ["b2", "c2", "b3"], ["c3", "c4", "d4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

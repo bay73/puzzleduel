@@ -27,4 +27,20 @@ test('Area with repeated letter',(suite) => {
   assert("Repeated letter response").that(Checker.check("4x3-ABC", clues, data)).isEqualTo({status: "Each area should contain all letters exactly once", errors: ["a1", "b1", "c1", "d1", "a2", "b2", "c2", "d2"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"a1": "A", "b1": "B", "c1": "C", "d1": "A", "a2": "C", "b2": "A", "c2": "B", "d2": "B", "a3": "B", "b3": "C", "c3": "A", "d3": "C"};
+  // Solution without the area a3-b3-c3: a3 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1", "c1"], ["d1", "d2", "d3"], ["a2", "b2", "c2"]]};
+
+  assert("Cell without area response").that(Checker.check("4x3-ABC", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a3"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"a1": "A", "b1": "B", "c1": "C", "d1": "A", "a2": "C", "b2": "A", "c2": "B", "d2": "B", "a3": "B", "b3": "C", "c3": "A", "d3": "C"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1", "c1"], ["d1", "d2", "d3"], ["a2", "b2", "c2"], ["a3", "b3", "c3"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x3-ABC", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

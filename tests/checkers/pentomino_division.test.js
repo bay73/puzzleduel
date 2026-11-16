@@ -41,4 +41,20 @@ test('Same pentominoes share an edge',(suite) => {
   assert("Same shapes response").that(Checker.check("5x4", clues, data)).isEqualTo({status: "Areas of the same shape shouldn't share an edge", errors: ["a1", "b1", "c1", "d1", "e1", "a2", "b2", "c2", "d2", "e2"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"c1": "I"};
+  // Solution without the area d2-e2-e3-d4-e4: d2 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1", "c1", "d1", "e1"], ["a2", "b2", "a3", "a4", "b4"], ["c2", "b3", "c3", "d3", "c4"]]};
+
+  assert("Cell without area response").that(Checker.check("5x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["d2"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"c1": "I"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1", "c1", "d1", "e1"], ["a2", "b2", "a3", "a4", "b4"], ["c2", "b3", "c3", "d3", "c4"], ["d2", "e2", "e3", "d4", "e4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("5x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

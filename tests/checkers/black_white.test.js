@@ -45,4 +45,20 @@ test('Area with two circles of the same color',(suite) => {
   assert("Same color response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each area should contain exactly one white circle and one black circle", errors: ["c1", "d1"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"a1": "white_circle", "c1": "white_circle", "d1": "black_circle", "b2": "black_circle", "c2": "white_circle", "a3": "black_circle", "b4": "white_circle", "d4": "black_circle"};
+  // Solution without the area a3-b3-a4-b4: a3 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1", "a2", "b2"], ["c1", "d1"], ["c2", "d2", "c3", "d3", "c4", "d4"]]};
+
+  assert("Cell without area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a3"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"a1": "white_circle", "c1": "white_circle", "d1": "black_circle", "b2": "black_circle", "c2": "white_circle", "a3": "black_circle", "b4": "white_circle", "d4": "black_circle"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1", "a2", "b2"], ["c1", "d1"], ["c2", "d2", "c3", "d3", "c4", "d4"], ["a3", "b3", "a4", "b4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

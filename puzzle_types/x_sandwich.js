@@ -133,13 +133,13 @@ checkColumnClues: function(cells, top, bottom, digits) {
     if (top[x] && top[x] != "white") {
       res = Checker.checkTopClue(cells, x, top[x]);
       if (res) {
-        return {status: "Wrong sum in the row", errors: res};
+        return {status: "Wrong sum in the column", errors: res};
       }
     }
     if (bottom[x] && bottom[x] != "white") {
       res = Checker.checkBottomClue(cells, x, bottom[x]);
       if (res) {
-        return {status: "Wrong sum in the row", errors: res};
+        return {status: "Wrong sum in the column", errors: res};
       }
     }
   }

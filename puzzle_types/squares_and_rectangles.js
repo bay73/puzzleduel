@@ -161,7 +161,7 @@ checkAllUsed: function(dim, areas) {
     for (var i=0;i<area.length;i++) {
       var pos = util.parseCoord(area[i]);
       if (used[pos.y][pos.x]) {
-        return {status: "Each cell should belong to exactly one area", errors: area[i]};
+        return {status: "Each cell should belong to exactly one area", errors: [area[i]]};
       }
       used[pos.y][pos.x] = true;
     }

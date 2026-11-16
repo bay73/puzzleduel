@@ -57,4 +57,20 @@ test('Adjacent areas of the mirrored shape',(suite) => {
   assert("Mirrored shape response").that(Checker.check("4x3", clues, data)).isEqualTo({status: "Areas of the same shape shouldn't share an edge", errors: ["a1", "b1", "c1", "a2", "d1", "d2", "c3", "d3"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"a1": "white_circle", "b2": "black_circle", "c1": "black_circle", "e2": "white_circle", "d2": "white_circle", "b3": "black_circle", "d3": "white_circle", "e4": "black_circle", "a3": "black_circle", "c4": "white_circle"};
+  // Solution without the area a3-a4-b4-c4: a3 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1", "a2", "b2"], ["c1", "d1", "e1", "e2"], ["c2", "d2", "b3", "c3"], ["d3", "e3", "d4", "e4"]]};
+
+  assert("Cell without area response").that(Checker.check("5x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a3"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"a1": "white_circle", "b2": "black_circle", "c1": "black_circle", "e2": "white_circle", "d2": "white_circle", "b3": "black_circle", "d3": "white_circle", "e4": "black_circle", "a3": "black_circle", "c4": "white_circle"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1", "a2", "b2"], ["c1", "d1", "e1", "e2"], ["c2", "d2", "b3", "c3"], ["d3", "e3", "d4", "e4"], ["a3", "a4", "b4", "c4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("5x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

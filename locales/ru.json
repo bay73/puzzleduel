@@ -540,5 +540,6 @@
 	"Segment passing through the clue should have the indicated length": "Отрезок проходящий через число должен иметь соответствующую длину",
 	"Loop should pass through all cells with numbers": "Цикл должен проходить через все клетки с числами",
 	"Wrong sum in the row": "Неверная сумма в ряду",
+	"Wrong sum in the column": "Неверная сумма в столбце",
 	"Akari Light Run": "Akari Light Run"
 }

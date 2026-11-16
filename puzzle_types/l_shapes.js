@@ -53,7 +53,7 @@ checkAllUsed: function(dim, areas) {
     for (var i=0;i<area.length;i++) {
       var pos = util.parseCoord(area[i]);
       if (used[pos.y][pos.x]) {
-        return {status: "Each cell should belong to exactly one area", errors: area[i]};
+        return {status: "Each cell should belong to exactly one area", errors: [area[i]]};
       }
       used[pos.y][pos.x] = true;
     }
@@ -61,7 +61,7 @@ checkAllUsed: function(dim, areas) {
   for (var y = 0; y < dim.rows; y++) {
     for (var x = 0; x < dim.cols; x++) {
       if (!used[y][x]) {
-        return {status: "Each cell should belong to exactly one area", errors: util.coord(x, y)};
+        return {status: "Each cell should belong to exactly one area", errors: [util.coord(x, y)]};
       }
     }
   }

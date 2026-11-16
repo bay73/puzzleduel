@@ -44,4 +44,20 @@ test('Wrong number of neighbours',(suite) => {
   assert("Wrong clue response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["a1"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"a1": "2", "d1": "?", "b3": "3", "c4": "1"};
+  // Solution without the area a4-b4-c4-d4: a4 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1", "a2", "b2"], ["c1", "d1", "c2", "d2"], ["a3", "b3", "c3", "d3"]]};
+
+  assert("Cell without area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a4"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"a1": "2", "d1": "?", "b3": "3", "c4": "1"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1", "a2", "b2"], ["c1", "d1", "c2", "d2"], ["a3", "b3", "c3", "d3"], ["a4", "b4", "c4", "d4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );

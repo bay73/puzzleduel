@@ -61,4 +61,20 @@ test('Same shapes of white and grey parts',(suite) => {
   assert("Same shape response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Areas of white cells and shaded cells must have different shapes", errors: ["a1", "b1", "c1", "a2", "a3", "a4"]});
 }),
 
+test('Cell without area',(suite) => {
+  let clues = {"a2": "grey", "b2": "grey3", "a3": "grey", "b3": "grey", "a4": "grey", "b4": "grey", "c4": "grey", "d4": "grey5"};
+  // Solution without the area d1-c2-d2-b3-c3-d3-a4-b4-c4-d4: d1 is the first cell which doesn't belong to any area.
+  let data = {"areas": [["a1", "b1", "c1", "a2", "b2", "a3"]]};
+
+  assert("Cell without area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["d1"]});
+}),
+
+test('Cell in two areas',(suite) => {
+  let clues = {"a2": "grey", "b2": "grey3", "a3": "grey", "b3": "grey", "a4": "grey", "b4": "grey", "c4": "grey", "d4": "grey5"};
+  // Solution with an extra area which consists of the cell a1.
+  let data = {"areas": [["a1", "b1", "c1", "a2", "b2", "a3"], ["d1", "c2", "d2", "b3", "c3", "d3", "a4", "b4", "c4", "d4"], ["a1"]]};
+
+  assert("Cell in two areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Each cell should belong to exactly one area", errors: ["a1"]});
+}),
+
 );
