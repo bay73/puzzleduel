@@ -1,132 +1,75 @@
-// Runs checkers tests from tests/*.test.js files in Node (without a browser).
+// Runs checkers tests (tests/checkers/<type>.test.js) in Node, without a browser.
 //
 // Usage: node tests/run_checker_tests.js [puzzle_type ...]
-//
-// The test files are written for tests.html and contain tests of different kinds.
-// Only the tests which don't use the puzzle grid (i.e. don't use the `suite` object)
-// are executed here: those are the tests which call the checker of the puzzle type.
-// The checker is taken from puzzle_types/<name>.js for the test file tests/<name>.test.js.
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const TESTS_DIR = __dirname;
+const TESTS_DIR = path.join(__dirname, 'checkers');
 const CHECKERS_DIR = path.join(__dirname, '..', 'puzzle_types');
 const UTIL_MODULES = ['util', 'sudoku_util', 'pentomino_util'];
-const TEST_SUFFIX = '.test.js';
 
-function isGridTest(fn) {
-  return /\bsuite\s*\./.test(fn.toString());
+// List of names (without extension) of the files in the directory.
+function listNames(dir, suffix) {
+  return fs.readdirSync(dir)
+    .filter(file => file.endsWith(suffix))
+    .map(file => file.slice(0, -suffix.length))
+    .sort();
 }
 
-// Prepares global functions used by the test files: assertions are taken
-// from the library used in browser, the rest is replaced.
-// Everything is executed in the main context (not in a separate vm context), because
-// the assertions compare objects created by the tests with objects created by checkers.
-const suites = [];
-
-function prepareGlobals() {
-  const libFile = path.join(TESTS_DIR, 'test_suite_lib.js');
-  vm.runInThisContext(fs.readFileSync(libFile, 'utf8'), {filename: libFile});
-  const ignored = () => ({});
-  Object.assign(globalThis, {
-    testSuite: (name, ...items) => {
-      const suite = {name: name, tests: items.filter(item => item && typeof item.fn == 'function')};
-      suites.push(suite);
-      return suite;
-    },
-    test: (name, fn) => ({name: name, fn: fn}),
-    before: ignored,
-    after: ignored,
-    beforeSuite: ignored,
-    afterSuite: ignored,
-  });
+// Test files are written for browser, so they are executed as scripts sharing global functions.
+function runScript(file) {
+  vm.runInThisContext(fs.readFileSync(file, 'utf8'), {filename: file});
 }
 
-function checkAllCheckersLoad() {
-  const errors = [];
-  fs.readdirSync(CHECKERS_DIR).filter(file => file.endsWith('.js')).sort().forEach(file => {
+let passedCount = 0;
+let failedCount = 0;
+
+function fail(message) {
+  console.log(message);
+  failedCount++;
+}
+
+// Assertions are taken from the library used in browser, the suite is executed right away.
+runScript(path.join(__dirname, 'test_suite_lib.js'));
+globalThis.test = (name, fn) => ({name: name, fn: fn});
+globalThis.checkerTestSuite = (typeCode, name, ...tests) => {
+  globalThis.Checker = require(path.join(CHECKERS_DIR, typeCode + '.js'));
+  const failures = [];
+  tests.forEach(test => {
     try {
-      const checker = require(path.join(CHECKERS_DIR, file));
-      if (!UTIL_MODULES.includes(path.basename(file, '.js')) && typeof checker.check != 'function') {
-        errors.push(file + ': check function is not exported');
-      }
+      test.fn();
     } catch (error) {
-      errors.push(file + ': ' + error);
+      failures.push('  ' + test.name + ' FAILED\n    ' + (error && error.stack ? error.stack : error));
     }
   });
-  return errors;
+  passedCount += tests.length - failures.length;
+  console.log(name + ' (' + typeCode + '): passed ' + (tests.length - failures.length) + ', failed ' + failures.length);
+  failures.forEach(fail);
+};
+
+const checkers = listNames(CHECKERS_DIR, '.js').filter(typeCode => !UTIL_MODULES.includes(typeCode));
+const tested = listNames(TESTS_DIR, '.test.js');
+const requested = process.argv.slice(2);
+
+(requested.length > 0 ? requested : tested).forEach(typeCode => {
+  try {
+    runScript(path.join(TESTS_DIR, typeCode + '.test.js'));
+  } catch (error) {
+    fail(typeCode + ' FAILED TO RUN\n    ' + (error && error.stack ? error.stack : error));
+  }
+});
+
+if (requested.length == 0) {
+  // Every checker should have tests, and the tests should be shown at tests.html.
+  const browserList = fs.readFileSync(path.join(__dirname, 'all_tests.js'), 'utf8');
+  checkers.filter(typeCode => !tested.includes(typeCode))
+    .forEach(typeCode => fail('No tests for puzzle_types/' + typeCode + '.js'));
+  tested.filter(typeCode => !browserList.includes('"' + typeCode + '"'))
+    .forEach(typeCode => fail('tests/checkers/' + typeCode + '.test.js is not listed in tests/all_tests.js'));
 }
 
-function runTestFile(typeCode) {
-  const testFile = path.join(TESTS_DIR, typeCode + TEST_SUFFIX);
-  suites.length = 0;
-  vm.runInThisContext(fs.readFileSync(testFile, 'utf8'), {filename: testFile});
-  const result = {typeCode: typeCode, passed: 0, failed: []};
-  suites.forEach(suite => {
-    result.name = suite.name;
-    const tests = suite.tests.filter(test => !isGridTest(test.fn));
-    if (tests.length == 0) {
-      return;
-    }
-    globalThis.Checker = require(path.join(CHECKERS_DIR, typeCode + '.js'));
-    tests.forEach(test => {
-      try {
-        test.fn({});
-        result.passed++;
-      } catch (error) {
-        result.failed.push({name: test.name, error: error && error.stack ? error.stack : String(error)});
-      }
-    });
-  });
-  return result;
+console.log('\nFAILED: ' + failedCount + ' PASSED: ' + passedCount);
+if (failedCount > 0 || passedCount == 0) {
+  process.exitCode = 1;
 }
-
-function main() {
-  prepareGlobals();
-  let typeCodes = process.argv.slice(2);
-  let failedCount = 0;
-  if (typeCodes.length == 0) {
-    typeCodes = fs.readdirSync(TESTS_DIR)
-      .filter(file => file.endsWith(TEST_SUFFIX))
-      .map(file => file.slice(0, -TEST_SUFFIX.length))
-      .sort();
-    const loadErrors = checkAllCheckersLoad();
-    if (loadErrors.length > 0) {
-      console.log('Checkers which can not be loaded:');
-      loadErrors.forEach(error => console.log('  ' + error));
-      failedCount += loadErrors.length;
-    }
-  }
-
-  let passedCount = 0;
-  const withoutTests = [];
-  typeCodes.forEach(typeCode => {
-    let result;
-    try {
-      result = runTestFile(typeCode);
-    } catch (error) {
-      console.log(typeCode + ' FAILED TO RUN\n    ' + (error && error.stack ? error.stack : error));
-      failedCount++;
-      return;
-    }
-    if (result.passed == 0 && result.failed.length == 0) {
-      withoutTests.push(typeCode);
-      return;
-    }
-    passedCount += result.passed;
-    failedCount += result.failed.length;
-    console.log(result.name + ' (' + typeCode + '): passed ' + result.passed + ', failed ' + result.failed.length);
-    result.failed.forEach(failure => console.log('  ' + failure.name + ' FAILED\n    ' + failure.error));
-  });
-
-  if (withoutTests.length > 0) {
-    console.log('\nTest files without checker tests (' + withoutTests.length + '): ' + withoutTests.join(', '));
-  }
-  console.log('\nFAILED: ' + failedCount + ' PASSED: ' + passedCount);
-  if (failedCount > 0 || passedCount == 0) {
-    process.exitCode = 1;
-  }
-}
-
-main();

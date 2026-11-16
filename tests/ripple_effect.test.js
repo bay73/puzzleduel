@@ -23,8 +23,7 @@ beforeSuite((suite, cb)=> {
   suite.mouseEvent = function(x, y) {
     return {clientX: x, clientY: y, preventDefault: ()=>{}};
   };
-  module = {};
-  requirejs(['puzzle_types/util.js', 'squarepuzzle'], cb);
+  requirejs(["squarepuzzle"], cb);
 }),
 
 after((suite)=> {

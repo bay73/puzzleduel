@@ -289,3 +289,40 @@ requirejs(["tests/yin_yang_classic.test.js"], ()=>{
   allTestSuites.push(yinYangClassicTestSuite);
 })
 
+// Checkers tests (files tests/checkers/<type>.test.js).
+// Every file adds its suite to allTestSuites itself.
+var checkerTestTypes = [
+  "abc_division", "akari", "alternate_loop", "aqre", "aquapelago", "aquarium", "araf", "arrow_web",
+  "battleships", "battleships_knight", "battleships_minesweeper", "black_white", "canal_view",
+  "cave_classic", "chaos", "chat_room", "choco_banana", "clouds", "country_road",
+  "domino_castle_sum", "domino_hunt", "double_back", "double_choco", "double_choco_consecutive",
+  "double_choco_inverse", "double_choco_notouch", "doubleblock", "easy_as_abc", "easy_as_coral",
+  "every_second_straight", "every_second_turn", "expressway", "fence", "fence_even_odd",
+  "fence_knapp_daneben", "fence_pentomino", "fence_turning", "fillomino", "foseruzu", "four_winds",
+  "fuzuli", "gaps", "geradeweg", "hexa_fence", "hexa_islands", "hexa_minesweeper", "hexa_paint",
+  "heyawake", "hitori", "inturnal", "kaitoramma", "kropki", "kuromasu", "kuroshiro", "l_shapes",
+  "lighthouses", "lits", "lits_inverse", "lits_plus", "loop_bounds", "loop_minesweeper",
+  "magic_snail", "masyu", "maxi_loop", "meandering_numbers", "mid_loop", "minesweeper_classic",
+  "nanro", "neighbors", "no_touch_sums", "norinori", "nurikabe", "paint_battenberg",
+  "paint_by_max", "passage", "pata", "pentasight", "pentomino", "pentomino_areas",
+  "pentomino_division", "pentomino_hungarian", "pentomino_touch", "point_a_star", "point_crowd",
+  "polygraph", "product_kuromasu", "product_latin_square", "queens", "railroad", "recto",
+  "ring_ring", "ring_ring_battenberg", "ring_ring_empty", "ring_ring_max", "ring_ring_nested",
+  "ring_ring_numbered", "ring_ring_square_rectangle", "ripple_effect", "russian_loop",
+  "sequential_path", "shikaku", "shortest_segment", "simple_loop", "skyscrapers",
+  "skyscrapers_exclusive", "skyscrapers_gaps", "skyscrapers_products", "skyscrapers_sums",
+  "slalom", "slash_pack", "slicy", "snake_belarusian", "snake_dutch", "snake_max",
+  "snake_minesweeper", "snake_scope", "snake_simple", "snake_striped", "spiral_galaxies",
+  "squares_and_rectangles", "starbattle", "starbattle_smallregions", "statue_park",
+  "sudoku_antidiagonal", "sudoku_antiknight", "sudoku_battenberg", "sudoku_blackout",
+  "sudoku_citywalk", "sudoku_classic", "sudoku_consecutive", "sudoku_diagonal",
+  "sudoku_difference", "sudoku_double", "sudoku_even_odd", "sudoku_extra_regions",
+  "sudoku_fortress", "sudoku_hundred", "sudoku_index_to_one", "sudoku_irregular", "sudoku_notouch",
+  "sudoku_numbered_rooms", "sudoku_odd", "sudoku_odd_even_big_small", "sudoku_pair_sum",
+  "sudoku_queen", "sudoku_same_sum", "sudoku_search_max", "sudoku_selfjoint", "sudoku_skyscrapers",
+  "sudoku_square_number", "sudoku_x_sums", "suguru", "sukoro", "tapa_classic", "tents_classic",
+  "tetro_scope", "top_heavy", "two_apiece", "x_sandwich", "xo", "yajilin", "yajilin_domino",
+  "yajilin_liar", "yajilin_regional", "yajilin_sum", "yin_yang_classic",
+];
+
+checkerTestTypes.forEach(typeCode => requirejs(["tests/checkers/" + typeCode + ".test.js"], ()=>{}));

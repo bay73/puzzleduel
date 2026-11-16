@@ -342,3 +342,69 @@ function deepCompare () {
 
   return true;
 }
+
+// Checkers tests //////////////////////////////////////////////////////////
+
+// Modules from puzzle_types directory loaded for checkers tests.
+var checkerModules = {};
+
+// Loads a file from puzzle_types directory the same way as Node does it.
+// The file is not added to the page as a script, so declarations
+// from different checkers (all of them declare Checker) don't clash.
+function loadCheckerModule(name, callback) {
+  fetch("puzzle_types/" + name + ".js")
+    .then(response => {
+      if (!response.ok) {
+        throw "Can't load puzzle_types/" + name + ".js: " + response.status;
+      }
+      return response.text();
+    })
+    .then(source => {
+      let module = {exports: {}};
+      let require = path => checkerModules[path.replace("./", "")];
+      new Function("module", "require", source + "\n//# sourceURL=puzzle_types/" + name + ".js")(module, require);
+      checkerModules[name] = module.exports;
+      callback(module.exports);
+    });
+}
+
+function loadChecker(typeCode, callback) {
+  loadCheckerModule("util", () =>
+    loadCheckerModule("sudoku_util", () =>
+      loadCheckerModule("pentomino_util", () =>
+        loadCheckerModule(typeCode, callback))));
+}
+
+// Creates test suite which contains only tests for the checker of the given puzzle type.
+// The checker is available for the tests as Checker.
+function checkerTestSuite(typeCode, name, ...tests) {
+  // Checker is set only while a test is executed, to not affect other suites using the same global name.
+  let withChecker = item => {
+    if (item.type != testSuite.TEST) {
+      return item;
+    }
+    return {
+      type: item.type,
+      exec: (suite) => {
+        let savedChecker = window.Checker;
+        window.Checker = suite.checker;
+        try {
+          return item.exec(suite);
+        } finally {
+          window.Checker = savedChecker;
+        }
+      }
+    };
+  };
+  let suite = testSuite(
+    name + " checker",
+    beforeSuite((suite, cb) => loadChecker(typeCode, checker => {
+      suite.checker = checker;
+      cb();
+    })),
+    ...tests.map(withChecker));
+  if (typeof allTestSuites != "undefined") {
+    allTestSuites.push(suite);
+  }
+  return suite;
+}

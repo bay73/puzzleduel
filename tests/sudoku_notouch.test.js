@@ -23,15 +23,7 @@ beforeSuite((suite, cb)=> {
   suite.mouseEvent = function(x, y) {
     return {clientX: x, clientY: y, preventDefault: ()=>{}};
   };
-  module = {};
-  requirejs(['puzzle_types/util.js', 'sudokupuzzle'], function() {
-    window.util=Util;
-    requirejs(['puzzle_types/sudoku_util.js'], function() {
-      window.sudoku_util=SudokuUtil;
-      requirejs.undef('puzzle_types/sudoku_notouch.js');
-      requirejs(['puzzle_types/sudoku_notouch.js'], cb);
-    });
-  });
+  requirejs(["sudokupuzzle"], cb);
 }),
 
 after((suite)=> {

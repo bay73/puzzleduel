@@ -23,15 +23,7 @@ beforeSuite((suite, cb)=> {
   suite.mouseEvent = function(x, y) {
     return {clientX: x, clientY: y, preventDefault: ()=>{}};
   };
-  module = {};
-  requirejs(['puzzle_types/util.js', 'squarepuzzle'], function() {
-    window.util=Util;
-    requirejs(['puzzle_types/sudoku_util.js'], function() {
-      window.sudoku_util=SudokuUtil;
-      requirejs.undef('puzzle_types/skyscrapers_sums.js');
-      requirejs(['puzzle_types/skyscrapers_sums.js'], cb);
-    });
-  });
+  requirejs(["squarepuzzle"], cb);
 }),
 
 after((suite)=> {
@@ -180,27 +172,6 @@ test('Process click to left clue',(suite) => {
   assert("Cell data after one click").that(puzzle.left[0].data).isEqualTo({image:"white_circle"});
 }),
 
-// Checker tests
-test('Correct solution',(suite) => {
-  let clues = {"bottom": [null,null,"7",null], "right": ["7",null,"4",null], "top": ["10",null,null,null], "left": [null,"9",null,null]};
-  let data = {"a1": "1", "a2": "2", "a3": "3", "a4": "4", "b1": "4", "b2": "3", "b3": "2", "b4": "1", "c1": "2", "c2": "4","c3": "1", "c4": "3", "d1": "3", "d2": "1", "d3": "4", "d4": "2"}
-
-  assert("Correct solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
-}),
-
-test('Repeated digits',(suite) => {
-  let clues = {"bottom": [null,null,"7",null], "right": ["7",null,"4",null], "top": ["10",null,null,null], "left": [null,"9",null,null]};
-  let data = {"a1": "2", "a2": "2", "a3": "3", "a4": "4", "b1": "4", "b2": "3", "b3": "2", "b4": "1", "c1": "2", "c2": "4","c3": "1", "c4": "3", "d1": "3", "d2": "1", "d3": "4", "d4": "2"}
-
-  assert("Repeated digits solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"All digits should be exactly once in every row",errors:["a1","b1","c1","d1"]});
-}),
-
-test('Wrong clue',(suite) => {
-  let clues = {"bottom": [null,null,"7",null], "right": ["7",null,"4",null], "top": ["10",null,null,null], "left": [null,"9",null,null]};
-  let data = {"a1": "1", "a2": "2", "a3": "3", "a4": "4", "b1": "4", "b2": "3", "b3": "2", "b4": "1", "c1": "3", "c2": "4","c3": "1", "c4": "2", "d1": "2", "d2": "1", "d3": "4", "d4": "3"}
-
-  assert("Wrong clue solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status:"Wrong sum of visible buldings in the row",errors:["c4","c3","c2","c1"]});
-}),
 );
 
 
