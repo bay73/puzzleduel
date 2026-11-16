@@ -49,12 +49,12 @@ test('Wrong product in the column',(suite) => {
 }),
 
 test('Wrong number of digits in the row',(suite) => {
-  // There is no clue for the column g.
-  let clues = {"bottom": ["10", "6", "3", "8", "12", "7", null], "right": ["6", "4", "10", "9", "6", "14", "8"]};
-  // Digit in g7 is missing, so there is only one digit in the row 7.
-  let data = {"a1": "2", "c1": "3", "d2": "4", "f2": "1", "a3": "5", "e3": "2", "b4": "3", "g4": "3", "c5": "1", "e5": "6", "b6": "2", "f6": "7", "d7": "2"};
+  let clues = {"bottom": ["10", "6", "3", "8", "12", "7", "12"], "right": ["6", "4", "10", "9", "6", "14", "8"]};
+  // Digit 3 is moved from c1 to c3: all columns are still correct,
+  // but there is only one digit in the first row.
+  let data = {"a1": "2", "c3": "3", "d2": "4", "f2": "1", "a3": "5", "e3": "2", "b4": "3", "g4": "3", "c5": "1", "e5": "6", "b6": "2", "f6": "7", "d7": "2", "g7": "4"};
 
-  assert("Wrong number of digits in the row response").that(Checker.check("7x7", clues, data)).isEqualTo({status: "There should be 2 digits in the row", errors: ["a7", "b7", "c7", "d7", "e7", "f7", "g7"]});
+  assert("Wrong number of digits in the row response").that(Checker.check("7x7", clues, data)).isEqualTo({status: "There should be 2 digits in the row", errors: ["a1", "b1", "c1", "d1", "e1", "f1", "g1"]});
 }),
 
 test('Wrong product in the row',(suite) => {
@@ -63,6 +63,39 @@ test('Wrong product in the row',(suite) => {
   let data = {"a1": "5", "c1": "3", "d2": "4", "f2": "1", "a3": "2", "e3": "2", "b4": "3", "g4": "3", "c5": "1", "e5": "6", "b6": "2", "f6": "7", "d7": "2", "g7": "4"};
 
   assert("Wrong product in the row response").that(Checker.check("7x7", clues, data)).isEqualTo({status: "Wrong product for the row", errors: ["a1", "b1", "c1", "d1", "e1", "f1", "g1"]});
+}),
+
+test('No digits at all',(suite) => {
+  // There are no clues, but every row and column still should contain two digits.
+  let clues = {};
+  let data = {};
+
+  assert("No digits response").that(Checker.check("7x7", clues, data)).isEqualTo({status: "There should be 2 digits in the column", errors: ["a1", "a2", "a3", "a4", "a5", "a6", "a7"]});
+}),
+
+test('Wrong number of digits in the column without clue',(suite) => {
+  // Only the first column has a clue.
+  let clues = {"bottom": ["10", null, null, null, null, null, null]};
+  // Digit 2 is missing in b6: there is only one digit in the column b.
+  let data = {"a1": "2", "c1": "3", "d2": "4", "f2": "1", "a3": "5", "e3": "2", "b4": "3", "g4": "3", "c5": "1", "e5": "6", "f6": "7", "d7": "2", "g7": "4"};
+
+  assert("Wrong number of digits in the column response").that(Checker.check("7x7", clues, data)).isEqualTo({status: "There should be 2 digits in the column", errors: ["b1", "b2", "b3", "b4", "b5", "b6", "b7"]});
+}),
+
+test('Wrong number of digits in the row without clue',(suite) => {
+  let clues = {};
+  // Digit 3 is moved from c1 to c3: all columns still contain two digits,
+  // but there is one digit in the first row (and three digits in the third one).
+  let data = {"a1": "2", "c3": "3", "d2": "4", "f2": "1", "a3": "5", "e3": "2", "b4": "3", "g4": "3", "c5": "1", "e5": "6", "b6": "2", "f6": "7", "d7": "2", "g7": "4"};
+
+  assert("Wrong number of digits in the row response").that(Checker.check("7x7", clues, data)).isEqualTo({status: "There should be 2 digits in the row", errors: ["a1", "b1", "c1", "d1", "e1", "f1", "g1"]});
+}),
+
+test('Correct solution without clues',(suite) => {
+  let clues = {};
+  let data = {"a1": "2", "c1": "3", "d2": "4", "f2": "1", "a3": "5", "e3": "2", "b4": "3", "g4": "3", "c5": "1", "e5": "6", "b6": "2", "f6": "7", "d7": "2", "g7": "4"};
+
+  assert("Correct solution without clues response").that(Checker.check("7x7", clues, data)).isEqualTo({status: "OK"});
 }),
 
 );

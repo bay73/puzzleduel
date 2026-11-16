@@ -76,11 +76,10 @@ findTouch: function(cells) {
 },
 checkColumnClues: function(cells, clues) {
   for (var x=0; x < cells.cols; x++) {
-    if (clues[x] && clues[x] != "white") {
-      res = Checker.checkColumnClue(cells, clues[x], x);
-      if (res.status != "OK") {
-        return res;
-      }
+    // Number of digits is checked for every column, the product only if the clue is given.
+    var res = Checker.checkColumnClue(cells, clues[x], x);
+    if (res.status != "OK") {
+      return res;
     }
   }
   return {status: "OK"};
@@ -99,18 +98,17 @@ checkColumnClue: function(cells, clue, col) {
   if (digitCount != 2) {
     return {status: "There should be 2 digits in the column", errors: cellList};
   }
-  if (product.toString() != clue) {
+  if (clue && clue != "white" && product.toString() != clue) {
     return {status: "Wrong product for the column", errors: cellList};
   }
   return {status: "OK"};
 },
 checkRowClues: function(cells, clues) {
   for (var y=0; y < cells.rows; y++) {
-    if (clues[y] && clues[y] != "white") {
-      res = Checker.checkRowClue(cells, clues[y], y);
-      if (res.status != "OK") {
-        return res;
-      }
+    // Number of digits is checked for every row, the product only if the clue is given.
+    var res = Checker.checkRowClue(cells, clues[y], y);
+    if (res.status != "OK") {
+      return res;
     }
   }
   return {status: "OK"};
@@ -129,7 +127,7 @@ checkRowClue: function(cells, clue, row) {
   if (digitCount != 2) {
     return {status: "There should be 2 digits in the row", errors: cellList};
   }
-  if (product.toString() != clue) {
+  if (clue && clue != "white" && product.toString() != clue) {
     return {status: "Wrong product for the row", errors: cellList};
   }
   return {status: "OK"};
