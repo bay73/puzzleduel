@@ -56,4 +56,25 @@ test('Repeated digits in column',(suite) => {
   assert("Repeated digits in column response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "All digits should be exactly once in every column", errors: ["a1", "a2", "a3", "a4"]});
 }),
 
+test('Areas are not kept from the previous puzzle',(suite) => {
+  let clues = {"areas": [["a1","b1","c1","b2"], ["d1","c2","d2","d3"], ["a2","a3","b3","a4"], ["c3","b4","c4","d4"]], "b1": "2", "a4": "4"};
+  let data = {
+    "a1": "1", "c1": "3", "d1": "4",
+    "a2": "2", "b2": "4", "c2": "1", "d2": "3",
+    "a3": "3", "b3": "1", "c3": "4", "d3": "2",
+    "b4": "3", "c4": "2", "d4": "1",
+  };
+  assert("Puzzle with areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
+
+  // The next puzzle has no areas, so only rows and columns are checked.
+  // The grid would be wrong for the areas of the previous puzzle (a1, b1, c1, b2 contain 3 twice).
+  let otherData = {
+    "a1": "1", "b1": "2", "c1": "3", "d1": "4",
+    "a2": "2", "b2": "3", "c2": "4", "d2": "1",
+    "a3": "3", "b3": "4", "c3": "1", "d3": "2",
+    "a4": "4", "b4": "1", "c4": "2", "d4": "3",
+  };
+  assert("Puzzle without areas response").that(Checker.check("4x4", {}, otherData)).isEqualTo({status: "OK"});
+}),
+
 );

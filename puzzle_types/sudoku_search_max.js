@@ -69,7 +69,6 @@ checkArrows: function(cells, arrows) {
       }
       if (arrows[y][x] == "arrow_u") {
         let diff = y - Checker.searchMaxInColumn(cells, x);
-        console.log(diff)
         if (cells[y][x] != diff.toString()) {
           return {status: "The digit should be equal to the distance to the maximum value in the column", errors: [util.coord(x, y)]};
         }

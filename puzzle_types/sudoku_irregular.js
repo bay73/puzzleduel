@@ -18,6 +18,7 @@ check:function(dimension, clues, data){
       cells[pos.y][pos.x] = value;
     }
   }
+  var areas = [];
   // Parse clues.
   for (var [key, value] of Object.entries(clues)) {
     if (key=="areas") {
@@ -29,7 +30,7 @@ check:function(dimension, clues, data){
       }
     }
   }
-  colors = [];
+  var colors = [];
   for (var i=1;i<=parseInt(dim.rows);i++) {
     colors.push(i.toString());
   }

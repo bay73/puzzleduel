@@ -58,4 +58,16 @@ test('Area is not filled with all digits',(suite) => {
   assert("Incomplete area response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Area should contain sequential numbers from 1 to N", errors: ["b1", "c1", "d1"]});
 }),
 
+test('Areas are not kept from the previous puzzle',(suite) => {
+  let clues = {"areas": [["a1", "a2"], ["b1", "c1", "d1"], ["b2", "c2", "d2", "c3"], ["a3", "b3", "a4"], ["d3", "d4", "c4", "b4"]], "b1": "3", "c3": "4", "a4": "3"};
+  let data = {"a1": "1", "c1": "2", "d1": "1", "a2": "2", "b2": "1", "c2": "3", "d2": "2", "a3": "1", "b3": "2", "d3": "3", "b4": "1", "c4": "2", "d4": "4"};
+  assert("Puzzle with areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
+
+  // The next puzzle has the same clues, but no areas, so the rules for areas are not applied.
+  // With the areas of the previous puzzle this grid is wrong (see 'Area is not filled with all digits').
+  let otherClues = {"b1": "3", "c3": "4", "a4": "3"};
+  let otherData = {"a1": "1", "c1": "2", "a2": "2", "b2": "1", "c2": "3", "d2": "2", "a3": "1", "b3": "2", "d3": "3", "b4": "1", "c4": "2", "d4": "4"};
+  assert("Puzzle without areas response").that(Checker.check("4x4", otherClues, otherData)).isEqualTo({status: "OK"});
+}),
+
 );

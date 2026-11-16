@@ -90,4 +90,16 @@ test('Snake end is not in a shaded area',(suite) => {
   assert("Wrong end response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Start and end of the snake should be in the shaded areas", errors: ["d1"]});
 }),
 
+test('Areas are not kept from the previous puzzle',(suite) => {
+  let clues = {"areas": [["a1", "b1", "c1", "a2", "b2"], ["d1", "c2", "d2", "d3"], ["a3", "b3", "c3", "a4", "b4", "c4", "d4"]], "a1": "1", "b1": "1", "c1": "1", "a2": "1", "b2": "1", "a3": "1", "b3": "1", "c3": "1", "a4": "1", "b4": "1", "c4": "1", "d4": "1"};
+  let data = {"a1": "1", "b1": "1", "c1": "1", "d1": "1", "d2": "1", "d3": "1", "d4": "1", "c4": "1", "b4": "1"};
+  assert("Puzzle with areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
+
+  // The next puzzle has the same clues, but no areas, so the rules for areas are not applied.
+  // With the areas of the previous puzzle this grid is wrong (see 'Wrong number of snake cells in the area').
+  let otherClues = {"a1": "1", "b1": "1", "c1": "1", "a2": "1", "b2": "1", "a3": "1", "b3": "1", "c3": "1", "a4": "1", "b4": "1", "c4": "1", "d4": "1"};
+  let otherData = {"a1": "1", "b1": "1", "c1": "1", "d1": "1", "d2": "1", "d3": "1", "d4": "1", "c4": "1"};
+  assert("Puzzle without areas response").that(Checker.check("4x4", otherClues, otherData)).isEqualTo({status: "OK"});
+}),
+
 );

@@ -35,4 +35,16 @@ test('Not connected',(suite) => {
   assert("Not connected").that(Checker.check("4x4", clues, data)).isEqualTo({status:"Area occupied by the digits should be connected"});
 }),
 
+test('Areas are not kept from the previous puzzle',(suite) => {
+  let clues = {"a1": "2", "a3": "3", "d2": "1", "areas": [["a1", "a2", "b1", "b2"], ["d1", "d2"], ["a4", "b4"], ["d4"], ["c1", "c2", "a3", "b3", "c3", "d3", "c4"]]};
+  let data = {"a2": "2", "a4": "2", "b4": "2", "c4": "3", "d3": "3", "d4": "1"};
+  assert("Puzzle with areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
+
+  // The next puzzle has the same clues, but no areas, so the rules for areas are not applied.
+  // With the areas of the previous puzzle this grid is wrong (see 'Wrong numbers in area').
+  let otherClues = {"a1": "2", "a3": "3", "d2": "1"};
+  let otherData = {"a2": "2", "a4": "1", "b4": "1", "c4": "3", "d3": "3", "d4": "1"};
+  assert("Puzzle without areas response").that(Checker.check("4x4", otherClues, otherData)).isEqualTo({status: "OK"});
+}),
+
 );

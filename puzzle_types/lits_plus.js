@@ -36,6 +36,7 @@ check:function(dimension, clues, data){
       cells[pos.y][pos.x] = (value == "1");
     }
   }
+  var areas = [];
   // Parse clues.
   for (var [key, value] of Object.entries(clues)) {
     if (key=="areas") {

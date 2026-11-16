@@ -102,4 +102,25 @@ test('Equal digits share an edge',(suite) => {
   assert("Equal digits share an edge response").that(Checker.check("6x6", clues, data)).isEqualTo({status: "Two cells sharing an edge should contain different digits", errors: ["c3", "d3"]});
 }),
 
+test('Areas are not kept from the previous puzzle',(suite) => {
+  let clues = {"b4": "2", "a6": "1", "d6": "1", "f6": "2", "areas": [["a1", "b1", "c1", "a2", "b2", "c2"], ["d1", "e1", "f1", "d2", "e2", "f2"], ["a3", "b3", "c3", "a4", "b4", "c4"], ["d3", "e3", "f3", "d4", "e4", "f4"], ["a5", "b5", "c5", "a6", "b6", "c6"], ["d5", "e5", "f5", "d6", "e6", "f6"]]};
+  let data = {"a1": "3", "b1": "1", "c1": "2", "d1": "3", "e1": "2", "f1": "1",
+                   "a2": "2", "b2": "3", "c2": "1", "d2": "2", "e2": "1", "f2": "3",
+                   "a3": "3", "b3": "1", "c3": "2", "d3": "3", "e3": "2", "f3": "1",
+                   "a4": "1", "c4": "3", "d4": "1", "e4": "3", "f4": "2",
+                   "a5": "2", "b5": "3", "c5": "1", "d5": "2", "e5": "1", "f5": "3",
+                   "b6": "2", "c6": "3", "e6": "3"};
+  assert("Puzzle with areas response").that(Checker.check("6x6", clues, data)).isEqualTo({status: "OK"});
+
+  // The next puzzle has no areas, so only rows, columns and touching digits are checked.
+  // The grid would be wrong for the areas of the previous puzzle (a1, b1, c1, a2, b2, c2 contain 3 three times).
+  let otherData = {"a1": "3", "b1": "1", "c1": "3", "d1": "2", "e1": "1", "f1": "2",
+                   "a2": "2", "b2": "3", "c2": "2", "d2": "1", "e2": "3", "f2": "1",
+                   "a3": "3", "b3": "1", "c3": "3", "d3": "2", "e3": "1", "f3": "2",
+                   "a4": "1", "b4": "2", "c4": "1", "d4": "3", "e4": "2", "f4": "3",
+                   "a5": "2", "b5": "3", "c5": "2", "d5": "1", "e5": "3", "f5": "1",
+                   "a6": "1", "b6": "2", "c6": "1", "d6": "3", "e6": "2", "f6": "3"};
+  assert("Puzzle without areas response").that(Checker.check("6x6", {}, otherData)).isEqualTo({status: "OK"});
+}),
+
 );

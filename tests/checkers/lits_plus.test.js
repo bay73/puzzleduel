@@ -68,4 +68,16 @@ test('Same tetrominoes share an edge',(suite) => {
     {status: "Tetromino of the same type shoudln't share an edge", errors: ["c2", "c3"]});
 }),
 
+test('Areas are not kept from the previous puzzle',(suite) => {
+  let clues = {"areas": [["a1", "b1", "c1", "d1", "a2", "b2", "c2", "d2"], ["a3", "b3", "c3", "d3", "a4", "b4", "c4", "d4"]], "d1": "cross"};
+  let data = {"a1": "1", "a2": "1", "b2": "1", "c2": "1", "c3": "1", "b4": "1", "c4": "1", "d4": "1"};
+  assert("Puzzle with areas response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
+
+  // The next puzzle has the same clues, but no areas, so the rules for areas are not applied.
+  // With the areas of the previous puzzle this grid is wrong (see 'Three black cells in the area').
+  let otherClues = {"d1": "cross"};
+  let otherData = {"a1": "1", "a2": "1", "b2": "1", "c2": "1", "c3": "1", "b4": "1", "c4": "1"};
+  assert("Puzzle without areas response").that(Checker.check("4x4", otherClues, otherData)).isEqualTo({status: "OK"});
+}),
+
 );
