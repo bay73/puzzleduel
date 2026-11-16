@@ -117,21 +117,13 @@ checkAllFilled: function(cells, line) {
 checkRowClues: function(right, h) {
   for (let j=0;j<right.length;j++) {
     if (right[j] && right[j] != " ") {
-      let shortest = h.cols;
-      let current = 0;
       let cellList = [];
+      let segments = [];
       for (let i=0;i<h.cols;i++) {
         cellList.push(util.coord(i, j));
-        if (h[j][i]) {
-          current++;
-        } else {
-          if (current>0 && current<shortest) {
-            shortest = current;
-          }
-          current = 0;
-        }
+        segments.push(h[j][i]);
       }
-      if (shortest != h.cols && shortest.toString() != right[j]) {
+      if (Checker.shortestSegment(segments).toString() != right[j]) {
         return {status: "Wrong length of the shortest segment in the row", errors: cellList};
       }
     }
@@ -141,26 +133,36 @@ checkRowClues: function(right, h) {
 checkColClues: function(bottom, v) {
   for (let i=0;i<bottom.length;i++) {
     if (bottom[i] && bottom[i] != " ") {
-      let shortest = v.cols;
-      let current = 0;
       let cellList = [];
+      let segments = [];
       for (let j=0;j<v.rows;j++) {
         cellList.push(util.coord(i, j));
-        if (v[j][i]) {
-          current++;
-        } else {
-          if (current>0 && current<shortest) {
-            shortest = current;
-          }
-          current = 0;
-        }
+        segments.push(v[j][i]);
       }
-      if (shortest != v.rows && shortest.toString() != bottom[i]) {
+      if (Checker.shortestSegment(segments).toString() != bottom[i]) {
         return {status: "Wrong length of the shortest segment in the column", errors: cellList};
       }
     }
   }
   return {status: "OK"};
+},
+// Length of the shortest sequence of connected cells in the row or column.
+// Parameter shows for each cell if it's connected to the next one.
+// Returns 0 if there are no segments at all.
+shortestSegment: function(connected) {
+  let shortest = 0;
+  let current = 0;
+  for (let i=0;i<=connected.length;i++) {
+    if (i<connected.length && connected[i]) {
+      current++;
+    } else {
+      if (current>0 && (shortest==0 || current<shortest)) {
+        shortest = current;
+      }
+      current = 0;
+    }
+  }
+  return shortest;
 },
 };
 

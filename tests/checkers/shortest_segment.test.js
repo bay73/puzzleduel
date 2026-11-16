@@ -94,4 +94,77 @@ test('Wrong shortest segment in the column',(suite) => {
   assert("Wrong column response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Wrong length of the shortest segment in the column", errors: ["b1", "b2", "b3", "b4"]});
 }),
 
+test('Correct column clues in the tall grid',(suite) => {
+  // Grid 4x6 (it is taller than wide), vertical segments have length 5 in columns a, d and 4 in columns b, c:
+  //   +--+--+--+
+  //   |  +--+  |
+  //   |  |  |  |
+  //   |  |  |  |
+  //   |  |  |  |
+  //   +--+  +--+
+  let clues = {"bottom": ["5", "4", null, null], "right": [null, "1", null, null, null, null]};
+  let data = {"connectors": {
+    "a1-h": "1", "b1-h": "1", "c1-h": "1", "a1-v": "1", "d1-v": "1",
+    "a2-v": "1", "b2-h": "1", "b2-v": "1", "c2-v": "1", "d2-v": "1",
+    "a3-v": "1", "b3-v": "1", "c3-v": "1", "d3-v": "1",
+    "a4-v": "1", "b4-v": "1", "c4-v": "1", "d4-v": "1",
+    "a5-v": "1", "b5-v": "1", "c5-v": "1", "d5-v": "1",
+    "a6-h": "1", "c6-h": "1"}};
+
+  assert("Tall grid response").that(Checker.check("4x6", clues, data)).isEqualTo({status: "OK"});
+}),
+
+test('Wrong column clue in the tall grid',(suite) => {
+  // Grid 4x6 (it is taller than wide), vertical segments have length 5 in columns a, d and 4 in columns b, c:
+  //   +--+--+--+
+  //   |  +--+  |
+  //   |  |  |  |
+  //   |  |  |  |
+  //   |  |  |  |
+  //   +--+  +--+
+  // The clue for the column a is 4, but its only segment has length 5.
+  let clues = {"bottom": ["4", null, null, null]};
+  let data = {"connectors": {
+    "a1-h": "1", "b1-h": "1", "c1-h": "1", "a1-v": "1", "d1-v": "1",
+    "a2-v": "1", "b2-h": "1", "b2-v": "1", "c2-v": "1", "d2-v": "1",
+    "a3-v": "1", "b3-v": "1", "c3-v": "1", "d3-v": "1",
+    "a4-v": "1", "b4-v": "1", "c4-v": "1", "d4-v": "1",
+    "a5-v": "1", "b5-v": "1", "c5-v": "1", "d5-v": "1",
+    "a6-h": "1", "c6-h": "1"}};
+
+  assert("Wrong column in the tall grid response").that(Checker.check("4x6", clues, data)).isEqualTo({status: "Wrong length of the shortest segment in the column", errors: ["a1", "a2", "a3", "a4", "a5", "a6"]});
+}),
+
+test('Row without segments',(suite) => {
+  // There are no horizontal segments in the third row of the solution, but the clue is 2.
+  let clues = {"bottom": [null, "2", null, null], "right": [null, "1", "2", null]};
+  let data = {"connectors": {
+    "a1-h": "1", "b1-h": "1", "c1-h": "1", "a1-v": "1", "d1-v": "1",
+    "a2-v": "1", "b2-h": "1", "b2-v": "1", "c2-v": "1", "d2-v": "1",
+    "a3-v": "1", "b3-v": "1", "c3-v": "1", "d3-v": "1",
+    "a4-h": "1", "c4-h": "1"}};
+
+  assert("Row without segments response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "Wrong length of the shortest segment in the row", errors: ["a3", "b3", "c3", "d3"]});
+}),
+
+test('Clue 0 for the row without segments',(suite) => {
+  // Clue 0 means that there are no segments in the row.
+  let clues = {"bottom": [null, "2", null, null], "right": [null, "1", "0", null]};
+  let data = {"connectors": {
+    "a1-h": "1", "b1-h": "1", "c1-h": "1", "a1-v": "1", "d1-v": "1",
+    "a2-v": "1", "b2-h": "1", "b2-v": "1", "c2-v": "1", "d2-v": "1",
+    "a3-v": "1", "b3-v": "1", "c3-v": "1", "d3-v": "1",
+    "a4-h": "1", "c4-h": "1"}};
+
+  assert("Clue 0 response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
+}),
+
+test('Clue for the column without segments',(suite) => {
+  // The loop goes along the border of the 3x2 grid: there are no vertical segments in the column b.
+  let clues = {"bottom": [null, "1", null]};
+  let data = {"connectors": {"a1-h": "1", "b1-h": "1", "a1-v": "1", "c1-v": "1", "a2-h": "1", "b2-h": "1"}};
+
+  assert("Column without segments response").that(Checker.check("3x2", clues, data)).isEqualTo({status: "Wrong length of the shortest segment in the column", errors: ["b1", "b2"]});
+}),
+
 );

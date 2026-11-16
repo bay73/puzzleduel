@@ -95,4 +95,53 @@ test('Wrong distance between circles in a column',(suite) => {
   assert("Wrong column clue response").that(Checker.check("8x8", clues, data)).isEqualTo({status: "Wrong number of cells between circles in the column", errors: ["d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8"]});
 }),
 
+test('Correct solution with given circles',(suite) => {
+  // Circles in b1 and g8 and the cross in c1 are given by the author, the solver submits other circles only.
+  let clues = {"bottom": ["1", null, null, "1", null, null, null, "1"], "right": ["1", null, null, "1", null, null, null, "1"], "b1": "white_circle", "c1": "cross", "g8": "white_circle"};
+  let data = {
+    "d1": "white_circle", "f2": "white_circle", "h2": "white_circle",
+    "b3": "white_circle", "d3": "white_circle", "f4": "white_circle", "h4": "white_circle",
+    "a5": "white_circle", "c5": "white_circle", "e6": "white_circle", "g6": "white_circle",
+    "a7": "white_circle", "c7": "white_circle", "e8": "white_circle"};
+
+  assert("Correct solution with given circles response").that(Checker.check("8x8", clues, data)).isEqualTo({status: "OK"});
+}),
+
+test('Given circle is missing in the puzzle',(suite) => {
+  // The same submission as above, but the circle in b1 is not given: there is only one circle in the first row.
+  let clues = {"bottom": ["1", null, null, "1", null, null, null, "1"], "right": ["1", null, null, "1", null, null, null, "1"], "g8": "white_circle"};
+  let data = {
+    "d1": "white_circle", "f2": "white_circle", "h2": "white_circle",
+    "b3": "white_circle", "d3": "white_circle", "f4": "white_circle", "h4": "white_circle",
+    "a5": "white_circle", "c5": "white_circle", "e6": "white_circle", "g6": "white_circle",
+    "a7": "white_circle", "c7": "white_circle", "e8": "white_circle"};
+
+  assert("Missing circle response").that(Checker.check("8x8", clues, data)).isEqualTo({status: "Each row should have exactly two circles", errors: ["a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1"]});
+}),
+
+test('Given circle touches a circle of the solver',(suite) => {
+  // Circle in a2 is given by the author, it touches the circle in b1 diagonally.
+  let clues = {"bottom": ["1", null, null, "1", null, null, null, "1"], "right": ["1", null, null, "1", null, null, null, "1"], "a2": "white_circle"};
+  let data = {
+    "b1": "white_circle", "d1": "white_circle", "f2": "white_circle", "h2": "white_circle",
+    "b3": "white_circle", "d3": "white_circle", "f4": "white_circle", "h4": "white_circle",
+    "a5": "white_circle", "c5": "white_circle", "e6": "white_circle", "g6": "white_circle",
+    "a7": "white_circle", "c7": "white_circle", "e8": "white_circle", "g8": "white_circle"};
+
+  assert("Given circle touches response").that(Checker.check("8x8", clues, data)).isEqualTo({status: "Cells with circles shouldn't touch", errors: ["a2", "b1"]});
+}),
+
+test('Circle in the cell with given cross',(suite) => {
+  // The cross in b1 is given by the author, so there can't be a circle in this cell:
+  // the first row contains only one circle (d1).
+  let clues = {"bottom": ["1", null, null, "1", null, null, null, "1"], "right": ["1", null, null, "1", null, null, null, "1"], "b1": "cross"};
+  let data = {
+    "b1": "white_circle", "d1": "white_circle", "f2": "white_circle", "h2": "white_circle",
+    "b3": "white_circle", "d3": "white_circle", "f4": "white_circle", "h4": "white_circle",
+    "a5": "white_circle", "c5": "white_circle", "e6": "white_circle", "g6": "white_circle",
+    "a7": "white_circle", "c7": "white_circle", "e8": "white_circle", "g8": "white_circle"};
+
+  assert("Circle in the cell with cross response").that(Checker.check("8x8", clues, data)).isEqualTo({status: "Each row should have exactly two circles", errors: ["a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1"]});
+}),
+
 );

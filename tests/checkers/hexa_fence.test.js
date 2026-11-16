@@ -57,4 +57,19 @@ test('Wrong number of segments around the clue',(suite) => {
   assert("Wrong clue response").that(Checker.check("3x3", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["e3"]});
 }),
 
+test('Empty list of edges',(suite) => {
+  let clues = {"b1": "2", "b2": "4", "a3": "0", "c3": "3", "e3": "1", "d4": "2"};
+  let data = {"edges": {}};
+
+  assert("Empty list of edges response").that(Checker.check("3x3", clues, data)).isEqualTo({status: "There should be single loop without bifurcations"});
+}),
+
+test('Edges outside the grid only',(suite) => {
+  let clues = {"b1": "2", "b2": "4", "a3": "0", "c3": "3", "e3": "1", "d4": "2"};
+  // Cell z9 doesn't exist in the grid, so there are no edges to build the loop.
+  let data = {"edges": {"z9-0": "1", "a1-7": "1"}};
+
+  assert("Edges outside the grid response").that(Checker.check("3x3", clues, data)).isEqualTo({status: "There should be single loop without bifurcations"});
+}),
+
 );

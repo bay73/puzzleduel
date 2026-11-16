@@ -21,9 +21,14 @@ check:function(dimension, clues, data){
   for (var [key, value] of Object.entries(clues)) {
     if (key=="bottom") {
       bottom = value;
-    }
-    if (key=="right") {
+    } else if (key=="right") {
       right = value;
+    } else {
+      // Cells given by the author: a circle or a cross (the cell without a circle).
+      var pos = util.parseCoord(key);
+      if (cells[pos.y]){
+        cells[pos.y][pos.x] = (value == "white_circle");
+      }
     }
   }
   var res = Checker.checkTouch(cells);

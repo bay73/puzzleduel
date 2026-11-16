@@ -58,6 +58,10 @@ check:function(dimension, clues, data){
     }  
   }
 
+  // No valid edges are drawn.
+  if (!startNode) {
+    return {status: "There should be single loop without bifurcations"};
+  }
   var prevNode = startNode;
   var prevEdge = startNode.edges[0];
   var nextNode = null;
