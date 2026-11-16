@@ -31,7 +31,7 @@ check:function(dimension, clues, data){
             bottomEdges[pos.y][pos.x] = edgeValue.replace(/^\-+/, '');
           }
         }
-        if (part[1]=="r" || part[1]=="l") {
+        if (part[1]=="r" || part[1]=="1") {
           if (rightEdges[pos.y]){
             rightEdges[pos.y][pos.x] = edgeValue.replace(/^\-+/, '');
           }

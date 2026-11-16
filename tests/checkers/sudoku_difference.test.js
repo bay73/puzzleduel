@@ -60,4 +60,26 @@ test('Wrong difference',(suite) => {
   assert("Wrong difference response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["a1", "a2"]});
 }),
 
+test('Wrong difference on the right edge',(suite) => {
+  // The clue between b3 and c3 is 2, but the digits are 1 and 4.
+  let clues = {"d1": "4", "d3": "3", "edges": {"a1-2": "-2", "b2-2": "-3", "c3-2": "-2", "b3-1": "-2"}};
+  let data = {"a1": "1", "b1": "2", "c1": "3",
+              "a2": "3", "b2": "4", "c2": "1", "d2": "2",
+              "a3": "2", "b3": "1", "c3": "4",
+              "a4": "4", "b4": "3", "c4": "2", "d4": "1"};
+
+  assert("Wrong difference response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["b3", "c3"]});
+}),
+
+test('Wrong difference on the edge with letter side',(suite) => {
+  // Sides can be given also as "r" (right) and "b" (bottom): difference between a1 and b1 is 1, not 3.
+  let clues = {"d1": "4", "d3": "3", "edges": {"a1-b": "-2", "a1-r": "-3"}};
+  let data = {"a1": "1", "b1": "2", "c1": "3",
+              "a2": "3", "b2": "4", "c2": "1", "d2": "2",
+              "a3": "2", "b3": "1", "c3": "4",
+              "a4": "4", "b4": "3", "c4": "2", "d4": "1"};
+
+  assert("Wrong difference response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["a1", "b1"]});
+}),
+
 );
