@@ -73,4 +73,41 @@ test('Two loops',(suite) => {
   assert("Two loops response").that(Checker.check("6x4", clues, data)).isEqualTo({status: "There should be single loop passing through some cells", errors: []});
 }),
 
+// The loop is traced from its top left corner (a1 in the tests below),
+// the dots on the borders of this cell belong to the first and to the last segments.
+test('Dot on the right border of the first cell is not in the middle',(suite) => {
+  // The loop goes along the border of the 3x2 grid. The segment a1-c1 has the middle in b1,
+  // but the dot is between a1 and b1.
+  let clues = {"edges": {"a1-1": "black_circle"}};
+  let data = {"connectors": {"a1-h": "1", "b1-h": "1", "a1-v": "1", "c1-v": "1", "a2-h": "1", "b2-h": "1"}};
+
+  assert("Dot on the right border response").that(Checker.check("3x2", clues, data)).isEqualTo({status: "Dot should be in the middle of the corresponding straight segment", errors: ["a1", "b1"]});
+}),
+
+test('Dot on the bottom border of the first cell is not in the middle',(suite) => {
+  // The loop goes along the border of the 2x3 grid. The segment a1-a3 has the middle in a2,
+  // but the dot is between a1 and a2.
+  let clues = {"edges": {"a1-2": "black_circle"}};
+  let data = {"connectors": {"a1-h": "1", "a1-v": "1", "a2-v": "1", "b1-v": "1", "b2-v": "1", "a3-h": "1"}};
+
+  assert("Dot on the bottom border response").that(Checker.check("2x3", clues, data)).isEqualTo({status: "Dot should be in the middle of the corresponding straight segment", errors: ["a1", "a2"]});
+}),
+
+test('Dots on the borders of the first cell are in the middle',(suite) => {
+  // The loop goes along the border of the 2x2 grid: both dots are in the middle of the segments a1-b1 and a1-a2.
+  let clues = {"edges": {"a1-1": "black_circle", "a1-2": "black_circle"}};
+  let data = {"connectors": {"a1-h": "1", "a1-v": "1", "b1-v": "1", "a2-h": "1"}};
+
+  assert("Dots in the middle response").that(Checker.check("2x2", clues, data)).isEqualTo({status: "OK"});
+}),
+
+test('Two dots at the first segment',(suite) => {
+  // The loop goes along the border of the 4x2 grid. The segment a1-d1 contains
+  // the dot between a1 and b1 and the dot between b1 and c1 (which is in the middle).
+  let clues = {"edges": {"a1-1": "black_circle", "b1-1": "black_circle"}};
+  let data = {"connectors": {"a1-h": "1", "b1-h": "1", "c1-h": "1", "a1-v": "1", "d1-v": "1", "a2-h": "1", "b2-h": "1", "c2-h": "1"}};
+
+  assert("Two dots at the first segment response").that(Checker.check("4x2", clues, data)).isEqualTo({status: "Loop should have not more than one dot at each straight segment", errors: ["b1", "a1"]});
+}),
+
 );

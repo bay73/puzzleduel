@@ -153,6 +153,11 @@ checkLoop: function(line, clues, v, h) {
      return {status: "Loop should pass straight through all circles", errors: [util.coord(line[0].x, line[0].y)]};
   }
   used[line[0].y][line[0].x] = true;
+  // The loop is traced from its first cell to the right,
+  // so the dot on the right border of this cell belongs to the first segment.
+  if (clues[line[0].y][line[0].x] == RIGHT) {
+    lastClue = {x: line[0].x, y: line[0].y, position: RIGHT}
+  }
   for (var i=1;i<line.length-1;i++) {
     used[line[i].y][line[i].x] = true;
     if (clues[line[i].y][line[i].x] == CENTER) {
@@ -210,6 +215,14 @@ checkLoop: function(line, clues, v, h) {
       }
       lastClue = {x: line[i].x, y: line[i].y, position: BOTTOM}
     }
+  }
+  // The loop is closed in its first cell (line[i] here). If the last segment comes to it from below,
+  // then the dot on the bottom border of this cell belongs to the last segment.
+  if (clues[line[i].y][line[i].x] == BOTTOM && line[i-1].y == line[i].y + 1 && line[i-1].x == line[i].x) {
+    if (lastClue != null) {
+       return {status: "Loop should have not more than one dot at each straight segment", errors: [util.coord(line[i].x,line[i].y), util.coord(lastClue.x, lastClue.y)]};
+    }
+    lastClue = {x: line[i].x, y: line[i].y, position: BOTTOM}
   }
   if (lastClue != null) {
     if (lastClue.position == CENTER) {
