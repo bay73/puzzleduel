@@ -61,7 +61,7 @@ checkTopLeftBottomRight: function(cells, colors) {
     cellList.push(util.coord(i, i));
   }
   if (values.length != 3){ 
-    return {status: "The diagonal should contain exactly three different digits", errors: res};
+    return {status: "The diagonal should contain exactly three different digits", errors: cellList};
   }
   return {status: "OK"};
 },
@@ -75,7 +75,7 @@ checkTopRightBottomLeft: function(cells, colors) {
     cellList.push(util.coord(i, cells.rows-i-1));
   }
   if (values.length != 3){ 
-    return {status: "The diagonal should contain exactly three different digits", errors: res};
+    return {status: "The diagonal should contain exactly three different digits", errors: cellList};
   }
   return {status: "OK"};
 }
