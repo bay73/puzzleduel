@@ -345,34 +345,36 @@ function deepCompare () {
 
 // Checkers tests //////////////////////////////////////////////////////////
 
-// Modules from puzzle_types directory loaded for checkers tests.
-var checkerModules = {};
-
-// Loads a file from puzzle_types directory the same way as Node does it.
-// The file is not added to the page as a script, so declarations
-// from different checkers (all of them declare Checker) don't clash.
-function loadCheckerModule(name, callback) {
-  fetch("puzzle_types/" + name + ".js")
-    .then(response => {
-      if (!response.ok) {
-        throw "Can't load puzzle_types/" + name + ".js: " + response.status;
-      }
-      return response.text();
-    })
-    .then(source => {
-      let module = {exports: {}};
-      let require = path => checkerModules[path.replace("./", "")];
-      new Function("module", "require", source + "\n//# sourceURL=puzzle_types/" + name + ".js")(module, require);
-      checkerModules[name] = module.exports;
-      callback(module.exports);
-    });
-}
-
+// Loads the checker of the puzzle type together with the util modules it uses.
+// The files are loaded as scripts into a separate hidden frame, so declarations from different
+// checkers (all of them declare Checker) don't clash. Scripts are used instead of fetch,
+// because fetch doesn't work when tests.html is opened as a local file.
 function loadChecker(typeCode, callback) {
-  loadCheckerModule("util", () =>
-    loadCheckerModule("sudoku_util", () =>
-      loadCheckerModule("pentomino_util", () =>
-        loadCheckerModule(typeCode, callback))));
+  let frame = document.createElement("iframe");
+  frame.style.display = "none";
+  document.body.appendChild(frame);
+  let frameWindow = frame.contentWindow;
+  // Replacement for Node module system used by the files.
+  let modules = {"./util": "Util", "./sudoku_util": "SudokuUtil", "./pentomino_util": "PentominoUtil"};
+  frameWindow.module = {};
+  frameWindow.require = path => frameWindow.eval(modules[path]);
+
+  let files = ["util", "sudoku_util", "pentomino_util", typeCode];
+  let loadNext = function(index) {
+    if (index == files.length) {
+      let checker = frameWindow.eval("Checker");
+      // The response is copied, since objects created in the frame are not equal
+      // to objects of the main window when they are compared by the assertions.
+      callback({check: (dimension, clues, data) => structuredClone(checker.check(dimension, clues, data))});
+      return;
+    }
+    let script = frameWindow.document.createElement("script");
+    script.src = new URL("puzzle_types/" + files[index] + ".js", document.baseURI).href;
+    script.onload = () => loadNext(index + 1);
+    script.onerror = () => console.error("Can't load " + script.src);
+    frameWindow.document.head.appendChild(script);
+  };
+  loadNext(0);
 }
 
 // Creates test suite which contains only tests for the checker of the given puzzle type.
