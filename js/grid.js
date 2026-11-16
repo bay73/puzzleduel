@@ -249,7 +249,8 @@ gridElement.prototype.switchOnDrag = function() {
 
 gridElement.prototype.switchOnChooser = function(index) {
   if (this.chooserValues != null) {
-    if (this.puzzle.typeProperties.usePlus10 > 0 && this.chooserValues.length > this.puzzle.typeProperties.usePlus10 && index == this.puzzle.typeProperties.usePlus10) {
+    var plus10Item = this.plus10Item();
+    if (plus10Item > 0 && this.chooserValues.length > plus10Item && index == plus10Item) {
       var currentIndex = this.findCurrent(this.chooserValues);
       index = currentIndex + 10;
       if (index >= this.chooserValues.length) {
@@ -458,9 +459,20 @@ gridElement.prototype.oneClickChooser = function() {
   return !this.disableOneClickChooser;
 }
 
+// Index of "+10" item in the chooser of this element (0 if it's not used).
+// Puzzle type can limit "+10" to some elements using typeProperties.usePlus10For.
+gridElement.prototype.plus10Item = function() {
+  var typeProperties = this.puzzle.typeProperties;
+  if (typeof typeProperties.usePlus10For == "function" && !typeProperties.usePlus10For(this)) {
+    return 0;
+  }
+  return typeProperties.usePlus10;
+}
+
 gridElement.prototype.chooserData = function() {
-  if (this.puzzle.typeProperties.usePlus10 > 0 && this.chooserValues.length > this.puzzle.typeProperties.usePlus10) {
-    var values = this.chooserValues.slice(0, this.puzzle.typeProperties.usePlus10);
+  var plus10Item = this.plus10Item();
+  if (plus10Item > 0 && this.chooserValues.length > plus10Item) {
+    var values = this.chooserValues.slice(0, plus10Item);
     values.push({text: "+10"});
     return values;
   } else {

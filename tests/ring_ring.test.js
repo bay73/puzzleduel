@@ -44,8 +44,8 @@ test('Process drag on connector',(suite) => {
   x += puzzle.size.unitSize;
   puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
 
-  assert("Connector value after drag").that(puzzle.connectors[0][0]['h'].getValue()).isEqualTo(1);
-  assert("Connector data after drag").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.textColor, returnValue:1});
+  assert("Connector value after drag").that(puzzle.connectors[0][0]['h'].getValue()).isEqualTo("1");
+  assert("Connector data after drag").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue:"1"});
 
   x -= puzzle.size.unitSize;
   puzzle.controller.onMouseMove(suite.mouseEvent(x, y));

@@ -354,32 +354,38 @@ squarePuzzleConnector.prototype.switchToData = function(data, noLogging, attachT
   this.puzzle.recountConnectorAreas();
 }
 
+// Type specific behaviour is chained on top of whatever is already defined for the
+// grid elements, so that it does not depend on the order in which puzzle modules are loaded.
+var baseCellRevertTo = squarePuzzleCell.prototype.revertTo;
 squarePuzzleCell.prototype.revertTo = function(oldData, oldPencilData, noLogging) {
-  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData, noLogging);
+  baseCellRevertTo.call(this, oldData, oldPencilData, noLogging);
   if (!(this.puzzle instanceof fillominoPuzzleType)) {
     return;
   }
   this.puzzle.recountConnectorAreas();
 }
 
+var baseCellSwitchToData = squarePuzzleCell.prototype.switchToData;
 squarePuzzleCell.prototype.switchToData = function(data, noLogging, attachTo) {
-  squareGridElement.prototype.switchToData.call(this, data, noLogging, attachTo);
+  baseCellSwitchToData.call(this, data, noLogging, attachTo);
   if (!(this.puzzle instanceof fillominoPuzzleType)) {
     return;
   }
   this.puzzle.recountConnectorAreas();
 }
 
+var baseEdgeRevertTo = squarePuzzleEdge.prototype.revertTo;
 squarePuzzleEdge.prototype.revertTo = function(oldData, oldPencilData, noLogging) {
-  squareGridElement.prototype.revertTo.call(this, oldData, oldPencilData, noLogging);
+  baseEdgeRevertTo.call(this, oldData, oldPencilData, noLogging);
   if (!(this.puzzle instanceof areaPuzzleType)) {
     return;
   }
   this.puzzle.recountConnectorAreas();
 }
 
+var baseEdgeSwitchToData = squarePuzzleEdge.prototype.switchToData;
 squarePuzzleEdge.prototype.switchToData = function(data, noLogging, attachTo) {
-  squareGridElement.prototype.switchToData.call(this, data, noLogging, attachTo);
+  baseEdgeSwitchToData.call(this, data, noLogging, attachTo);
   if (!(this.puzzle instanceof areaPuzzleType)) {
     return;
   }

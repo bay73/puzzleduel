@@ -2,7 +2,7 @@ if (typeof util=="undefined") {
   var util = require('./util');
 }
 
-const Checker = {
+var Checker = {
 check:function(dimension, clues, data){
   // Create array
   var dim = util.parseDimension(dimension);

@@ -144,6 +144,13 @@ test('Automatic border between areas',(suite) => {
   puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
+  // Extend the first area to three cells (a1-a2-a3): the border is set only
+  // when two areas together are bigger than the number of letters.
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  y += puzzle.size.unitSize;
+  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
   assert("Edge value after first connector").that(puzzle.edges[0][0][1].getValue()).isNull();
   assert("Edge data after first connector").that(puzzle.edges[0][0][1].data).isEqualTo({});
 

@@ -588,7 +588,14 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
   }
   }
+  // Cells show all digits at once, even for sudoku bigger than 9.
+  // "+10" item is used only for outer clues of X Sums, where sums can be big.
+  var plus10Item = this.typeProperties.usePlus10;
   this.typeProperties.usePlus10 = false;
+  if (typeCode=="sudoku_x_sums") {
+    this.typeProperties.usePlus10 = plus10Item;
+    this.typeProperties.usePlus10For = element => element.outerCell;
+  }
 }
 
 diagonalPuzzleType.prototype.setTypeProperties = function(typeCode) {

@@ -77,8 +77,10 @@ test('Process click to empty cell',(suite) => {
   assert("Chooser connected to the cell row").that(puzzle.controller.chooserBuilder.element.row).isEqualTo(1);
   assert("Cell data after one click").that(puzzle.cells[1][0].data).isEqualTo({});
 
-  x += puzzle.size.unitSize * 5/4;
-  y += puzzle.size.unitSize/4;
+  // Click at value chooser (choosing "3"). Chooser items are placed relative to the chooser size,
+  // which doesn't depend only on the cell size (it's limited by the left gap in narrow windows).
+  x += puzzle.chooserSize*0.77;
+  y += puzzle.chooserSize*0.11;
   puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
@@ -132,8 +134,8 @@ test('Automatically set borders',(suite) => {
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 
   // Click at value chooser (choosing "2")
-  x += puzzle.size.unitSize;
-  y -=  puzzle.size.unitSize/4;
+  x += puzzle.chooserSize*0.71;
+  y -= puzzle.chooserSize*0.32;
   puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
   puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
 

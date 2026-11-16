@@ -49,7 +49,14 @@ squarePuzzleCell.prototype.switchToSlash = function(slashType) {
   return false;
 }
 
+// Slash drawing replaces node dragging only for slash puzzles;
+// other puzzle types keep the standard behaviour (drawing edges).
+var squareNodeProcessDragEnd = squarePuzzleNode.prototype.processDragEnd;
+
 squarePuzzleNode.prototype.processDragEnd = function(startElement) {
+  if (!(this.puzzle instanceof slashPuzzleType)) {
+    return squareNodeProcessDragEnd.call(this, startElement);
+  }
   if (startElement.constructor.name != this.constructor.name) {
     return false;
   }

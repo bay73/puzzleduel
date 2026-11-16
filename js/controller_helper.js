@@ -430,11 +430,9 @@ ControllerBuilder.prototype.addNumbers = function(start, end, color, image, subm
   this.isMultiController = true;
   this.Number10Item = null;
   for (var i=start; i<=end; i++) {
-    console.log("noPlus10=", noPlus10)
     if (!noPlus10 && i==10) {
        this.Number10Item = this.items.length;
     }
-    console.log("this.Number10Item=", this.Number10Item)
     var itemData = {text: i.toString()};
     if (typeof color != "undefined") {
       if (typeof color === "function") {

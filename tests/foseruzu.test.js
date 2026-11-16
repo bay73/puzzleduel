@@ -120,9 +120,10 @@ test('Process drag for connector',(suite) => {
   assert("Connector value after drag end").that(puzzle.connectors[0][0]['h'].getValue()).isEqualTo("line");
   assert("Connector data after drag end").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue: 'line'});
 }),
+// Border appears when two joined areas together exceed the maximal area size (3 here).
 test('Automatic border between areas',(suite) => {
   let puzzle = suite.showPuzzle(
-    "foseruzu", "4x4", {"a2": "1", "b2": "3", "b3": "2"});
+    "foseruzu", "4x4-3", {"a2": "1", "b2": "3", "b3": "2"});
   puzzle.start();
 
   let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
