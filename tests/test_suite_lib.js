@@ -23,10 +23,12 @@ function testSuite(name, ...tests) {
   }
   
   let self = {name: name,
-    exec: (hideDetails) => {
+    // onFinish (optional) is called with the results when all the tests of the suite are executed.
+    exec: (hideDetails, onFinish) => {
     beforeAll( self, () => {
       let failed = 0;
       let passed = 0;
+      let failures = [];
       console.log("%c" + name, "font-weight:bold");
       for (let i=0; i<testList.length; i++) {
         for (let j=0; j<beforeEach.length; j++) {
@@ -43,6 +45,7 @@ function testSuite(name, ...tests) {
           }
         } else {
           failed++;
+          failures.push({name: result.name, error: result.error});
           if (!hideDetails) {
             console.log("  " + result.name + " %c" + result.status + "\n%c" + result.error, "color:red", "padding-left:50px");
           }
@@ -52,6 +55,9 @@ function testSuite(name, ...tests) {
         console.log("%c FAILED: " + failed + " PASSED: " + passed, "color:red;font-weight:bold");
       } else {
         console.log("%c FAILED: " + failed + " PASSED: " + passed, "color:green;font-weight:bold");
+      }
+      if (typeof onFinish == "function") {
+        onFinish({name: name, passed: passed, failed: failed, failures: failures});
       }
     });
     afterAll(self);

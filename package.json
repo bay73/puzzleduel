@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "node tests/run_checker_tests.js"
+    "test": "node tests/run_checker_tests.js",
+    "test:ui": "node tests/run_browser_tests.js"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "uniqid": "^5.4.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "playwright": "^1.65.1"
   }
 }

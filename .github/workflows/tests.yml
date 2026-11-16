@@ -26,3 +26,27 @@ jobs:
     # Checkers have no external dependencies, so packages are not installed.
     - name: Run checkers tests
       run: npm test
+
+  browser:
+    name: Browser tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'lts/*'
+        cache: npm
+
+    - name: Install packages
+      run: npm ci
+
+    - name: Install browser
+      run: npx playwright install --with-deps chromium
+
+    # Runs all suites of tests.html (UI tests and checkers tests) in headless browser.
+    - name: Run browser tests
+      run: npm run test:ui
