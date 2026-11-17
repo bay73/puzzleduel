@@ -1,34 +1,4 @@
-skyscrapersTestSuite = testSuite("Skyscrapers",
-
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new squarePuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  };
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  };
-  requirejs(["squarepuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
+skyscrapersTestSuite = uiTestSuite("Skyscrapers", "squarepuzzle", "squarePuzzleType",
 
 // Controller definition tests
 test('Solver controllers',(suite) => {
@@ -77,24 +47,21 @@ test('Process click to empty cell',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({});
   assert("Chooser before click").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Chooser after click").that(puzzle.controller.chooserBuilder.chooserElements).isNonEmptyArray();
   assert("Chooser connected to the cell").that(puzzle.controller.chooserBuilder.element.col).isEqualTo(0);
   assert("Chooser connected to the cell").that(puzzle.controller.chooserBuilder.element.row).isEqualTo(0);
   assert("Cell data after one click").that(puzzle.cells[0][0].data).isEqualTo({});
 
-  x += puzzle.size.unitSize/2;
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  point.right(0.5);
+  suite.click(puzzle, point);
 
   assert("Chooser after click on value").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
   assert("Cell value after two clicks").that(puzzle.cells[0][0].getValue()).isEqualTo("1");
@@ -108,23 +75,22 @@ test('Choose value in one click',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({});
   assert("Chooser before click").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
 
   assert("Chooser after mouse down").that(puzzle.controller.chooserBuilder.chooserElements).isNonEmptyArray();
   assert("Chooser connected to the cell").that(puzzle.controller.chooserBuilder.element.col).isEqualTo(0);
   assert("Chooser connected to the cell").that(puzzle.controller.chooserBuilder.element.row).isEqualTo(0);
   assert("Cell data after mouse down").that(puzzle.cells[0][0].data).isEqualTo({});
 
-  x += puzzle.size.unitSize/2;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  point.right(0.5);
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Chooser after mouse up").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
   assert("Cell value after mouse up").that(puzzle.cells[0][0].getValue()).isEqualTo("1");
@@ -139,14 +105,12 @@ test('Process click to top clue',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap - puzzle.size.unitSize + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, 0, -1);
 
   assert("Cell value before click").that(puzzle.top[0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.top[0].data).isEqualTo({text: "4"});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.top[0].getValue()).isNull();
   assert("Cell data after one click").that(puzzle.top[0].data).isEqualTo({text: "4", image:"white_circle"});
@@ -159,14 +123,12 @@ test('Process click to left clue',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap - puzzle.size.unitSize + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, -1, 0);
 
   assert("Cell value before click").that(puzzle.left[0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.left[0].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.left[0].getValue()).isNull();
   assert("Cell data after one click").that(puzzle.left[0].data).isEqualTo({image:"white_circle"});

@@ -1,41 +1,4 @@
-yinYangClassicTestSuite = testSuite("Yin Yang",
-
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new squarePuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  };
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  };
-  suite.cellClick = function(puzzle, cell) {
-    var size = puzzle.size.unitSize;
-    var x = puzzle.size.leftGap + size/2 + size*(cell.charCodeAt(0) - 'a'.charCodeAt(0));
-    var y = puzzle.size.topGap + size/2 + size*(parseInt(cell.substring(1)) - 1);
-    puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-    puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
-  };
-  requirejs(["squarepuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
+yinYangClassicTestSuite = uiTestSuite("Yin Yang", "squarepuzzle", "squarePuzzleType",
 
 // Controller definition tests
 test('Solver controllers',(suite) => {
@@ -71,26 +34,22 @@ test('Process click to empty cell',(suite) => {
   let puzzle = suite.showPuzzle("yin_yang_classic", "4x4",{"b1": "white_circle", "a2": "black_circle"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.cells[0][0].getValue()).isEqualTo("black_circle");
   assert("Cell data after one click").that(puzzle.cells[0][0].data).isEqualTo({image:"black_circle", returnValue:"black_circle"});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after two clicks").that(puzzle.cells[0][0].getValue()).isEqualTo("white_circle");
   assert("Cell data after two clicks").that(puzzle.cells[0][0].data).isEqualTo({image:"white_circle", returnValue:"white_circle"});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after three clicks").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data after three clicks").that(puzzle.cells[0][0].data).isEqualTo({});
@@ -100,14 +59,12 @@ test('Process click to clue cell',(suite) => {
   let puzzle = suite.showPuzzle("yin_yang_classic", "4x4",{"b1": "white_circle", "a2": "black_circle"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "b1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data after one click").that(puzzle.cells[0][0].data).isEqualTo({});
@@ -117,15 +74,14 @@ test('Process click after small move',(suite) => {
   let puzzle = suite.showPuzzle("yin_yang_classic", "4x4",{"b1": "white_circle", "a2": "black_circle"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  x += puzzle.size.unitSize/10;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
+  point.right(0.1);
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Cell value after one click").that(puzzle.cells[0][0].getValue()).isEqualTo("black_circle");
 }),
@@ -134,15 +90,14 @@ test('Process click after move to another cell',(suite) => {
   let puzzle = suite.showPuzzle("yin_yang_classic", "4x4",{"b1": "white_circle", "a2": "black_circle"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  x += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
+  point.right();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Cell value after one click").that(puzzle.cells[0][0].getValue()).isNull();
 }),

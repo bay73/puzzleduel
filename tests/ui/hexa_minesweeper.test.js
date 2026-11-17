@@ -1,31 +1,4 @@
-hexaMinesweeperTestSuite = testSuite("Hexa Minesweeper",
-
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new hexaPuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  }
-  requirejs(["hexapuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
+hexaMinesweeperTestSuite = uiTestSuite("Hexa Minesweeper", "hexapuzzle", "hexaPuzzleType",
 
 test('Solver selectors',(suite) => {
   let puzzle = suite.showPuzzle(

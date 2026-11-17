@@ -1,41 +1,4 @@
-tapaClassicTestSuite = testSuite("Tapa",
-
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new squarePuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  };
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  };
-  suite.cellClick = function(puzzle, cell) {
-    var size = puzzle.size.unitSize;
-    var x = puzzle.size.leftGap + size/2 + size*(cell.charCodeAt(0) - 'a'.charCodeAt(0));
-    var y = puzzle.size.topGap + size/2 + size*(parseInt(cell.substring(1)) - 1);
-    puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-    puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
-  };
-  requirejs(["squarepuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
+tapaClassicTestSuite = uiTestSuite("Tapa", "squarepuzzle", "squarePuzzleType",
 
 // Controller definition tests
 test('Solver controllers',(suite) => {
@@ -67,26 +30,22 @@ test('Process click to empty cell',(suite) => {
   let puzzle = suite.showPuzzle("tapa_classic", "4x4",{"a1": "1_1", "a4": "3", "d2": 3});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2 + puzzle.size.unitSize;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "b1");
 
   assert("Cell value before click").that(puzzle.cells[0][1].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][1].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.cells[0][1].getValue()).isEqualTo("black");
   assert("Cell data after one click").that(puzzle.cells[0][1].data).isEqualTo({color: puzzle.colorSchema.gridColor, returnValue:"black"});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after two clicks").that(puzzle.cells[0][1].getValue()).isNull();
   assert("Cell data after two clicks").that(puzzle.cells[0][1].data).isEqualTo({image:"cross"});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after three clicks").that(puzzle.cells[0][1].getValue()).isNull();
   assert("Cell data after three clicks").that(puzzle.cells[0][1].data).isEqualTo({});
@@ -96,14 +55,12 @@ test('Process click to clue cell',(suite) => {
   let puzzle = suite.showPuzzle("tapa_classic", "4x4",{"a1": "1_1", "a4": "3", "d2": 3});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({image:"1_1"});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data after one click").that(puzzle.cells[0][0].data).isEqualTo({image:"1_1"});
@@ -113,15 +70,14 @@ test('Process click after small move',(suite) => {
   let puzzle = suite.showPuzzle("tapa_classic", "4x4",{"a1": "1_1", "a4": "3", "d2": 3});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2 + puzzle.size.unitSize;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "b1");
 
   assert("Cell value before click").that(puzzle.cells[0][1].getValue()).isNull();
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  x += puzzle.size.unitSize/10;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
+  point.right(0.1);
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Cell value after one click").that(puzzle.cells[0][1].getValue()).isEqualTo("black");
 }),
@@ -130,15 +86,14 @@ test('Process click after move to another cell',(suite) => {
   let puzzle = suite.showPuzzle("tapa_classic", "4x4",{"a1": "1_1", "a4": "3", "d2": 3});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2 + puzzle.size.unitSize;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "b1");
 
   assert("Cell value before click").that(puzzle.cells[0][1].getValue()).isNull();
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  x += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
+  point.right();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Cell value after one click").that(puzzle.cells[0][1].getValue()).isNull();
 }),
@@ -150,8 +105,7 @@ test('Process drag copy',(suite) => {
   let x = puzzle.size.leftGap + puzzle.size.unitSize/2 + puzzle.size.unitSize;
   let y = puzzle.size.topGap + puzzle.size.unitSize/2;
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, x, y);
 
   assert("Source value after one click").that(puzzle.cells[0][1].getValue()).isEqualTo("black");
   assert("Target value before drag").that(puzzle.cells[0][2].getValue()).isNull();

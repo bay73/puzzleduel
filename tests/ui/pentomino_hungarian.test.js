@@ -1,34 +1,5 @@
-pentominoHungarianTestSuite = testSuite("Hungarian Pentomino",
+pentominoHungarianTestSuite = uiTestSuite("Hungarian Pentomino", "squarepuzzle", "squarePuzzleType",
 
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new squarePuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  };
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  };
-  requirejs(["squarepuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
 // Controller definition tests
 test('Solver controllers',(suite) => {
   let puzzle = suite.showPuzzle(
@@ -66,18 +37,17 @@ test('Drag outer clue inside the grid',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2 + 5*puzzle.size.unitSize;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "f1");
 
   assert("Target data before move").that(puzzle.cells[0][4].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  x -= puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
+  point.left();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
 
   assert("Target data after move").that(puzzle.cells[0][4].data).isEqualTo({});
 
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Target data after drag end").that(puzzle.cells[0][4].data).isEqualTo({});
 }),

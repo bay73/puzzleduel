@@ -1,54 +1,23 @@
-ringringTestSuite = testSuite("Ring-Ring",
-
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new squarePuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  }
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  }
-  requirejs(["squarepuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
+ringringTestSuite = uiTestSuite("Ring-Ring", "squarepuzzle", "squarePuzzleType",
 
 test('Process drag on connector',(suite) => {
   let puzzle = suite.showPuzzle("ring_ring", "4x4",{"a4": "black", "d1": "black"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Connector value before click").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
   assert("Connector data before click").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  x += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
+  point.right();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
 
   assert("Connector value after drag").that(puzzle.connectors[0][0]['h'].getValue()).isEqualTo("1");
   assert("Connector data after drag").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue:"1"});
 
-  x -= puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+  point.left();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
 
   assert("Connector value after back drag").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
   assert("Connector data after back drag").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
@@ -58,14 +27,12 @@ test('Process click on connector',(suite) => {
   let puzzle = suite.showPuzzle("ring_ring", "4x4",{"a4": "black", "d1": "black"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.gridPoint(puzzle, 1, 0.5);
 
   assert("Connector value before click").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
   assert("Connector data before click").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Connector value after click").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
   assert("Connector data after click").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});

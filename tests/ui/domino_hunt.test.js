@@ -1,46 +1,4 @@
-dominoHuntTestSuite = testSuite("Domino hunt",
-
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new dominoType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  }
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  }
-  suite.edgeClick = function(puzzle, edge) {
-    var size = puzzle.size.unitSize;
-    var part = edge.split("-");
-    var col = part[0].charCodeAt(0) - 'a'.charCodeAt(0);
-    var row = parseInt(part[0].substring(1)) - 1;
-    var side = part[1];
-
-    var x = puzzle.size.leftGap + size*col + (side==1?size:(side==3?0:size/2));
-    var y = puzzle.size.topGap + size*row + (side==2?size:(side==0?0:size/2));;
-    puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-    puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
-  }
-  requirejs(["areapuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
+dominoHuntTestSuite = uiTestSuite("Domino hunt", "areapuzzle", "dominoType",
 
 test('Solvers controllers',(suite) => {
   let puzzle = suite.showPuzzle(
@@ -76,20 +34,19 @@ test('Automatic edges for connector',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Connector value before click").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
   assert("Connector data before click").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
 
   assert("Connector value after mousedown").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
   assert("Connector data after mousedown").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
   
-  x += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  point.right();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Connector value after drag end").that(puzzle.connectors[0][0]['h'].getValue()).isEqualTo("line");
   assert("Connector data after drag end").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue: 'line'});

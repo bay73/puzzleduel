@@ -1,34 +1,4 @@
-slashPackTestSuite = testSuite("Slash Pack",
-
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new slashPuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  };
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  };
-  requirejs(["slashpuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
+slashPackTestSuite = uiTestSuite("Slash Pack", "slashpuzzle", "slashPuzzleType",
 
 // Controller definition tests
 test('Solver controllers',(suite) => {
@@ -63,14 +33,12 @@ test('Process click to empty cell',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after mouse up").that(puzzle.cells[0][0].getValue()).isEqualTo("/");
   assert("Cell data after one click").that(puzzle.cells[0][0].data).isEqualTo({image: 'slash', returnValue: '/'});
@@ -83,27 +51,26 @@ test('Draw diagonal',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap;
-  let y = puzzle.size.topGap + puzzle.size.unitSize;
+  let point = suite.gridPoint(puzzle, 0, 1);
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({});
   assert("Chooser before click").that(puzzle.controller.chooserBuilder.chooserElements).isEmptyArray();
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
 
   assert("Cell data after mouse down").that(puzzle.cells[0][0].data).isEqualTo({});
 
-  x += puzzle.size.unitSize;
-  y -= puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+  point.right();
+  point.up();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
 
   assert("Cell value after mouse move").that(puzzle.cells[0][0].getValue()).isEqualTo("/");
   assert("Cell data after mouse move").that(puzzle.cells[0][0].data).isEqualTo({image: 'slash', returnValue: '/'});
 
-  x += puzzle.size.unitSize;
-  y += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+  point.right();
+  point.down();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
   
   assert("Cell value after second mouse move").that(puzzle.cells[0][1].getValue()).isEqualTo("\\");
   assert("Cell data after second mouse move").that(puzzle.cells[0][1].data).isEqualTo({image: 'backslash', returnValue: '\\'});
@@ -114,19 +81,15 @@ test('Process clicks to empty cell',(suite) => {
   let puzzle = suite.showPuzzle("slash_pack", "5x5-ABC", {"a4": "A", "b1": "B"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
+  suite.click(puzzle, point);
 
   assert("Cell value after two clicks").that(puzzle.cells[0][0].getValue()).isEqualTo("\\");
   assert("Cell data after two clicks").that(puzzle.cells[0][0].data).isEqualTo({image: 'backslash', returnValue: '\\'});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after three clicks").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data after three clicks").that(puzzle.cells[0][0].data).isEqualTo({});
@@ -137,22 +100,19 @@ test('Cell with a letter can not be changed',(suite) => {
   puzzle.start();
 
   // Click at the cell b1.
-  let x = puzzle.size.leftGap + puzzle.size.unitSize*3/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  let point = suite.cellPoint(puzzle, "b1");
+  suite.click(puzzle, point);
 
   assert("Cell value after click").that(puzzle.cells[0][1].getValue()).isNull();
   assert("Cell data after click").that(puzzle.cells[0][1].data).isEqualTo({text: 'B'});
 
   // Drag from the top left to the bottom right corner of the cell b1.
-  x = puzzle.size.leftGap + puzzle.size.unitSize;
-  y = puzzle.size.topGap;
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  x += puzzle.size.unitSize;
-  y += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  point = suite.gridPoint(puzzle, 1, 0);
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
+  point.right();
+  point.down();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Cell value after drag").that(puzzle.cells[0][1].getValue()).isNull();
   assert("Cell data after drag").that(puzzle.cells[0][1].data).isEqualTo({text: 'B'});
@@ -188,18 +148,15 @@ test('Data collector',(suite) => {
   puzzle.start();
 
   // Slash in a1 by click.
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  let point = suite.cellPoint(puzzle, "a1");
+  suite.click(puzzle, point);
   // Backslash in c3 by drag from its top left to its bottom right corner.
-  x = puzzle.size.leftGap + puzzle.size.unitSize*2;
-  y = puzzle.size.topGap + puzzle.size.unitSize*2;
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  x += puzzle.size.unitSize;
-  y += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  point = suite.gridPoint(puzzle, 2, 2);
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
+  point.right();
+  point.down();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   // Letters given by the author are not submitted.
   assert("Submission data").that(puzzle.collectData()).isEqualTo({"a1": "/", "c3": "\\"});

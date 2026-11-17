@@ -1,34 +1,4 @@
-paintByMaxTestSuite = testSuite("Paint by Max",
-
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new squarePuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  };
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  };
-  requirejs(["squarepuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
+paintByMaxTestSuite = uiTestSuite("Paint by Max", "squarepuzzle", "squarePuzzleType",
 
 // Controller definition tests
 test('Solver controllers',(suite) => {
@@ -83,26 +53,22 @@ test('Process click to empty cell',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.cells[0][0].getValue()).isEqualTo("black");
   assert("Cell data after one click").that(puzzle.cells[0][0].data).isEqualTo({color:puzzle.colorSchema.gridColor, returnValue:"black"});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after two clicks").that(puzzle.cells[0][0].getValue()).isEqualTo("grey");
   assert("Cell data after two clicks").that(puzzle.cells[0][0].data).isEqualTo({color:puzzle.colorSchema.brightColor, returnValue:"grey"});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after three clicks").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data after three clicks").that(puzzle.cells[0][0].data).isEqualTo({});
@@ -115,14 +81,12 @@ test('Process click to top clue',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap - puzzle.size.unitSize + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, 0, -1);
 
   assert("Cell value before click").that(puzzle.top[0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.top[0].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.top[0].getValue()).isNull();
   assert("Cell data after one click").that(puzzle.top[0].data).isEqualTo({image:"white_circle"});
@@ -135,14 +99,12 @@ test('Process click to left clue',(suite) => {
   );
   puzzle.start();
 
-  let x = puzzle.size.leftGap - puzzle.size.unitSize + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, -1, 0);
 
   assert("Cell value before click").that(puzzle.left[0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.left[0].data).isEqualTo({text: "3"});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.left[0].getValue()).isNull();
   assert("Cell data after one click").that(puzzle.left[0].data).isEqualTo({text: "3", image:"white_circle"});

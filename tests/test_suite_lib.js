@@ -416,3 +416,135 @@ function checkerTestSuite(typeCode, name, ...tests) {
   }
   return suite;
 }
+
+// UI tests ////////////////////////////////////////////////////////////////
+
+// Point of the puzzle grid, which can be moved by the given number of cells.
+// Coordinates col and row are measured in cells from the top left corner of the grid.
+GridPoint = function(puzzle, col, row) {
+  this.unitSize = puzzle.size.unitSize;
+  this.x = puzzle.size.leftGap + col*this.unitSize;
+  this.y = puzzle.size.topGap + row*this.unitSize;
+}
+
+GridPoint.prototype.right = function(cells) {
+  this.x += (typeof cells == "undefined" ? 1 : cells)*this.unitSize;
+  return this;
+}
+
+GridPoint.prototype.left = function(cells) {
+  this.x -= (typeof cells == "undefined" ? 1 : cells)*this.unitSize;
+  return this;
+}
+
+GridPoint.prototype.down = function(cells) {
+  this.y += (typeof cells == "undefined" ? 1 : cells)*this.unitSize;
+  return this;
+}
+
+GridPoint.prototype.up = function(cells) {
+  this.y -= (typeof cells == "undefined" ? 1 : cells)*this.unitSize;
+  return this;
+}
+
+// Creates test suite for UI of the puzzle types which are implemented by the given class
+// (e.g. "squarePuzzleType") from the given module of js directory (e.g. "squarepuzzle").
+// The grid is cleared after every test. The suite object provides helpers for the tests:
+//   suite.showPuzzle(typeCode, dimension, data) - creates and renders the puzzle,
+//       call start() or edit() of the returned puzzle to use it as a solver or as an author;
+//   suite.cellPoint(puzzle, "b3") - point at the center of the cell. Cells can be given also by zero-based
+//       column and row, cellPoint(puzzle, 1, -1) is the clue cell above the column b;
+//   suite.gridPoint(puzzle, col, row) - point with coordinates measured in cells from the top left corner
+//       of the grid: gridPoint(puzzle, 1, 0) is the top right corner of the cell a1;
+//   point.right(n), point.left(n), point.down(n), point.up(n) - move the point by n cells (by one cell
+//       by default, n can be fractional). Fields point.x and point.y can be also changed directly;
+//   suite.mouseEvent(point) - event to pass to mouse handlers of puzzle.controller;
+//   suite.click(puzzle, point) - mouse click at the point;
+//   suite.drag(puzzle, point1, point2) - mouse drag from one point to another;
+//       mouseEvent, click and drag accept also coordinates: click(puzzle, x, y);
+//   suite.cellClick(puzzle, "b3") - click at the center of the cell;
+//   suite.edgeClick(puzzle, "b3-1") - click at the middle of the cell edge
+//       (0 - top, 1 - right, 2 - bottom, 3 - left).
+// More helpers can be added to the suite in beforeSuite of the test file.
+function uiTestSuite(name, moduleName, puzzleClassName, ...items) {
+  let customSetup = items.filter(item => item.type == testSuite.BEFORE_ALL);
+  let otherItems = items.filter(item => item.type != testSuite.BEFORE_ALL);
+  return testSuite(
+    name,
+    beforeSuite((suite, cb) => {
+      suite.GRID_SELECTOR = "#mainGrid";
+      if (!$(suite.GRID_SELECTOR).length) {
+        throw "Missing " + suite.GRID_SELECTOR + " element"
+      };
+      suite.showPuzzle = function(type, dimension, data) {
+        var controls = "";
+        var puzzleData = {
+          typeCode: type,
+          id: "",
+          dimension: dimension
+        };
+        var settings = {
+          local: true,
+          data: data || {}
+        };
+        var puzzle = new window[puzzleClassName](puzzleData, controls, settings);
+        puzzle.render(Snap(suite.GRID_SELECTOR));
+        return puzzle;
+      };
+      suite.gridPoint = function(puzzle, col, row) {
+        return new GridPoint(puzzle, col, row);
+      };
+      suite.cellPoint = function(puzzle, cell, row) {
+        if (typeof cell == "string") {
+          return new GridPoint(puzzle, cell.charCodeAt(0) - 'a'.charCodeAt(0) + 0.5, parseInt(cell.substring(1)) - 0.5);
+        }
+        return new GridPoint(puzzle, cell + 0.5, row + 0.5);
+      };
+      // Mouse helpers accept a point or a pair of coordinates.
+      suite.mouseEvent = function(x, y) {
+        if (typeof x == "object") {
+          return {clientX: x.x, clientY: x.y, preventDefault: ()=>{}};
+        }
+        return {clientX: x, clientY: y, preventDefault: ()=>{}};
+      };
+      suite.click = function(puzzle, x, y) {
+        puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+        puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+      };
+      suite.drag = function(puzzle, x1, y1, x2, y2) {
+        let start = typeof x1 == "object" ? x1 : {x: x1, y: y1};
+        let end = typeof x1 == "object" ? y1 : {x: x2, y: y2};
+        puzzle.controller.onMouseDown(suite.mouseEvent(start));
+        puzzle.controller.onMouseMove(suite.mouseEvent(end));
+        puzzle.controller.onMouseUp(suite.mouseEvent(end));
+      };
+      suite.cellClick = function(puzzle, cell) {
+        var size = puzzle.size.unitSize;
+        var x = puzzle.size.leftGap + size/2 + size*(cell.charCodeAt(0) - 'a'.charCodeAt(0));
+        var y = puzzle.size.topGap + size/2 + size*(parseInt(cell.substring(1)) - 1);
+        suite.click(puzzle, x, y);
+      };
+      suite.edgeClick = function(puzzle, edge) {
+        var size = puzzle.size.unitSize;
+        var part = edge.split("-");
+        var col = part[0].charCodeAt(0) - 'a'.charCodeAt(0);
+        var row = parseInt(part[0].substring(1)) - 1;
+        var side = part[1];
+
+        var x = puzzle.size.leftGap + size*col + (side==1?size:(side==3?0:size/2));
+        var y = puzzle.size.topGap + size*row + (side==2?size:(side==0?0:size/2));
+        suite.click(puzzle, x, y);
+      };
+      requirejs([moduleName], () => {
+        if (customSetup.length > 0) {
+          customSetup[customSetup.length - 1].exec(suite, cb);
+        } else {
+          cb();
+        }
+      });
+    }),
+    after((suite) => {
+      Snap(suite.GRID_SELECTOR).clear();
+    }),
+    ...otherItems);
+}

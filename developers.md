@@ -179,6 +179,15 @@ For each puzzle type developer can add the next tests:
    The test execution of corresponding checker for different submission data and assertion for the result.
 
  Tests which use the puzzle grid (the first three kinds) are placed to `tests/ui/<type>.test.js`, see `tests/ui/yin_yang_classic.test.js` for examples.
+ The file contains a single call `<type>TestSuite = uiTestSuite("<Name>", "<module>", "<class>", test(...), ...)`,
+ where module and class are the ones which implement the puzzle type (e.g. `"squarepuzzle"` and `"squarePuzzleType"`).
+ It prepares the grid and provides helpers for the tests in the `suite` object:
+ `showPuzzle(type, dimension, data)`, `cellPoint(puzzle, "b3")`, `gridPoint(puzzle, col, row)`, `click(puzzle, point)`,
+ `drag(puzzle, point1, point2)`, `cellClick(puzzle, "b3")`, `edgeClick(puzzle, "b3-1")` and `mouseEvent(point)`
+ (see `uiTestSuite` in `tests/test_suite_lib.js`).
+ A point is created at the center of a cell (`cellPoint`) or at any place of the grid (`gridPoint`, coordinates are measured
+ in cells from the top left corner of the grid) and then can be moved by cells: `point.right()`, `point.down(2)`, `point.left(0.5)`, `point.up()`.
+ Helpers specific for the puzzle type can be added in `beforeSuite`, see `tests/ui/slalom.test.js`.
  The file should be added to `tests/all_tests.js`.
 
  Checkers tests are placed to a separate file `tests/checkers/<type>.test.js` with a single call

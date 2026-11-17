@@ -1,34 +1,4 @@
-foseruzuTestSuite = testSuite("Foseruzu",
-
-beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new areaPuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  }
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  };
-  requirejs(["areapuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
-}),
+foseruzuTestSuite = uiTestSuite("Foseruzu", "areapuzzle", "areaPuzzleType",
 
 test('Solver controllers',(suite) => {
   let puzzle = suite.showPuzzle(
@@ -60,15 +30,13 @@ test('Process click to edge',(suite) => {
     "foseruzu", "4x4", {"a2": "1", "b2": "3", "b3": "2"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize;
+  let point = suite.gridPoint(puzzle, 0.5, 1);
 
   assert("Edge value before click").that(puzzle.edges[0][0][2].getValue()).isNull();
   assert("Edge data before click").that(puzzle.edges[0][0][2].data).isEqualTo({});
 
   // Click at edge between a1 and a2
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Edge value after click").that(puzzle.edges[0][0][2].getValue()).isEqualTo("bold");
   assert("Edge data after click").that(puzzle.edges[0][0][2].data).isEqualTo({color:puzzle.colorSchema.gridColor,returnValue:"bold"});
@@ -78,21 +46,20 @@ test('Process drag for edge',(suite) => {
     "foseruzu", "4x4", {"a2": "1", "b2": "3", "b3": "2"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize;
-  let y = puzzle.size.topGap;
+  let point = suite.gridPoint(puzzle, 1, 0);
 
   assert("Edge value before click").that(puzzle.edges[0][0][1].getValue()).isNull();
   assert("Edge data before click").that(puzzle.edges[0][0][1].data).isEqualTo({});
 
   // Start drag at top end of an edge between a1 and b1
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
 
   assert("Edge value after mousedown").that(puzzle.edges[0][0][1].getValue()).isNull();
   assert("Edge data after mousedown").that(puzzle.edges[0][0][1].data).isEqualTo({});
   
-  y += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  point.down();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Edge value after drag end").that(puzzle.edges[0][0][1].getValue()).isEqualTo("bold");
   assert("Edge data after drag end").that(puzzle.edges[0][0][1].data).isEqualTo({color:puzzle.colorSchema.gridColor,returnValue:"bold"});
@@ -102,20 +69,19 @@ test('Process drag for connector',(suite) => {
     "foseruzu", "4x4", {"a2": "1", "b2": "3", "b3": "2"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Connector value before click").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
   assert("Connector data before click").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
 
   assert("Connector value after mousedown").that(puzzle.connectors[0][0]['h'].getValue()).isNull();
   assert("Connector data after mousedown").that(puzzle.connectors[0][0]['h'].data).isEqualTo({});
   
-  x += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  point.right();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Connector value after drag end").that(puzzle.connectors[0][0]['h'].getValue()).isEqualTo("line");
   assert("Connector data after drag end").that(puzzle.connectors[0][0]['h'].data).isEqualTo({color: puzzle.colorSchema.lineColor, returnValue: 'line'});
@@ -126,26 +92,24 @@ test('Automatic border between areas',(suite) => {
     "foseruzu", "4x4-3", {"a2": "1", "b2": "3", "b3": "2"});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
 
-  y += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  point.down();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Edge value after first connector").that(puzzle.edges[0][0][1].getValue()).isNull();
   assert("Edge data after first connector").that(puzzle.edges[0][0][1].data).isEqualTo({});
 
-  x = puzzle.size.leftGap + puzzle.size.unitSize + puzzle.size.unitSize/2;
-  y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  point = suite.cellPoint(puzzle, "b1");
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(point));
 
-  y += puzzle.size.unitSize;
-  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  point.down();
+  puzzle.controller.onMouseMove(suite.mouseEvent(point));
+  puzzle.controller.onMouseUp(suite.mouseEvent(point));
 
   assert("Edge value after second connector").that(puzzle.edges[0][0][1].getValue()).isEqualTo("bold");
   assert("Edge data after second connector").that(puzzle.edges[0][0][1].data).isEqualTo({color: puzzle.colorSchema.greyColor});

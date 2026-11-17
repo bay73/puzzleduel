@@ -1,45 +1,11 @@
-slalomTestSuite = testSuite("Slalom",
+slalomTestSuite = uiTestSuite("Slalom", "slashpuzzle", "slashPuzzleType",
 
 beforeSuite((suite, cb)=> {
-  suite.GRID_SELECTOR = "#mainGrid";
-  if (!$(suite.GRID_SELECTOR).length) {
-    throw "Missing " + suite.GRID_SELECTOR + " element"
-  };
-  suite.showPuzzle = function(type, dimension, data) {
-    var controls = "";
-    var puzzleData = {
-      typeCode: type,
-      id: "",
-      dimension: dimension
-    };
-    var settings = {
-      local: true,
-      data: data || {}
-    };
-    var puzzle = new slashPuzzleType(puzzleData, controls, settings);
-    puzzle.render(Snap(suite.GRID_SELECTOR));
-    return puzzle;
-  };
-  suite.mouseEvent = function(x, y) {
-    return {clientX: x, clientY: y, preventDefault: ()=>{}};
-  };
-  // Position of the grid node: (0, 0) is the top left corner of the cell a1.
-  suite.nodePosition = function(puzzle, col, row) {
-    return {x: puzzle.size.leftGap + col*puzzle.size.unitSize, y: puzzle.size.topGap + row*puzzle.size.unitSize};
-  };
-  // Emulates mouse drag between two grid nodes.
+  // Emulates mouse drag between two grid nodes: node (0, 0) is the top left corner of the cell a1.
   suite.dragBetweenNodes = function(puzzle, col1, row1, col2, row2) {
-    let start = suite.nodePosition(puzzle, col1, row1);
-    let end = suite.nodePosition(puzzle, col2, row2);
-    puzzle.controller.onMouseDown(suite.mouseEvent(start.x, start.y));
-    puzzle.controller.onMouseMove(suite.mouseEvent(end.x, end.y));
-    puzzle.controller.onMouseUp(suite.mouseEvent(end.x, end.y));
+    suite.drag(puzzle, suite.gridPoint(puzzle, col1, row1), suite.gridPoint(puzzle, col2, row2));
   };
-  requirejs(["slashpuzzle"], cb);
-}),
-
-after((suite)=> {
-  Snap(suite.GRID_SELECTOR).clear();
+  cb();
 }),
 
 // Controller definition tests
@@ -82,26 +48,22 @@ test('Process clicks to cell',(suite) => {
   let puzzle = suite.showPuzzle("slalom", "4x4", {"nodes": {"a1-2": "1", "b2-2": "3"}});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
 
   assert("Cell value before click").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data before click").that(puzzle.cells[0][0].data).isEqualTo({});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after one click").that(puzzle.cells[0][0].getValue()).isEqualTo("/");
   assert("Cell data after one click").that(puzzle.cells[0][0].data).isEqualTo({image: 'slash', returnValue: '/'});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after two clicks").that(puzzle.cells[0][0].getValue()).isEqualTo("\\");
   assert("Cell data after two clicks").that(puzzle.cells[0][0].data).isEqualTo({image: 'backslash', returnValue: '\\'});
 
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
 
   assert("Cell value after three clicks").that(puzzle.cells[0][0].getValue()).isNull();
   assert("Cell data after three clicks").that(puzzle.cells[0][0].data).isEqualTo({});
@@ -170,11 +132,9 @@ test('Data collector',(suite) => {
   let puzzle = suite.showPuzzle("slalom", "4x4", {"nodes": {"a1-2": "1", "b2-2": "3"}});
   puzzle.start();
 
-  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
-  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  let point = suite.cellPoint(puzzle, "a1");
   // Slash in a1 by click, backslash in b1 and slash in c3 by drag.
-  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
-  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  suite.click(puzzle, point);
   suite.dragBetweenNodes(puzzle, 1, 0, 2, 1);
   suite.dragBetweenNodes(puzzle, 3, 2, 2, 3);
 
