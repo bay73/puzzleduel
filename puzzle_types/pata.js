@@ -98,6 +98,10 @@ checkTapaClue: function(clue, position, cells) {
     }
   }
   painted.sort();
+  // Clue 0 means that there are no white cells around.
+  if (painted.length == 0) {
+    return clue == "0";
+  }
   return (clue == painted.join("_"))
 }
 };

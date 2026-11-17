@@ -36,4 +36,33 @@ test('Wrong groups of white cells around the clue',(suite) => {
   assert("Wrong clue response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["c2"]});
 }),
 
+test('Clue 0 without white cells around',(suite) => {
+  // Puzzle 2x2: all three cells around the clue in a1 are black.
+  //   0 #
+  //   # #
+  let clues = {"a1": "0"};
+  let data = {"b1": "black", "a2": "black", "b2": "black"};
+
+  assert("Clue 0 response").that(Checker.check("2x2", clues, data)).isEqualTo({status: "OK"});
+}),
+
+test('Clue 0 with a white cell around',(suite) => {
+  // The cell a2 is white, so there is a group of one white cell around the clue.
+  //   0 #
+  //   . #
+  let clues = {"a1": "0"};
+  let data = {"b1": "black", "b2": "black"};
+
+  assert("Wrong clue 0 response").that(Checker.check("2x2", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["a1"]});
+}),
+
+test('Non-zero clue without white cells around',(suite) => {
+  //   1 #
+  //   # #
+  let clues = {"a1": "1"};
+  let data = {"b1": "black", "a2": "black", "b2": "black"};
+
+  assert("Wrong clue 1 response").that(Checker.check("2x2", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["a1"]});
+}),
+
 );
