@@ -36,6 +36,22 @@ requirejs(["tests/ui/domino_hunt.test.js"], ()=>{
   allTestSuites.push(dominoHuntTestSuite);
 })
 
+requirejs(["tests/ui/double_choco.test.js"], ()=>{
+  allTestSuites.push(doubleChocoTestSuite);
+})
+
+requirejs(["tests/ui/double_choco_consecutive.test.js"], ()=>{
+  allTestSuites.push(doubleChocoConsecutiveTestSuite);
+})
+
+requirejs(["tests/ui/double_choco_inverse.test.js"], ()=>{
+  allTestSuites.push(doubleChocoInverseTestSuite);
+})
+
+requirejs(["tests/ui/double_choco_notouch.test.js"], ()=>{
+  allTestSuites.push(doubleChocoNotouchTestSuite);
+})
+
 requirejs(["tests/ui/doubleblock.test.js"], ()=>{
   allTestSuites.push(doubleblockTestSuite);
 })
@@ -140,6 +156,10 @@ requirejs(["tests/ui/passage.test.js"], ()=>{
   allTestSuites.push(passageTestSuite);
 })
 
+requirejs(["tests/ui/pentomino_division.test.js"], ()=>{
+  allTestSuites.push(pentominoDivisionTestSuite);
+})
+
 requirejs(["tests/ui/pentomino_hungarian.test.js"], ()=>{
   allTestSuites.push(pentominoHungarianTestSuite);
 })
@@ -166,6 +186,10 @@ requirejs(["tests/ui/queens.test.js"], ()=>{
 
 requirejs(["tests/ui/railroad.test.js"], ()=>{
   allTestSuites.push(railroadTestSuite);
+})
+
+requirejs(["tests/ui/recto.test.js"], ()=>{
+  allTestSuites.push(rectoTestSuite);
 })
 
 requirejs(["tests/ui/ring_ring.test.js"], ()=>{

@@ -496,16 +496,6 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.LINE.asAreaConnector()))
       .build(this);
 
-  } else if (typeCode == "araf"){
-    this.typeProperties = decribePuzzleType()
-      .add(controller().forAuthor().cell().chooser()
-        .addNumbers(1,99))
-      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
-        .addItem(StdItem.BLACK.asAreaBorder()))
-      .add(controller().forSolver().connector().drag()
-        .addItem(StdItem.LINE.asAreaConnector()))
-      .build(this);
-
   } else if (typeCode == "black_white"){
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().clickSwitch()
@@ -569,6 +559,22 @@ areaPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().connector().drag()
         .addItem(StdItem.LINE.asAreaConnector()))
       .build(this);
+  }
+}
+
+arafPuzzleType.prototype.setTypeProperties = function(typeCode) {
+  var self = this;
+
+  if (typeCode == "araf"){
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1,99))
+      .add(controller().forSolver().edge().toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.asAreaBorder()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.asAreaConnector()))
+      .build(this);
+
   }
 }
 
