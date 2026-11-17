@@ -152,6 +152,10 @@ requirejs(["tests/ui/point_a_star.test.js"], ()=>{
   allTestSuites.push(pointAStarTestSuite);
 })
 
+requirejs(["tests/ui/point_crowd.test.js"], ()=>{
+  allTestSuites.push(pointCrowdTestSuite);
+})
+
 requirejs(["tests/ui/polygraph.test.js"], ()=>{
   allTestSuites.push(polygraphTestSuite);
 })
@@ -202,6 +206,10 @@ requirejs(["tests/ui/slalom.test.js"], ()=>{
 
 requirejs(["tests/ui/slash_pack.test.js"], ()=>{
   allTestSuites.push(slashPackTestSuite);
+})
+
+requirejs(["tests/ui/slicy.test.js"], ()=>{
+  allTestSuites.push(slicyTestSuite);
 })
 
 requirejs(["tests/ui/snake_dutch.test.js"], ()=>{
