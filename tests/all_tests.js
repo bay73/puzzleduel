@@ -196,6 +196,10 @@ requirejs(["tests/ui/skyscrapers_sums.test.js"], ()=>{
   allTestSuites.push(skyscrapersSumsTestSuite);
 })
 
+requirejs(["tests/ui/slalom.test.js"], ()=>{
+  allTestSuites.push(slalomTestSuite);
+})
+
 requirejs(["tests/ui/slash_pack.test.js"], ()=>{
   allTestSuites.push(slashPackTestSuite);
 })

@@ -110,6 +110,111 @@ test('Draw diagonal',(suite) => {
 
 }),
 
+test('Process clicks to empty cell',(suite) => {
+  let puzzle = suite.showPuzzle("slash_pack", "5x5-ABC", {"a4": "A", "b1": "B"});
+  puzzle.start();
+
+  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
+  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  assert("Cell value after two clicks").that(puzzle.cells[0][0].getValue()).isEqualTo("\\");
+  assert("Cell data after two clicks").that(puzzle.cells[0][0].data).isEqualTo({image: 'backslash', returnValue: '\\'});
+
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  assert("Cell value after three clicks").that(puzzle.cells[0][0].getValue()).isNull();
+  assert("Cell data after three clicks").that(puzzle.cells[0][0].data).isEqualTo({});
+}),
+
+test('Cell with a letter can not be changed',(suite) => {
+  let puzzle = suite.showPuzzle("slash_pack", "5x5-ABC", {"a4": "A", "b1": "B"});
+  puzzle.start();
+
+  // Click at the cell b1.
+  let x = puzzle.size.leftGap + puzzle.size.unitSize*3/2;
+  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  assert("Cell value after click").that(puzzle.cells[0][1].getValue()).isNull();
+  assert("Cell data after click").that(puzzle.cells[0][1].data).isEqualTo({text: 'B'});
+
+  // Drag from the top left to the bottom right corner of the cell b1.
+  x = puzzle.size.leftGap + puzzle.size.unitSize;
+  y = puzzle.size.topGap;
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  x += puzzle.size.unitSize;
+  y += puzzle.size.unitSize;
+  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  assert("Cell value after drag").that(puzzle.cells[0][1].getValue()).isNull();
+  assert("Cell data after drag").that(puzzle.cells[0][1].data).isEqualTo({text: 'B'});
+}),
+
+test('Repeated drag removes the diagonal',(suite) => {
+  let puzzle = suite.showPuzzle("slash_pack", "5x5-ABC", {"a4": "A", "b1": "B"});
+  puzzle.start();
+
+  // From the bottom left to the top right corner of the cell a1 and back.
+  let x1 = puzzle.size.leftGap;
+  let y1 = puzzle.size.topGap + puzzle.size.unitSize;
+  let x2 = x1 + puzzle.size.unitSize;
+  let y2 = y1 - puzzle.size.unitSize;
+
+  puzzle.controller.onMouseDown(suite.mouseEvent(x1, y1));
+  puzzle.controller.onMouseMove(suite.mouseEvent(x2, y2));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x2, y2));
+
+  assert("Cell value after drag").that(puzzle.cells[0][0].getValue()).isEqualTo("/");
+
+  puzzle.controller.onMouseDown(suite.mouseEvent(x2, y2));
+  puzzle.controller.onMouseMove(suite.mouseEvent(x1, y1));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x1, y1));
+
+  assert("Cell value after second drag").that(puzzle.cells[0][0].getValue()).isNull();
+  assert("Cell data after second drag").that(puzzle.cells[0][0].data).isEqualTo({});
+}),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  let puzzle = suite.showPuzzle("slash_pack", "5x5-ABC", {"a4": "A", "b1": "B"});
+  puzzle.start();
+
+  // Slash in a1 by click.
+  let x = puzzle.size.leftGap + puzzle.size.unitSize/2;
+  let y = puzzle.size.topGap + puzzle.size.unitSize/2;
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+  // Backslash in c3 by drag from its top left to its bottom right corner.
+  x = puzzle.size.leftGap + puzzle.size.unitSize*2;
+  y = puzzle.size.topGap + puzzle.size.unitSize*2;
+  puzzle.controller.onMouseDown(suite.mouseEvent(x, y));
+  x += puzzle.size.unitSize;
+  y += puzzle.size.unitSize;
+  puzzle.controller.onMouseMove(suite.mouseEvent(x, y));
+  puzzle.controller.onMouseUp(suite.mouseEvent(x, y));
+
+  // Letters given by the author are not submitted.
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({"a1": "/", "c3": "\\"});
+}),
+
+test('Author data collector',(suite) => {
+  let puzzle = suite.showPuzzle("slash_pack", "5x5-ABC");
+  puzzle.edit();
+
+  // Choose "B" for a1 and "C" for d2.
+  puzzle.cells[0][0].switchOnChooser(2);
+  puzzle.cells[1][3].switchOnChooser(3);
+
+  assert("Cell data").that(puzzle.cells[0][0].data).isEqualTo({text: 'B', returnValue: 'B'});
+  assert("Puzzle data").that(puzzle.collectData()).isEqualTo({"a1": "B", "d2": "C"});
+}),
+
 );
-
-
