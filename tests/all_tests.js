@@ -40,12 +40,12 @@ requirejs(["tests/ui/doubleblock.test.js"], ()=>{
   allTestSuites.push(doubleblockTestSuite);
 })
 
-requirejs(["tests/ui/easy_as_coral.test.js"], ()=>{
-  allTestSuites.push(easyAsCoralTestSuite);
-})
-
 requirejs(["tests/ui/easy_as_abc.test.js"], ()=>{
   allTestSuites.push(easyAsAbcTestSuite);
+})
+
+requirejs(["tests/ui/easy_as_coral.test.js"], ()=>{
+  allTestSuites.push(easyAsCoralTestSuite);
 })
 
 requirejs(["tests/ui/fence.test.js"], ()=>{
@@ -80,12 +80,12 @@ requirejs(["tests/ui/gaps.test.js"], ()=>{
   allTestSuites.push(gapsTestSuite);
 })
 
-requirejs(["tests/ui/hexa_islands.test.js"], ()=>{
-  allTestSuites.push(hexaIslandsTestSuite);
-})
-
 requirejs(["tests/ui/hexa_fence.test.js"], ()=>{
   allTestSuites.push(hexaFenceTestSuite);
+})
+
+requirejs(["tests/ui/hexa_islands.test.js"], ()=>{
+  allTestSuites.push(hexaIslandsTestSuite);
 })
 
 requirejs(["tests/ui/hexa_minesweeper.test.js"], ()=>{
@@ -184,12 +184,12 @@ requirejs(["tests/ui/skyscrapers.test.js"], ()=>{
   allTestSuites.push(skyscrapersTestSuite);
 })
 
-requirejs(["tests/ui/skyscrapers_gaps.test.js"], ()=>{
-  allTestSuites.push(skyscrapersGapsTestSuite);
-})
-
 requirejs(["tests/ui/skyscrapers_exclusive.test.js"], ()=>{
   allTestSuites.push(skyscrapersExclusiveTestSuite);
+})
+
+requirejs(["tests/ui/skyscrapers_gaps.test.js"], ()=>{
+  allTestSuites.push(skyscrapersGapsTestSuite);
 })
 
 requirejs(["tests/ui/skyscrapers_products.test.js"], ()=>{
@@ -220,20 +220,12 @@ requirejs(["tests/ui/snake_max.test.js"], ()=>{
   allTestSuites.push(snakeMaxTestSuite);
 })
 
-requirejs(["tests/ui/snake_simple.test.js"], ()=>{
-  allTestSuites.push(snakeSimpleTestSuite);
-})
-
 requirejs(["tests/ui/snake_scope.test.js"], ()=>{
   allTestSuites.push(snakeScopeTestSuite);
 })
 
-requirejs(["tests/ui/starbattle.test.js"], ()=>{
-  allTestSuites.push(starbattleTestSuite);
-})
-
-requirejs(["tests/ui/starbattle_smallregions.test.js"], ()=>{
-  allTestSuites.push(starbattleSmallregionsTestSuite);
+requirejs(["tests/ui/snake_simple.test.js"], ()=>{
+  allTestSuites.push(snakeSimpleTestSuite);
 })
 
 requirejs(["tests/ui/spiral_galaxies.test.js"], ()=>{
@@ -244,6 +236,13 @@ requirejs(["tests/ui/squares_and_rectangles.test.js"], ()=>{
   allTestSuites.push(squaresAndRectanglesTestSuite);
 })
 
+requirejs(["tests/ui/starbattle.test.js"], ()=>{
+  allTestSuites.push(starbattleTestSuite);
+})
+
+requirejs(["tests/ui/starbattle_smallregions.test.js"], ()=>{
+  allTestSuites.push(starbattleSmallregionsTestSuite);
+})
 
 requirejs(["tests/ui/sudoku_antidiagonal.test.js"], ()=>{
   allTestSuites.push(sudokuAntidiagonalTestSuite);
@@ -253,16 +252,64 @@ requirejs(["tests/ui/sudoku_antiknight.test.js"], ()=>{
   allTestSuites.push(sudokuAntiknightTestSuite);
 })
 
+requirejs(["tests/ui/sudoku_battenberg.test.js"], ()=>{
+  allTestSuites.push(sudokuBattenbergTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_blackout.test.js"], ()=>{
+  allTestSuites.push(sudokuBlackoutTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_citywalk.test.js"], ()=>{
+  allTestSuites.push(sudokuCitywalkTestSuite);
+})
+
 requirejs(["tests/ui/sudoku_classic.test.js"], ()=>{
   allTestSuites.push(sudokuClassicTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_consecutive.test.js"], ()=>{
+  allTestSuites.push(sudokuConsecutiveTestSuite);
 })
 
 requirejs(["tests/ui/sudoku_diagonal.test.js"], ()=>{
   allTestSuites.push(sudokuDiagonalTestSuite);
 })
 
+requirejs(["tests/ui/sudoku_difference.test.js"], ()=>{
+  allTestSuites.push(sudokuDifferenceTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_even_odd.test.js"], ()=>{
+  allTestSuites.push(sudokuEvenOddTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_extra_regions.test.js"], ()=>{
+  allTestSuites.push(sudokuExtraRegionsTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_fortress.test.js"], ()=>{
+  allTestSuites.push(sudokuFortressTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_hundred.test.js"], ()=>{
+  allTestSuites.push(sudokuHundredTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_index_to_one.test.js"], ()=>{
+  allTestSuites.push(sudokuIndexToOneTestSuite);
+})
+
 requirejs(["tests/ui/sudoku_notouch.test.js"], ()=>{
   allTestSuites.push(sudokuNotouchTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_numbered_rooms.test.js"], ()=>{
+  allTestSuites.push(sudokuNumberedRoomsTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_odd.test.js"], ()=>{
+  allTestSuites.push(sudokuOddTestSuite);
 })
 
 requirejs(["tests/ui/sudoku_odd_even_big_small.test.js"], ()=>{
@@ -271,6 +318,22 @@ requirejs(["tests/ui/sudoku_odd_even_big_small.test.js"], ()=>{
 
 requirejs(["tests/ui/sudoku_pair_sum.test.js"], ()=>{
   allTestSuites.push(sudokuPairSumTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_queen.test.js"], ()=>{
+  allTestSuites.push(sudokuQueenTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_same_sum.test.js"], ()=>{
+  allTestSuites.push(sudokuSameSumTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_search_max.test.js"], ()=>{
+  allTestSuites.push(sudokuSearchMaxTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_selfjoint.test.js"], ()=>{
+  allTestSuites.push(sudokuSelfjointTestSuite);
 })
 
 requirejs(["tests/ui/sudoku_skyscrapers.test.js"], ()=>{
