@@ -28,4 +28,33 @@ test('Incorrect clue',(suite) => {
   assert("Ignore clue obverride solution response").that(Checker.check("5x5", clues, data)).isEqualTo({status:"The clue is not correct",errors:["c4"]});
 }),
 
+test('Clue 0 without black cells around',(suite) => {
+  // Puzzle 4x2 (# is a black cell): there are no black cells around the clue in a1.
+  //   0 . 2 #
+  //   . . . #
+  let clues = {"a1": "0", "c1": "2"};
+  let data = {"d1": "black", "d2": "black"};
+
+  assert("Clue 0 response").that(Checker.check("4x2", clues, data)).isEqualTo({status: "OK"});
+}),
+
+test('Clue 0 with a black cell around',(suite) => {
+  // The cell b2 is black, so there is a group of one black cell around the clue in a1.
+  //   0 . 2 #
+  //   . # # #
+  let clues = {"a1": "0", "c1": "2"};
+  let data = {"d1": "black", "b2": "black", "c2": "black", "d2": "black"};
+
+  assert("Wrong clue 0 response").that(Checker.check("4x2", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["a1"]});
+}),
+
+test('Non-zero clue without black cells around',(suite) => {
+  //   1 . 2 #
+  //   . . . #
+  let clues = {"a1": "1", "c1": "2"};
+  let data = {"d1": "black", "d2": "black"};
+
+  assert("Wrong clue 1 response").that(Checker.check("4x2", clues, data)).isEqualTo({status: "The clue is not correct", errors: ["a1"]});
+}),
+
 );
