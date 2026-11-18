@@ -163,6 +163,93 @@ test('Process clicks to clue cell',(suite) => {
   assert("Clue cell data after three clicks").that(puzzle.cells[0][0].data).isEqualTo({text: '1', textColor: black});
 }),
 
+// Cells are shaded by the clue color (not by black), so the numbers of the areas stay visible.
+test('Line can not go through shaded cell',(suite) => {
+  let puzzle = suite.showPuzzle("yajilin_regional", "4x4", suite.CLUES);
+  puzzle.start();
+
+  // Shaded cell c4.
+  suite.cellClick(puzzle, "c4");
+  suite.drag(puzzle, suite.cellPoint(puzzle, "b4"), suite.cellPoint(puzzle, "c4"));
+  suite.drag(puzzle, suite.cellPoint(puzzle, "c4"), suite.cellPoint(puzzle, "c3"));
+
+  assert("Shaded cell data").that(puzzle.cells[3][2].data).isEqualTo({color: puzzle.colorSchema.clueColor});
+  assert("Connector b4-c4").that(puzzle.connectors[3][1]['h'].getValue()).isNull();
+  assert("Connector c3-c4").that(puzzle.connectors[2][2]['v'].getValue()).isNull();
+
+  // Drag along the whole last row connects only a4 and b4.
+  suite.drag(puzzle, suite.cellPoint(puzzle, "a4"), suite.cellPoint(puzzle, "d4"));
+
+  assert("Submission data after drag over shaded cell").that(puzzle.collectData()).isEqualTo({"connectors": {"a4-h": "1"}});
+
+  // The cell with cross is not shaded, so the line can pass it.
+  suite.cellClick(puzzle, "c4");
+  suite.drag(puzzle, suite.cellPoint(puzzle, "b4"), suite.cellPoint(puzzle, "c4"));
+
+  assert("Cell with cross").that(puzzle.cells[3][2].data).isEqualTo({image: 'cross'});
+  assert("Submission data after drag to cell with cross").that(puzzle.collectData()).isEqualTo({"connectors": {"a4-h": "1", "b4-h": "1"}});
+}),
+
+test('Line can not go through shaded cell with number',(suite) => {
+  let puzzle = suite.showPuzzle("yajilin_regional", "4x4", suite.CLUES);
+  puzzle.start();
+
+  // The cell a1 with the number of its area is shaded.
+  suite.cellClick(puzzle, "a1");
+  suite.drag(puzzle, suite.cellPoint(puzzle, "a1"), suite.cellPoint(puzzle, "b1"));
+  suite.drag(puzzle, suite.cellPoint(puzzle, "a2"), suite.cellPoint(puzzle, "a1"));
+
+  assert("Shaded cell color").that(puzzle.cells[0][0].data.color).isEqualTo(puzzle.colorSchema.clueColor);
+  assert("Shaded cell text").that(puzzle.cells[0][0].data.text).isEqualTo("1");
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({});
+}),
+
+test('Shaded cell removes lines',(suite) => {
+  let puzzle = suite.showPuzzle("yajilin_regional", "4x4", suite.CLUES);
+  puzzle.start();
+
+  // Lines a4 - d4, d4 - d1 and a branch c4 - c3.
+  suite.drawLine(puzzle, "a4", "d4", "d1");
+  suite.drag(puzzle, suite.cellPoint(puzzle, "c4"), suite.cellPoint(puzzle, "c3"));
+
+  assert("Lines before click").that(puzzle.collectData()).isEqualTo(
+    {"connectors": {"a4-h": "1", "b4-h": "1", "c4-h": "1", "c3-v": "1", "d1-v": "1", "d2-v": "1", "d3-v": "1"}});
+
+  // Cell c4 becomes shaded, so all the lines from it are removed.
+  suite.cellClick(puzzle, "c4");
+
+  assert("Shaded cell data").that(puzzle.cells[3][2].data).isEqualTo({color: puzzle.colorSchema.clueColor});
+  assert("Connector b4-c4 after click").that(puzzle.connectors[3][1]['h'].data).isEqualTo({});
+  assert("Connector c4-d4 after click").that(puzzle.connectors[3][2]['h'].data).isEqualTo({});
+  assert("Connector c3-c4 after click").that(puzzle.connectors[2][2]['v'].data).isEqualTo({});
+  assert("Lines after click").that(puzzle.collectData()).isEqualTo(
+    {"connectors": {"a4-h": "1", "d1-v": "1", "d2-v": "1", "d3-v": "1"}});
+
+  // The lines are not restored when the cell is switched to cross and to empty.
+  suite.cellClick(puzzle, "c4");
+  suite.cellClick(puzzle, "c4");
+
+  assert("Cell data after three clicks").that(puzzle.cells[3][2].data).isEqualTo({});
+  assert("Lines after three clicks").that(puzzle.collectData()).isEqualTo(
+    {"connectors": {"a4-h": "1", "d1-v": "1", "d2-v": "1", "d3-v": "1"}});
+}),
+
+test('Undo of shaded cell restores lines',(suite) => {
+  let puzzle = suite.showPuzzle("yajilin_regional", "4x4", suite.CLUES);
+  puzzle.start();
+
+  suite.drawLine(puzzle, "a4", "d4");
+  suite.cellClick(puzzle, "c4");
+
+  assert("Lines after click").that(puzzle.collectData()).isEqualTo({"connectors": {"a4-h": "1"}});
+
+  // Single undo reverts both the shaded cell and the lines removed by it.
+  puzzle.revertStep();
+
+  assert("Cell data after undo").that(puzzle.cells[3][2].data).isEqualTo({});
+  assert("Lines after undo").that(puzzle.collectData()).isEqualTo({"connectors": {"a4-h": "1", "b4-h": "1", "c4-h": "1"}});
+}),
+
 test('Process clicks to edge',(suite) => {
   let puzzle = suite.showPuzzle("yajilin_regional", "4x4", suite.CLUES);
   puzzle.start();

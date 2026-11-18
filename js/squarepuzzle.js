@@ -351,7 +351,8 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
          if (data.image=="cross") return data;
          else return Object.assign({}, data, {image: null} )
       }))
-      .add(controller().forSolver().cell().clue().copyPaste((data, elementData) => {
+      // Only cells with black circles can be shaded, a cell with white circle is always unshaded.
+      .add(controller().forSolver().cell().clue(StdItem.BLACK_CIRCLE).copyPaste((data, elementData) => {
          if (elementData.image=="cross") return elementData;
          else return Object.assign({}, elementData, {color: data.color} );
       }))
@@ -597,7 +598,12 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().clue().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().clue().copy())
-      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
+      // Drag from a number puts crosses, drag from a given black cell shades cells as the solver does it.
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => {
+        if (data.text) return {image: "cross"};
+        if (data.color == self.colorSchema.clueColor) return {color: self.colorSchema.greyColor};
+        return data;
+      }))
       .build(this);
 
   } else if (typeCode=="canal_view") {
@@ -612,7 +618,12 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().clue().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().clue().copy())
-      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
+      // Drag from a number puts crosses, drag from a given black cell shades cells as the solver does it.
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => {
+        if (data.text) return {image: "cross"};
+        if (data.color == self.colorSchema.clueColor) return {color: self.colorSchema.greyColor};
+        return data;
+      }))
       .build(this);
 
   } else if (typeCode=="nurikabe") {
@@ -659,7 +670,12 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().clue().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().clue().copy())
-      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
+      // Drag from a number puts crosses, drag from a given black cell shades cells as the solver does it.
+      .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => {
+        if (data.text) return {image: "cross"};
+        if (data.color == self.colorSchema.clueColor) return {color: self.colorSchema.greyColor};
+        return data;
+      }))
       .build(this);
 
   } else if (typeCode=="pentomino_hungarian") {
@@ -1330,8 +1346,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().edge().clickSwitch()
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
+    // Cells are shaded by the clue color (not black) to keep the numbers of the areas visible.
     this.typeProperties.connectorsDisabled = function(cell) {
-      return cell.data.color == self.colorSchema.gridColor;
+      return cell.data.color == self.colorSchema.clueColor;
     }
   } else if (typeCode=="kuroshiro") {
     this.typeProperties = decribePuzzleType()
@@ -1672,9 +1689,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
   typeProperties["xo"] = {
     needConnectors: true,
     cellController: cell => setClickSwitch(cell, false, [{},{image: "white_circle", returnValue: "O"},{image: "cross", returnValue: "X"}]),
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
     cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "O"},{image: "cross", returnValue: "X"},{color: self.colorSchema.gridColor, returnValue: "black"}];},
     decodeClue: value => {
       if (value=="O") return {image: "white_circle"};
@@ -2048,7 +2062,9 @@ squarePuzzleCell.prototype.switchToData = function(data, noLogging, attachTo) {
   if (!this.puzzle.typeCode.startsWith("yajilin")) {
     return;
   }
-  if (this.data.color == this.puzzle.colorSchema.gridColor) {
+  // When the cell is shaded, the line can't pass through it any more.
+  let connectorsDisabled = this.puzzle.typeProperties.connectorsDisabled;
+  if (this.connectors && typeof connectorsDisabled == "function" && connectorsDisabled(this)) {
     let currentStep = this.puzzle.steps.length;
     this.connectors.forEach(connector => {
       if (connector.getValue() == 1) {

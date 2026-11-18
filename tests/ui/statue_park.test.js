@@ -180,6 +180,37 @@ test('Drag of cross to cells with circles',(suite) => {
   assert("Submission data").that(puzzle.collectData()).isEqualTo({});
 }),
 
+// A cell with white circle is never shaded.
+test('Drag of shaded cell over white circle',(suite) => {
+  let puzzle = suite.showPuzzle("statue_park", "5x5-LV", suite.CLUES);
+  puzzle.start();
+
+  // Shade c1 and drag it down through the white circle in c2 to c3.
+  suite.cellClick(puzzle, "c1");
+  suite.dragOverCells(puzzle, "c1", "c2", "c3");
+
+  assert("White circle cell image").that(puzzle.cells[1][2].data.image).isEqualTo("white_circle");
+  assert("White circle cell color").that(puzzle.cells[1][2].data.color).isNull();
+  assert("White circle cell value").that(puzzle.cells[1][2].getValue()).isNull();
+  // The drag continues after the circle.
+  assert("Value of c3").that(puzzle.cells[2][2].getValue()).isEqualTo("1");
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({"c1": "1", "c3": "1"});
+}),
+
+test('Drag of shaded cell over black circle',(suite) => {
+  let puzzle = suite.showPuzzle("statue_park", "5x5-LV", suite.CLUES);
+  puzzle.start();
+
+  // Shade a2 and drag it down through the black circle in a3 to a4.
+  suite.cellClick(puzzle, "a2");
+  suite.dragOverCells(puzzle, "a2", "a3", "a4");
+
+  assert("Black circle cell image").that(puzzle.cells[2][0].data.image).isEqualTo("black_circle");
+  assert("Black circle cell color").that(puzzle.cells[2][0].data.color).isEqualTo(puzzle.colorSchema.greyColor);
+  assert("Black circle cell value").that(puzzle.cells[2][0].getValue()).isEqualTo("1");
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({"a2": "1", "a3": "1", "a4": "1"});
+}),
+
 test('Clear cells by drag',(suite) => {
   let puzzle = suite.showPuzzle("statue_park", "5x5-LV", suite.CLUES);
   puzzle.start();

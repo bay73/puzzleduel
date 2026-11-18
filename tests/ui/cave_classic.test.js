@@ -209,6 +209,30 @@ test('Clear cells by drag',(suite) => {
   assert("Submission data").that(puzzle.collectData()).isEqualTo({"c4": "black"});
 }),
 
+// Cells shaded by drag from a given black cell are the same as cells shaded by click: they are submitted.
+test('Drag from given black cell shades cells',(suite) => {
+  let puzzle = suite.showPuzzle("cave_classic", "4x4", {"a1": "black", "d1": "3"});
+  puzzle.start();
+
+  // One drag from the given black cell a1 down to a2 and a3.
+  puzzle.controller.onMouseDown(suite.mouseEvent(suite.cellPoint(puzzle, "a1")));
+  puzzle.controller.onMouseMove(suite.mouseEvent(suite.cellPoint(puzzle, "a2")));
+  puzzle.controller.onMouseMove(suite.mouseEvent(suite.cellPoint(puzzle, "a3")));
+  puzzle.controller.onMouseUp(suite.mouseEvent(suite.cellPoint(puzzle, "a3")));
+
+  assert("Given black cell data").that(puzzle.cells[0][0].data).isEqualTo({color: puzzle.colorSchema.clueColor});
+  assert("Value of a2").that(puzzle.cells[1][0].getValue()).isEqualTo("black");
+  assert("Color of a2").that(puzzle.cells[1][0].data.color).isEqualTo(puzzle.colorSchema.greyColor);
+  assert("Value of a3").that(puzzle.cells[2][0].getValue()).isEqualTo("black");
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({"a2": "black", "a3": "black"});
+
+  // The shaded cell can be changed by click as usual: to cross and then to empty.
+  suite.cellClick(puzzle, "a2");
+
+  assert("Data of a2 after click").that(puzzle.cells[1][0].data).isEqualTo({image: 'cross'});
+  assert("Submission data after click").that(puzzle.collectData()).isEqualTo({"a3": "black"});
+}),
+
 // Data collector tests
 test('Data collector',(suite) => {
   let puzzle = suite.showPuzzle("cave_classic", "4x4", suite.CLUES);
