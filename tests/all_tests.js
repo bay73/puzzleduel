@@ -8,16 +8,60 @@ requirejs(["tests/ui/akari.test.js"], ()=>{
   allTestSuites.push(akariTestSuite);
 })
 
+requirejs(["tests/ui/alternate_loop.test.js"], ()=>{
+  allTestSuites.push(alternateLoopTestSuite);
+})
+
+requirejs(["tests/ui/aqre.test.js"], ()=>{
+  allTestSuites.push(aqreTestSuite);
+})
+
+requirejs(["tests/ui/aquapelago.test.js"], ()=>{
+  allTestSuites.push(aquapelagoTestSuite);
+})
+
+requirejs(["tests/ui/aquarium.test.js"], ()=>{
+  allTestSuites.push(aquariumTestSuite);
+})
+
 requirejs(["tests/ui/araf.test.js"], ()=>{
   allTestSuites.push(arafTestSuite);
+})
+
+requirejs(["tests/ui/arrow_web.test.js"], ()=>{
+  allTestSuites.push(arrowWebTestSuite);
+})
+
+requirejs(["tests/ui/battleships.test.js"], ()=>{
+  allTestSuites.push(battleshipsTestSuite);
+})
+
+requirejs(["tests/ui/battleships_knight.test.js"], ()=>{
+  allTestSuites.push(battleshipsKnightTestSuite);
+})
+
+requirejs(["tests/ui/battleships_minesweeper.test.js"], ()=>{
+  allTestSuites.push(battleshipsMinesweeperTestSuite);
 })
 
 requirejs(["tests/ui/black_white.test.js"], ()=>{
   allTestSuites.push(blackWhiteTestSuite);
 })
 
+requirejs(["tests/ui/canal_view.test.js"], ()=>{
+  allTestSuites.push(canalViewTestSuite);
+})
+
+requirejs(["tests/ui/cave_classic.test.js"], ()=>{
+  allTestSuites.push(caveClassicTestSuite);
+})
+
 requirejs(["tests/ui/chaos.test.js"], ()=>{
   allTestSuites.push(chaosTestSuite);
+})
+
+requirejs(["tests/ui/chat_room.test.js"], ()=>{
+  allTestSuites.push(chatRoomTestSuite);
 })
 
 requirejs(["tests/ui/choco_banana.test.js"], ()=>{
@@ -28,12 +72,20 @@ requirejs(["tests/ui/clouds.test.js"], ()=>{
   allTestSuites.push(cloudsTestSuite);
 })
 
+requirejs(["tests/ui/country_road.test.js"], ()=>{
+  allTestSuites.push(countryRoadTestSuite);
+})
+
 requirejs(["tests/ui/domino_castle_sum.test.js"], ()=>{
   allTestSuites.push(dominoCastleSumTestSuite);
 })
 
 requirejs(["tests/ui/domino_hunt.test.js"], ()=>{
   allTestSuites.push(dominoHuntTestSuite);
+})
+
+requirejs(["tests/ui/double_back.test.js"], ()=>{
+  allTestSuites.push(doubleBackTestSuite);
 })
 
 requirejs(["tests/ui/double_choco.test.js"], ()=>{
@@ -64,12 +116,28 @@ requirejs(["tests/ui/easy_as_coral.test.js"], ()=>{
   allTestSuites.push(easyAsCoralTestSuite);
 })
 
+requirejs(["tests/ui/every_second_straight.test.js"], ()=>{
+  allTestSuites.push(everySecondStraightTestSuite);
+})
+
+requirejs(["tests/ui/every_second_turn.test.js"], ()=>{
+  allTestSuites.push(everySecondTurnTestSuite);
+})
+
+requirejs(["tests/ui/expressway.test.js"], ()=>{
+  allTestSuites.push(expresswayTestSuite);
+})
+
 requirejs(["tests/ui/fence.test.js"], ()=>{
   allTestSuites.push(fenceTestSuite);
 })
 
 requirejs(["tests/ui/fence_even_odd.test.js"], ()=>{
   allTestSuites.push(fenceEvenOddTestSuite);
+})
+
+requirejs(["tests/ui/fence_knapp_daneben.test.js"], ()=>{
+  allTestSuites.push(fenceKnappDanebenTestSuite);
 })
 
 requirejs(["tests/ui/fence_pentomino.test.js"], ()=>{
@@ -88,12 +156,20 @@ requirejs(["tests/ui/foseruzu.test.js"], ()=>{
   allTestSuites.push(foseruzuTestSuite);
 })
 
+requirejs(["tests/ui/four_winds.test.js"], ()=>{
+  allTestSuites.push(fourWindsTestSuite);
+})
+
 requirejs(["tests/ui/fuzuli.test.js"], ()=>{
   allTestSuites.push(fuzuliTestSuite);
 })
 
 requirejs(["tests/ui/gaps.test.js"], ()=>{
   allTestSuites.push(gapsTestSuite);
+})
+
+requirejs(["tests/ui/geradeweg.test.js"], ()=>{
+  allTestSuites.push(geradewegTestSuite);
 })
 
 requirejs(["tests/ui/hexa_fence.test.js"], ()=>{
@@ -120,16 +196,72 @@ requirejs(["tests/ui/hitori.test.js"], ()=>{
   allTestSuites.push(hitoriTestSuite);
 })
 
+requirejs(["tests/ui/inturnal.test.js"], ()=>{
+  allTestSuites.push(inturnalTestSuite);
+})
+
+requirejs(["tests/ui/kaitoramma.test.js"], ()=>{
+  allTestSuites.push(kaitorammaTestSuite);
+})
+
+requirejs(["tests/ui/kropki.test.js"], ()=>{
+  allTestSuites.push(kropkiTestSuite);
+})
+
+requirejs(["tests/ui/kuromasu.test.js"], ()=>{
+  allTestSuites.push(kuromasuTestSuite);
+})
+
+requirejs(["tests/ui/kuroshiro.test.js"], ()=>{
+  allTestSuites.push(kuroshiroTestSuite);
+})
+
 requirejs(["tests/ui/l_shapes.test.js"], ()=>{
   allTestSuites.push(lShapesTestSuite);
+})
+
+requirejs(["tests/ui/lighthouses.test.js"], ()=>{
+  allTestSuites.push(lighthousesTestSuite);
 })
 
 requirejs(["tests/ui/lits.test.js"], ()=>{
   allTestSuites.push(litsTestSuite);
 })
 
+requirejs(["tests/ui/lits_inverse.test.js"], ()=>{
+  allTestSuites.push(litsInverseTestSuite);
+})
+
+requirejs(["tests/ui/lits_plus.test.js"], ()=>{
+  allTestSuites.push(litsPlusTestSuite);
+})
+
+requirejs(["tests/ui/loop_bounds.test.js"], ()=>{
+  allTestSuites.push(loopBoundsTestSuite);
+})
+
+requirejs(["tests/ui/loop_minesweeper.test.js"], ()=>{
+  allTestSuites.push(loopMinesweeperTestSuite);
+})
+
 requirejs(["tests/ui/magic_snail.test.js"], ()=>{
   allTestSuites.push(magicSnailTestSuite);
+})
+
+requirejs(["tests/ui/masyu.test.js"], ()=>{
+  allTestSuites.push(masyuTestSuite);
+})
+
+requirejs(["tests/ui/maxi_loop.test.js"], ()=>{
+  allTestSuites.push(maxiLoopTestSuite);
+})
+
+requirejs(["tests/ui/meandering_numbers.test.js"], ()=>{
+  allTestSuites.push(meanderingNumbersTestSuite);
+})
+
+requirejs(["tests/ui/mid_loop.test.js"], ()=>{
+  allTestSuites.push(midLoopTestSuite);
 })
 
 requirejs(["tests/ui/minesweeper_classic.test.js"], ()=>{
@@ -144,8 +276,20 @@ requirejs(["tests/ui/neighbors.test.js"], ()=>{
   allTestSuites.push(neighborsTestSuite);
 })
 
+requirejs(["tests/ui/no_touch_sums.test.js"], ()=>{
+  allTestSuites.push(noTouchSumsTestSuite);
+})
+
 requirejs(["tests/ui/norinori.test.js"], ()=>{
   allTestSuites.push(norinoriTestSuite);
+})
+
+requirejs(["tests/ui/nurikabe.test.js"], ()=>{
+  allTestSuites.push(nurikabeTestSuite);
+})
+
+requirejs(["tests/ui/paint_battenberg.test.js"], ()=>{
+  allTestSuites.push(paintBattenbergTestSuite);
 })
 
 requirejs(["tests/ui/paint_by_max.test.js"], ()=>{
@@ -154,6 +298,22 @@ requirejs(["tests/ui/paint_by_max.test.js"], ()=>{
 
 requirejs(["tests/ui/passage.test.js"], ()=>{
   allTestSuites.push(passageTestSuite);
+})
+
+requirejs(["tests/ui/pata.test.js"], ()=>{
+  allTestSuites.push(pataTestSuite);
+})
+
+requirejs(["tests/ui/pentasight.test.js"], ()=>{
+  allTestSuites.push(pentasightTestSuite);
+})
+
+requirejs(["tests/ui/pentomino.test.js"], ()=>{
+  allTestSuites.push(pentominoTestSuite);
+})
+
+requirejs(["tests/ui/pentomino_areas.test.js"], ()=>{
+  allTestSuites.push(pentominoAreasTestSuite);
 })
 
 requirejs(["tests/ui/pentomino_division.test.js"], ()=>{
@@ -180,6 +340,14 @@ requirejs(["tests/ui/polygraph.test.js"], ()=>{
   allTestSuites.push(polygraphTestSuite);
 })
 
+requirejs(["tests/ui/product_kuromasu.test.js"], ()=>{
+  allTestSuites.push(productKuromasuTestSuite);
+})
+
+requirejs(["tests/ui/product_latin_square.test.js"], ()=>{
+  allTestSuites.push(productLatinSquareTestSuite);
+})
+
 requirejs(["tests/ui/queens.test.js"], ()=>{
   allTestSuites.push(queensTestSuite);
 })
@@ -196,12 +364,52 @@ requirejs(["tests/ui/ring_ring.test.js"], ()=>{
   allTestSuites.push(ringringTestSuite);
 })
 
+requirejs(["tests/ui/ring_ring_battenberg.test.js"], ()=>{
+  allTestSuites.push(ringRingBattenbergTestSuite);
+})
+
+requirejs(["tests/ui/ring_ring_empty.test.js"], ()=>{
+  allTestSuites.push(ringRingEmptyTestSuite);
+})
+
+requirejs(["tests/ui/ring_ring_max.test.js"], ()=>{
+  allTestSuites.push(ringRingMaxTestSuite);
+})
+
+requirejs(["tests/ui/ring_ring_nested.test.js"], ()=>{
+  allTestSuites.push(ringRingNestedTestSuite);
+})
+
+requirejs(["tests/ui/ring_ring_numbered.test.js"], ()=>{
+  allTestSuites.push(ringRingNumberedTestSuite);
+})
+
+requirejs(["tests/ui/ring_ring_square_rectangle.test.js"], ()=>{
+  allTestSuites.push(ringRingSquareRectangleTestSuite);
+})
+
 requirejs(["tests/ui/ripple_effect.test.js"], ()=>{
   allTestSuites.push(rippleEffectTestSuite);
 })
 
+requirejs(["tests/ui/russian_loop.test.js"], ()=>{
+  allTestSuites.push(russianLoopTestSuite);
+})
+
+requirejs(["tests/ui/sequential_path.test.js"], ()=>{
+  allTestSuites.push(sequentialPathTestSuite);
+})
+
 requirejs(["tests/ui/shikaku.test.js"], ()=>{
   allTestSuites.push(shikakuTestSuite);
+})
+
+requirejs(["tests/ui/shortest_segment.test.js"], ()=>{
+  allTestSuites.push(shortestSegmentTestSuite);
+})
+
+requirejs(["tests/ui/simple_loop.test.js"], ()=>{
+  allTestSuites.push(simpleLoopTestSuite);
 })
 
 requirejs(["tests/ui/skyscrapers.test.js"], ()=>{
@@ -236,6 +444,10 @@ requirejs(["tests/ui/slicy.test.js"], ()=>{
   allTestSuites.push(slicyTestSuite);
 })
 
+requirejs(["tests/ui/snake_belarusian.test.js"], ()=>{
+  allTestSuites.push(snakeBelarusianTestSuite);
+})
+
 requirejs(["tests/ui/snake_dutch.test.js"], ()=>{
   allTestSuites.push(snakeDutchTestSuite);
 })
@@ -244,12 +456,20 @@ requirejs(["tests/ui/snake_max.test.js"], ()=>{
   allTestSuites.push(snakeMaxTestSuite);
 })
 
+requirejs(["tests/ui/snake_minesweeper.test.js"], ()=>{
+  allTestSuites.push(snakeMinesweeperTestSuite);
+})
+
 requirejs(["tests/ui/snake_scope.test.js"], ()=>{
   allTestSuites.push(snakeScopeTestSuite);
 })
 
 requirejs(["tests/ui/snake_simple.test.js"], ()=>{
   allTestSuites.push(snakeSimpleTestSuite);
+})
+
+requirejs(["tests/ui/snake_striped.test.js"], ()=>{
+  allTestSuites.push(snakeStripedTestSuite);
 })
 
 requirejs(["tests/ui/spiral_galaxies.test.js"], ()=>{
@@ -266,6 +486,10 @@ requirejs(["tests/ui/starbattle.test.js"], ()=>{
 
 requirejs(["tests/ui/starbattle_smallregions.test.js"], ()=>{
   allTestSuites.push(starbattleSmallregionsTestSuite);
+})
+
+requirejs(["tests/ui/statue_park.test.js"], ()=>{
+  allTestSuites.push(statueParkTestSuite);
 })
 
 requirejs(["tests/ui/sudoku_antidiagonal.test.js"], ()=>{
@@ -304,6 +528,10 @@ requirejs(["tests/ui/sudoku_difference.test.js"], ()=>{
   allTestSuites.push(sudokuDifferenceTestSuite);
 })
 
+requirejs(["tests/ui/sudoku_double.test.js"], ()=>{
+  allTestSuites.push(sudokuDoubleTestSuite);
+})
+
 requirejs(["tests/ui/sudoku_even_odd.test.js"], ()=>{
   allTestSuites.push(sudokuEvenOddTestSuite);
 })
@@ -322,6 +550,10 @@ requirejs(["tests/ui/sudoku_hundred.test.js"], ()=>{
 
 requirejs(["tests/ui/sudoku_index_to_one.test.js"], ()=>{
   allTestSuites.push(sudokuIndexToOneTestSuite);
+})
+
+requirejs(["tests/ui/sudoku_irregular.test.js"], ()=>{
+  allTestSuites.push(sudokuIrregularTestSuite);
 })
 
 requirejs(["tests/ui/sudoku_notouch.test.js"], ()=>{
@@ -376,12 +608,56 @@ requirejs(["tests/ui/suguru.test.js"], ()=>{
   allTestSuites.push(suguruTestSuite);
 })
 
+requirejs(["tests/ui/sukoro.test.js"], ()=>{
+  allTestSuites.push(sukoroTestSuite);
+})
+
 requirejs(["tests/ui/tapa_classic.test.js"], ()=>{
   allTestSuites.push(tapaClassicTestSuite);
 })
 
+requirejs(["tests/ui/tents_classic.test.js"], ()=>{
+  allTestSuites.push(tentsClassicTestSuite);
+})
+
+requirejs(["tests/ui/tetro_scope.test.js"], ()=>{
+  allTestSuites.push(tetroScopeTestSuite);
+})
+
+requirejs(["tests/ui/top_heavy.test.js"], ()=>{
+  allTestSuites.push(topHeavyTestSuite);
+})
+
 requirejs(["tests/ui/two_apiece.test.js"], ()=>{
   allTestSuites.push(twoApieceTestSuite);
+})
+
+requirejs(["tests/ui/x_sandwich.test.js"], ()=>{
+  allTestSuites.push(xSandwichTestSuite);
+})
+
+requirejs(["tests/ui/xo.test.js"], ()=>{
+  allTestSuites.push(xoTestSuite);
+})
+
+requirejs(["tests/ui/yajilin.test.js"], ()=>{
+  allTestSuites.push(yajilinTestSuite);
+})
+
+requirejs(["tests/ui/yajilin_domino.test.js"], ()=>{
+  allTestSuites.push(yajilinDominoTestSuite);
+})
+
+requirejs(["tests/ui/yajilin_liar.test.js"], ()=>{
+  allTestSuites.push(yajilinLiarTestSuite);
+})
+
+requirejs(["tests/ui/yajilin_regional.test.js"], ()=>{
+  allTestSuites.push(yajilinRegionalTestSuite);
+})
+
+requirejs(["tests/ui/yajilin_sum.test.js"], ()=>{
+  allTestSuites.push(yajilinSumTestSuite);
 })
 
 requirejs(["tests/ui/yin_yang_classic.test.js"], ()=>{
