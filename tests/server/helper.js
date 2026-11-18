@@ -21,7 +21,12 @@ async function start() {
   process.env.MONGO_DATA_URI = mongod.getUri('test_data');
   process.env.MONGO_LOG_URI = mongod.getUri('test_log');
   process.env.MONGO_AUTH_URI = mongod.getUri('test_auth');
+  // Placeholders for all the secrets, so the tests don't need the .env file (there is no such file in CI)
+  // and never use the real keys and passwords: values from .env don't replace the variables which are already set.
   process.env.COOCKIE_SECRET = 'secret for tests';
+  process.env.CAPTCHA_KEY = 'captcha key for tests';
+  process.env.EMAIL_PASS = 'email password for tests';
+  process.env.DB_AUTH_PASS = process.env.DB_LOG_PASS = process.env.DB_DATA_PASS = 'database password for tests';
   app = require('../../app');
   const { dataDb, logDb } = require('../../config/db').connectDBs();
   await Promise.all([dataDb.asPromise(), logDb.asPromise()]);

@@ -222,5 +222,6 @@ For each puzzle type developer can add the next tests:
    `tests/server/helper.js` starts and stops this environment, clears the data between the tests and creates users and puzzles.
    The addresses of the databases are passed by the environment variables `MONGO_DATA_URI`, `MONGO_LOG_URI` and `MONGO_AUTH_URI`;
    when `NODE_ENV` is `test` the server refuses to start without them, so the tests can't be connected to the real databases.
+   The helper also sets placeholders for all the secrets, so the tests work without the `.env` file and don't use the real keys.
 
  All three commands (`npm test`, `npm run test:ui` and `npm run test:server`) are executed automatically for every push and pull request to master (see `.github/workflows/tests.yml`).
