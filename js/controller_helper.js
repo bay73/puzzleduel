@@ -375,6 +375,13 @@ ControllerBuilder.prototype.minCells = function(count){
   return this;
 }
 
+// Applies controller only to elements which satisfy the custom condition.
+// Should be used only when there is no suitable standard condition.
+ControllerBuilder.prototype.when = function(condition){
+  this.conditions.push(condition);
+  return this;
+}
+
 // Defines controller for cells.
 ControllerBuilder.prototype.cell = function(){
   if (typeof this.elementType!="undefined") {

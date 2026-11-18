@@ -1609,239 +1609,131 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue().chooser()
         .addNumbers(1, maxValue))
       .build(this);
-  } else {
+  } else if (typeCode=="railroad") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addItem(controllerItem({image: "big_plus", returnValue: "+"}))
+        .addNumbers(1, 15, undefined, undefined, undefined, true))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs(1)))
+      .build(this);
 
-  var typeProperties = {}
+  } else if (typeCode=="product_latin_square") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().node().chooser()
+        .addNumbers(1, 99, StdColor.BLACK))
+      .add(controller().forSolver().cell().chooser()
+        .addNumbers(1, maxValue, undefined, undefined, undefined, true))
+      .build(this);
 
-  typeProperties["railroad"] = {
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      var chooserValues = [{},{image: "big_plus", returnValue: "+"}];
-      for (var i=1; i<=15; i++) {
-       chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {return value=="+"?{image: "big_plus"}:{text: value};},
-  }
+  } else if (typeCode=="tents_classic") {
+    var maxValue = Math.max(this.rows, this.cols);
+    var trees = ["tree1", "tree2", "tree3"].map(tree => controllerItem({image: tree, returnValue: tree}));
+    var typeBuilder = decribePuzzleType()
+      .useOuterCells(StdOuter.BOTTOM | StdOuter.RIGHT)
+      .add(controller().forAuthor().cell().inner().chooser()
+        .addItem(trees[0])
+        .addItem(trees[1])
+        .addItem(trees[2]))
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0, maxValue, undefined, undefined, undefined, true))
+      .add(controller().forSolver().cell().inner().noClue().clickSwitch()
+        .addItem(controllerItem({image: "tent", returnValue: "1"}))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().outer().clue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.doNotSubmit()))
+      .add(controller().forSolver().edge().drag()
+        .addItem(StdItem.LINE.doNotSubmit()));
+    // The solver marks the tree which already has a tent.
+    trees.forEach(tree => typeBuilder
+      .add(controller().forSolver().cell().inner().clue(tree).clickSwitch()
+        .addItem(controllerItem({image: tree.data.image + "_circle"}))));
+    this.typeProperties = typeBuilder.build(this);
+    this.typeProperties.thinConnectors = true;
 
-  typeProperties["product_latin_square"] = {
-    needNodes: true,
-    cellController: cell => setNumberChooser(cell, 1, self.rows),
-    nodeEditController: node => {
-      node.isClue = true;
-      var chooserValues = [{}];
-      for (var i=1; i<=99; i++) {
-        chooserValues.push({color: self.colorSchema.gridColor, text: i.toString(), textColor: "#fff", returnValue: i.toString()});
-      }
-      node.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      return {color: self.colorSchema.gridColor, text: value, textColor: "#fff"};
-    },
-    usePlus10: this.editMode?10:0,
-    cellMultiPencil: true,
-  }
+  } else if (typeCode=="xo") {
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.submitAs("O"))
+        .addItem(StdItem.CROSS.submitAs("X"))
+        .addItem(StdItem.BLACK))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(StdItem.WHITE_CIRCLE.submitAs("O"))
+        .addItem(StdItem.CROSS.submitAs("X")))
+      .build(this);
 
-  typeProperties["tents_classic"] = {
-    needNodes: !this.editMode,
-    needBottom: true,
-    needRight: true,
-    needConnectors: !this.editMode,
-    thinConnectors: true,
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor}]);
-    },
-    cellController: cell => {
-      cell.dragProcessor = true;
-      if (cell.outerCell) {
-        setClueClickSwitch(cell, [{},{image: "white_circle"}]);
-      } else {
-        if (cell.isClue) {
-          let image = cell.data.image + "_circle";
-          setClueClickSwitch(cell, [{},{image: image}]);
-        } else {
-          setClickSwitch(cell, false, [{},{image: "tent", returnValue: "1"},{image: "cross"}]);
-        }
-      }
-    },
-    cellEditController: cell => {
-      if (cell.outerCell) {
-        cell.isClue = true;
-        var chooserValues = [{}];
-        for (var i=0; i<=Math.max(self.rows, self.cols); i++) {
-         chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      } else {
-        cell.chooserValues = [{},{image: "tree1", returnValue: "tree1"},{image: "tree2", returnValue: "tree2"},{image: "tree3", returnValue: "tree3"}];
-      }
-    },
-    edgeController: edge => {
-      setDragSwitch(edge, false, [{},{color: self.colorSchema.lineColor}]);
-    },
-    nodeController: node => node.dragProcessor = true,
-    decodeClue: value => {
-      if (value.startsWith("tree")) {
-        return {image: value};
-      } else {
-        return {text: value};
-      }
-    },
-  }
+  } else if (typeCode=="shortest_segment") {
+    var maxValue = Math.max(this.rows - 1, this.cols - 1);
+    this.typeProperties = decribePuzzleType()
+      .useOuterCells(StdOuter.BOTTOM | StdOuter.RIGHT)
+      .add(controller().forAuthor().cell().outer().chooser()
+        .addNumbers(0, maxValue, undefined, undefined, undefined, true))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs(1)))
+      .add(controller().forSolver().edge().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
 
-  typeProperties["xo"] = {
-    needConnectors: true,
-    cellController: cell => setClickSwitch(cell, false, [{},{image: "white_circle", returnValue: "O"},{image: "cross", returnValue: "X"}]),
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{image: "white_circle", returnValue: "O"},{image: "cross", returnValue: "X"},{color: self.colorSchema.gridColor, returnValue: "black"}];},
-    decodeClue: value => {
-      if (value=="O") return {image: "white_circle"};
-      if (value=="X") return {image: "cross"};
-      if (value=="black") return {color: self.colorSchema.gridColor};
-    },
-  }
+  } else if (typeCode=="russian_loop") {
+    this.typeProperties = decribePuzzleType()
+      // Dots are set only at the vertical edges between cells.
+      .add(controller().forAuthor().edge().minCells(2).when(edge => edge.side%2==1).clickSwitch()
+        .addItem(StdItem.SMALL_CIRCLE.submitAs("dot")))
+      .add(controller().forSolver().connector().drag()
+        .addItem(StdItem.LINE.submitAs(1)))
+      .add(controller().forSolver().edge().noClue().clickSwitch()
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
 
-  typeProperties["shortest_segment"] = {
-    needConnectors: true,
-    needNodes: false,
-    needBottom: true,
-    needRight: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    edgeController: edge => {
-      setClickSwitch(edge, false, [{},{image: "cross"}]);
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {
-      if (cell.outerCell) {
-        cell.isClue = true;
-        var chooserValues = [{}];
-        for (var i=0; i<=Math.max(self.rows-1, self.cols-1); i++) {
-          chooserValues.push({text: i.toString(), returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      }
-    },
-  }
+  } else if (typeCode=="kropki") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue, undefined, undefined, undefined, true))
+      .add(controller().forAuthor().edge().minCells(2).clickSwitch()
+        .addItem(StdItem.WHITE_DOT.submitAs("white"))
+        .addItem(StdItem.SMALL_CIRCLE.submitAs("black")))
+      .add(controller().forSolver().cell().noClue().chooser()
+        .addNumbers(1, maxValue, undefined, undefined, undefined, true))
+      .build(this);
 
-  typeProperties["russian_loop"] = {
-    needConnectors: true,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.lineColor, returnValue: 1}]);
-    },
-    edgeController: edge => {
-      setClickSwitch(edge, false, [{},{image: "cross"}]);
-    },
-    edgeEditController: edge => {
-      if (edge.allCells.length > 1 && edge.side%2==1) {
-        edge.isClue = true;
-        edge.clickSwitch = [{}, {image: "small_circle", returnValue: "dot"}];;
-      }
-    },
-    decodeClue: value => {
-      if (value=="dot") {
-        return {image: "small_circle"}
-      } else {
-        return {text: value}
-      }
-    },
-  }
+  } else if (typeCode=="chat_room") {
+    // The chooser shows numbers by tens: see chooserData and switchOnChooser of the cell.
+    var author = controller().forAuthor().cell().chooser()
+      .addItem(controllerItem({image: "phone", returnValue: "phone"}))
+      .addItem(controllerItem({image: "big_white_circle", returnValue: "white_circle"}))
+      .addItem(controllerItem({image: "big_black_circle", returnValue: "black_circle"}));
+    for (var i=0; i<=99; i++) {
+      author.addItem(controllerItem({text: i.toString(), image: "big_white_circle", returnValue: "white_" + i}));
+      author.addItem(controllerItem({text: i.toString(), image: "big_black_circle", textColor: "#fff", returnValue: "black_" + i}));
+    }
+    this.typeProperties = decribePuzzleType()
+      .add(author)
+      .add(controller().forSolver().connector().drag()
+        .addItem(controllerItem({color: puzzle => puzzle.colorSchema.textColor, returnValue: 1})))
+      .build(this);
 
-  typeProperties["kropki"] = {
-    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, self.rows);}},
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.rows);},
-    edgeEditController: edge => {
-      if (edge.allCells.length > 1) {
-        edge.isClue = true;
-        edge.clickSwitch = [{}, {image: "white_dot", returnValue: "white"}, {image: "small_circle", returnValue: "black"}];;
-      }
-    },
-    decodeClue: value => {
-      if (value=="white") {
-        return {image: "white_dot"}
-      } else if (value=="black") {
-        return {image: "small_circle"}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-  }
-
-  typeProperties["chat_room"] = {
-    needConnectors: !this.editMode,
-    cellController: cell => {
-      cell.dragProcessor = true;
-    },
-    connectorController: connector => {
-      setDragSwitch(connector, false, [{},{color: self.colorSchema.textColor, returnValue: 1}]);
-    },
-    cellEditController: cell => {
-      cell.isClue = true;
-      var chooserValues = [{}];
-      chooserValues.push({image: 'phone', returnValue: 'phone'});
-      chooserValues.push({image: 'big_white_circle', returnValue: 'white_circle'});
-      chooserValues.push({image: 'big_black_circle', returnValue: 'black_circle'});
-      for (var i=0; i<=99; i++) {
-        chooserValues.push({text: i.toString(), image: 'big_white_circle', returnValue: 'white_'+i.toString()});
-        chooserValues.push({text: i.toString(), image: 'big_black_circle', textColor: "#fff", returnValue: 'black_'+i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value=="phone") {
-        return {image: "phone"}
-      } else if (value=="black_circle") {
-        return {image: "big_black_circle"}
-      } else if (value=="white_circle") {
-        return {image: "big_white_circle"}
-      } else if (value.startsWith("black_")) {
-        return {image: "big_black_circle", text: value.substring(6), textColor: "#fff"}
-      } else if (value.startsWith("white_")) {
-        return {image: "big_white_circle", text: value.substring(6)}
-      } else {
-        return {text: value}
-      }
-    },
-  }
-
-  typeProperties["snake_belarusian"] = {
-    needNodes: true,
-    cellController: cell => {
-      setClickSwitch(cell, false, [{},{color: "#606060", returnValue: "1"},{image: "cross"}], [{},{image: "white_circle"},{image: "cross"}]);
-      if (cell.isClue && cell.data.image != "cross") {
-        setClueClickSwitch(cell, [{},{color: "#605030", returnValue: "1"},{image: "cross"}], [{},{image: "white_circle"},{image: "cross"}]);
-      }
-    },
-    cellEditController: cell => {cell.isClue = true; cell.clickSwitch = [{},{color: "tan", returnValue: "1"}];},
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch        = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    decodeClue: value => {return value=="1"?{color: "tan"}:{} },
-    collectAreas: this.editMode,
-  }
-
-  if (typeCode in typeProperties) {
-    this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
-  }
+  } else if (typeCode=="snake_belarusian") {
+    // Pencil mark of the snake is a circle, since the color is used by the cells of the areas.
+    var snake = color => controllerItem({
+      color: (puzzle, isPencil) => isPencil ? null : color,
+      image: (puzzle, isPencil) => isPencil ? "white_circle" : null,
+      returnValue: "1"});
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().edge().minCells(2).toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.submitAs("1")))
+      .add(controller().forAuthor().cell().clickSwitch()
+        .addItem(controllerItem({color: "tan", returnValue: "1"})))
+      .add(controller().forSolver().cell().noClue().clickSwitch()
+        .addItem(snake("#606060"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .add(controller().forSolver().cell().clue().clickSwitch()
+        .addItem(snake("#605030"))
+        .addItem(StdItem.CROSS.doNotSubmit()))
+      .build(this);
   }
 }
 
@@ -1967,50 +1859,6 @@ squarePuzzleNode.prototype.processDragMove = function(startElement) {
   return {newMouseStartElement: this};
 }
 
-
-function setClickSwitch(element, withClues, clickSwitch, pencilClickSwitch) {
-  if (element.isClue && !withClues) {
-    return;
-  }
-  element.clickSwitch = clickSwitch.map(val => Object.assign({}, element.data, val))
-  if (typeof pencilClickSwitch != "undefined") {
-    element.pencilClickSwitch = pencilClickSwitch;
-  } else {
-    element.pencilClickSwitch = clickSwitch.map(val => {var clone = Object.assign({}, val); delete clone.returnValue; return clone});
-  }
-}
-
-function setClueClickSwitch(element, clickSwitch, pencilClickSwitch) {
-  if (!element.isClue) {
-    return;
-  }
-  element.clickSwitch = clickSwitch.map(val => Object.assign({}, element.data, val))
-  if (typeof pencilClickSwitch != "undefined") {
-    element.pencilClickSwitch = pencilClickSwitch;
-  } else {
-    element.pencilClickSwitch = clickSwitch.map(val => {var clone = Object.assign({}, val); delete clone.returnValue; return clone});
-  }
-}
-
-function setNumberChooser(cell, start, end) {
-  var chooserValues = [{}];
-  for (var i=start; i<=end; i++) {
-    chooserValues.push({text: i.toString(), returnValue: i.toString()});
-  }
-  cell.chooserValues = chooserValues;
-}
-
-function setDragSwitch(element, withClues, dragSwitch, pencilDragSwitch) {
-  if (element.isClue && !withClues) {
-    return;
-  }
-  element.dragSwitch = dragSwitch.map(val => Object.assign({}, element.data, val))
-  if (typeof pencilDragSwitch != "undefined") {
-    element.pencilDragSwitch = pencilDragSwitch;
-  } else {
-    element.pencilDragSwitch = dragSwitch.map(val => {var clone = Object.assign({}, val); delete clone.returnValue; return clone});
-  }
-}
 
 squarePuzzleCell.prototype.chooserData = function() {
   if (this.puzzle.typeCode == "chat_room") {
