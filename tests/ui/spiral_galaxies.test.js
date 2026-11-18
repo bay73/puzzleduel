@@ -115,5 +115,22 @@ test('Automatic border between areas',(suite) => {
   assert("Edge value after second connector").that(puzzle.edges[0][0][1].getValue()).isEqualTo("bold");
   assert("Edge data after second connector").that(puzzle.edges[0][0][1].data).isEqualTo({color: puzzle.colorSchema.greyColor});
 }),
-);
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/spiral_galaxies.test.js).
+  let puzzle = suite.showPuzzle("spiral_galaxies", "4x4", {
+    "a3": "small_circle", "d4": "small_circle", "edges": {"a1-1": "black_circle", "b2-2": "black_circle", "c3-2": "black_circle"},
+    "nodes": {"c1-2": "black_circle"}});
+  puzzle.start();
+
+  // The whole grid is one area until the borders are drawn.
+  assert("Number of areas in the empty grid").that(puzzle.collectData().areas.length).isEqualTo(1);
+
+  let solution = {"areas": [["a1", "b1"], ["c1", "d1", "c2", "d2"], ["a2", "a3", "a4"], ["b2", "b3"], ["c3", "d3", "b4", "c4"], ["d4"]]};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
+);

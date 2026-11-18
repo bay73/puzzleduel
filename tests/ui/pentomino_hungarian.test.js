@@ -51,6 +51,19 @@ test('Drag outer clue inside the grid',(suite) => {
 
   assert("Target data after drag end").that(puzzle.cells[0][4].data).isEqualTo({});
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/pentomino_hungarian.test.js).
+  let puzzle = suite.showPuzzle("pentomino_hungarian", "6x6-IV", {"d1": "1", "a3": "1", "c4": "1"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"b1": "1", "c1": "1", "e1": "1", "f1": "1", "b3": "1", "c3": "1", "c5": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

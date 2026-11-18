@@ -22,6 +22,22 @@ test('Author controllers',(suite) => {
   assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
   assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/heyawake.test.js).
+  let puzzle = suite.showPuzzle("heyawake", "5x5", {
+    
+    "areas": [["a1", "b1", "a2", "b2"], ["c1", "d1", "e1", "c2", "d2", "e2"], ["a3", "b3", "c3"], ["d3", "e3", "d4", "e4", "d5", "e5"], ["a4", "b4", "a5", "b5"], ["c4", "c5"]],
+    "a1": "1", "c1": "0", "a3": "1", "d3": "2", "a4": "2", "c4": "0"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a2": "1", "c3": "1", "e3": "1", "b4": "1", "a5": "1", "d5": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

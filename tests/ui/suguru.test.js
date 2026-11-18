@@ -25,6 +25,18 @@ test('Author controllers',(suite) => {
   assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/suguru.test.js).
+  let puzzle = suite.showPuzzle("suguru", "4x4", {"areas": [["a1", "b1", "c1", "d1", "a2"], ["b2", "b3", "c3", "b4", "c4"], ["c2", "d2", "d3", "d4"], ["a3", "a4"]], "a2": "5", "c3": "5", "d4": "4"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a1": "1", "b1": "3", "c1": "4", "d1": "2", "b2": "2", "c2": "1", "d2": "3", "a3": "1", "b3": "3", "d3": "2", "a4": "2", "b4": "4", "c4": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

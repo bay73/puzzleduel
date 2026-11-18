@@ -72,6 +72,19 @@ test('Choose value in one click',(suite) => {
   assert("Cell data after mouse up").that(puzzle.cells[0][0].data).isEqualTo({text:"1", returnValue: "1"});
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/sudoku_diagonal.test.js).
+  let puzzle = suite.showPuzzle("sudoku_diagonal", "4x4", {"a1": "1", "d2": "2", "b3": "3"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  // Cells with clues are not submitted.
+  let solution = {"a2": "3", "a3": "4", "a4": "2", "b1": "2", "b2": "4", "b4": "1", "c1": "3", "c2": "1", "c3": "2", "c4": "4", "d1": "4", "d3": "1", "d4": "3"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

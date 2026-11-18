@@ -29,6 +29,18 @@ test('Author controllers',(suite) => {
   assert("Right clue click").that(puzzle.right[0].clickSwitch).isNull();
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/point_a_star.test.js).
+  let puzzle = suite.showPuzzle("point_a_star", "4x4", {"a1": "cross", "c2": "arrow_ur", "c3": "arrow_ul", "bottom": ["1", null, "1", null], "right": ["1", null, null, null]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"d1": "star", "b2": "star", "a4": "star", "c4": "star"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

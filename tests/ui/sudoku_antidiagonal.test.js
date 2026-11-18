@@ -71,6 +71,22 @@ test('Choose value in one click',(suite) => {
   assert("Cell value after mouse up").that(puzzle.cells[0][0].getValue()).isEqualTo("1");
   assert("Cell data after mouse up").that(puzzle.cells[0][0].data).isEqualTo({text:"1", returnValue: "1"});
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/sudoku_antidiagonal.test.js).
+  let puzzle = suite.showPuzzle("sudoku_antidiagonal", "6x6", {"e1": "6", "c2": "5", "b3": "6", "d4": "1", "a5": "5", "f5": "2", "c6": "3"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "a1": "1", "b1": "2", "c1": "4", "d1": "5", "f1": "3", "a2": "6", "b2": "3", "d2": "4", "e2": "2", "f2": "1", "a3": "3", "c3": "1",
+    "d3": "2", "e3": "4", "f3": "5", "a4": "4", "b4": "5", "c4": "2", "e4": "3", "f4": "6", "b5": "4", "c5": "6", "d5": "3", "e5": "1",
+    "a6": "2", "b6": "1", "d6": "6", "e6": "5", "f6": "4"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

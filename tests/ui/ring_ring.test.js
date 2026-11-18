@@ -74,5 +74,21 @@ test('Drag handler path',(suite) => {
   assert("Drag path start y after second move").that(path.toJSON().attr.y1).isAlmostEqualTo(startY);
   assert("Drag path end y after second move").that(path.toJSON().attr.y2).isAlmostEqualTo(y);
 }),
-);
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/ring_ring.test.js).
+  let puzzle = suite.showPuzzle("ring_ring", "4x4", {"a1": "black", "d4": "black"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    
+    "connectors": {"b1-h": "1", "c1-h": "1", "b3-h": "1", "c3-h": "1", "a2-h": "1", "b2-h": "1", "a4-h": "1", "b4-h": "1", "b1-v": "1", "d1-v": "1", "b2-v": "1", "d2-v": "1", "a2-v": "1", "c2-v": "1", "a3-v": "1", "c3-v": "1"}};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
+);

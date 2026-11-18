@@ -113,5 +113,21 @@ test('Automatic border between areas',(suite) => {
   assert("Edge value after second connector").that(puzzle.edges[0][0][1].getValue()).isEqualTo("bold");
   assert("Edge data after second connector").that(puzzle.edges[0][0][1].data).isEqualTo({color: puzzle.colorSchema.greyColor});
 }),
-);
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/black_white.test.js).
+  let puzzle = suite.showPuzzle("black_white", "4x4", {
+    "a1": "white_circle", "c1": "white_circle", "d1": "black_circle", "b2": "black_circle", "c2": "white_circle", "a3": "black_circle",
+    "b4": "white_circle", "d4": "black_circle"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"areas": [["a1", "b1", "a2", "b2"], ["c1", "d1"], ["c2", "d2", "c3", "d3", "c4", "d4"], ["a3", "b3", "a4", "b4"]]};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
+);

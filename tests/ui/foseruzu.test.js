@@ -115,5 +115,18 @@ test('Automatic border between areas',(suite) => {
   assert("Edge data after second connector").that(puzzle.edges[0][0][1].data).isEqualTo({color: puzzle.colorSchema.greyColor});
 }),
 
-);
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/foseruzu.test.js).
+  let puzzle = suite.showPuzzle("foseruzu", "4x4-4", {"a1": "2", "c2": "3", "b3": "2", "c4": "1"});
+  puzzle.start();
 
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"areas": [["a1", "b1", "c1", "a2"], ["d1", "c2", "d2", "d3"], ["b2", "a3", "b3", "a4"], ["c3", "b4", "c4", "d4"]]};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
+);

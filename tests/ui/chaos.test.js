@@ -83,6 +83,20 @@ test('Choose value in one click',(suite) => {
   assert("Cell data after mouse up").that(puzzle.cells[0][0].data).isEqualTo({text:"1", returnValue: "1"});
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/chaos.test.js).
+  let puzzle = suite.showPuzzle("chaos", "5x5", {"a1": "1", "a5": "1", "b2": "2", "b4": "2", "c3": "3", "d2": "4", "d4": "2", "e1": "2", "e5": "1"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "a2": "4", "a3": "1", "a4": "4", "b1": "2", "b3": "3", "b5": "4", "c1": "2", "c2": "4", "c4": "3", "c5": "1", "d1": "1", "d3": "4",
+    "d5": "4", "e2": "1", "e3": "2", "e4": "2"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

@@ -1,5 +1,17 @@
 checkerTestSuite("squares_and_rectangles", "Squares and Rectangles",
 
+// Puzzle 4x4 and its solution (W, B are white and black circles, the first white circle is on the edge between b1 and c1):
+//   .  . W .  .      a1 b1 c1 d1   - rectangle 4x1 with white circle
+//   .  .  .  |.      a2 b2 c2 | d2
+//   .  B  .  |W      a3 b3 c3 | d3 - square 3x3 with black circle and rectangle 1x3 with white circle
+//   .  .  .  |.      a4 b4 c4 | d4
+test('Correct solution',(suite) => {
+  let clues = {"edges": {"b1-1": "huge_white_circle"}, "b3": "black_circle", "d3": "white_circle"};
+  let data = {"areas":[["a1","b1","c1","d1"],["a2","b2","c2","a3","b3","c3","a4","b4","c4"],["d2","d3","d4"]]};
+
+  assert("Correct solution response").that(Checker.check("4x4", clues, data)).isEqualTo({status: "OK"});
+}),
+
 test('Touching same size area',(suite) => {
   let clues = {"c1": "black_circle", "c4": "white_circle", "edges": {"a1-1": "huge_black_circle", "d2-2": "huge_white_circle"}, "nodes": {"a3-2": "huge_black_circle"} };
   let data = {"areas":[["a1","b1","a2","b2"],["c1"],["d1","d2","d3","d4"],["c2","c3","c4"],["a3","b3","a4","b4"]]};

@@ -18,6 +18,22 @@ test('Author selectors',(suite) => {
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsAtLeast([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '15', returnValue: '15'}]);
   assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/hitori.test.js).
+  let puzzle = suite.showPuzzle("hitori", "4x4", {
+    "a1": "2", "b1": "2", "c1": "3", "d1": "4", "a2": "2", "b2": "3", "c2": "3", "d2": "1", "a3": "3", "b3": "4", "c3": "1", "d3": "1",
+    "a4": "4", "b4": "4", "c4": "2", "d4": "3"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  // Cells with clues are not submitted.
+  let solution = {};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

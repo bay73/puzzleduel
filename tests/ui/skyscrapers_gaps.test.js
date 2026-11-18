@@ -136,6 +136,18 @@ test('Process click to left clue',(suite) => {
   assert("Cell data after one click").that(puzzle.left[0].data).isEqualTo({image:"white_circle"});
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/skyscrapers_gaps.test.js).
+  let puzzle = suite.showPuzzle("skyscrapers_gaps", "4x4-3", {"bottom": [null, null, "3", null], "right": ["1", null, "1", null], "top": ["3", "2", null, null], "left": [null, null, "3", null]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a1": "1", "a2": "2", "a4": "3", "b1": "2", "b2": "3", "b3": "1", "c1": "3", "c3": "2", "c4": "1", "d2": "1", "d3": "3", "d4": "2"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

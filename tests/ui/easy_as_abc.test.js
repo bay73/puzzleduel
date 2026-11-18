@@ -147,6 +147,18 @@ test('Process click to left clue',(suite) => {
   assert("Cell data after one click").that(puzzle.left[0].data).isEqualTo({text: "C", image:"white_circle"});
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/easy_as_abc.test.js).
+  let puzzle = suite.showPuzzle("easy_as_abc", "4x4-ABC", {"a4": "cross", "bottom": ["A", null, null, null], "right": [null, null, "B", "A"], "top": [null, "B", null, null], "left": ["C", null, null, null]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a1": "C", "a2": "B", "a3": "A", "b1": "B", "b2": "A", "b4": "C", "c1": "A", "c3": "C", "c4": "B", "d2": "C", "d3": "B", "d4": "A"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

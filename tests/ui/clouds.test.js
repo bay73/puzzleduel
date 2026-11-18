@@ -59,6 +59,21 @@ test('Drag outer clue inside the grid',(suite) => {
 
   assert("Target data after drag end").that(puzzle.cells[0][4].data).isEqualTo({});
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/clouds.test.js).
+  let puzzle = suite.showPuzzle("clouds", "5x5", {"bottom": ["2", null, null, null, "2"], "right": ["2", null, "0", null, "3"]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "a1": "black", "b1": "black", "a2": "black", "b2": "black", "c4": "black", "d4": "black", "e4": "black", "c5": "black",
+    "d5": "black", "e5": "black"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

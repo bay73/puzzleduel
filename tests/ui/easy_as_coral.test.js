@@ -128,6 +128,20 @@ test('Process click to left clue',(suite) => {
   assert("Cell data after one click").that(puzzle.left[0].data).isEqualTo({text: "4", image:"white_circle"});
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/easy_as_coral.test.js).
+  let puzzle = suite.showPuzzle("easy_as_coral", "4x4", {"bottom": ["2", null, null, null], "right": [null, null, "1", "1"], "top": [null, "3", null, "4"], "left": ["4", null, 2, null]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "a1": "black", "a3": "black", "a4": "black", "b1": "black", "b2": "black", "b3": "black", "c1": "black", "d1": "black",
+    "d2": "black", "d3": "black", "d4": "black"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

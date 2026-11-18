@@ -81,5 +81,18 @@ test('Submission data',(suite) => {
   assert("Submission data").that(puzzle.collectData().areas).containsExactly([["a1","a2"],["b1","c1"],["d1","d2"],["a3","a4"],["b4","c4"],["d3","d4"],["b2"],["c2"],["b3"],["c3"]]);
 }),
 
-);
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/domino_hunt.test.js).
+  let puzzle = suite.showPuzzle("domino_hunt", "4x3-012", {"a1": "0", "b1": "0", "c1": "1", "d1": "2", "a2": "0", "b2": "2", "c2": "1", "d2": "0", "a3": "1", "b3": "2", "c3": "1", "d3": "2"});
+  puzzle.start();
 
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"areas": [["a1", "b1"], ["c1", "d1"], ["a2", "a3"], ["b2", "b3"], ["c2", "c3"], ["d2", "d3"]]};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
+);

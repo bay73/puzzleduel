@@ -36,6 +36,22 @@ test('Author controllers',(suite) => {
   assert("Right clue chooser").that(puzzle.right[0].chooserValues).containsAtLeast([{},{text: '1', returnValue: '1'},{text: '2', returnValue: '2'},{text: '3', returnValue: '3'}]);
   assert("Right clue click").that(puzzle.right[0].clickSwitch).isNull();
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/gaps.test.js).
+  let puzzle = suite.showPuzzle("gaps", "8x8", {"bottom": ["1", null, null, "1", null, null, null, "1"], "right": ["1", null, null, "1", null, null, null, "1"]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "b1": "white_circle", "d1": "white_circle", "f2": "white_circle", "h2": "white_circle", "b3": "white_circle", "d3": "white_circle",
+    "f4": "white_circle", "h4": "white_circle", "a5": "white_circle", "c5": "white_circle", "e6": "white_circle", "g6": "white_circle",
+    "a7": "white_circle", "c7": "white_circle", "e8": "white_circle", "g8": "white_circle"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

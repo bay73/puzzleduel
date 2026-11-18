@@ -25,6 +25,20 @@ test('Author controllers',(suite) => {
   assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/ripple_effect.test.js).
+  let puzzle = suite.showPuzzle("ripple_effect", "4x4", {
+    "areas": [["a1", "a2"], ["b1", "c1", "d1"], ["b2", "c2", "d2", "c3"], ["a3", "b3", "a4"], ["d3", "d4", "c4", "b4"]], "b1": "3",
+    "c3": "4", "a4": "3"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a1": "1", "c1": "2", "d1": "1", "a2": "2", "b2": "1", "c2": "3", "d2": "2", "a3": "1", "b3": "2", "d3": "3", "b4": "1", "c4": "2", "d4": "4"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

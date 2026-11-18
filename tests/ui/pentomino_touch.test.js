@@ -53,6 +53,19 @@ test('Drag outer clue inside the grid',(suite) => {
 
   assert("Target data after drag end").that(puzzle.cells[0][4].data).isEqualTo({});
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/pentomino_touch.test.js).
+  let puzzle = suite.showPuzzle("pentomino_touch", "5x5-LV", {"e1": "cross", "nodes": {"a3-2": "1"}});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a1": "1", "b1": "1", "c1": "1", "a2": "1", "a3": "1", "e3": "1", "b4": "1", "c4": "1", "d4": "1", "e4": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

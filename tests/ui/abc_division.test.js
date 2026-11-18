@@ -130,5 +130,20 @@ test('Automatic border between areas',(suite) => {
   assert("Edge value after second connector").that(puzzle.edges[0][0][1].getValue()).isEqualTo("bold");
   assert("Edge data after second connector").that(puzzle.edges[0][0][1].data).isEqualTo({color: puzzle.colorSchema.greyColor});
 }),
-);
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/abc_division.test.js).
+  let puzzle = suite.showPuzzle("abc_division", "4x3-ABC", {"a1": "A", "b1": "B", "c1": "C", "d1": "A", "a2": "C", "b2": "A", "c2": "B", "d2": "B", "a3": "B", "b3": "C", "c3": "A", "d3": "C"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  // Areas are listed in the order in which they are collected from the grid.
+  let solution = {"areas": [["a1", "b1", "c1"], ["a2", "b2", "c2"], ["d1", "d2", "d3"], ["a3", "b3", "c3"]]};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
+);

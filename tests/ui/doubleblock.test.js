@@ -91,6 +91,20 @@ test('Choose value in one click',(suite) => {
   assert("Cell data after mouse up").that(puzzle.cells[0][0].data).isEqualTo({text:"1", returnValue: "1"});
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/doubleblock.test.js).
+  let puzzle = suite.showPuzzle("doubleblock", "5x5", {"b2": "cross", "bottom": [null, "5", null, null, "4"], "right": ["4", null, "2", null, "5"]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "a2": "3", "a4": "2", "a5": "1", "b1": "1", "b3": "2", "b4": "3", "c1": "3", "c2": "1", "c5": "2", "d2": "2", "d3": "1", "d5": "3",
+    "e1": "2", "e3": "3", "e4": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

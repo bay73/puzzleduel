@@ -72,6 +72,19 @@ test('Choose value in one click',(suite) => {
   assert("Cell data after mouse up").that(puzzle.cells[0][0].data).isEqualTo({text:"1", returnValue: "1"});
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/sudoku_antiknight.test.js).
+  let puzzle = suite.showPuzzle("sudoku_antiknight", "4x4", {"a1": "1", "a2": "2", "a3": "3"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  // Cells with clues are not submitted.
+  let solution = {"a4": "4", "b1": "4", "b2": "3", "b3": "2", "b4": "1", "c1": "3", "c2": "4", "c3": "1", "c4": "2", "d1": "2", "d2": "1", "d3": "4", "d4": "3"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

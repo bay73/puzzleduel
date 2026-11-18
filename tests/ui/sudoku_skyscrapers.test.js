@@ -134,6 +134,20 @@ test('Process click to left clue',(suite) => {
   assert("Cell data after one click").that(puzzle.left[0].data).isEqualTo({image:"white_circle"});
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/sudoku_skyscrapers.test.js).
+  let puzzle = suite.showPuzzle("sudoku_skyscrapers", "4x4", {"bottom": [null, null, null, "2"], "right": ["1", null, null, null], "top": ["4", null, null, null], "left": [null, null, null, null]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "a1": "1", "a2": "2", "a3": "3", "a4": "4", "b1": "3", "b2": "4", "b3": "1", "b4": "2", "c1": "2", "c2": "3", "c3": "4", "c4": "1",
+    "d1": "4", "d2": "1", "d3": "2", "d4": "3"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

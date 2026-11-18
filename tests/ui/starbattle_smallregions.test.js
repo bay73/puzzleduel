@@ -23,6 +23,21 @@ test('Author controllers',(suite) => {
   assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
   assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/starbattle_smallregions.test.js).
+  let puzzle = suite.showPuzzle("starbattle_smallregions", "5x5-1", {
+    
+    "areas": [["a1", "b1", "a2", "a3"], ["c1", "d1", "e1", "e2", "e3"], ["b2", "c2", "d2", "b3"], ["c3", "d3", "a4", "b4", "c4", "a5"], ["d4", "e4", "b5", "c5", "d5", "e5"]]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a1": "star", "c2": "star", "e3": "star", "b4": "star", "d5": "star"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

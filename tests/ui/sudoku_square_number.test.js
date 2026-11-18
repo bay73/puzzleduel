@@ -73,6 +73,25 @@ test('Choose value in one click',(suite) => {
   assert("Cell value after mouse up").that(puzzle.cells[0][0].getValue()).isEqualTo("1");
   assert("Cell data after mouse up").that(puzzle.cells[0][0].data).isEqualTo({text:"1", returnValue: "1"});
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/sudoku_square_number.test.js).
+  let puzzle = suite.showPuzzle("sudoku_square_number", "6x6", {
+    
+    "edges": {"b1-2": "black_circle", "c1-2": "black_circle", "a3-2": "black_circle", "b3-2": "black_circle", "e3-1": "black_circle", "b4-1": "black_circle", "a5-2": "black_circle", "d5-1": "black_circle", "f5-2": "black_circle", "a6-1": "black_circle"},
+    "a1": "1", "f6": "5"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "b1": "2", "c1": "3", "d1": "4", "e1": "5", "f1": "6", "a2": "4", "b2": "5", "c2": "6", "d2": "1", "e2": "2", "f2": "3", "a3": "2",
+    "b3": "3", "c3": "1", "d3": "5", "e3": "6", "f3": "4", "a4": "5", "b4": "6", "c4": "4", "d4": "2", "e4": "3", "f4": "1", "a5": "3",
+    "b5": "1", "c5": "5", "d5": "6", "e5": "4", "f5": "2", "a6": "6", "b6": "4", "c6": "2", "d6": "3", "e6": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

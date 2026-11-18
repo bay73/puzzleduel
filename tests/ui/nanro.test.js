@@ -25,6 +25,20 @@ test('Author controllers',(suite) => {
   assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/nanro.test.js).
+  let puzzle = suite.showPuzzle("nanro", "4x4", {
+    "a1": "2", "a3": "3", "d2": "1",
+    "areas": [["a1", "a2", "b1", "b2"], ["d1", "d2"], ["a4", "b4"], ["d4"], ["c1", "c2", "a3", "b3", "c3", "d3", "c4"]]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a2": "2", "a4": "2", "b4": "2", "c4": "3", "d3": "3", "d4": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

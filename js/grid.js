@@ -296,7 +296,17 @@ gridElement.prototype.snapImage = function(center, size, imageName) {
       canvas.height = sourceImg[0].naturalHeight;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(sourceImg[0], 0, 0);
-      const base64String = canvas.toDataURL('image/png');
+      let base64String;
+      try {
+        base64String = canvas.toDataURL('image/png');
+      } catch (error) {
+        // Browsers don't allow to read image data when the page is opened as a local file.
+        // The image is still shown by its link, it is only not embedded into the picture.
+        if (error.name == "SecurityError") {
+          return;
+        }
+        throw error;
+      }
       $(defElement.node).attr("xlink:href", base64String)
   }
   const snap = this.puzzle.snap;

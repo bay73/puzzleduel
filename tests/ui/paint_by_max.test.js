@@ -110,6 +110,20 @@ test('Process click to left clue',(suite) => {
   assert("Cell data after one click").that(puzzle.left[0].data).isEqualTo({text: "3", image:"white_circle"});
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/paint_by_max.test.js).
+  let puzzle = suite.showPuzzle("paint_by_max", "4x4", {"bottom": ["1", "3", null, null], "right": [null, "2", null, "3"], "top": [null, null, "1", "2"], "left": ["3", null, 2, null]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "a1": "black", "a2": "black", "a3": "grey", "a4": "black", "b1": "black", "b2": "grey", "b3": "grey", "b4": "grey", "c1": "black",
+    "c2": "grey", "c3": "black", "c4": "grey", "d1": "grey", "d2": "black", "d3": "black", "d4": "grey"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

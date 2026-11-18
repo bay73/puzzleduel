@@ -35,6 +35,22 @@ test('Author selectors',(suite) => {
   assert("Edge click").that(puzzle.edges[0][0][1].clickSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
   assert("Edge drag").that(puzzle.edges[0][0][1].dragSwitch).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'bold'}]);
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/domino_castle_sum.test.js).
+  let puzzle = suite.showPuzzle("domino_castle_sum", "4x4-123", {
+    "b2": "black", "c2": "black", "b3": "black", "c3": "black",
+    "areas": [["b1", "c1"], ["a1", "a2"], ["b2", "c2", "b3", "c3"], ["d1", "d2"], ["a3", "a4"], ["b4", "c4"], ["d3", "d4"]],
+    "bottom": ["10", null, null, "7"], "right": ["4", null, null, "10"]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a1": "1", "b1": "1", "c1": "1", "d1": "1", "a2": "3", "d2": "2", "a3": "3", "d3": "2", "a4": "3", "b4": "3", "c4": "2", "d4": "2"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

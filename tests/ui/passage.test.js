@@ -24,6 +24,19 @@ test('Author controllers',(suite) => {
   assert("Cell chooser").that(puzzle.cells[0][0].chooserValues).containsExactly([{}, {color: puzzle.colorSchema.gridColor, returnValue: 'black'}, {image: 'cross', returnValue: 'cross'}, {text: '3', color: puzzle.colorSchema.greyColor, textColor: puzzle.colorSchema.textColor, returnValue: '3'}, {text: '4', color: puzzle.colorSchema.greyColor, textColor: puzzle.colorSchema.textColor, returnValue: '4'}, {text: '5', color: puzzle.colorSchema.greyColor, textColor: puzzle.colorSchema.textColor, returnValue: '5'}]);
   assert("Cell click").that(puzzle.cells[0][0].clickSwitch).isNull();
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/passage.test.js).
+  let puzzle = suite.showPuzzle("passage", "5x5", {"a1": "black", "b1": "3", "c3": "4", "e4": "black"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"c1": "1", "c2": "1", "c4": "1", "d4": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

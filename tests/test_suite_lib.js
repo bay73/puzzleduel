@@ -462,6 +462,10 @@ GridPoint.prototype.up = function(cells) {
 //   suite.click(puzzle, point) - mouse click at the point;
 //   suite.drag(puzzle, point1, point2) - mouse drag from one point to another;
 //       mouseEvent, click and drag accept also coordinates: click(puzzle, x, y);
+//   suite.enterSolution(puzzle, data) - enters the solution through the puzzle controls, data has the format
+//       which is submitted to the checker: values of the cells are set by clicks or by the value chooser,
+//       connectors are drawn by drag between the cells, edges are set by clicks, and areas are separated
+//       by clicks at the edges between them. It throws an error if a value can't be set;
 //   suite.cellClick(puzzle, "b3") - click at the center of the cell;
 //   suite.edgeClick(puzzle, "b3-1") - click at the middle of the cell edge
 //       (0 - top, 1 - right, 2 - bottom, 3 - left).
@@ -534,6 +538,65 @@ function uiTestSuite(name, moduleName, puzzleClassName, ...items) {
         var x = puzzle.size.leftGap + size*col + (side==1?size:(side==3?0:size/2));
         var y = puzzle.size.topGap + size*row + (side==2?size:(side==0?0:size/2));
         suite.click(puzzle, x, y);
+      };
+      // Clicks at the element until it gets the required value.
+      suite.clickToValue = function(puzzle, element, value, name) {
+        let maxClicks = element.clickSwitch ? element.clickSwitch.length : 0;
+        for (let i = 0; i < maxClicks && element.getValue() != value; i++) {
+          suite.click(puzzle, element.center());
+        }
+        if (element.getValue() != value) {
+          throw "Value " + JSON.stringify(value) + " can't be set for " + name;
+        }
+      };
+      suite.enterSolution = function(puzzle, data) {
+        let cellPosition = cell => ({col: cell.charCodeAt(0) - 'a'.charCodeAt(0), row: parseInt(cell.substring(1)) - 1});
+        for (let [key, value] of Object.entries(data)) {
+          if (key == "connectors") {
+            // Connector "a1-h" joins a1 with the cell to the right of it, "a1-v" - with the cell below it.
+            for (let connector of Object.keys(value)) {
+              let part = connector.split("-");
+              let pos = cellPosition(part[0]);
+              let other = part[1] == "h" ? puzzle.cells[pos.row][pos.col + 1] : puzzle.cells[pos.row + 1][pos.col];
+              suite.drag(puzzle, puzzle.cells[pos.row][pos.col].center(), other.center());
+            }
+          } else if (key == "edges") {
+            for (let [edge, edgeValue] of Object.entries(value)) {
+              let part = edge.split("-");
+              let pos = cellPosition(part[0]);
+              suite.clickToValue(puzzle, puzzle.edges[pos.row][pos.col][part[1]], edgeValue, "edge " + edge);
+            }
+          } else if (key == "areas") {
+            // Border is set at the right and at the bottom edges of the cell when the next cell belongs to another area.
+            let areaOfCell = {};
+            value.forEach((area, index) => area.forEach(cell => areaOfCell[cell] = index));
+            for (let row = 0; row < puzzle.rows; row++) {
+              for (let col = 0; col < puzzle.cols; col++) {
+                let name = puzzle.cells[row][col].getCoordinates();
+                if (col < puzzle.cols - 1 && areaOfCell[name] != areaOfCell[puzzle.cells[row][col + 1].getCoordinates()]) {
+                  suite.clickToValue(puzzle, puzzle.edges[row][col][1], "bold", "edge " + name + "-1");
+                }
+                if (row < puzzle.rows - 1 && areaOfCell[name] != areaOfCell[puzzle.cells[row + 1][col].getCoordinates()]) {
+                  suite.clickToValue(puzzle, puzzle.edges[row][col][2], "bold", "edge " + name + "-2");
+                }
+              }
+            }
+          } else if (/^[a-z][0-9]+$/.test(key)) {
+            let pos = cellPosition(key);
+            let cell = puzzle.cells[pos.row][pos.col];
+            if (cell.chooserValues != null) {
+              let item = cell.chooserValues.findIndex(chooserValue => chooserValue.returnValue == value);
+              if (item < 0) {
+                throw "Value " + JSON.stringify(value) + " can't be chosen for cell " + key;
+              }
+              cell.switchOnChooser(item);
+            } else {
+              suite.clickToValue(puzzle, cell, value, "cell " + key);
+            }
+          } else {
+            throw "Solution data " + key + " is not supported";
+          }
+        }
       };
       requirejs([moduleName], () => {
         if (customSetup.length > 0) {

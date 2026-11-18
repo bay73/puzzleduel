@@ -71,6 +71,22 @@ test('Choose value in one click',(suite) => {
   assert("Cell value after mouse up").that(puzzle.cells[0][0].getValue()).isEqualTo("1");
   assert("Cell data after mouse up").that(puzzle.cells[0][0].data).isEqualTo({text:"1", returnValue: "1"});
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/sudoku_notouch.test.js).
+  let puzzle = suite.showPuzzle("sudoku_notouch", "6x6", {"a1": "1", "f1": "6", "e2": "2", "a3": "2"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "b1": "2", "c1": "3", "d1": "4", "e1": "5", "a2": "4", "b2": "5", "c2": "6", "d2": "1", "f2": "3", "b3": "1", "c3": "4", "d3": "3",
+    "e3": "6", "f3": "5", "a4": "3", "b4": "6", "c4": "5", "d4": "2", "e4": "1", "f4": "4", "a5": "5", "b5": "4", "c5": "1", "d5": "6",
+    "e5": "3", "f5": "2", "a6": "6", "b6": "3", "c6": "2", "d6": "5", "e6": "4", "f6": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

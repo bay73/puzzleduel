@@ -38,6 +38,20 @@ test('Author controllers',(suite) => {
   assert("Right clue click").that(puzzle.right[0].clickSwitch).isNull();
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/snake_simple.test.js).
+  let puzzle = suite.showPuzzle("snake_simple", "5x5", {"a1": "black", "a4": "black", "bottom": ["3", null, "3", "3", "4"], "right": ["4", "4", null, "4", "3"]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "a2": "black", "b2": "black", "c2": "black", "c1": "black", "d1": "black", "e1": "black", "e2": "black", "e3": "black",
+    "e4": "black", "d4": "black", "d5": "black", "c5": "black", "b5": "black", "b4": "black"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

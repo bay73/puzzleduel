@@ -116,5 +116,16 @@ test('Automatic border between areas',(suite) => {
   assert("Edge data after second connector").that(puzzle.edges[0][0][1].data).isEqualTo({color: puzzle.colorSchema.greyColor});
 }),
 
-);
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/squares_and_rectangles.test.js).
+  let puzzle = suite.showPuzzle("squares_and_rectangles", "4x4", {"edges": {"b1-1": "huge_white_circle"}, "b3": "black_circle", "d3": "white_circle"});
+  puzzle.start();
 
+  let solution = {"areas": [["a1", "b1", "c1", "d1"], ["a2", "b2", "c2", "a3", "b3", "c3", "a4", "b4", "c4"], ["d2", "d3", "d4"]]};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
+);

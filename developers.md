@@ -185,6 +185,9 @@ For each puzzle type developer can add the next tests:
  `showPuzzle(type, dimension, data)`, `cellPoint(puzzle, "b3")`, `gridPoint(puzzle, col, row)`, `click(puzzle, point)`,
  `drag(puzzle, point1, point2)`, `cellClick(puzzle, "b3")`, `edgeClick(puzzle, "b3-1")` and `mouseEvent(point)`
  (see `uiTestSuite` in `tests/test_suite_lib.js`).
+ `enterSolution(puzzle, data)` enters a whole solution through the puzzle controls (clicks, value choosers, drags between cells, clicks at edges);
+ the data has the format which is submitted to the checker, so the "Data collector" test of a type usually enters the correct solution
+ from the checker tests and asserts that `puzzle.collectData()` returns exactly this solution.
  A point is created at the center of a cell (`cellPoint`) or at any place of the grid (`gridPoint`, coordinates are measured
  in cells from the top left corner of the grid) and then can be moved by cells: `point.right()`, `point.down(2)`, `point.left(0.5)`, `point.up()`.
  Helpers specific for the puzzle type can be added in `beforeSuite`, see `tests/ui/slalom.test.js`.

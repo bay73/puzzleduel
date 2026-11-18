@@ -47,6 +47,20 @@ test('Author controllers',(suite) => {
   assert("Left clue click").that(puzzle.left[0].clickSwitch).isNull();
 }),
 
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/magic_snail.test.js).
+  let puzzle = suite.showPuzzle("magic_snail", "5x5-123", {
+    "d3": "1", "b3": "3", "bottom": [null, null, null, null, null], "right": [null, null, null, null, null],
+    "top": ["2", null, null, null, null], "left": [null, null, null, null, null]});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {"a2": "2", "a4": "1", "a5": "3", "b1": "1", "b5": "2", "c1": "2", "c2": "3", "c5": "1", "d1": "3", "d4": "2", "e2": "1", "e3": "2", "e4": "3"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-

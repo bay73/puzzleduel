@@ -77,6 +77,21 @@ test('Choose value in one click',(suite) => {
   assert("Cell value after mouse up").that(puzzle.cells[0][0].getValue()).isEqualTo("1");
   assert("Cell data after mouse up").that(puzzle.cells[0][0].data).isEqualTo({text:"1", returnValue: "1"});
 }),
+
+// Data collector tests
+test('Data collector',(suite) => {
+  // The puzzle and its solution are taken from the checker tests (tests/checkers/sudoku_pair_sum.test.js).
+  let puzzle = suite.showPuzzle("sudoku_pair_sum", "4x4", {"edges": {"b1-1": "+4", "c2-1": "+5", "a2-2": "+4"}, "a1": "2"});
+  puzzle.start();
+
+  assert("Submission data of the empty grid").that(puzzle.collectData()).isEqualTo({});
+
+  let solution = {
+    "b1": "3", "c1": "1", "d1": "4", "a2": "1", "b2": "4", "c2": "2", "d2": "3", "a3": "3", "b3": "1", "c3": "4", "d3": "2", "a4": "4",
+    "b4": "2", "c4": "3", "d4": "1"};
+  suite.enterSolution(puzzle, solution);
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo(solution);
+}),
+
 );
-
-
