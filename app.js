@@ -86,15 +86,21 @@ app.get('/robots.txt', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-setInterval(()=>{
-  const used = process.memoryUsage().heapUsed / 1024 / 1024;
-  console.log('Memory used:    ' + (Math.round(used * 100) / 100) + ' MB');
-  cache.printCacheSize();
-  profiler.dump(console.log);
-},60000)
+// The server is started only when the file is run directly (node app.js).
+// Tests load the application with require and send requests to it without listening on a port.
+if (require.main === module) {
+  setInterval(()=>{
+    const used = process.memoryUsage().heapUsed / 1024 / 1024;
+    console.log('Memory used:    ' + (Math.round(used * 100) / 100) + ' MB');
+    cache.printCacheSize();
+    profiler.dump(console.log);
+  },60000)
 
-setInterval(cache.clearOutdatedCache, 10*60*1000)
+  setInterval(cache.clearOutdatedCache, 10*60*1000)
 
-setInterval(cache.resetCache, 24*60*60*1000)
+  setInterval(cache.resetCache, 24*60*60*1000)
 
-app.listen(PORT, console.log(`Server started on port ${PORT} at ` + new Date().toString()));
+  app.listen(PORT, console.log(`Server started on port ${PORT} at ` + new Date().toString()));
+}
+
+module.exports = app;

@@ -50,3 +50,31 @@ jobs:
     # Runs all suites of tests.html (UI tests and checkers tests) in headless browser.
     - name: Run browser tests
       run: npm run test:ui
+
+  server:
+    name: Server tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'lts/*'
+        cache: npm
+
+    # MongoDB for the tests is downloaded by mongodb-memory-server, it is kept between the runs.
+    - name: Cache MongoDB binaries
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/mongodb-binaries
+        key: mongodb-binaries-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+    - name: Install packages
+      run: npm ci
+
+    # Runs the server with temporary databases in memory and sends requests to it.
+    - name: Run server tests
+      run: npm run test:server

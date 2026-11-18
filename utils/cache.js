@@ -13,6 +13,7 @@ const CONTEST_NAME_CACHE_TTL = 10*60*60*1000; // 10 hours
 const CONTEST_CACHE_TTL = 10*60*1000; // 10 minutes
 const PUZZLETYPE_CACHE_TTL = 10*60*60*1000; // 10 hours
 const PUZZLE_CACHE_TTL = 60*60*1000; // 1 hour
+const MISSING_PUZZLE_CACHE_TTL = 60*1000; // 1 minute
 const RATING_CACHE_TTL = 10*60*1000; // 10 minutes
 const USER_CACHE_TTL = 60*60*1000; // 1 hour
 const SOLVINGTIME_CACHE_TTL = 20*1000; // 20 seconds
@@ -94,6 +95,11 @@ var puzzleToObj = function(puzzle) {
 
 var readPuzzleFromDb = async function(cacheId, condition) {
   const puzzle = await Puzzle.findOne(condition);
+  if (!puzzle) {
+    // There is no such puzzle. It is also remembered for a short time to not read the database for every request.
+    puzzleCache[cacheId] = {puzzle: null, fresheness: new Date().getTime() + MISSING_PUZZLE_CACHE_TTL};
+    return null;
+  }
   const puzzleObj = puzzleToObj(puzzle);
   let fresheness = new Date().getTime() + PUZZLE_CACHE_TTL;
   if (puzzleObj.changeDate && puzzleObj.changeDate.getTime() > new Date().getTime() && puzzleObj.changeDate.getTime() < fresheness) {

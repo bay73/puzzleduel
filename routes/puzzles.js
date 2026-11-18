@@ -502,7 +502,7 @@ router.get('/:puzzleid/log/:userid', async (req, res, next) => {
       cache.readSolvingTime(req.params.puzzleid)
     ]);
     const solvedByCurrent = times.filter(time => typeof time.solvingTime!="undefined" && time.userId.equals(userId)).length > 0;
-    const isAuthor = puzzle.author.equals(userId)
+    const isAuthor = puzzle && puzzle.author.equals(userId)
     if (!puzzle || (puzzle.needLogging && !solvedByCurrent && !isAuthor)) {
       res.sendStatus(404);
       return;

@@ -211,4 +211,11 @@ For each puzzle type developer can add the next tests:
    The window size is fixed to 1440x900, as some tests emulate mouse clicks at positions depending on it.
    It fails also if there is a test file which is not listed in `tests/all_tests.js`.
 
- Both `npm test` and `npm run test:ui` are executed automatically for every push and pull request to master (see `.github/workflows/tests.yml`).
+*  **Server tests** - `npm run test:server` runs the tests from `tests/server` (they use the test runner of Node).
+   The server is loaded with temporary databases in memory (`mongodb-memory-server`, MongoDB is downloaded at the first run)
+   and requests are sent to it by `supertest`, so the tests check routes, sessions and database queries together.
+   `tests/server/helper.js` starts and stops this environment, clears the data between the tests and creates users and puzzles.
+   The addresses of the databases are passed by the environment variables `MONGO_DATA_URI`, `MONGO_LOG_URI` and `MONGO_AUTH_URI`;
+   when `NODE_ENV` is `test` the server refuses to start without them, so the tests can't be connected to the real databases.
+
+ All three commands (`npm test`, `npm run test:ui` and `npm run test:server`) are executed automatically for every push and pull request to master (see `.github/workflows/tests.yml`).
