@@ -152,7 +152,6 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .addUpgradeClue(clue=>clue=="white"?null:clue)
       .build(this);
-/*
   } else if (typeCode=="sudoku_square_number") {
     var maxValue = this.rows;
     this.typeProperties = decribePuzzleType()
@@ -174,50 +173,8 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().inner().noClue().chooser()
         .addNumbers(1, maxValue))
       .build(this);
-*/
   } else {
   var typeProperties = {}
-
-  typeProperties["sudoku_square_number"] = {
-    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
-    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
-    edgeEditController: edge => {
-      if (edge.allCells.length > 1) {
-        var clickSwitch = [{}, {image: "small_circle", returnValue: "black_circle"}];
-        edge.isClue = true;
-        edge.clickSwitch = clickSwitch.map(val => Object.assign({color: edge.data.color}, val));
-      }
-    },
-    decodeClue: value => {
-      if (value=="black_circle") {
-        return {image: "small_circle"}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-  }
-
-  typeProperties["sudoku_pair_sum"] = {
-    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
-    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
-    edgeEditController: edge => {
-      edge.isClue = true;
-      var chooserValues = [{}];
-      for (var i=3; i<2*self.rows; i++) {
-        chooserValues.push({image: "small_circle", text: i.toString(), textColor: "#fff", returnValue: "+"+i.toString()});
-      }
-      edge.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value.startsWith("+")) {
-        return {image: "small_circle", text: value.replace(/^\++/, ''), textColor: "#fff"};
-      } else {
-        return {text: value};
-      }
-    },
-    cellMultiPencil: true,
-  }
 
   typeProperties["sudoku_difference"] = {
     cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},

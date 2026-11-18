@@ -477,7 +477,7 @@ ControllerBuilder.prototype.build = function(){
     return function(gridElement) {
       if (self.editMode) {
         gridElement.isClue = true;
-        gridElement.chooserValues = self.items.map(item => processControllerData(item.data, null, gridElement.puzzle, false));
+        gridElement.chooserValues = self.items.map(item => keepFinalColor(processControllerData(item.data, null, gridElement.puzzle, false), gridElement, self));
       } else {
         gridElement.chooserValues = self.items.map(item => processControllerData(item.data, gridElement, gridElement.puzzle, false));
       }
@@ -487,7 +487,7 @@ ControllerBuilder.prototype.build = function(){
     return function(gridElement) {
       if (self.editMode) {
         gridElement.isClue = true;
-        gridElement.clickSwitch = self.items.map(item => processControllerData(item.data, null, gridElement.puzzle, false));
+        gridElement.clickSwitch = self.items.map(item => keepFinalColor(processControllerData(item.data, null, gridElement.puzzle, false), gridElement, self));
       } else {
         gridElement.clickSwitch = self.items.map(item => processControllerData(item.data, gridElement, gridElement.puzzle, false));
         gridElement.pencilClickSwitch = self.items.map(item => processControllerData(item.data, gridElement, gridElement.puzzle, true));
@@ -497,7 +497,7 @@ ControllerBuilder.prototype.build = function(){
     return function(gridElement) {
       if (self.editMode) {
         gridElement.isClue = true;
-        gridElement.dragSwitch = self.items.map(item => processControllerData(item.data, null, gridElement.puzzle, false));
+        gridElement.dragSwitch = self.items.map(item => keepFinalColor(processControllerData(item.data, null, gridElement.puzzle, false), gridElement, self));
       } else {
         gridElement.dragSwitch = self.items.map(item => processControllerData(item.data, gridElement, gridElement.puzzle, false));
         gridElement.pencilDragSwitch = self.items.map(item => processControllerData(item.data, gridElement, gridElement.puzzle, true));
@@ -581,6 +581,15 @@ processControllerData = function(data, element, puzzle, isPencil, ignoreReturnVa
   }
   result = copyDecorations(result, data, puzzle, isPencil);
   return result;
+}
+
+// Final element (e.g. bold edge of sudoku box) keeps its color when the author's item doesn't define one.
+// Edges which define areas are excluded: their color is the value which is collected.
+keepFinalColor = function(data, gridElement, controller) {
+  if (gridElement.isFinal && !controller.collectAreas && (typeof data.color == "undefined" || data.color == null)) {
+    data.color = gridElement.data.color;
+  }
+  return data;
 }
 
 containClues = function(gridElement, clueItems) {

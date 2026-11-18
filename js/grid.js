@@ -32,7 +32,12 @@ gridElement.prototype.clearData = function() {
 gridElement.prototype.setClue = function(clueData) {
   this.isClue = true;
   if (this.isFinal) {
-    this.data = Object.assign(this.data, clueData);
+    // Final element (e.g. bold edge of sudoku box) keeps its own decoration where the clue doesn't define one.
+    for (const [key, value] of Object.entries(clueData)) {
+      if (typeof value != "undefined" && value != null) {
+        this.data[key] = value;
+      }
+    }
   } else {
     this.data = Object.assign({text: null, image: null, color: null, textColor: null}, clueData);
   }
