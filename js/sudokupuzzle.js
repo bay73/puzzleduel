@@ -157,7 +157,7 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
     this.typeProperties = decribePuzzleType()
       .add(controller().forAuthor().cell().chooser()
         .addNumbers(1, maxValue))
-      .add(controller().forAuthor().edge().clickSwitch()
+      .add(controller().forAuthor().edge().minCells(2).clickSwitch()
         .addItem(StdItem.SMALL_CIRCLE.submitAs("black_circle")))
       .add(controller().forSolver().cell().inner().noClue().chooser()
         .addNumbers(1, maxValue))
@@ -173,377 +173,96 @@ sudokuPuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().inner().noClue().chooser()
         .addNumbers(1, maxValue))
       .build(this);
-  } else {
-  var typeProperties = {}
-
-  typeProperties["sudoku_difference"] = {
-    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
-    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
-    edgeEditController: edge => {
-      edge.isClue = true;
-      var chooserValues = [{}];
-      for (var i=1; i<self.rows; i++) {
-        chooserValues.push({image: "small_circle", text: i.toString(), textColor: "#fff", returnValue: "-"+i.toString()});
-      }
-      edge.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value.startsWith("-")) {
-        return {image: "small_circle", text: value.replace(/^\-+/, ''), textColor: "#fff"};
-      } else {
-        return {text: value};
-      }
-    },
-    cellMultiPencil: true,
-  }
-
-  typeProperties["sudoku_blackout"] = {
-    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
-    cellEditController: cell => {
-      setNumberChooser(cell, 1, self.rows)
-      cell.chooserValues.push({color: self.colorSchema.gridColor, returnValue: "black"});
-    },
-    decodeClue: value => {
-      if (value=="black") {
-        return {color: self.colorSchema.gridColor};
-      } else {
-        return {text: value};
-      }
-    },
-    cellMultiPencil: true,
-  }
-
-  typeProperties["sudoku_consecutive"] = {
-    cellController: cell => {if (!cell.isClue) setNumberChooser(cell, 1, self.rows)},
-    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
-    edgeEditController: edge => {
-      if (edge.allCells.length > 1) {
-        var clickSwitch = [{}, {image: "white_dot", returnValue: "white_dot"}];
-        edge.isClue = true;
-        edge.clickSwitch = clickSwitch.map(val => Object.assign({color: edge.data.color}, val));
-      }
-    },
-    decodeClue: value => {
-      if (value=="white_dot") {
-        return {image: "white_dot"}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-  }
-
-  typeProperties["sudoku_battenberg"] = {
-    needNodes: true,
-    cellController: cell => {
-       if (!cell.isClue) {
-         var chooserValues = [{}];
-         for (var i=1; i<=self.rows; i++) {
-           chooserValues.push({text: i.toString(), returnValue: i.toString()});
-         }
-         chooserValues.push({image: "odd_1"});
-         chooserValues.push({image: "even_1"});
-         cell.chooserValues = chooserValues;
-       }
-    },
-    cellEditController: cell => setNumberChooser(cell, 1, self.rows),
-    nodeEditController: node => {
-      if (node.allCells.length > 3) {
-        node.isClue = true;
-        node.clickSwitch = [{}, {image: "battenberg_small", returnValue: "battenberg"}];
-      }
-    },
-    decodeClue: value => {
-      if (value=="battenberg") {
-        return {image: "battenberg_small"}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-  }
-
-  typeProperties["sudoku_fortress"] = {
-    cellController: cell => {
-      if (!cell.data.text) {
-        var chooserValues = [{color: cell.data.color}];
-        for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor , returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      }
-    },
-    cellEditController: cell => {
-      var chooserValues = [{}];
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      chooserValues.push({color: "grey", returnValue: "-"});
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), color: "grey", returnValue: "-" + i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value=="-") {
-        return {color: "grey"}
-      } else if (value.startsWith("-")) {
-        return {color: "grey", text: value.substring(1)}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-    toChooserShow: value => {
-      showValue = Object.assign({}, value);
-      if (!self.editMode) {
-        delete showValue.color;
-      }
-      return showValue;
-    },
-  }
-
-  typeProperties["sudoku_selfjoint"] = {
-    cellController: cell => {
-      if (!cell.data.text) {
-        var chooserValues = [{color: cell.data.color}];
-        for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      }
-    },
-    cellEditController: cell => {
-      var chooserValues = [{}];
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      chooserValues.push({color: "grey", returnValue: "-"});
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), color: "grey", returnValue: "-" + i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value=="-") {
-        return {color: "grey"}
-      } else if (value.startsWith("-")) {
-        return {color: "grey", text: value.substring(1)}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-    toChooserShow: value => {
-      showValue = Object.assign({}, value);
-      if (!self.editMode) {
-        delete showValue.color;
-      }
-      return showValue;
-    },
-  }
-
-  typeProperties["sudoku_extra_regions"] = {
-    cellController: cell => {
-      if (!cell.data.text) {
-        var chooserValues = [{color: cell.data.color}];
-        for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      }
-    },
-    cellEditController: cell => {
-      var chooserValues = [{}];
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      chooserValues.push({color: "grey", returnValue: "-"});
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), color: "grey", returnValue: "-" + i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value=="-") {
-        return {color: "grey"}
-      } else if (value.startsWith("-")) {
-        return {color: "grey", text: value.substring(1)}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-    toChooserShow: value => {
-      showValue = Object.assign({}, value);
-      if (!self.editMode) {
-        delete showValue.color;
-      }
-      return showValue;
-    },
-  }
-
-  typeProperties["sudoku_same_sum"] = {
-    cellController: cell => {
-      if (!cell.data.text) {
-        var chooserValues = [{color: cell.data.color}];
-        for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      }
-    },
-    cellEditController: cell => {
-      var chooserValues = [{}];
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      chooserValues.push({color: "grey", returnValue: "-"});
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), color: "grey", returnValue: "-" + i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value=="-") {
-        return {color: "grey"}
-      } else if (value.startsWith("-")) {
-        return {color: "grey", text: value.substring(1)}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-    toChooserShow: value => {
-      showValue = Object.assign({}, value);
-      if (!self.editMode) {
-        delete showValue.color;
-      }
-      return showValue;
-    },
-  }
-
-  typeProperties["sudoku_even_odd"] = {
-    cellController: cell => {
-      if (!cell.data.text) {
-        var chooserValues = [{color: cell.data.color}];
-        for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      }
-    },
-    cellEditController: cell => {
-      var chooserValues = [{}];
-      for (var i=1; i<=self.rows; i++) {
+  } else if (typeCode=="sudoku_difference") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().edge().chooser()
+        .addNumbers(1, maxValue - 1, StdColor.WHITE_TEXT, "small_circle", i=>"-"+i))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .build(this);
+  } else if (typeCode=="sudoku_blackout") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(StdItem.BLACK))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .build(this);
+  } else if (typeCode=="sudoku_consecutive") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().edge().minCells(2).clickSwitch()
+        .addItem(StdItem.WHITE_DOT))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .build(this);
+  } else if (typeCode=="sudoku_battenberg") {
+    var maxValue = this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forAuthor().node().minCells(4).clickSwitch()
+        .addItem(StdItem.BATTENBERG))
+      .add(controller().forSolver().cell().inner().noClue().chooser()
+        .addNumbers(1, maxValue)
+        .addItem(controllerItem({image: "odd_1"}))
+        .addItem(controllerItem({image: "even_1"})))
+      .build(this);
+  } else if (["sudoku_fortress", "sudoku_selfjoint", "sudoku_extra_regions", "sudoku_same_sum",
+              "sudoku_hundred", "sudoku_even_odd", "sudoku_odd"].includes(typeCode)) {
+    // Sudoku with grey cells: the author marks a cell as grey (with or without a digit),
+    // the solver enters digits both to white and to grey cells.
+    var maxValue = this.rows;
+    var grey = {color: "grey"};
+    var greyCell = controllerItem({color: "grey", returnValue: "-"});
+    var asGrey = i => "-" + i;
+    var author = controller().forAuthor().cell().chooser();
+    if (typeCode=="sudoku_odd") {
+      author.addNumbers(1, maxValue).addItem(greyCell);
+    } else if (typeCode=="sudoku_even_odd") {
+      for (var i=1; i<=maxValue; i++) {
         if (i%2==0) {
-          chooserValues.push({text: i.toString(), color: "grey", returnValue: "-" + i.toString()});
+          author.addNumbers(i, i, grey, undefined, asGrey);
         } else {
-          chooserValues.push({text: i.toString(), returnValue: i.toString()});
+          author.addNumbers(i, i);
         }
       }
-      chooserValues.push({color: "grey", returnValue: "-"});
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value =="-") {
-        return {color: "grey"}
-      } else if (value.startsWith("-")) {
-        return {color: "grey", text: value.substring(1)}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-    toChooserShow: value => {
-      showValue = Object.assign({}, value);
+      author.addItem(greyCell);
+    } else {
+      author.addNumbers(1, maxValue).addItem(greyCell).addNumbers(1, maxValue, grey, undefined, asGrey);
+    }
+    this.typeProperties = decribePuzzleType()
+      .add(author)
+      .add(controller().forSolver().cell().inner().noText().chooser()
+        .addNumbers(1, maxValue, {textColor: puzzle => puzzle.colorSchema.textColor}))
+      .build(this);
+    // Solver's chooser shows digits without the color of the cell.
+    this.typeProperties.toChooserShow = function(value) {
+      let showValue = Object.assign({}, value);
       if (!self.editMode) {
         delete showValue.color;
       }
       return showValue;
-    },
-  }
-
-  typeProperties["sudoku_hundred"] = {
-    cellController: cell => {
-      if (!cell.data.text) {
-        var chooserValues = [{color: cell.data.color}];
-        for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
+    }
+    if (typeCode=="sudoku_odd" || typeCode=="sudoku_even_odd") {
+      // Author's chooser doesn't contain all combinations of digit and color for these types,
+      // but any combination is accepted as a clue.
+      this.typeProperties.decodeClue = function(value) {
+        if (value=="-") {
+          return {color: "grey"};
+        } else if (value.startsWith("-")) {
+          return {color: "grey", text: value.substring(1)};
+        } else {
+          return {text: value};
         }
-        cell.chooserValues = chooserValues;
       }
-    },
-    cellEditController: cell => {
-      var chooserValues = [{}];
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      chooserValues.push({color: "grey", returnValue: "-"});
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), color: "grey", returnValue: "-" + i.toString()});
-      }
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value=="-") {
-        return {color: "grey"}
-      } else if (value.startsWith("-")) {
-        return {color: "grey", text: value.substring(1)}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-    toChooserShow: value => {
-      showValue = Object.assign({}, value);
-      if (!self.editMode) {
-        delete showValue.color;
-      }
-      return showValue;
-    },
-  }
-
-  typeProperties["sudoku_odd"] = {
-    cellController: cell => {
-      if (!cell.data.text) {
-        var chooserValues = [{color: cell.data.color}];
-        for (var i=1; i<=self.rows; i++) {
-          chooserValues.push({text: i.toString(), color: cell.data.color, textColor: self.colorSchema.textColor, returnValue: i.toString()});
-        }
-        cell.chooserValues = chooserValues;
-      }
-    },
-    cellEditController: cell => {
-      var chooserValues = [{}];
-      for (var i=1; i<=self.rows; i++) {
-        chooserValues.push({text: i.toString(), returnValue: i.toString()});
-      }
-      chooserValues.push({color: "grey", returnValue: "-"});
-      cell.chooserValues = chooserValues;
-    },
-    decodeClue: value => {
-      if (value =="-") {
-        return {color: "grey"}
-      } else if (value.startsWith("-")) {
-        return {color: "grey", text: value.substring(1)}
-      } else {
-        return {text: value}
-      }
-    },
-    cellMultiPencil: true,
-    toChooserShow: value => {
-      showValue = Object.assign({}, value);
-      if (!self.editMode) {
-        delete showValue.color;
-      }
-      return showValue;
-    },
-  }
-
-  if (typeCode in typeProperties) {
-    this.typeProperties = Object.assign({}, this.typeProperties,  typeProperties[typeCode]);
-  }
+    }
   }
   // Cells show all digits at once, even for sudoku bigger than 9.
   // "+10" item is used only for outer clues of X Sums, where sums can be big.
@@ -633,14 +352,6 @@ diagonalPuzzleType.prototype.drawBoard = function() {
     this.size.leftGap + this.cols * this.size.unitSize, this.size.topGap,
     this.size.leftGap, this.size.topGap + this.rows * this.size.unitSize);
   line.attr(attr);
-}
-
-function setNumberChooser(cell, start, end) {
-  var chooserValues = [{}];
-  for (var i=start; i<=end; i++) {
-    chooserValues.push({text: i.toString(), returnValue: i.toString()});
-  }
-  cell.chooserValues = chooserValues;
 }
 
 })

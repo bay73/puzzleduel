@@ -25,12 +25,7 @@ PuzzleTypeBuilder = function() {
 
 // Adds new controller to the puzzle type descriptor.
 PuzzleTypeBuilder.prototype.add = function(controller) {
-  this.controllers.push(controller);
-  if (controller.addDrag) {
-    dragController = Object.assign(new controller.constructor, controller);
-    dragController.type = ControllerBuilder.DRAG_SWITCH;
-    this.controllers.push(dragController);
-  }
+  // Condition is defined before the drag copy is created, so the copy follows the same condition.
   if (controller.conditions.length > 0) {
     controller.condition = function(gridElement) {
       for (var i=0; i<controller.conditions.length;i++) {
@@ -40,6 +35,12 @@ PuzzleTypeBuilder.prototype.add = function(controller) {
       }
       return true;
     };
+  }
+  this.controllers.push(controller);
+  if (controller.addDrag) {
+    dragController = Object.assign(new controller.constructor, controller);
+    dragController.type = ControllerBuilder.DRAG_SWITCH;
+    this.controllers.push(dragController);
   }
   return this;
 }
@@ -358,6 +359,19 @@ ControllerBuilder.prototype.clueNot = function(...clueItems){
   if (clueItems.length != 0) {
     this.conditions.push(gridElement => !containClues(gridElement, clueItems));
   }
+  return this;
+}
+
+// Applies controller only to elements without text (e.g. colored clue cells without a digit).
+ControllerBuilder.prototype.noText = function(){
+  this.conditions.push(gridElement => !gridElement.data.text);
+  return this;
+}
+
+// Applies controller only to elements which touch at least the given number of cells.
+// E.g. minCells(2) for edges and minCells(4) for nodes of the square grid exclude the border of the grid.
+ControllerBuilder.prototype.minCells = function(count){
+  this.conditions.push(gridElement => gridElement.allCells.length >= count);
   return this;
 }
 

@@ -1598,6 +1598,17 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .build(this);
 
+  } else if (typeCode=="sudoku_irregular" || typeCode=="sudoku_double") {
+    // Double sudoku contains every digit twice in each row, column and area.
+    var maxValue = typeCode=="sudoku_double" ? this.rows/2 : this.rows;
+    this.typeProperties = decribePuzzleType()
+      .add(controller().forAuthor().edge().minCells(2).toAreas().clickSwitch().withDrag()
+        .addItem(StdItem.BLACK.submitAs("1")))
+      .add(controller().forAuthor().cell().chooser()
+        .addNumbers(1, maxValue))
+      .add(controller().forSolver().cell().noClue().chooser()
+        .addNumbers(1, maxValue))
+      .build(this);
   } else {
 
   var typeProperties = {}
@@ -1826,38 +1837,6 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
     nodeEditController: node => node.dragProcessor = true,
     decodeClue: value => {return value=="1"?{color: "tan"}:{} },
     collectAreas: this.editMode,
-  }
-
-  typeProperties["sudoku_irregular"] = {
-    needNodes: true,
-    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, self.rows);}},
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.rows);},
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    collectAreas: this.editMode,
-    cellMultiPencil: true,
-  }
-
-  typeProperties["sudoku_double"] = {
-    needNodes: true,
-    cellController: cell => {if (!cell.isClue) {setNumberChooser(cell, 1, self.rows/2);}},
-    cellEditController: cell => {cell.isClue = true; setNumberChooser(cell, 1, self.rows/2);},
-    edgeEditController: edge => {
-       if (edge.allCells.length > 1) {
-         edge.isClue = true;
-         edge.clickSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-         edge.dragSwitch = [{},{color: self.colorSchema.gridColor, returnValue: "1"}];
-       }
-    },
-    nodeEditController: node => node.dragProcessor = true,
-    collectAreas: this.editMode,
-    cellMultiPencil: true,
   }
 
   if (typeCode in typeProperties) {
