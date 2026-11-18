@@ -26,7 +26,7 @@ test('Wrong clue for the column',(suite) => {
     "c1-h": "1", "d1-h": "1", "c4-h": "1", "d4-h": "1", "a2-h": "1", "b2-h": "1", "c2-h": "1", "a3-h": "1", "b3-h": "1", "c3-h": "1",
     "c1-v": "1", "e1-v": "1", "c2-v": "1", "e2-v": "1", "c3-v": "1", "e3-v": "1", "a2-v": "1", "d2-v": "1"}};
 
-  assert("Wrong column clue response").that(Checker.check("5x4", clues, data)).isEqualTo({status: "Wrong length of the longest line in the column", col: 0, errors: ["a1", "a2", "a3", "a4"]});
+  assert("Wrong column clue response").that(Checker.check("5x4", clues, data)).isEqualTo({status: "Wrong length of the longest line in the column", errors: ["a1", "a2", "a3", "a4"]});
 }),
 
 test('Wrong clue for the row',(suite) => {
@@ -36,7 +36,7 @@ test('Wrong clue for the row',(suite) => {
     "c1-h": "1", "d1-h": "1", "c4-h": "1", "d4-h": "1", "a2-h": "1", "b2-h": "1", "c2-h": "1", "a3-h": "1", "b3-h": "1", "c3-h": "1",
     "c1-v": "1", "e1-v": "1", "c2-v": "1", "e2-v": "1", "c3-v": "1", "e3-v": "1", "a2-v": "1", "d2-v": "1"}};
 
-  assert("Wrong row clue response").that(Checker.check("5x4", clues, data)).isEqualTo({status: "Wrong length of the longest line in the row", row: 0, errors: ["a1", "b1", "c1", "d1", "e1"]});
+  assert("Wrong row clue response").that(Checker.check("5x4", clues, data)).isEqualTo({status: "Wrong length of the longest line in the row", errors: ["a1", "b1", "c1", "d1", "e1"]});
 }),
 
 test('Line in black cell',(suite) => {

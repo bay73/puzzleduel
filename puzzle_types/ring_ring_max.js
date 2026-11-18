@@ -63,21 +63,22 @@ check:function(dimension, clueData, data){
     return res;
   }
   var rectangles = res.rectangles
+  // Wrong clue is reported with all cells of its column or row.
   var res = Checker.checkColumnClues(rectangles, bottom);
   if (res.status != "OK") {
-    res.errors = [];
+    var errors = [];
     for (var y=0; y < dim.rows; y++) {
-        res.errors.push(util.coord(res.col, y));
-      }
-    return res;
+      errors.push(util.coord(res.col, y));
+    }
+    return {status: res.status, errors: errors};
   }
   var res = Checker.checkRowClues(rectangles, right);
   if (res.status != "OK") {
-    res.errors = [];
+    var errors = [];
     for (var x=0; x < dim.cols; x++) {
-        res.errors.push(util.coord(x, res.row));
-      }
-    return res;
+      errors.push(util.coord(x, res.row));
+    }
+    return {status: res.status, errors: errors};
   }
   return {status: "OK"};
 },
