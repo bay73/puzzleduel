@@ -4,6 +4,7 @@ const Puzzle = require('../models/Puzzle');
 const User = require('../models/User');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const leagueSettings = require('../utils/league_settings')();
+const leagueCalc = require('./calc/league');
 
 async function saveLeague(ids, leagueOrder, leagueStartDate, leagueEndDate, users, updateUsers) {
   console.log(leagueSettings[ids[leagueOrder]].name, users.length)
@@ -81,22 +82,10 @@ async function recountLeague(leagueId, startDate) {
   for (let i = 0; i < league.participants.length; i++) {
     const participant = league.participants[i];
     const times = await UserSolvingTime.find({userId: participant.userId, puzzleId: {$in: puzzleIds}, date: {$lt: endDate}}).sort({date: 1})
-    const result = {userId: participant.userId, userName: participant.userName, solvedCount: 0, totalSolvedCount: 0, totalTime: 0};
-    for (let p = 0; p < times.length; p++) {
-      if (times[p].hidden != true && times[p].solvingTime > 0) {
-        result.totalTime += times[p].solvingTime;
-        result.totalSolvedCount++;
-        result.userName = times[p].userName || result.userName;
-        if (times[p].errCount == 0) {
-          result.solvedCount++;
-        }
-      }
-    }
-    puzzles.filter(puzzle => puzzle.author.equals(participant.userId)).forEach(puzzle => {
-      result.totalTime += puzzle.difficulty;
-      result.totalSolvedCount++;
-      result.solvedCount++;
-    })
+    const result = leagueCalc.participantResult(
+      participant,
+      times,
+      puzzles.filter(puzzle => puzzle.author.equals(participant.userId)).map(puzzle => puzzle.difficulty));
     results.push(result);
   }
   console.log("League " + leagueId + ". Results for " + results.length + " user found!")
@@ -166,22 +155,13 @@ async function createNextMonth(startDate) {
 
   await League.deleteMany({start: leagueStartDate})
 
-  let sorting = function(r1, r2) {
-    if (r1.solvedCount != r2.solvedCount) return r2.solvedCount - r1.solvedCount;
-    if (r1.totalSolvedCount != r2.totalSolvedCount) return r2.totalSolvedCount - r1.totalSolvedCount;
-    return r1.totalTime - r2.totalTime;
-  }
-
   let takeFrom = async function (leagueId, fromIndex, toIndex, exclude0) {
     const league = await League.findOne({code: leagueId, start: previousLeagueStartDate})
     if (!league) {
       console.log("League " + ids[leagueOrder] + " not found")
       return [];
     }
-    const results = league.results.sort(sorting).slice(fromIndex, toIndex)
-    return results
-      .filter(result => {if (exclude0) {return result.totalSolvedCount > 0} else {return true}})
-      .map(result => {return {userId: result.userId, userName: result.userName}});
+    return leagueCalc.takePlaces(league.results, fromIndex, toIndex, exclude0);
   }
 
   let leagueOrder = 0;

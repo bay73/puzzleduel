@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   checkers:
-    name: Checkers tests
+    name: Checkers and unit tests
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +23,8 @@ jobs:
       with:
         node-version: 'lts/*'
 
-    # Checkers have no external dependencies, so packages are not installed.
-    - name: Run checkers tests
+    # Checkers and server calculations have no external dependencies, so packages are not installed.
+    - name: Run checkers and unit tests
       run: npm test
 
   browser:

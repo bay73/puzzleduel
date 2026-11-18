@@ -3,33 +3,7 @@ const UserSolvingTime = require('../models/UserSolvingTime');
 const Puzzle = require('../models/Puzzle');
 const User = require('../models/User');
 
-function puzzleMedianTime(times) {
-  if (times.length == 0) {
-    return null;
-  }
-  var success = times.filter(time => !time.errCount);
-  if (success.length==0) {
-    success = times;
-  }
-  if (success.length%2==0) {
-    var median = (success[success.length/2].solvingTime + success[success.length/2-1].solvingTime)/2;
-  } else {
-    var median = success[(success.length-1)/2].solvingTime;
-  }
-  return median
-}
-
-function singlePuzzlePerformance(result, median) {
-  if (result.solvingTime) {
-    let score = 2000 - 500*Math.log2(result.solvingTime / median + result.errCount);
-    if (score < 0) {
-      return 0;
-    }
-    return score;
-  } else {
-    return 0;
-  }
-}
+const { puzzleMedianTime, singlePuzzlePerformance, weekRating } = require('./calc/rating');
 
 async function singlePuzzleUserRatings(puzzleId) {
   const times = await UserSolvingTime.find({
@@ -63,10 +37,6 @@ async function singlePuzzleUserRatings(puzzleId) {
     ratings.push({userId: rec.userId, value: 0, finished: false});
   });
   return ratings;
-}
-
-function normDiff(diff) {
-  return Math.pow(Math.abs(diff),0.66) * Math.sign(diff);
 }
 
 async function computeRating(computeDate) {
@@ -114,46 +84,24 @@ async function computeRating(computeDate) {
     });
   }
   for (let [userId, data] of Object.entries(ratingMap)) {
-    var weekValue = 0;
     var finishedPuzzlesNum = ratingMap[userId].puzzles.filter(puzzle=>puzzle.finished).length;
     var startedPuzzlesNum = ratingMap[userId].puzzles.length;
     var oldValue = ratingMap[userId].value;
     var totalStarted = ratingMap[userId].totalStarted + startedPuzzlesNum;
     var totalSolved = ratingMap[userId].totalSolved + finishedPuzzlesNum;
-    var weeks = data.ratingWeek;
-    var change = null;
-    var newValue = oldValue;
+    var week = weekRating(oldValue, data.ratingWeek, ratingMap[userId].puzzles.map(puzzle => puzzle.value));
+    var weeks = week.weeks;
+    var change = week.change;
+    var newValue = week.newValue;
     var details = {
       oldValue: oldValue,
       puzzlesNum: startedPuzzlesNum,
-      puzzles: []
+      puzzles: ratingMap[userId].puzzles.map((puzzle, index) => {
+        return {date: puzzle.puzzleDate, type: puzzle.type, value: puzzle.value, change: week.puzzleChanges[index]};
+      }),
+      weekValue: week.weekValue
     }
-    if (startedPuzzlesNum > 0) {
-      weeks = weeks + 1;
-      var weekSum = 0;
-      var puzzleDiffSum = 0;
-      var newbie = 1;
-      if (weeks < 5 ) {
-        newbie = 5 - weeks;
-      }
-      ratingMap[userId].puzzles.forEach(puzzle => {
-        weekSum = weekSum + puzzle.value;
-        puzzleDiffSum = puzzleDiffSum + newbie * normDiff(puzzle.value - oldValue) / 7;
-      });
-      weekValue = weekSum / startedPuzzlesNum;
-      change = normDiff(weekValue - oldValue);
-      change = change * startedPuzzlesNum / 7;
-      if (change > 0) {
-        change = change * newbie;
-      }
-      newValue = oldValue + change;
-      var coeff = (change - puzzleDiffSum) / startedPuzzlesNum;
-      ratingMap[userId].puzzles.forEach(puzzle => {
-        details.puzzles.push({date: puzzle.puzzleDate, type: puzzle.type, value: puzzle.value, change: newbie * normDiff(puzzle.value - oldValue) / 7 + coeff});
-      });
-    }
-    details.weekValue = weekValue;
-    
+
     var rating = new Rating({
       date: d,
       userId: userId,

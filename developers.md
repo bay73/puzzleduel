@@ -205,6 +205,11 @@ For each puzzle type developer can add the next tests:
 *  **In Node** - `npm test` runs checkers tests (all files from `tests/checkers`), as they don't need a puzzle grid.
    It fails also if there is a checker in `puzzle_types` without tests or a test file which is not listed in `tests/all_tests.js`.
    To run tests for some types only use `node tests/run_checker_tests.js <type> ...`.
+   After them it runs unit tests of the server calculations (`tests/unit`, the test runner of Node):
+   rating, contest scoring, duel pairing and league results. These calculations are kept in `utils/calc`
+   as functions without access to the database, so the tests need neither packages nor MongoDB.
+   The modules which load models (`utils/rating.js`, `utils/contest.js`, ...) should not be loaded in these tests,
+   as they connect to the databases; they are tested in `tests/server`.
 
 *  **In headless browser** - `npm run test:ui` runs all the suites of `tests.html` (UI tests and checkers tests) in Chromium using Playwright.
    It requires development packages (`npm install`) and the browser (`npx playwright install chromium`).

@@ -1,6 +1,7 @@
 const Contest = require('../models/Contest');
 const UserSolvingTime = require('../models/UserSolvingTime');
 const Puzzle = require('../models/Puzzle');
+const duelCalc = require('./calc/duel');
 
 
 function shuffle(array) {
@@ -20,8 +21,6 @@ function shuffle(array) {
 
 async function recountPuzzle(puzzle, pairs, acceptTime) {
   var puzzleId = puzzle.toObject().puzzleId;
-  var results = [];
-  var userTime = {};
   const times = await UserSolvingTime.find({
     puzzleId: puzzleId,
     solvingTime: {$exists: true},
@@ -42,22 +41,8 @@ async function recountPuzzle(puzzle, pairs, acceptTime) {
       }
     };
   }
-  times.forEach(time => {
-    var result = time.toObject();
-    if (result.date < acceptTime) {
-      userTime[result.userId] = result.solvingTime;
-      var score = 2;
-      if (pairs) {
-        var opponent = pairs[result.userId];
-        if (opponent && userTime[opponent] < result.solvingTime) {
-          score = 1;
-        }
-      }
-      results.push({userId: result.userId, userName: result.userName, score: score, time: result.solvingTime});
-    }
-  });
   return {
-    results: results, 
+    results: duelCalc.roundScores(times.map(time => time.toObject()), pairs, acceptTime),
     details: {}
   };
 }
@@ -92,14 +77,7 @@ async function refreshResult(contestId) {
   contest.markModified('puzzles');
   contest.results = [];
   for (let [userId, value] of Object.entries(userTotals)) {
-    var buchholz = 0;
-    if (typeof contest.seedData != 'undefined'){
-      contest.seedData.forEach(seeds => {
-        if (seeds[userId] && typeof userTotals[seeds[userId]] != 'undefined') {
-          buchholz += userTotals[seeds[userId]].score;
-        }
-      })
-    }
+    var buchholz = duelCalc.buchholz(userId, contest.seedData, userTotals);
     contest.results.push({
       userId: userId,
       userName: value.userName,
@@ -123,18 +101,7 @@ async function initialSeed(contestId, reseed) {
     return true;
   }
   const randomizedParticipants = shuffle(contest.participants);
-  var pairs = {};
-  for (var i = 0; i<randomizedParticipants.length; i++) {
-    if (i%2==0) {
-      if (i==randomizedParticipants.length-1) {
-        pairs[randomizedParticipants[i].userId.toString()] = "";
-      } else {
-        pairs[randomizedParticipants[i].userId.toString()] = randomizedParticipants[i+1].userId.toString();
-      }
-    } else {
-      pairs[randomizedParticipants[i].userId.toString()] = randomizedParticipants[i-1].userId.toString();
-    }
-  }
+  var pairs = duelCalc.initialPairs(randomizedParticipants.map(participant => participant.userId.toString()));
   if (typeof contest.seedData=='undefined') {
     contest.seedData = [];
   }
@@ -154,68 +121,9 @@ async function seed(contestId, round, reseed) {
   if (typeof contest.seedData[roundIndex] != 'undefined' && !reseed) {
     return true;
   }
-  function resultCompare(r1, r2) {
-    if (r1.score != r2.score) return r2.score - r1.score;
-    if (r1.tiebreakScore != r2.tiebreakScore) return r1.tiebreakScore - r2.tiebreakScore;
-    return r1.time - r2.time;
-  }
-  const participants = contest.results.sort(resultCompare);
-  function checkAlreadyPaired(user1, user2) {
-    for(var i=0; i<roundIndex; i++) {
-      if (typeof contest.seedData[i] != 'undefined') {
-        if (contest.seedData[i][user1.toString()]==user2.toString()) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-  function checkAlreadyMissed(user) {
-    for(var i=0; i<roundIndex; i++) {
-      if (typeof contest.seedData[i] != 'undefined') {
-        if (contest.seedData[i][user.toString()]=="") {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-  var pairs = {};
-  function findNext(index) {
-    if (index==participants.length) {
-      return true;
-    }
-    var userId = participants[index].userId;
-    if (pairs[userId.toString()]) {
-      if (findNext(index+1)) {
-        return true;
-      }
-    } else {
-      if (Object.keys(pairs).length==participants.length-1){
-        if (checkAlreadyMissed(userId) && participants[index].started) {
-          return false;
-        }
-        pairs[userId.toString()] = "";
-        return true;
-      }
-      for (var i=index+1;i<participants.length;i++){
-        var otherUserId = participants[i].userId;
-        if (!pairs[otherUserId.toString()]) {
-          if (!checkAlreadyPaired(userId, otherUserId) || (!participants[index].started && !participants[i].started)) {
-            pairs[userId.toString()] = otherUserId.toString();
-            pairs[otherUserId.toString()] = userId.toString();
-            if (findNext(index+1)) {
-              return true;
-            }
-            delete pairs[userId.toString()];
-            delete pairs[otherUserId.toString()];
-          }
-        }
-      }
-    }
-    return false;
-  }
-  if (!findNext(0)) {
+  const participants = contest.results.sort(duelCalc.compareResults);
+  var pairs = duelCalc.swissPairs(participants, contest.seedData, roundIndex);
+  if (!pairs) {
     throw "Couldn't build pairs";
   }
   if (typeof contest.seedData=='undefined') {

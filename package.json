@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "node tests/run_checker_tests.js",
+    "test": "node tests/run_checker_tests.js && node --test \"tests/unit/*.test.js\"",
     "test:ui": "node tests/run_browser_tests.js",
     "test:server": "node --test \"tests/server/*.test.js\""
   },
