@@ -219,6 +219,40 @@ test('Process clicks to outer clues',(suite) => {
   assert("Right clue data after second click").that(puzzle.right[1].data).isEqualTo({text: '3'});
 }),
 
+// Clue cells outside of the grid are not a part of the lines.
+test('Drag over outer clue cells draws nothing',(suite) => {
+  let puzzle = suite.showPuzzle("ring_ring_max", "5x4", {"a1": "black", "b1": "black", "a4": "black", "b4": "black", "bottom": ["1", "0", "3", "1", "3"], "right": ["2", "3", "3", "2"]});
+  puzzle.start();
+
+  // From the grid cell e4 to the clue cell to the right of it and to the clue cell below it.
+  suite.drag(puzzle, suite.cellPoint(puzzle, "e4"), suite.cellPoint(puzzle, 5, 3));
+  suite.drag(puzzle, suite.cellPoint(puzzle, "e4"), suite.cellPoint(puzzle, 4, 4));
+  // From the clue cells back to the grid.
+  suite.drag(puzzle, suite.cellPoint(puzzle, 5, 3), suite.cellPoint(puzzle, "e4"));
+  suite.drag(puzzle, suite.cellPoint(puzzle, 4, 4), suite.cellPoint(puzzle, "e4"));
+  // Between two clue cells below the grid and between two clue cells to the right of the grid.
+  suite.drag(puzzle, suite.cellPoint(puzzle, 0, 4), suite.cellPoint(puzzle, 1, 4));
+  suite.drag(puzzle, suite.cellPoint(puzzle, 5, 0), suite.cellPoint(puzzle, 5, 1));
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({});
+}),
+
+test('Line is kept when the drag leaves the grid',(suite) => {
+  let puzzle = suite.showPuzzle("ring_ring_max", "5x4", {"a1": "black", "b1": "black", "a4": "black", "b4": "black", "bottom": ["1", "0", "3", "1", "3"], "right": ["2", "3", "3", "2"]});
+  puzzle.start();
+
+  // One drag from c4 to d4 and then down to the clue cell below the grid.
+  puzzle.controller.onMouseDown(suite.mouseEvent(suite.cellPoint(puzzle, "c4")));
+  puzzle.controller.onMouseMove(suite.mouseEvent(suite.cellPoint(puzzle, "d4")));
+  let dataInGrid = puzzle.collectData();
+  let outerPoint = suite.cellPoint(puzzle, 3, 4);
+  puzzle.controller.onMouseMove(suite.mouseEvent(outerPoint));
+  puzzle.controller.onMouseUp(suite.mouseEvent(outerPoint));
+
+  assert("Connector between c4 and d4").that(puzzle.connectors[3][2]['h'].getValue()).isNotNull();
+  assert("Submission data after leaving the grid").that(puzzle.collectData()).isEqualTo(dataInGrid);
+}),
+
 // Data collector tests
 test('Data collector',(suite) => {
   let puzzle = suite.showPuzzle("ring_ring_max", "5x4", {"a1": "black", "b1": "black", "a4": "black", "b4": "black", "bottom": ["1", "0", "3", "1", "3"], "right": ["2", "3", "3", "2"]});

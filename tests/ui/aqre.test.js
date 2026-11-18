@@ -165,6 +165,40 @@ test('Process click to given cross',(suite) => {
   assert("Cell data after click").that(puzzle.cells[3][3].data).isEqualTo({image: "cross"});
 }),
 
+test('Given cross is kept on drag over it',(suite) => {
+  let puzzle = suite.showPuzzle("aqre", "4x4", suite.CLUES);
+  puzzle.start();
+
+  // Shade c4 and drag it to the given cross in d4.
+  suite.cellClick(puzzle, "c4");
+  suite.drag(puzzle, suite.cellPoint(puzzle, "c4"), suite.cellPoint(puzzle, "d4"));
+
+  assert("Cross cell data after drag of the shaded cell").that(puzzle.cells[3][3].data).isEqualTo({image: 'cross'});
+  assert("Cross cell value after drag of the shaded cell").that(puzzle.cells[3][3].getValue()).isNull();
+
+  // Drag the empty cell d3 to the given cross.
+  suite.drag(puzzle, suite.cellPoint(puzzle, "d3"), suite.cellPoint(puzzle, "d4"));
+
+  assert("Cross cell data after drag of the empty cell").that(puzzle.cells[3][3].data).isEqualTo({image: 'cross'});
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({"c4": "1"});
+}),
+
+test('Copy given cross by drag',(suite) => {
+  let puzzle = suite.showPuzzle("aqre", "4x4", suite.CLUES);
+  puzzle.start();
+
+  // From the given cross in d4 to d3 and d2: crosses are marks, they are not submitted.
+  puzzle.controller.onMouseDown(suite.mouseEvent(suite.cellPoint(puzzle, "d4")));
+  puzzle.controller.onMouseMove(suite.mouseEvent(suite.cellPoint(puzzle, "d3")));
+  puzzle.controller.onMouseMove(suite.mouseEvent(suite.cellPoint(puzzle, "d2")));
+  puzzle.controller.onMouseUp(suite.mouseEvent(suite.cellPoint(puzzle, "d2")));
+
+  assert("Cell d3 after drag").that(puzzle.cells[2][3].data).isEqualTo({image: 'cross'});
+  assert("Cell d2 after drag").that(puzzle.cells[1][3].data).isEqualTo({image: 'cross'});
+  assert("Given cross after drag").that(puzzle.cells[3][3].data).isEqualTo({image: 'cross'});
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({});
+}),
+
 test('Shade cells by drag',(suite) => {
   let puzzle = suite.showPuzzle("aqre", "4x4", suite.CLUES);
   puzzle.start();

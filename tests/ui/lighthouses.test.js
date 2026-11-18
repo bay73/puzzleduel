@@ -110,6 +110,22 @@ test('Mark lighthouse by click',(suite) => {
   assert("Lighthouse value after two clicks").that(puzzle.cells[0][0].getValue()).isNull();
 }),
 
+test('Given cross is not changed by click',(suite) => {
+  let puzzle = suite.showPuzzle("lighthouses", "5x5", suite.CLUES);
+  puzzle.start();
+
+  assert("Cross clue click").that(puzzle.cells[0][4].clickSwitch).isNull();
+
+  suite.cellClick(puzzle, "e1");
+
+  assert("Cross clue data after click").that(puzzle.cells[0][4].data).isEqualTo({image: 'cross'});
+
+  suite.cellClick(puzzle, "e1");
+
+  assert("Cross clue data after two clicks").that(puzzle.cells[0][4].data).isEqualTo({image: 'cross'});
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({});
+}),
+
 test('Copy cross by drag',(suite) => {
   let puzzle = suite.showPuzzle("lighthouses", "5x5", suite.CLUES);
   puzzle.start();

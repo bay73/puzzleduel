@@ -197,7 +197,9 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
       .add(controller().forSolver().cell().noClue(StdItem.CROSS).clickSwitch()
         .addItem(StdItem.GREY.submitAs("1"))
         .addItem(StdItem.CROSS.doNotSubmit()))
-      .add(controller().forSolver().cell()
+      // Given cross can be copied to other cells, but it can not be changed.
+      .add(controller().forSolver().cell().clue(StdItem.CROSS).copy())
+      .add(controller().forSolver().cell().noClue(StdItem.CROSS)
         .copyPaste((data, elementData) => Object.assign({}, elementData, {image: data.image, color: data.color} )))
      .build(this);
 
@@ -425,7 +427,7 @@ squarePuzzleType.prototype.setTypeProperties = function(typeCode) {
         .addItem(StdItem.CROSS.doNotSubmit()))
       .add(controller().forSolver().cell().clue().copy())
       .add(controller().forSolver().cell().inner().noClue().copyPaste((data) => data.text?{image: "cross"}:data))
-      .add(controller().forSolver().cell().clue().clickSwitch()
+      .add(controller().forSolver().cell().clue().noClue(StdItem.CROSS).clickSwitch()
         .addItem(StdItem.WHITE_CIRCLE.doNotSubmit()))
       .build(this);
 

@@ -290,6 +290,42 @@ test('Choose clue in author mode',(suite) => {
   assert("Outer clue data").that(puzzle.bottom[1].data).isEqualTo({text: '2', returnValue: '2'});
 }),
 
+// Clue cells outside of the grid are not a part of the lines.
+test('Drag over outer clue cells draws nothing',(suite) => {
+  let puzzle = suite.showPuzzle("tents_classic", "4x4", suite.CLUES);
+  puzzle.start();
+
+  // From the grid cell d4 to the clue cell to the right of it and to the clue cell below it.
+  suite.drag(puzzle, suite.cellPoint(puzzle, "d4"), suite.cellPoint(puzzle, 4, 3));
+  suite.drag(puzzle, suite.cellPoint(puzzle, "d4"), suite.cellPoint(puzzle, 3, 4));
+  // From the clue cells back to the grid.
+  suite.drag(puzzle, suite.cellPoint(puzzle, 4, 3), suite.cellPoint(puzzle, "d4"));
+  suite.drag(puzzle, suite.cellPoint(puzzle, 3, 4), suite.cellPoint(puzzle, "d4"));
+  // Between two clue cells below the grid and between two clue cells to the right of the grid.
+  suite.drag(puzzle, suite.cellPoint(puzzle, 0, 4), suite.cellPoint(puzzle, 1, 4));
+  suite.drag(puzzle, suite.cellPoint(puzzle, 4, 0), suite.cellPoint(puzzle, 4, 1));
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({});
+}),
+
+test('Line is kept when the drag leaves the grid',(suite) => {
+  let puzzle = suite.showPuzzle("tents_classic", "4x4", suite.CLUES);
+  puzzle.start();
+
+  // One drag from a3 to the tree in b3 (it connects them) and then down to the clue cell below the grid.
+  puzzle.controller.onMouseDown(suite.mouseEvent(suite.cellPoint(puzzle, "a3")));
+  puzzle.controller.onMouseMove(suite.mouseEvent(suite.cellPoint(puzzle, "b3")));
+  let dataInGrid = puzzle.collectData();
+  let outerPoint = suite.cellPoint(puzzle, 1, 4);
+  puzzle.controller.onMouseMove(suite.mouseEvent(outerPoint));
+  puzzle.controller.onMouseUp(suite.mouseEvent(outerPoint));
+
+  // Connectors of this puzzle are marks which are not submitted, so the drawn line is checked by its color.
+  assert("Connector between a3 and b3").that(puzzle.connectors[2][0]['h'].data).isEqualTo({color: puzzle.colorSchema.lineColor});
+  assert("Connector below b3").that(puzzle.connectors[2][1]['v'].data).isEqualTo({});
+  assert("Submission data after leaving the grid").that(puzzle.collectData()).isEqualTo(dataInGrid);
+}),
+
 // Data collector tests
 test('Data collector',(suite) => {
   let puzzle = suite.showPuzzle("tents_classic", "4x4", suite.CLUES);
@@ -367,6 +403,52 @@ test('Author data collector for existing puzzle',(suite) => {
   assert("Loaded bottom clue").that(puzzle.bottom[2].getValue()).isEqualTo('0');
   assert("Loaded right clue").that(puzzle.right[0].getValue()).isEqualTo('2');
   assert("Puzzle data").that(puzzle.collectData()).isEqualTo(suite.CLUES);
+}),
+
+// Outer clues are optional: an empty clue is saved as null.
+test('Show puzzle with empty outer clues',(suite) => {
+  let puzzle = suite.showPuzzle("tents_classic", "4x4", {"b1": "tree1", "bottom": ["1", null, "0", "1"], "right": [null, "0", "0", "1"]});
+  puzzle.start();
+
+  assert("Given bottom clue").that(puzzle.bottom[0].data.text).isEqualTo("1");
+  assert("Empty bottom clue text").that(puzzle.bottom[1].data.text).isNull();
+  assert("Empty bottom clue image").that(puzzle.bottom[1].data.image).isNull();
+  assert("Empty right clue text").that(puzzle.right[0].data.text).isNull();
+  assert("Given right clue").that(puzzle.right[3].data.text).isEqualTo("1");
+  assert("Tree").that(puzzle.cells[0][1].data.image).isEqualTo("tree1");
+
+  // The puzzle can be solved as usual: tent in a1.
+  suite.cellClick(puzzle, "a1");
+
+  assert("Submission data").that(puzzle.collectData()).isEqualTo({"a1": "1"});
+}),
+
+test('Author saves and opens puzzle with empty outer clues',(suite) => {
+  let puzzle = suite.showPuzzle("tents_classic", "4x4");
+  puzzle.edit();
+
+  // Tree in b1, clue 1 for the column a and clue 0 for the row 2. Other outer clues are not set.
+  puzzle.cells[0][1].switchOnChooser(1);
+  puzzle.bottom[0].switchOnChooser(2);
+  puzzle.right[1].switchOnChooser(1);
+
+  let saved = puzzle.collectData();
+  assert("Puzzle data").that(saved).isEqualTo({"b1": "tree1", "bottom": ["1", null, null, null], "right": [null, "0", null, null]});
+
+  // Open the saved puzzle for editing again.
+  Snap(suite.GRID_SELECTOR).clear();
+  puzzle = suite.showPuzzle("tents_classic", "4x4", saved);
+  puzzle.edit();
+
+  assert("Loaded bottom clue").that(puzzle.bottom[0].getValue()).isEqualTo("1");
+  assert("Loaded empty bottom clue").that(puzzle.bottom[1].getValue()).isNull();
+  assert("Loaded right clue").that(puzzle.right[1].getValue()).isEqualTo("0");
+  assert("Puzzle data after loading").that(puzzle.collectData()).isEqualTo(saved);
+
+  // Empty clue can be set later.
+  puzzle.bottom[1].switchOnChooser(3);
+
+  assert("Puzzle data after change").that(puzzle.collectData()).isEqualTo({"b1": "tree1", "bottom": ["1", "2", null, null], "right": [null, "0", null, null]});
 }),
 
 );

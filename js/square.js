@@ -910,6 +910,10 @@ squarePuzzleCell.prototype.commonConnectors = function(startElement) {
   if (this == startElement) {
     return null;
   }
+  // Clue cells outside of the grid have no connectors.
+  if (this.outerCell || startElement.outerCell) {
+    return null;
+  }
   if (this.col == startElement.col) {
     var col = this.col;
     var row1 = this.row < startElement.row ? this.row : startElement.row;

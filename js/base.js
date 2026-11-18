@@ -606,6 +606,10 @@ basePuzzle.prototype.decodeClue = function(value) {
   if (typeof this.typeProperties.upgradeClue =="function") {
     value = this.typeProperties.upgradeClue(value);
   }
+  // Empty clue (e.g. an outer cell without a number) has no data.
+  if (value == null) {
+    return {};
+  }
   // Convert clue value to data for element.
   if (typeof this.typeProperties.decodeClue =="function") {
     return this.typeProperties.decodeClue(value, this);
